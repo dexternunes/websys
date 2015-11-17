@@ -1,0 +1,1206 @@
+/* LAYOUT */
+html {
+	position: relative;
+    height: 100%;
+    top: 0px;
+}
+
+body{
+	height: inherit;
+}
+
+
+/* GLOBAL VARs */
+::root {
+  --red: #b00;
+  --blue: #00b;
+  --fullwidth: 100%;
+}
+
+.half-height{
+	height: 50%;
+}
+
+.container-fluid,.row-fluid { height: inherit; }
+
+.dashboard-background {
+
+	/* http://www.colorzilla.com/gradient-editor/#f2f2f2+0,ffffff+100;Custom */
+
+	background: rgb(242,242,242); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(242,242,242,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(242,242,242,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(242,242,242,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(242,242,242,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+.dashboard-header{
+	padding-bottom: 0px;
+}
+
+.dashboard-bottom-bar{
+
+	/* http://www.colorzilla.com/gradient-editor/#76d392+11,39b54a+97;Custom */
+
+	background: #76d392; /* Old browsers */
+	background: -moz-linear-gradient(top, #76d392 11%, #39b54a 97%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(11%,#76d392), color-stop(97%,#39b54a)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #76d392 11%,#39b54a 97%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #76d392 11%,#39b54a 97%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #76d392 11%,#39b54a 97%); /* IE10+ */
+	background: linear-gradient(to bottom, #76d392 11%,#39b54a 97%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#76d392', endColorstr='#39b54a',GradientType=0 ); /* IE6-9 */
+}
+
+/* bottom navbar */
+   .navbar-fixed-bottom{
+	height: 42px;
+}
+
+.navbar{
+	border: 0;
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-brand:hover{
+	color: #FFF;
+}
+
+.navbar-default .navbar-toggle{
+	border-color: #FFF;
+}
+
+.navbar-default .navbar-toggle .icon-bar{
+	background-color: #FFF;
+}
+
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus{
+	background-color: #76d392;
+}
+
+.fa-13 {
+	font-size: 1.3em;
+}
+
+.white {
+	color: #FFF;
+}
+
+footer .navbar .nav > li:hover {
+	background-color: #76d392;
+}
+
+footer .navbar .nav > li:last-child {
+/* 	float: right; */
+}
+
+footer .navbar .nav > li > a > span {
+	text-shadow: none;
+}
+
+
+.navbar{
+	min-height: 0px;
+}
+
+.sm-sidebar-navigator{
+	display: none;
+}
+
+/* FIM LAYOUT */
+
+
+.dashboard-main-container{
+	padding: 0;
+	height: inherit;
+}
+
+.dashboard-container-left{
+	position: absolute;
+	width: 100%;
+	height: inherit;
+	z-index: -9999;
+	display: block;
+
+	background-image: url(../images/logo.png), url(../images/background.jpg);
+    background-repeat: no-repeat;
+    background-size: 20% auto, 100% 100%;
+    background-position: 5% 1%, left bottom;
+}
+
+.dashboard-parent-right, .dashboard-parent-left {
+	padding-right: 0;
+	padding-left: 0;
+	height: inherit;
+}
+
+ .dashboard-parent-right [class^="col-"]{
+   padding-left: 0;
+   padding-bottom: 1em;
+ }
+ 
+ .square-up, .square-down{
+ 	position: relative;
+ 	height: 50%;
+ 	
+ 	padding-bottom:1em;
+ }
+ 
+ .square-left, .square-right{
+  	position: relative;
+ 	height: 50%;
+ }
+ 
+.dashboard-main-container > .dashboard-parent-left > [class*="square-"] > .panel,
+.dashboard-main-container > .dashboard-parent-right > * > .panel {
+	position: relative;
+	height: 100%;
+	overflow-y: auto;
+	
+ 	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+    -moz-box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+    box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+}
+
+/* PERIOD CONTROLS */
+.period-controls > ul{
+	height: 40px;
+	list-style: none;
+	margin-left: 0px;
+}
+
+.period-controls > ul > li {
+	display: inline-block;
+	margin-top: 5px;
+	padding-right: 20px;
+}
+
+.period-controls > ul > li > a {
+	color: #999;
+	text-decoration: none;
+	text-shadow: 0.1em 0.1em 0.2em #CCC;
+	
+ 	transition: all .15s ease-in-out;
+ 	
+ 	-webkit-transform: translateZ(0);
+ 	-webkit-transform: rotateZ(360deg);
+ 	
+ 	-webkit-transform: translate3d(-100%,0,0);
+ 	
+ 	-webkit-backface-visibility: hidden;
+	-webkit-perspective: 1000;
+
+	backface-visibility: hidden;
+	perspective: 1000;
+}
+
+.period-controls > ul > li > a:hover {
+	text-shadow: 0.1em 0.1em 1em #999;
+	cursor: pointer;
+}
+
+.period-controls > ul > li > a.selected-control {
+	font-size: 2em;
+	color: #39b54a;
+	
+	transform: scale(1.2,1.2);
+}
+
+
+/* PERIOD */
+.period > ul{
+	height: 40px;
+	list-style: none;
+	margin-left: 0px;
+}
+
+.period > ul > li {
+	display: inline-block;
+	margin-top: 5px;
+	padding-right: 20px;
+}
+
+.period > ul > li > a {
+	color: #999;
+	text-decoration: none;
+	text-shadow: 0.1em 0.1em 1em #CCC;
+}
+
+.period > ul > li > a:hover {
+	text-shadow: 0.1em 0.1em 0.2em #999;
+	cursor: pointer;
+}
+
+.period > ul > li > a.selected-period {
+	font-size: 2em;
+	color: #39b54a;
+}
+
+.panel-heading{
+	/* http://www.colorzilla.com/gradient-editor/#ffffff+46,f2f2f2+86;Custom */
+
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 46%, rgba(242,242,242,1) 86%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(46%,rgba(255,255,255,1)), color-stop(86%,rgba(242,242,242,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 46%,rgba(242,242,242,1) 86%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(255,255,255,1) 46%,rgba(242,242,242,1) 86%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 46%,rgba(242,242,242,1) 86%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 46%,rgba(242,242,242,1) 86%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f2f2f2',GradientType=0 ); /* IE6-9 */
+
+}
+
+.panel > .panel-head-icon {
+	background: rgb(255,255,255);
+	float: left;
+}
+
+.panel > .panel-head-icon > i {
+	line-height: 40px;
+	width: 40px;
+	text-align: center;
+	font-size: 2em;
+}
+
+.panel-default>.panel-heading{
+	border: 0px;
+	
+	text-decoration: none; 
+    text-overflow: ellipsis; 
+    overflow: hidden; 
+    white-space: nowrap;
+}
+
+.panel-default>.panel-heading > span{
+	border: 0px;
+	padding-left: 10px;
+}
+
+
+
+/*Navigation*/
+.sidebar-nav {
+  	width: 240px;
+  	position: fixed;
+  	float: left;
+  	border-top: none;
+  	border-left: none;
+  	background: #ECECEC;
+  
+  	/* como estamos usando slimscroll, podemos desativar o nativo */
+	/* overflow-y: auto; */
+  	height: inherit;
+  	margin-bottom: 41px; 
+}
+
+body > .sidebar-nav{
+	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+    -moz-box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+    box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+}
+
+.sidebar-nav.affix-top{
+ 	display: none;
+}
+
+.sidebar-nav .nav-header i{
+  color: #777;
+}
+
+.sidebar-nav form.search {
+  padding: .5em 0em;
+  margin: 0em;
+}
+.sidebar-nav .nav-header {
+  border-bottom: 1px solid #CCC;
+  border-left: 3px solid transparent;
+  border-right: 1px solid #AAA;
+  color: #111;
+  display: block;
+  font-weight: bold;
+  font-weight: normal;
+  font-size: 1em;
+  line-height: 3em;
+  margin-bottom: 0px;
+  text-shadow: none;
+  text-transform: none;
+  padding-left: 1em;
+  
+  
+   	display: block;
+    padding: 19px 14px 15px 14px;
+/*     margin-left: -15px; */
+/*     margin-bottom: 5px; */
+/*     border-bottom: 1px solid #dae1e8; */
+    box-shadow: 0 2px 1px -1px #FFFFFF;
+/*     color: #6e829b; */
+	color: #555;
+    outline: 0px;
+    line-height: 21px;
+}
+
+/* .sidebar-nav .active > .nav-header, .sidebar-nav .active > .nav-header:hover { */
+/*     background: url("images/menu-active.png") no-repeat scroll right center transparent !important; */
+/* } */
+
+
+.sidebar-nav .nav-header:hover {
+  	background: #CCC; /* Old browsers */
+  	color: #333;
+	text-decoration: none;
+  	outline: 0 none;
+  	border-left: 3px solid #39b54a;
+}
+
+.sidebar-nav .nav-header:hover i{
+	color: #4c4c4c;
+}
+
+.nav-header.active-area{
+	background: #DEDEDE !important;
+  	color: #555 !important;
+	text-decoration: none;
+  	outline: 0 none;
+/*   	border-left: 3px solid #39b54a; */
+}
+
+.sidebar-nav .nav-header .label {
+  float: right;
+  margin-top: .3em;
+  line-height: 1.5em;
+}
+.sidebar-nav .nav-header i[class^="icon-"], .sidebar-nav .nav-header i[class^="fa"] {
+  margin-right: .75em;
+}
+.sidebar-nav .nav-list {
+  margin: 0px;
+  background: #E8E8E8;
+/*   border: 0px; */
+	border-left: 4px solid #39b54a;
+	border-right: 1px solid #AAA;
+}
+.sidebar-nav .nav-list  > .active > a,
+.sidebar-nav .nav-list  > .active > a:hover {
+  background: #CACACA;
+}
+
+.sidebar-nav .nav-list  > li > a:hover {
+  background: #CACACA;
+  
+/*   -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,0.3); */
+/*    	-moz-box-shadow: 0px 0px 10px rgba(0,0,0,0.3); */
+/*    	box-shadow: 0px 0px 10px rgba(0,0,0,0.3); */
+}
+
+.sidebar-nav .nav-list  > li > a {
+  color: #555;
+  text-shadow: none;
+/*   padding: .5em 2em; */
+}
+
+.sidebar-nav .nav-list.collapse {
+  border-bottom: 0px;
+}
+
+.sidebar-nav .nav-list.in.collapse{
+	border-bottom: 1px solid #CCC;
+}
+
+
+.nav-header > .fa.arrow {
+/* 	line-height: 35px; */
+    float: right;
+    padding-right: 1em;
+}
+
+.nav-header > .fa.arrow:before {
+    content: "\f107";
+}
+
+.nav-header.collapsed > .fa.arrow:before {
+    content: "\f104";
+}
+
+
+/* Drag and Drop Settings */
+
+body > li[class^="component-"]{
+	list-style-type: none;
+}
+
+body > li[class^="component-"] > a{
+	cursor: default;
+}
+
+.nav-collapse.subnav-collapse > ul > li > a{
+	cursor: default;
+}
+
+
+/* Overlay config divs */
+
+.config-area-overlay{
+	display: none;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+	text-align: center;
+	background: #FFF;
+	border: 1px solid #CCC;
+	z-index: 50;
+	
+	box-shadow: 0 5px 10px 0 #999;
+}
+
+.config-area-overlay.on{
+	display: table;
+}
+
+.config-area-overlay.on:hover {
+	cursor: pointer;
+	
+	background:#EAEAEA;
+	
+/* 	-webkit-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg ); */
+/* 	-moz-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg ); */
+/* 	-ms-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg ); */
+/* 	-o-transform: translateY(-20px) perspective( 600px ) rotateX( 10deg ); */
+/* 	transform: translateY(-20px) perspective( 600px ) rotateX( 10deg ); */
+
+/* 	-webkit-transition: -webkit-transform 0.3s ease-out, opacity 0.3s ease-out; */
+/* 	-moz-transition: -moz-transform 0.3s ease-out, opacity 0.3s ease-out; */
+/* 	-ms-transition: -ms-transform 0.3s ease-out, opacity 0.3s ease-out; */
+/* 	-o-transition: -o-transform: 0.3s ease-out, opacity 0.3s ease-out; */
+/* 	transition: transform: 0.3s ease-out, opacity 0.3s ease-out; */
+}
+
+.config-area-overlay > i {
+	display: table-cell;
+	vertical-align: middle;
+	font-size: 4em;
+}
+
+.config-area-overlay > span {
+	display: none;
+}
+
+div[class*="component-"] > .config-area-overlay.on {
+	opacity: 0.8;
+}
+
+.dashboard-main-container > div[class*="dashboard-parent-"] > .empty > div.config-area-overlay{
+ 	display: table;
+	opacity: 0.8;
+}
+
+.dashboard-main-container > div[class*="dashboard-parent-"] > .empty > div.config-area-overlay:hover{
+	opacity: 1;
+}
+
+
+div[class*="component-"].editing-config > .config-area-overlay.on{
+	height: auto;
+	border: none;
+/* 	padding: 10px; breaks safari */
+}
+
+div[class*="component-"].editing-config > .config-area-overlay.on > i{
+	display: block;
+	font-size: 4em;
+}
+
+div[class*="component-"].editing-config > .config-area-overlay.on > span.close-edition{
+	display: block;
+}
+
+.dashboard-main-container > * > div[class*="rectangle-"].not-editing,
+.dashboard-main-container > * > div[class*="square-"].not-editing{
+	opacity: 0.6;
+}
+
+
+/* COMPONETES OVERRIDES */
+
+.dashboard-main-container > * > .component-gage > .panel > .panel-body,
+.dashboard-main-container > * > .component-semaphore > .panel > .panel-body, 
+.dashboard-main-container > * > .component-chartbar > .panel > .panel-body,
+.dashboard-main-container > * > .component-chartline > .panel > .panel-body,
+.dashboard-main-container > * > .component-chartpie > .panel > .panel-body,
+.dashboard-main-container > * > .component-map > .panel > .panel-body,
+.dashboard-main-container > * > .component-mosaic > .panel > .panel-body{
+	padding: 0px;
+	height: inherit;
+}
+
+.dashboard-main-container > * > .component-gage > .panel,
+.dashboard-main-container > * > .component-semaphore > .panel,
+.dashboard-main-container > * > .component-chartline > .panel,
+.dashboard-main-container > * > .component-mosaic > .panel{
+	overflow-y: hidden !important;
+}
+
+.dashboard-main-container > * > div[class*="rectangle-"].component-chartbar > .panel > .panel-body > div,
+.dashboard-main-container > * > div[class*="square-"].component-chartbar > .panel > .panel-body > div,
+.dashboard-main-container > * > div[class*="rectangle-"].component-chartpie > .panel > .panel-body > div,
+/* .dashboard-main-container > * > div[class*="square-"].component-chartpie > .panel > .panel-body > div, */
+.dashboard-main-container > * > div[class*="square-"].component-chartline > .panel > .panel-body > div,
+.dashboard-main-container > * > div[class*="rectangle-"].component-chartline > .panel > .panel-body > div,
+.dashboard-main-container > * > div.component-map > .panel > .panel-body > div{
+	height: inherit;
+}
+
+.dashboard-main-container > * > .component-map > .panel,
+.dashboard-main-container > * > .component-list > .panel, 
+.dashboard-main-container > * > .component-ranking > .panel {
+	overflow-y: hidden !important;
+}
+
+.dashboard-main-container > * > .component-map > .panel > .panel-body,
+.dashboard-main-container > * > .component-list > .panel > .panel-body, 
+.dashboard-main-container > * > .component-ranking > .panel > .panel-body {
+	height: 100%;
+}
+
+.dashboard-main-container > * > .component-map > .panel > .panel-body > div,
+.dashboard-main-container > * > .component-list > .panel > .panel-body > div,
+.dashboard-main-container > * > .component-ranking > .panel > .panel-body > div{
+	height: 100%; 
+}
+
+/* GAGE */
+.dashboard-main-container > * > .component-gage > .panel > .panel-body > div{
+	padding: inherit;
+}
+
+/* BAR */
+.dashboard-main-container > * > .component-chartbar > .panel{
+	overflow-y: hidden !important;
+}
+.dashboard-main-container > * > .component-chartbar > .panel > .panel-body > div{
+	padding: inherit;
+}
+
+/* LINE */
+.dashboard-main-container > * > .component-chartline > .panel{
+	overflow-x: hidden;
+}
+
+/* PIE */
+.dashboard-main-container > * > .component-chartpie > .panel > .panel-body{
+	padding: 10px;
+}
+
+.dashboard-main-container > * > div[class*="square-"].component-chartpie > .panel > .panel-body > div{
+	padding: 5px !important;
+}
+
+/* MAP */
+.dashboard-main-container > * > div[class*="square-"].component-map > .panel > .panel-body > div{
+	padding: 0px;
+}
+
+/* component icons colors */
+div > .panel > .panel-head-icon{
+	color: #fff;
+	background: #DF5C28;
+}
+
+div.component-mosaic > .panel > .panel-head-icon{
+	background: #DF5C28;
+}
+
+div.component-map > .panel .panel-head-icon{
+	background: #229C9F;
+}
+
+div > .panel > .panel-head-icon > .fa-home{
+	background: #DF5C28;
+}
+
+div > .panel > .panel-head-icon > .fa-users{
+	background: #FDB400;
+}
+
+/* SEMAPHORE */
+
+.semaphore {
+    position: relative;
+    width: 100%;
+	height: 100%;
+    background: #EAEAEA;
+    z-index: 0;
+    transition: all .15s ease-in-out;
+}
+
+.semaphore:hover {
+    background: #9CC;
+    transform: scale(0.95,0.95);
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,.2);
+}
+
+.semaphore.red{
+	background: #E9967A;
+}
+
+.semaphore.yellow{
+	background: #FFC125;
+}
+
+.semaphore.green{
+	background: #7CCD7C;
+}
+
+.dashboard-main-container > * > div.component-semaphore > .panel > .panel-body > div{	
+	margin: 0;
+	padding: 0;
+}
+
+.dashboard-main-container > * > div.component-semaphore > .panel > .panel-body > div > .semaphore {
+	border: 3px solid #FFF;
+	padding-left: 5px;
+}
+
+.dashboard-main-container > * > div.component-semaphore > .panel > .panel-body > div > .semaphore > .icon > i {
+	font-size: 1.6em;
+}
+
+.dashboard-main-container > * > div.component-semaphore > .panel > .panel-body > div > .semaphore > .desc{
+	bottom: 0;
+}
+
+.dashboard-main-container > * > div.component-semaphore > .panel > .panel-body > div > .semaphore > .value{
+	right: 5px;
+	font-weight: bold;
+}
+
+.dashboard-main-container > * > div.component-semaphore > .panel > .panel-body > div > .semaphore > span{
+	position: absolute;
+	padding: 5px;
+	color: #FFF;
+}
+
+/* MOSAIC */
+.mosaic {
+    position: relative;
+    width: 100%;
+	height: 100%;
+    background: transparent;
+    z-index: 0;
+    border: 1px solid #EAEAEA;
+    transition: all .15s ease-in-out;
+}
+
+.mosaic:hover {
+    background: #EDEDED;
+    transform: scale(0.95,0.95);
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,.2);
+}
+
+.dashboard-main-container > * > .component-mosaic > .panel > .panel-body{
+	height: 84%; /* fallback */
+	height: -o-calc(100% - 40px); /* opera */
+	height: -webkit-calc(100% - 40px); /* google, safari */
+	height: -moz-calc(100% - 40px); /* firefox */
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > span{
+	position: absolute;
+	padding: 5px;
+	color: #FFF;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div{	
+	margin: 0;
+	padding: 0;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > .icon > i {
+	font-size: 1.6em;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > .desc{
+	bottom: 0;
+	display: none;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > .value{
+	background: #EAEAEA;
+	font-weight: bold;
+	
+	width: 1.8em;
+	height: 2em;
+	text-align: center;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > span{
+	position: absolute;
+	padding: 5px;
+	color: #888;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > img {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > img.by-height{
+/* não torcer a imagem */
+	height: 100%;
+}
+
+.dashboard-main-container > * > div.component-mosaic > .panel > .panel-body > div > .mosaic > img.by-width{
+	width: 100%;
+}
+
+/* COMPONETES OVERRIDES */
+
+
+
+/* Navigation */
+
+/* ------------------------------- */
+
+/* Top Right Navigation Dropdown Styles */
+
+/* Sidebar Menu Styles */
+
+.navbar-static-side ul li {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.sidebar-search {
+    padding: 5px;
+}
+
+div.custom-search-form{
+	padding-left: 0;
+}
+
+.sidebar-search input {
+	height: inherit;
+	padding: 6px;
+	border-right: none;
+/* 	margin-top: 4px; */
+}
+
+div.custom-search-form > span > button{
+	margin-right: 1em;
+	background: #FFF;
+	border: 1px solid #CCC;
+	
+}
+
+div.custom-search-form > span > button:hover{
+	background: #FFF;
+	border-color: #CCC;
+	border-left: none;
+}
+
+.nav-second-level li,
+.nav-third-level li {
+    border-bottom: none !important;
+}
+
+.nav-second-level li a {
+    padding-left: 37px;
+}
+
+.nav-third-level li a {
+    padding-left: 52px;
+}
+
+@media(min-width:768px) {
+    .navbar-static-side {
+        z-index: 1;
+        position: absolute;
+        width: 250px;
+		
+		margin-bottom: 41px;
+		height: inherit;
+		overflow-y: auto;
+    }
+
+    .navbar-top-links .dropdown-messages,
+    .navbar-top-links .dropdown-tasks,
+    .navbar-top-links .dropdown-alerts {
+        margin-left: auto;
+    }
+}
+
+/* OVERRIDE MODAL BOOTSTRAP */
+
+.modal.fade{
+	-webkit-transition:opacity .3s linear, top .3s ease-out;
+	-moz-transition:opacity .3s linear, top .3s ease-out;
+	-ms-transition:opacity .3s linear, top .3s ease-out;
+	-o-transition:opacity .3s linear, top .3s ease-out;
+	transition:opacity .3s linear, top .3s ease-out;
+	
+	/* hack */
+	margin: -500em;
+}
+.modal.fade.in{
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block !important;
+}
+
+.modal.fade.in > .modal-body{
+	overflow-x: hidden;
+}
+
+.modal.js-loading-bar{
+	overflow: hidden !important;
+}
+
+/* Modal - Cadstro de Metas */
+
+.menu-slider-custom-bootstrap, 
+.menu-slider-custom-bootstrap > .bs-docs-sidebar{
+	padding-left: 0;
+}
+
+.scorecards-goals-settings-menu{
+	padding-right: 0;
+}
+
+/* Modal - Categorias e Níveis */
+.lista-modal-nivel-categoria{
+	overflow: auto;
+}
+
+.lista-modal-nivel-categoria > li > a > ul{
+	list-style: none;
+	padding-left: 1.5em;
+}
+
+/* tables usadas em goalsettings */
+td{
+	vertical-align: middle;
+}
+
+td > input{
+	width: 85px;
+	height: inherit !important;
+}
+
+/* Progress Bar */
+.progress-bar.animate {
+   width: 100%;
+}
+
+
+/* Componente de carregamento de período */
+#loading-period {
+    position: absolute;    
+    top: 0;    
+    bottom: 0%;    
+    left: 0;    
+    right: 0%;    
+    background-color: white;    
+    z-index: 99;    
+    display: none;    
+    text-align: center;    
+    width: 100%;    
+    opacity: 0.6;   
+    -moz-opacity: 0.6;   
+    filter: alpha(opacity=60);
+}
+
+#loading-period-img {	
+	position: absolute;
+    width: 60px;
+    height: 10px;
+    background-image: url("../images/loader.gif");
+    left:50%;
+    top:50%;
+    margin-left:-30px;
+    margin-top:-5px;
+}
+
+/* MOBILE */
+
+/*==========  Non-Mobile First Method  ==========*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+	
+}
+
+/* Medium Devices, iPads, Desktops */
+@media only screen and (max-width : 992px) {
+	
+	/* Porque o bootstrap não está colocando o col-sm-6 corretamente? */
+	.col-sm-6{
+		width: 50%;
+	}
+	
+	.by-height-sm{
+		height: 100%;
+		width: auto !important;
+	}
+	
+	.by-width-sm{
+		height: auto !important;
+		width: 100%;
+	}
+	
+	/* Logo e background */
+	.dashboard-container-left{
+		display: none !important;
+	}
+
+	footer {
+		display: none;
+	}
+	
+	.input-group-btn {
+		font-size: initial;
+	}
+	
+	ul#ui-search{
+		display: none;
+	}
+	
+	/* setup sidebar */
+	body > .sidebar-nav{
+		z-index: 1000;
+		
+		top: 50px;
+		margin-bottom: 0px;
+		padding-bottom: 50px;
+		
+		width: 210px;
+		font-size: 0.9em;
+		
+/* 		overflow-y: scroll; has to be scroll, not auto */
+		overflow-y: auto;
+  		-webkit-overflow-scrolling: touch;
+  		-webkit-transform: translateZ(0);
+	}
+	
+	.sidebar-nav.affix-top.dragging{
+	
+		overflow-y: hidden;
+		opacity: 0.2;
+		margin-left: -125px;
+	}
+	
+	/* navbar para tablet e mobile */
+	.sm-sidebar-navigator > div > div > div >.navbar-header {
+		
+		/* http://www.colorzilla.com/gradient-editor/#76d392+11,39b54a+97;Custom */
+		background: #76d392; /* Old browsers */
+		background: -moz-linear-gradient(top, #76d392 11%, #39b54a 97%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(11%,#76d392), color-stop(97%,#39b54a)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top, #76d392 11%,#39b54a 97%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top, #76d392 11%,#39b54a 97%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top, #76d392 11%,#39b54a 97%); /* IE10+ */
+		background: linear-gradient(to bottom, #76d392 11%,#39b54a 97%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#76d392', endColorstr='#39b54a',GradientType=0 ); /* IE6-9 */
+	}
+	
+	.sm-sidebar-navigator, .affix-container, .affix-content{
+		display: block;
+		width 100%;
+	    overflow: scroll;
+	    margin-left: 0;
+	    margin-right: 0;   
+	}
+	
+	.sm-sidebar-navigator > .affix-sidebar{
+	    padding-right:0; 
+	    font-size:small;
+	    padding-left: 0;
+  	}
+  	
+  	.sm-sidebar-navigator > .affix-sidebar > .sidebar-nav {
+		z-index: 1100;
+		width: 100%;
+		background: initial;
+	}
+	
+	.sm-sidebar-navigator > .affix-sidebar > .sidebar-nav > .navbar {
+		
+	 	-webkit-box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+	    -moz-box-shadow: 2px 3px 7px rgba(0,0,0,0.3);
+	    box-shadow: 2px 3px 7px rgba(0,0,0,0.3);		
+	}
+	
+	.navbar-brand > img{
+		height: 28px;
+	}
+	
+  	.navbar-header {
+        float: none;
+    }
+    .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .navbar-toggle {
+        display: block;
+    }
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .navbar-collapse.collapse {
+        display: none!important;
+    }
+    .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .navbar-nav>li {
+        float: none;
+    }
+    .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .collapse.in{
+        display:block !important;
+    }
+    
+    /* period e period controls */
+    .period {
+    	float: left!important;
+  		padding-right: 0;
+    }
+    
+    .period-controls > ul {
+    	padding-left: 0;
+    }
+    
+    .period, .period-controls{
+    	padding-left: 0;
+    }
+    
+    /* html body */
+    body > .row-fluid {
+/*     	position: absolute; */
+    	top: 0;
+		margin-top: 60px;
+    }
+    
+    /* Modals */
+    .modal { 
+	    position: fixed; 
+	    top: 25px !important; 
+	    right: 3%; 
+	    left: 3%;
+	    width: auto; 
+	    margin: 0;
+	    overflow-y: auto;
+	}
+	
+	.modal.fade.in{
+		margin-left: auto;
+		margin-right: auto;
+		display: block !important;
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+	
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px) {
+	
+	/* period e period controls */
+   	.period > ul > li > a:not(.selected-period) {
+    	display: none;
+    }
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+	
+}
+
+
+
+/* GARBAGE - FIXME */
+
+@media(max-height:900px) and (max-width:991px) {
+	
+/*     .sidebar-collapse { */
+/*         max-height: 300px; */
+/*         overflow-y: scroll; */
+/*     } */
+    
+    .sidebar-nav{
+    	z-index: 100;
+    }
+
+    .dashboard-main-container{
+    	float: none !important;
+    }
+    /* Areas */
+    
+}
+
+@media (max-width: 767px){
+	.navbar-nav .open .dropdown-menu>li>a, .navbar-nav .open .dropdown-menu .dropdown-header{
+		color: #EEE;
+	}
+	
+	.navbar-default .navbar-nav .open .dropdown-menu>li>a{
+		color: #FFF
+	}
+}
+
+@media(max-height:400px) and (max-width:767px) {
+    .sidebar-collapse {
+        max-height: 200px;
+        overflow-y: scroll;
+    }
+}
+
+@media(max-width:991px) {
+
+	.dashboard-main-container {
+		float: left!important;
+		width: 100%;
+	}
+	
+/* 	.dashboard-container-left { */
+/* 		background-image: none; */
+/* 	} */
+		
+/* 	.square-right { */
+/* 		margin-bottom: 80px; */
+/* 	} */
+	
+	.panel-body > div[class^=col-] {
+	    float: left;
+	}
+	
+	.col-md-3 {
+		float: left;
+	    width: 25%;
+	}
+	
+	.dashboard-parent-right {
+		padding-left: 15px;
+	}
+	
+	.visible-desktop {
+		display: none;
+	}
+	
+	.period > ul {
+		padding-left: 15px;
+	}
+}

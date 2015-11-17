@@ -1,0 +1,115 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd">
+ 
+	<http pattern="/resources/**" security="none" />	
+
+	<global-method-security secured-annotations="enabled" />
+
+	<http auto-config="true" use-expressions="true" access-denied-page="/auth/denied" access-decision-manager-ref="accessDecisionManager">
+	
+		<intercept-url pattern="/callback.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+	
+		<intercept-url pattern="/" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>		
+		<intercept-url pattern="/home" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
+		<intercept-url pattern="/home/**" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
+		
+		<intercept-url pattern="/setup" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
+		<intercept-url pattern="/setup/**" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
+	
+		<intercept-url pattern="/configuracoes/" access="hasRole('ROLE_USER')"/>		
+		<intercept-url pattern="/configuracoes/bases" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/configuracoes/bases/**" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/configuracoes/redes" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/configuracoes/redes/**" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/configuracoes/pontos" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/configuracoes/pontos/**" access="hasRole('ROLE_ADMIN')"/>
+
+		<intercept-url pattern="/api" access="hasRole('ROLE_USER')"/>
+		
+		<intercept-url pattern="/api/entidade" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/api/entidade/**" access="hasRole('ROLE_USER')"/>		
+		<intercept-url pattern="/api/categoria" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/api/categoria/**" access="hasRole('ROLE_USER')"/>		
+		<intercept-url pattern="/api/indicadores" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/api/indicadores/**" access="hasRole('ROLE_USER')"/>			
+		<intercept-url pattern="/api/nivel" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/api/nivel/**" access="hasRole('ROLE_USER')"/>	
+		<intercept-url pattern="/api/ponto" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/api/ponto/**" access="hasRole('ROLE_USER')"/>
+			
+		<intercept-url pattern="/api/sync/" access="hasRole('ROLE_USER')"/>		
+		<intercept-url pattern="/api/sync/manual/portal/**" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/api/sync/status/portal/**" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/api/sync/manual" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/api/sync/status" access="hasRole('ROLE_USER')"/>
+
+		<form-login
+	    	login-page="/auth/franqueadora"
+	    	authentication-failure-url="/auth/login?error=true"
+	    	default-target-url="/home"/>
+	    
+	  	<logout
+	    	invalidate-session="true"
+	    	logout-success-url="/auth/franqueadora"/>
+	   		
+		<session-management>
+	        <concurrency-control max-sessions="10" />
+	    </session-management>
+	
+	
+	</http>
+ 
+	<authentication-manager>
+    	<authentication-provider user-service-ref="customUserDetailsService">
+          	<password-encoder hash="plaintext"/>
+        </authentication-provider>
+	</authentication-manager>
+	
+	<beans:bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<beans:property name="targetClass" value="org.springframework.security.core.context.SecurityContextHolder"/> 
+		<beans:property name="targetMethod" value="setStrategyName"/> 
+		<beans:property name="arguments">
+		    <beans:list>
+		        <beans:value>MODE_INHERITABLETHREADLOCAL</beans:value>
+		    </beans:list>
+		</beans:property>
+	</beans:bean>
+	 
+	<!-- A custom service where Spring will retrieve users and their corresponding access levels  -->
+	<beans:bean id="customUserDetailsService" class="br.com.system.websys.security.CustomAuthenticationProvider"/>
+  
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+	  <beans:property name="decisionVoters">
+	    <beans:list>
+	       <beans:ref bean="roleHierarchyVoter" />
+	       <beans:bean class="org.springframework.security.web.access.expression.WebExpressionVoter">
+	           <beans:property name="expressionHandler">
+	            <beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+	               <beans:property name="roleHierarchy" ref="roleHierarchy"/>
+	            </beans:bean>
+	        </beans:property>
+	       </beans:bean>
+	       <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+	    </beans:list>
+	  </beans:property>
+	</beans:bean>
+
+	<beans:bean id="roleHierarchyVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+	    <beans:constructor-arg ref="roleHierarchy" />
+	</beans:bean>
+	
+	<beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+	    <beans:property name="hierarchy">
+	        <beans:value>
+	        	<!-- As roles cadastradas no banco devem ser as mesmas utilizadas nessa configuração -->
+	            ROLE_ADMIN > ROLE_USER
+	        </beans:value>
+	    </beans:property>
+	</beans:bean>
+	
+</beans:beans>
