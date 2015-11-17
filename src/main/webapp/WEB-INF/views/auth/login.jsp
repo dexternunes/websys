@@ -10,7 +10,7 @@
 
 	<head>
 	
-		<title>Login Franqueadora</title>
+		<title>Login</title>
 		
 	    <style type="text/css">
 		
@@ -61,7 +61,7 @@
 			</div>
 	    </c:if>
 	    
-	    <form:form cssClass="form-signin" action="${pageContext.request.contextPath}/auth/franqueadora/login" commandName="franqueadora" method="post"> 
+	    <form:form cssClass="form-signin" action="${pageContext.request.contextPath}/auth/login" commandName="user" method="post"> 
 	    
 	    	<h2 class="form-signin-heading">
 				Seja Bem Vindo

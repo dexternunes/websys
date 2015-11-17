@@ -49,13 +49,13 @@
 		<intercept-url pattern="/api/sync/status" access="hasRole('ROLE_USER')"/>
 
 		<form-login
-	    	login-page="/auth/franqueadora"
+	    	login-page="/auth/"
 	    	authentication-failure-url="/auth/login?error=true"
 	    	default-target-url="/home"/>
 	    
 	  	<logout
 	    	invalidate-session="true"
-	    	logout-success-url="/auth/franqueadora"/>
+	    	logout-success-url="/auth/"/>
 	   		
 		<session-management>
 	        <concurrency-control max-sessions="10" />

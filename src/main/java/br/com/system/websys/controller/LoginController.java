@@ -20,8 +20,8 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import br.com.system.websys.business.RedeBusiness;
-import br.com.system.websys.entities.Rede;
+import br.com.system.websys.business.UserBusiness;
+import br.com.system.websys.entities.User;
 
 @Controller
 @RequestMapping("/auth")
@@ -30,20 +30,20 @@ public class LoginController {
 	private static final Logger logger = LogManager.getLogger(LoginController.class);
 
 	@Autowired
-	RedeBusiness redeBusiness;
+	private UserBusiness userBusiness;
 
-	@RequestMapping(value = "/rede", method = RequestMethod.GET)
-	public String franqueadora(Model model) {
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String rede(Model model) {
 
-		model.addAttribute("rede", new Rede());
+		model.addAttribute("user", new User());
 
 		return "auth/login";
 	}
 
-	@RequestMapping(value = "/rede/login", method = RequestMethod.POST)
-	public String loginFranqueadora(@Valid Rede rede, BindingResult result, Model model) {
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String loginRede(@Valid User user, BindingResult result, Model model) {
 
-		model.addAttribute("rede", new Rede());
+		model.addAttribute("user", new User());
 
 		if (result.hasErrors()) {
 
@@ -53,9 +53,9 @@ public class LoginController {
 			return "auth/login";
 		}
 
-		Rede redeLogin = redeBusiness.getByLoginName(rede.getLogin());
+		User userLogin = userBusiness.getByLogin(user.getLogin());
 
-		if (redeLogin == null || !redeLogin.getSenha().equals(rede.getSenha())) {
+		if (userLogin == null || !userLogin.getSenha().equals(user.getSenha())) {
 
 			model.addAttribute("message", "Login e/ou senha inválidos.");
 
@@ -65,9 +65,12 @@ public class LoginController {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-		Authentication auth = new UsernamePasswordAuthenticationToken(rede.getLogin(), rede.getSenha(), authorities);
+		Authentication auth = new UsernamePasswordAuthenticationToken(user.getLogin(), user.getSenha(), authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		return "redirect:/home";
+		
+		model.addAttribute("j_username", user.getLogin());
+		model.addAttribute("j_password", user.getSenha());
+		return "auth/callback";
 	}
 }

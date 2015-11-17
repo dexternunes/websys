@@ -1,14 +1,8 @@
 <decorators defaultdir="/WEB-INF/layouts">
-	<decorator name="default" page="master.jsp">
-		<pattern>/configuracoes/*</pattern>
-	</decorator>
-	
-	<decorator name="auth" page="auth_master.jsp">
-		<pattern>/auth/*</pattern>
-	</decorator>
-	
-	<decorator name="DashboardDefault" page="index.jsp">
-		<pattern>/home</pattern>
-		<pattern>/setup</pattern>
-	</decorator>
+    <decorator name="default" page="master.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+    <decorator name="auth" page="auth_master.jsp">
+        <pattern>/auth/*</pattern>
+    </decorator>
 </decorators>

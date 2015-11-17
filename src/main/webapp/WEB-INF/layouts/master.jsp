@@ -54,7 +54,7 @@
 		            	<span class="icon-bar"></span>
 		          	</button>
 		          	
-		          	<a href="<c:url value="/home/" />" ><i class="logotipo-mini"></i></a>
+		          	<a href="<c:url value="/home/" />" ><i class="">LOGO MINI</i></a>
 		          	
 		          	<div class="nav-collapse collapse">
 		            	

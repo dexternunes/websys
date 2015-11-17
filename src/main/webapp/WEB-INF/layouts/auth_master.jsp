@@ -40,7 +40,7 @@
 				         <div class="navbar-inner">   
 					         <ul class="nav">
 							  	<li class="active">
-							    	<div class="logotipo" style="padding-bottom: 10px;"></div>  
+							    	<div class="" style="padding-bottom: 10px;"> LOGO </div>  
 							  	</li>
 							</ul>
 				         </div>
