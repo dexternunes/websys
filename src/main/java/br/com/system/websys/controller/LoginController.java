@@ -73,4 +73,9 @@ public class LoginController {
 		model.addAttribute("j_password", user.getSenha());
 		return "auth/callback";
 	}
+	
+	@RequestMapping(value = "/denied")
+	public String getDeniedPage() {	
+		return "auth/denied";
+	}
 }

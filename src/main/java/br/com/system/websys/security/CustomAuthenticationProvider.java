@@ -35,7 +35,7 @@ public class CustomAuthenticationProvider implements UserDetailsService {
 		
 		return new User(
 				login,
-				domainUser.getToken(),
+				domainUser.getSenha(),
 				enabled, 
 				accountNonExpired, 
 				credentialsNonExpired, 
