@@ -10,8 +10,7 @@
 <head>
     <title><decorator:title /></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">		
-   
-	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/bootstrap.min.css" />
+   	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/bootstrap.min.css" />
 	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/bootstrap-responsive.css">
 	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/project.css" />
 	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/DT_bootstrap.css" />
@@ -34,6 +33,13 @@
 	<script type="text/javascript" src="http://static.scsul.com.br/js/noty/default.js"></script>
 	<script type="text/javascript" src="http://static.scsul.com.br/js/bootstrap-datepicker.js"></script>
 	
+    
+
+    <!-- Bootstrap core CSS -->
+
+
+
+	 
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 	  <script src="http://static.scsul.com.br/js/html5shiv.js"></script>
