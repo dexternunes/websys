@@ -18,36 +18,10 @@
 		<intercept-url pattern="/home" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
 		<intercept-url pattern="/home/**" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
 		
-		<intercept-url pattern="/setup" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
-		<intercept-url pattern="/setup/**" access="hasAnyRole('ROLE_REDE', 'ROLE_USER')"/>
-	
 		<intercept-url pattern="/configuracoes/" access="hasRole('ROLE_USER')"/>		
-		<intercept-url pattern="/configuracoes/bases" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/configuracoes/bases/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/configuracoes/redes" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/configuracoes/redes/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/configuracoes/pontos" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/configuracoes/pontos/**" access="hasRole('ROLE_ADMIN')"/>
-
-		<intercept-url pattern="/api" access="hasRole('ROLE_USER')"/>
-		
-		<intercept-url pattern="/api/entidade" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/api/entidade/**" access="hasRole('ROLE_USER')"/>		
-		<intercept-url pattern="/api/categoria" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/api/categoria/**" access="hasRole('ROLE_USER')"/>		
-		<intercept-url pattern="/api/indicadores" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/api/indicadores/**" access="hasRole('ROLE_USER')"/>			
-		<intercept-url pattern="/api/nivel" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/api/nivel/**" access="hasRole('ROLE_USER')"/>	
-		<intercept-url pattern="/api/ponto" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/api/ponto/**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/configuracoes/terceiros" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/configuracoes/terceiros/**" access="hasRole('ROLE_ADMIN')"/>
 			
-		<intercept-url pattern="/api/sync/" access="hasRole('ROLE_USER')"/>		
-		<intercept-url pattern="/api/sync/manual/portal/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/api/sync/status/portal/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/api/sync/manual" access="hasRole('ROLE_USER')"/>
-		<intercept-url pattern="/api/sync/status" access="hasRole('ROLE_USER')"/>
-
 		<form-login
 	    	login-page="/auth/"
 	    	authentication-failure-url="/auth/login?error=true"

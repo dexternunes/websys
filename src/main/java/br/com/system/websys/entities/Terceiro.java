@@ -34,7 +34,7 @@ public class Terceiro extends EntityBaseRoot {
 	
 	private String rg;
 	
-	private Boolean ativo;
+	private Boolean ativo = true;
 	
 	private String nomeFantasia;
 	
