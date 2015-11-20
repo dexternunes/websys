@@ -10,30 +10,30 @@
 <head>
     <title><decorator:title /></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">		
-   	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/bootstrap-responsive.css">
-	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/project.css" />
-	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/DT_bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="http://static.scsul.com.br/css/datepicker.css" />
-	
-	<script type="text/javascript" src="http://static.scsul.com.br/js/jquery-1.10.1.min.js"></script>
-	<script type="text/javascript" src="http://static.scsul.com.br/js/bootstrap.min.js"></script>	
-	<script type="text/javascript" src="http://static.scsul.com.br/js/project.js"></script>	
-	
-	<script type="text/javascript" src="http://static.scsul.com.br/js/jquery.maskedinput.min.js"></script>
-	<script type="text/javascript" src="http://static.scsul.com.br/js/jquery.maskMoney.min.js"></script>
-		
-	<script type="text/javascript" src="http://static.scsul.com.br/js/jquery.dataTables.min.js"></script>
-	<script type="text/javascript" src="http://static.scsul.com.br/js/DT_bootstrap.js"></script>
-	<script type="text/javascript" src="http://static.scsul.com.br/js/kapp.dataTables.js"></script>
-	
-	<script type="text/javascript" src="http://static.scsul.com.br/js/noty/jquery.noty.js"></script>
-	<script type="text/javascript" src="http://static.scsul.com.br/js/noty/top.js"></script>	
-	<script type="text/javascript" src="http://static.scsul.com.br/js/noty/topCenter.js"></script>	
-	<script type="text/javascript" src="http://static.scsul.com.br/js/noty/default.js"></script>
-	<script type="text/javascript" src="http://static.scsul.com.br/js/bootstrap-datepicker.js"></script>
-	
+   	
+   		<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+	<link href="resources/fonts/css/font-awesome.min.css"
+		rel="stylesheet">
+	<link href="resources/css/animate.min.css" rel="stylesheet">
+	<link href="resources/css/custom.css" rel="stylesheet">
+	<link href="resources/css/icheck/flat/green.css" rel="stylesheet">
+	<script src="resources/js/jquery.min.js"></script>
+   	
+    <!-- 
     
+    	<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="resources/fonts/css/font-awesome.min.css"
+	rel="stylesheet">
+<link href="resources/css/animate.min.css" rel="stylesheet">
+
+<link href="resources/css/custom.css" rel="stylesheet">
+<link href="resources/css/icheck/flat/green.css" rel="stylesheet">
+
+
+<script src="resources/js/jquery.min.js"></script>
+    
+     -->
 
     <!-- Bootstrap core CSS -->
 
@@ -62,9 +62,9 @@
 		          	
 		          	<a href="<c:url value="/home/" />" ><i class="">LOGO MINI</i></a>
 		          	
-		          	<div class="nav-collapse collapse">
+		          	<div >
 		            	
-		            	<ul class="nav nav-top-menu">  
+		            	<ul >  
 		            	    
 		            		<sec:authorize url="/home">    	
 				             	<li class="">
@@ -80,11 +80,11 @@
 			              	 
 		            	</ul>
 		            	
-		            	<ul class="nav nav-top-menu pull-right">
+		            	<ul >
 		            	
 		            		<sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-		            			<li class="divider-vertical"></li>	
-								<li class="visible-desktop">							
+		            			<li ></li>	
+								<li >							
 									<a href="#"><i class="icon-user"></i>  &nbsp; <span class="text-success">${currentLoggedUser.nome}</span></a>								
 								</li>	
 			              	</sec:authorize>

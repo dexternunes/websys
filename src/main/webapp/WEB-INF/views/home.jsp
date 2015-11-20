@@ -18,7 +18,7 @@
 		<div class="span12">
 		
 			<div class="page-header">
-				<h2>Seja Bem Vindo!</h2>
+				<h1>Seja Bem Vindo!</h1>
 				<p>Aplicativo para Compras.</p>
 			</div>
 				

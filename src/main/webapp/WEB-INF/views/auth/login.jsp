@@ -13,18 +13,8 @@
 
 <title>Prime Share</title>
 
-<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
-
-<link href="../resources/fonts/css/font-awesome.min.css"
-	rel="stylesheet">
-<link href="../resources/css/animate.min.css" rel="stylesheet">
-
-<!-- Custom styling plus plugins -->
-<link href="../resources/css/custom.css" rel="stylesheet">
-<link href="../resources/css/icheck/flat/green.css" rel="stylesheet">
 
 
-<script src="../resources/js/jquery.min.js"></script>
     <!--[if lt IE 9]>
         <script src="../assets/js/ie8-responsive-file-warning.js"></script>
         <![endif]-->
@@ -52,19 +42,19 @@
 
 			<div id="wrapper">
 				<div id="login" class="animate form">
-					<section class="login_content">
+					<section class="login_content" style="padding-top:0px">
 						<h1>Prime Share</h1>
 						<div>
 
-							<input type="text" autofocus="autofocus" class="form-control"
-								placeholder="Nome de Usuário" id="loginl" name="login">
+							<input type="text"  class="form-control"
+								placeholder="Nome de Usuário" id="loginl" name="login" style="margin-bottom: 20px;">
 						</div>
 						<div>
 							<input type="password" class="form-control"
-								placeholder="Senha de Acesso" id="senha" name="senha">
+								placeholder="Senha de Acesso" id="senha" name="senha" >
 						</div>
 						<div>
-							<button class="btn btn-default submit" type="submit">Entrar</button>
+							<button class="btn btn-default submit" type="submit" style="margin-top:20px">Entrar</button>
 						</div>
 
 						<div class="clearfix"></div>
