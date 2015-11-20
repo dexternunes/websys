@@ -85,54 +85,7 @@
 			              	
 					    	<sec:authorize access="isAuthenticated()">
 					    	
-					    		<!-- #################### TUTORIAL -->
-					    	
-								<%-- <li class="divider-vertical visible-desktop"></li>		
-							
-								<li class="visible-desktop">					   			
-					   				<a href="<c:url value="/resources/tutorial.pdf" />" target="_blank" title="Tutorial"><i class="icon-book"></i></a>					   			
-					   			</li>
-					   			
-					   			<li class="hidden-desktop">						   			
-					   				<a href="<c:url value="/resources/tutorial.pdf" />" target="_blank" title="Tutorial">Tutorial</a>					   			
-					   			</li> --%>
-					   			
-					   			<!-- #################### TUTORIAL -->
-					   			
-					   			
-					   			
-					   			<!-- #################### ISSUE -->
-		
-					   			<li class="divider-vertical visible-desktop"></li>
-					   			
-					   			<li class="visible-desktop">					   			
-					   				<a href="<c:url value="/util/issue/cadastro" />" title="Suporte"><i class="icon-envelope"></i></a>					   			
-					   			</li>
-					   		
-					   			<li class="hidden-desktop">					   			
-					   				<a href="<c:url value="/util/issue/cadastro" />" title="Suporte">Suporte</a>					   			
-					   			</li>
-					   			
-					   			<!-- #################### ISSUE -->
-					   			
-					   			
-					   			
-					   			<!-- #################### SYNC -->
-					   			
-					   			<sec:authorize access="hasAnyRole('ROLE_USER','ROLE_ADMIN')">
-									<li class="divider-vertical visible-desktop"></li>
-									
-									<li id="sync" data-placement="bottom" rel="popover" data-trigger="manual" data-content="" data-original-title="Status de Sincronização">
-										<a href="javascript: syncControlObj.syncManual();">
-											<i class="icon-refresh visible-desktop" title="Sincronizar com System"></i><span class="hidden-desktop">Sincronizar com System</span>
-										</a>								
-									</li>
-								</sec:authorize>
-					   			
-					   			<!-- #################### SYNC -->
-					   			
-					   			
-					   			<!-- #################### LOGOUT -->
+					    		<!-- #################### LOGOUT -->
 					   			
 					   			<li class="divider-vertical visible-desktop"></li>
 									    	
@@ -160,88 +113,6 @@
 	<div class="container master">
 		<decorator:body/>
 	</div>
-	
-	<script type="text/javascript">
-
-		syncControlObj = {
-				
-			popoverShow : false,
-			
-			syncImg : null,  
-			
-			initialize : function () {
-				
-				syncControlObj.syncImg = $("#sync > a > i ");				
-				syncControlObj.updateSyncImg(true);
-				
-			},
-			
-			updateSyncLabels : function (data) {
-				
-				$('#sync').popover('destroy');
-
-				if(data) {
-					
-					$("#sync").attr("data-content", "Sincronização em andamento!");
-					
-					if($(syncControlObj.syncImg).hasClass("icon-refresh"))
-						$("#sync > a > i ").removeClass("icon-refresh");
-					
-					if(!$(syncControlObj.syncImg).hasClass("cicon-refresh-in-progress"))
-						$("#sync > a > i ").addClass("cicon-refresh-in-progress");
-					
-					$("#sync > a > i ").attr("title","Sincronização em andamento");
-			  	}
-			  	else{
-			  		
-			  		$("#sync").attr("data-content", "Aplicativo sincronizado a menos de 15 minutos!");
-					
-					if($(syncControlObj.syncImg).hasClass("cicon-refresh-in-progress"))
-						$("#sync > a > i ").removeClass("cicon-refresh-in-progress");
-			  		
-			  		if(!$(syncControlObj.syncImg).hasClass("icon-refresh"))
-						$("#sync > a > i ").addClass("icon-refresh");
-			  		
-			  		$("#sync > a > i ").attr("title","Sincronizar com System");
-			  	}	
-				
-				if(syncControlObj.popoverShow) {
-					
-					$('#sync').popover('show');
-					
-					setTimeout(function () {
-						$('#sync').popover('destroy');
-				    }, 3000);
-					
-					syncControlObj.popoverShow = false;
-				}
-			},
-			
-			updateSyncImg : function (runLoop){
-				
-				$.get('${pageContext.request.contextPath}/api/sync/status', function(data) {
-					syncControlObj.updateSyncLabels(data);
-				});
-		
-				if(runLoop)
-					setTimeout('syncControlObj.updateSyncImg(true)', 10000);
-			},
-			
-			syncManual : function (){
-				
-				$.get('${pageContext.request.contextPath}/api/sync/manual', function(data) {
-					syncControlObj.popoverShow = true;
-					syncControlObj.updateSyncImg(false);		  	
-				});
-			}
-		};
-	
-		$(document).ready(function(){
-			syncControlObj.initialize();
-		});
-		
-
-	</script>
 	
 </body>
 </html>
