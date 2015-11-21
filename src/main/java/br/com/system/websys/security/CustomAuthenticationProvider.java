@@ -2,7 +2,6 @@ package br.com.system.websys.security;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,16 +39,15 @@ public class CustomAuthenticationProvider implements UserDetailsService {
 				accountNonExpired, 
 				credentialsNonExpired, 
 				accountNonLocked,
-				getGrantedAuthorities(domainUser.getTerceiro().getRoles())
+				getGrantedAuthorities(domainUser.getRole())
 		);
 	}
 	
-	public static List<GrantedAuthority> getGrantedAuthorities(Set<br.com.system.websys.entities.Role> userRoles) {
+	public static List<GrantedAuthority> getGrantedAuthorities(br.com.system.websys.entities.Role userRole) {
 		
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
-		for (br.com.system.websys.entities.Role role : userRoles) 
-			authorities.add(new SimpleGrantedAuthority(role.getName()));
+		authorities.add(new SimpleGrantedAuthority(userRole.getRole()));
 		
 		return authorities;
 	} 

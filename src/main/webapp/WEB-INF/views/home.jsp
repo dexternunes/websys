@@ -19,7 +19,7 @@
 		
 			<div class="page-header">
 				<h2>Seja Bem Vindo!</h2>
-				<p>Aplicativo para Compras.</p>
+				<p>Aplicativo para Reservas</p>
 			</div>
 				
 		</div>

@@ -1,26 +1,23 @@
 package br.com.system.websys.entities;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name="terceiro")
@@ -30,17 +27,17 @@ public class Terceiro extends EntityBaseRoot {
 	
 	private String documento;
 	
-	private String ie;
+	private List<TerceiroEndereco> enderecos = new ArrayList<TerceiroEndereco>();
 	
-	private String rg;
+	private List<TerceiroContato> contatos = new ArrayList<TerceiroContato>();
+	
+	private List<TerceiroTipo> tipos = new ArrayList<TerceiroTipo>(); 
 	
 	private Boolean ativo = true;
 	
-	private String nomeFantasia;
+	private Boolean excluido = false;
 	
 	private List<String> emails = new ArrayList<String>();
-	
-	private Set<Role> roles;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
@@ -66,25 +63,42 @@ public class Terceiro extends EntityBaseRoot {
 	public void setDocumento(String documento) {
 		this.documento = documento;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="terceiro")
+	public List<TerceiroEndereco> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<TerceiroEndereco> enderecos) {
+		this.enderecos = enderecos;
+	}
 	
-	public String getIe() {
-		
-		if(StringUtils.isEmpty(this.ie))
-			return "ISENTO";
-		
-		return ie;
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="terceiro")
+	public List<TerceiroContato> getContatos() {
+		return contatos;
 	}
 
-	public void setIe(String ie) {
-		this.ie = ie;
+	public void setContatos(List<TerceiroContato> contatos) {
+		this.contatos = contatos;
+	}
+	
+	@ElementCollection(targetClass=TerceiroTipo.class)
+	@Enumerated(EnumType.STRING)
+	@CollectionTable(name = "terceiro_tipo", joinColumns = @JoinColumn(name = "id_terceiro"))
+	public List<TerceiroTipo> getTipos() {
+		return tipos;
 	}
 
-	public String getRg() {
-		return rg;
+	public void setTipos(List<TerceiroTipo> tipos) {
+		this.tipos = tipos;
 	}
 
-	public void setRg(String rg) {
-		this.rg = rg;
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
 	}
 
 	public Boolean getAtivo() {
@@ -93,14 +107,6 @@ public class Terceiro extends EntityBaseRoot {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
-	}
-
-	public String getNomeFantasia() {
-		return nomeFantasia;
-	}
-
-	public void setNomeFantasia(String nomeFantasia) {
-		this.nomeFantasia = nomeFantasia;
 	}
 
 	@ElementCollection(targetClass=String.class)
@@ -113,20 +119,4 @@ public class Terceiro extends EntityBaseRoot {
 		this.emails = emails;
 	}
 
-	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-	@JoinTable(name="terceiro_has_roles", 
-		joinColumns = {@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")},
-		inverseJoinColumns = {@JoinColumn(name="id_role", referencedColumnName="id_role")}
-	)
-	public Set<Role> getRoles() {
-		
-		if(roles == null)
-			roles = new HashSet<Role>();
-		
-		return roles;
-	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
 }

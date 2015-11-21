@@ -3,6 +3,8 @@ package br.com.system.websys.entities;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -21,13 +23,13 @@ public class User extends EntityBaseRoot {
 	
 	private String nome;
 	
-	private String authCode;
-	
-	private String token;
-	
-	private Boolean admin;
-	
 	private Terceiro terceiro;
+	
+	private Role role;
+	
+	private Boolean ativo = true;
+	
+	private Boolean excluido = false;
 	
 	@Id
 	@GeneratedValue
@@ -61,33 +63,6 @@ public class User extends EntityBaseRoot {
 		this.nome = nome;
 	}
 
-	@Column(name = "auth_code")
-	public String getAuthCode() {
-		return authCode;
-	}
-
-	public void setAuthCode(String authCode) {
-		this.authCode = authCode;
-	}
-
-	@NotNull
-	@Column(name = "access_token")
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Boolean getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(Boolean admin) {
-		this.admin = admin;
-	}
-
 	@NotNull
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
@@ -99,4 +74,29 @@ public class User extends EntityBaseRoot {
 		this.terceiro = terceiro;
 	}
 
+	@Enumerated(EnumType.STRING)
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
+	}
+			
 }

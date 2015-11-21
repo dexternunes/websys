@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.repository.UserRepository;
 
@@ -16,9 +17,6 @@ class UserBusinessImpl implements UserBusiness {
 
 	@Autowired  
     private UserRepository userRepository;  
-	
-	@Autowired  
-	private RoleBusiness roleBusiness;
 	
 	@Value("#{appProperties.primary_role}")
 	private String primaryRole;
@@ -44,7 +42,7 @@ class UserBusinessImpl implements UserBusiness {
 
 	@Override
 	public void salvar(User user) throws Exception {
-		user.getTerceiro().getRoles().add(roleBusiness.getByName(primaryRole));		
+		user.setRole(Role.valueOf(primaryRole));		
 		userRepository.save(user);				
 	}
 
