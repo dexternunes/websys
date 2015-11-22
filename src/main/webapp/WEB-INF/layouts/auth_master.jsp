@@ -30,7 +30,7 @@
 
 </head>
 
-<body>
+<body style="background:#F7F7F7">
 
 	<header class="jumbotron subhead" id="overview">
 		<div class="container">
