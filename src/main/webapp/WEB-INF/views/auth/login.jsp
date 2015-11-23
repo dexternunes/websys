@@ -28,10 +28,6 @@
 
 <body style="background:#F7F7F7;">
 
-	<c:if test="${message != '' && message != null}">
-		<div class="alert alert-error">${message}</div>
-	</c:if>
-
 	<form:form cssClass="form-signin"
 		action="${pageContext.request.contextPath}/auth/login"
 		commandName="user" method="post">
@@ -43,9 +39,13 @@
 			<div id="wrapper">
 				<div id="login" class="animate form">
 					<section class="login_content" style="padding-top:0px">
-						<h1>Prime Share</h1>
+						<h1>Sistema de Reservas</h1>
+						<c:if test="${message != '' && message != null}">
+							<div>
+								<div class="alert alert-error">${message}</div>
+							</div>
+						</c:if>
 						<div>
-
 							<input type="text"  class="form-control"
 								placeholder="Nome de Usuário" id="loginl" name="login" style="margin-bottom: 20px;">
 						</div>
@@ -53,6 +53,7 @@
 							<input type="password" class="form-control"
 								placeholder="Senha de Acesso" id="senha" name="senha" >
 						</div>
+						
 						<div>
 							<button class="btn btn-default submit" type="submit" style="margin-top:20px">Entrar</button>
 						</div>

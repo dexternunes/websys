@@ -9,9 +9,9 @@
 <html>
 <head>
 
-<title><decorator:title default="System" /></title>
+	<title><decorator:title default="System" /></title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
 	<link href="../resources/fonts/css/font-awesome.min.css"
@@ -31,24 +31,6 @@
 </head>
 
 <body style="background:#F7F7F7">
-
-	<header class="jumbotron subhead" id="overview">
-		<div class="container">
-			<div class="row-fluid">
-				<div class="span12" data-original-title="" title="">
-					<div class="navbar ">
-						<div class="navbar-inner">
-							<ul class="nav">
-								<li class="active">
-									<div class="" style="padding-bottom: 10px;">LOGO</div>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
 
 	<div class="container">
 		<div class="row">

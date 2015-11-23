@@ -42,6 +42,16 @@ public class ConfiguracoesController {
 		return "config/terceiros";
 	}
 	
+	@RequestMapping(value = "/terceiros/cadastro", method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	public String cadastroBase(Model model)
+			throws Exception {
+
+		model.addAttribute("terceiro", new Terceiro());
+		
+		return "config/formulario_terceiro";
+	}
+	
 	@RequestMapping(value = "/terceiros/cadastro/{id}", method = RequestMethod.GET)
 	@Transactional(readOnly = true)
 	public String cadastroBase(@PathVariable Long id, Model model)

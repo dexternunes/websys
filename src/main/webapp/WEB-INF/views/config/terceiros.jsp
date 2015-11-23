@@ -12,32 +12,21 @@
 	</head>
 	<body>
 		<div class="row">
-		  	<div class="span12">
-				<div class="tabbable">
-
-					<%@ include file="menu.jsp"%>
+			<form:form cssClass="form-horizontal" method="post">
 	
-					<div class="tab-content">
-					
-						<form:form cssClass="form-horizontal" method="post">
-	
-							<fieldset>
-	
-								<legend>
-									Terceiros Cadastrados
-								</legend>
 								
+				<div class="col-md-12 col-sm-12 col-xs-12">
+	                <div class="x_panel">
+	                    <div class="x_title">
+	                        <h2>Terceiros Cadastrados</small></h2>
+	                        <div class="clearfix"></div>
+	                    </div>
+	                    <div class="x_content">
+	                    	<div class="control-group">
+                                <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/configuracoes/terceiros/cadastro">Cadastrar Terceiro</a>
+                            </div>
 								<div class="control-group">
-	
-									<c:if test="${message != '' and message != null}">
-										<div class="alert alert-error">${message}</div>
-									</c:if>
-	
-								</div>
-								
-								<div class="control-group">
-											
-									<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="consultatable">
+									<table id="entities" class="table table-striped responsive-utilities jambo_table">		
 										<thead>
 											<tr>
 												<th>Nome</th>
@@ -49,7 +38,7 @@
 										
 											<c:forEach items="${terceiros}" var="terceiro" varStatus="status">
 				
-												<tr>
+												<tr >
 													<td oName="id" oValue="${terceiro.id}">${terceiro.nome}</td>
 													<td>${terceiro.documento}</td>
 													<c:if test="${terceiro.ativo}">
@@ -65,74 +54,58 @@
 										</tbody>
 									</table>
 								</div>
-							</fieldset>
-	
-						</form:form>
-					
+							</div>
+						</div>
 					</div>
-				</div>
+				</form:form>
 			</div>
-		</div>	
-		
+
+		<script src="${pageContext.request.contextPath}/resources/js/datatables/js/jquery.dataTables.js"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/datatables/tools/js/dataTables.tableTools.js"></script>
 		<script type="text/javascript">
 	
-			entities = {
-					
-				oTable : null,
-				
-				currentEntityId : null,
-				
-				notyOpened : false,
-				
-				changeMenu : function () {
-					
-					var selection = entities.oTable.Selected();			
-					
-					if (selection.length > 0){
-						
-						entities.currentEntityId = selection[0].id;
-						
-						if(!entities.notyOpened){
-							noty({
-								text: '<strong>Escolha a opção desejada!</strong>',
-								type: 'alert',
-								layout: 'topCenter',
-								buttons: [
-						           	{
-						           		addClass: 'btn btn-primary', text: 'Acessar Cadastro', onClick: function($noty) {
-						           		$noty.close();
-							               	document.location = "${pageContext.request.contextPath}/configuracoes/terceiros/cadastro/" + entities.currentEntityId;
-							            }
-						           	},
-						           	{
-						           		addClass: 'btn btn-danger', text: 'Cancelar', onClick: function($noty) {
-							               	$noty.close();
-							            }
-						           	}
-						         ],
-					         	callback: {
-					        	    onShow: function() { entities.notyOpened = true; },
-					        	    afterShow: function() {},
-					        	    onClose: function() { },
-					        	    afterClose: function() { entities.notyOpened = false; }
-					        	  },
-							});	
-						}
-					}
-					else
-						$.noty.closeAll();
-				}
-			};
-		
 			$(document).ready(function () {
-				
-				entities.oTable = $('#consultatable').kappDataTable({ 
-					"MultiRowSelection": false,
-					"trClickCallback" : entities.changeMenu,
-					"sortColumn" : 0,
-			        "sortOrder" : "asc"
-				});		
-			} );
-		</script>		
+                $('input.tableflat').iCheck({
+                    checkboxClass: 'icheckbox_flat-green',
+                    radioClass: 'iradio_flat-green'
+                });
+            });
+
+            var asInitVals = new Array();
+            $(document).ready(function () {
+                var oTable = $('#example').dataTable({
+                    "oLanguage": {
+                        "sSearch": "Search all columns:"
+                    },
+                    "aoColumnDefs": [
+                        {
+                            'bSortable': false,
+                            'aTargets': [0]
+                        } //disables sorting for column one
+            ],
+                    'iDisplayLength': 12,
+                    "sPaginationType": "full_numbers"
+                });
+                $("tfoot input").keyup(function () {
+                    /* Filter on the column based on the index of this element's parent <th> */
+                    oTable.fnFilter(this.value, $("tfoot th").index($(this).parent()));
+                });
+                $("tfoot input").each(function (i) {
+                    asInitVals[i] = this.value;
+                });
+                $("tfoot input").focus(function () {
+                    if (this.className == "search_init") {
+                        this.className = "";
+                        this.value = "";
+                    }
+                });
+                $("tfoot input").blur(function (i) {
+                    if (this.value == "") {
+                        this.className = "search_init";
+                        this.value = asInitVals[$("tfoot input").index(this)];
+                    }
+                });
+            });
+        </script>
 	</body>
 </html>
