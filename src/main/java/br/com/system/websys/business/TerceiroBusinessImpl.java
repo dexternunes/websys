@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.TerceiroContato;
+import br.com.system.websys.entities.TerceiroEndereco;
 import br.com.system.websys.repository.TerceiroRepository;
 
 @Service  
@@ -21,7 +23,12 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 
 	@Override
 	protected void validateBeforeSave(Terceiro entity) throws Exception {
-		// TODO Auto-generated method stub
+		for(TerceiroEndereco endereco : entity.getEnderecos()){
+			endereco.setTerceiro(entity);
+		}
+		for(TerceiroContato contato : entity.getContatos()){
+			contato.setTerceiro(entity);
+		}
 	}
 
 	@Override
