@@ -21,6 +21,8 @@
 		<intercept-url pattern="/configuracoes/" access="hasRole('ROLE_ADMIN')"/>		
 		<intercept-url pattern="/configuracoes/terceiros" access="hasRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/configuracoes/terceiros/**" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/relatorios/manutencao/**" access="hasRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/agenda/agenda/**" access="hasRole('ROLE_ADMIN')"/>
 			
 		<form-login
 	    	login-page="/auth/"

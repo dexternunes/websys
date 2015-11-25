@@ -10,6 +10,7 @@
 <html>  
 	<head>
 		<title>Cadastro de Terceiro</title>
+		
 	</head>
 	<body>
 		<div class="right_col" role="main">
@@ -18,16 +19,6 @@
                     <div class="page-title">
                         <div class="title_left">
                             <h3>Cadastro de Terceiro</h3>
-                        </div>
-                        <div class="title_right">
-                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search for...">
-                                    <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Go!</button>
-                        </span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -54,13 +45,76 @@
                                             	<form:input path="nome" cssClass="form-control col-md-7 col-xs-12" placeholder="Preencha o nome do terceiro." />
                                             </div>
                                         </div>
-										
+                                        
 										<div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Documento <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                             	<form:input path="documento" cssClass="form-control col-md-7 col-xs-12" placeholder="Preencha o nome do terceiro." />
                                             </div>
+                                        </div>
+                                        
+                                         <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Endereços <i class="fa fa-plus-square add_endereco" onclick="AddEndereco();"></i>
+                                            </label>
+                                            
+                                            <input type="hidden" id="nEnderecos" value="${fn:length(terceiro.enderecos)}" />
+                                            
+                                            <c:forEach items="${terceiro.enderecos}" var="endereco" varStatus="status_endereco">
+		
+												<div class="col-md-6 col-sm-6 col-xs-12">			
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[${status_endereco.index}]" placeholder="rua do Zé" />
+													<form:errors cssClass="native-error" path="enderecos[${status_endereco.index}]" />
+												</div>
+												<br>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[${status_endereco.index}]" placeholder="9999" />
+													<form:errors cssClass="native-error" path="enderecos[${status_endereco.index}]" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[${status_endereco.index}]" placeholder="bairro da maria" />
+													<form:errors cssClass="native-error" path="enderecos[${status_endereco.index}]" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[${status_endereco.index}]" placeholder="joaocity" />
+													<form:errors cssClass="native-error" path="enderecos[${status_endereco.index}]" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[${status_endereco.index}]" placeholder="gervazio" />
+													<form:errors cssClass="native-error" path="enderecos[${status_endereco.index}]" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[${status_endereco.index}]" placeholder="brasil" />
+													<form:errors cssClass="native-error" path="enderecos[${status_endereco.index}]" />
+												</div>		
+											</c:forEach>
+											
+											<c:if test="${fn:length(terceiro.enderecos) == 0}">
+												<div class="col-md-6 col-sm-6 col-xs-12">			
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[0].endereco" placeholder="rua do Zé" />
+													<form:errors cssClass="native-error" path="enderecos[0].endereco" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[0].numero" placeholder="9999" />
+													<form:errors cssClass="native-error" path="enderecos[0].numero" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[0].bairro" placeholder="bairro da maria" />
+													<form:errors cssClass="native-error" path="enderecos[0].bairro" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[0].cidade" placeholder="joaocity" />
+													<form:errors cssClass="native-error" path="enderecos[0].cidade" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[0].estado" placeholder="gervazio" />
+													<form:errors cssClass="native-error" path="enderecos[0].estado" />
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[0].pais" placeholder="brasil" />
+													<form:errors cssClass="native-error" path="enderecos[0].pais" />
+												</div>		
+											</c:if>
                                         </div>
 										
 										<div class="form-group">
@@ -108,9 +162,13 @@
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 		
 		<script type="text/javascript">
+			function AddEndereco(){
+				//$('#add_endereco').show();
+				alert('Blá!');
+			}
 			config = {
 				
 				currentEmail : null,
