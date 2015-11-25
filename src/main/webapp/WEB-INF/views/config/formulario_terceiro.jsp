@@ -59,6 +59,67 @@
                                             <input type="hidden" id="nEnderecos" value="${fn:length(terceiro.enderecos)}" />
                                             
                                             <c:forEach items="${terceiro.enderecos}" var="endereco" varStatus="status_endereco">
+                                            <div style='margin-left: 20px;'>
+											<div id='add_endereco' >
+												<div id='fl_endereco'>
+													<fieldset style='float: left; margin-left: 35px;'>
+														<legend>Novo Endereço</legend>
+														<table >
+															<tr>
+																<td>
+																	Rua:
+																</td>
+																<td>
+																	<input type='text' />
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	Número:
+																</td>
+																<td>
+																	<input type='text' />
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	Bairro:
+																</td>
+																<td>
+																	<input type='text' />
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	Cidade:
+																</td>
+																<td>
+																	<input type='text' />
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	Estado:
+																</td>
+																<td>
+																	<input type='text' />
+																</td>
+															</tr>
+															<tr>
+																<td>
+																	Pais:
+																</td>
+																<td>
+																	<input type='text' />
+																</td>
+															</tr>
+														</table>
+													</fieldset>
+													<div style='clear: both;'></div>
+													<br />
+												</div>
+											</div>
+										</div>
                                             <div class="form-group">
 												<div class="col-md-6 col-sm-6 col-xs-12">
 													<form:input cssClass="form-control col-md-7 col-xs-12" path="enderecos[${status_endereco.index}].endereco" placeholder="rua do Zé" />
@@ -161,13 +222,21 @@
 				</div>
 			</div>
 		</div>
+		<script type='text/javascript'>
+	var cont = 0;
+	function AddEndereco(){
+		var clone = $('#fl_endereco').clone(true);
+		clone.find('input:text').val('');
+		clone.insertAfter('#add_endereco');
+		//$('#fl_endereco').clone(false).insertAfter('#add_endereco');
+		/*cont++;
+		var clone = document.getElementById('fl_endereco').cloneNode(false);
+		clone.id += (cont + '');
+		document.getElementById('add_endereco').appendChild(clone);*/
+	}
+</script>
 		
 		<script type="text/javascript">
-			function AddEndereco(){
-				//$('#add_endereco').show();
-				alert('Blá!');
-			}
-
 			config = {
 				
 				currentEmail : null,
