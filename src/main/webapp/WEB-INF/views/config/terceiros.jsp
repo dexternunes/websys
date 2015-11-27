@@ -38,7 +38,8 @@
 										
 											<c:forEach items="${terceiros}" var="terceiro" varStatus="status">
 				
-												<tr >
+												<tr onclick="document.location.href='<c:url value="/configuracoes/terceiros/cadastro/${terceiro.id }"/>';" 
+												style="cursor: pointer; !important;">
 													<td oName="id" oValue="${terceiro.id}">${terceiro.nome}</td>
 													<td>${terceiro.documento}</td>
 													<c:if test="${terceiro.ativo}">
@@ -47,6 +48,9 @@
 													<c:if test="${!terceiro.ativo}">
 														<td>Inativo</td>
 													</c:if>
+<!-- 													<td> -->
+<%-- 													<a href="<c:url value="/relatorios/manutencao" />">Relatório de Manutenção</a> --%>
+<!-- 													</td> -->
 												</tr>
 				
 											</c:forEach>

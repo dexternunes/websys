@@ -16,11 +16,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Prime Share Club</title>
-    <style type="text/css">
-			.add_endereco{
-			cursor: pointer;
-			}
-		</style>
 
     <!-- Bootstrap core CSS -->
    	<link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
