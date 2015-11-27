@@ -2,7 +2,7 @@
     <decorator name="default" page="master.jsp">
         <pattern>/*</pattern>
     </decorator>
-    <decorator name="auth" page="auth_master.jsp">
-        <pattern>/auth/*</pattern>
-    </decorator>
+    <excludes>
+	    <pattern>/auth/*</pattern>
+	</excludes>
 </decorators>

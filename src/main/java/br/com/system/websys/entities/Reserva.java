@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -32,6 +33,10 @@ public class Reserva extends EntityBaseRoot {
 	private Boolean ativo = true;
 	
 	private Boolean excluido = false;
+	
+	private ReservaEvento eventoInicio;
+	
+	private ReservaEvento eventoFim;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
@@ -100,6 +105,26 @@ public class Reserva extends EntityBaseRoot {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_reserva_evento_inicio", referencedColumnName="id_reserva_evento")
+	public ReservaEvento getEventoInicio() {
+		return eventoInicio;
+	}
+
+	public void setEventoInicio(ReservaEvento eventoInicio) {
+		this.eventoInicio = eventoInicio;
+	}
+
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_reserva_evento_fim", referencedColumnName="id_reserva_evento")
+	public ReservaEvento getEventoFim() {
+		return eventoFim;
+	}
+
+	public void setEventoFim(ReservaEvento eventoFim) {
+		this.eventoFim = eventoFim;
 	}
 
 }

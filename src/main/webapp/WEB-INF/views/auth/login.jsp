@@ -7,66 +7,114 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<html>
+
+<html lang="en">
 
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Prime Share</title>
+<title>PRIME SHARE CLUB</title>
+
+<!-- Bootstrap core CSS -->
+
+<link
+	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<link
+	href="${pageContext.request.contextPath}/resources/fonts/css/font-awesome.min.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/css/animate.min.css"
+	rel="stylesheet">
+
+<!-- Custom styling plus plugins -->
+<link href="${pageContext.request.contextPath}/resources/css/custom.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/css/icheck/flat/green.css"
+	rel="stylesheet">
 
 
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 
-    <!--[if lt IE 9]>
+<!--[if lt IE 9]>
         <script src="../assets/js/ie8-responsive-file-warning.js"></script>
         <![endif]-->
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+<style type="text/css">
+body {
+	background-color: #1c3c6a;
+	background-image:
+		url("${pageContext.request.contextPath}/resources/images/background_login.jpg");
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+</style>
 </head>
+<body>
+	<div class="">
+		<a class="hiddenanchor" id="toregister"></a> <a class="hiddenanchor"
+			id="tologin"></a>
 
-<body style="background:#F7F7F7;">
-
-	<form:form cssClass="form-signin"
-		action="${pageContext.request.contextPath}/auth/login"
-		commandName="user" method="post">
-
-		<div class="">
-			<a class="hiddenanchor" id="toregister"></a> <a class="hiddenanchor"
-				id="tologin"></a>
-
-			<div id="wrapper">
-				<div id="login" class="animate form">
-					<section class="login_content" style="padding-top:0px">
-						<h1>Sistema de Reservas</h1>
+		<div id="wrapper">
+			<div id="login" class="animate form">
+				<section class="login_content">
+					<form:form action="${pageContext.request.contextPath}/auth/login"
+						commandName="user" method="post">
+						<h1>
+							<img
+								src="${pageContext.request.contextPath}/resources/images/prime_login.png"
+								width="98" height="130" />
+						</h1>
 						<c:if test="${message != '' && message != null}">
 							<div>
 								<div class="alert alert-error">${message}</div>
 							</div>
 						</c:if>
 						<div>
-							<input type="text"  class="form-control"
-								placeholder="Nome de Usuário" id="loginl" name="login" style="margin-bottom: 20px;">
+							<input type="text" class="form-control" placeholder="Usuário"
+								id="loginl" name="login" style="margin-bottom: 20px;">
 						</div>
 						<div>
-							<input type="password" class="form-control"
-								placeholder="Senha de Acesso" id="senha" name="senha" >
+							<input type="password" class="form-control" placeholder="Senha"
+								id="senha" name="senha">
 						</div>
-						
 						<div>
-							<button class="btn btn-default submit" type="submit" style="margin-top:20px">Entrar</button>
+							<a class="btn btn-default submit" onclick="javascript:$('form').submit()">Entrar</button>
+							<a class="reset_pass" href="#">Esqueceu sua senha?</a>
 						</div>
-
 						<div class="clearfix"></div>
 						<div class="separator">
-					</section>
-					<!-- content -->
-				</div>
+
+							<div class="clearfix"></div>
+							<br />
+							<div>
+								<h1>
+									<i style="font-size: 26px;"></i> PRIME SHARE CLUB
+								</h1>
+
+								<p>©2015 All Rights Reserved.</p>
+							</div>
+						</div>
+					</form:form>
+					<!-- form -->
+				</section>
+				<!-- content -->
 			</div>
 		</div>
-
-	</form:form>
+	</div>
 
 </body>
 

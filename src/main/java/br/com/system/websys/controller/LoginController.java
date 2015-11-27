@@ -57,7 +57,7 @@ public class LoginController {
 
 		if (userLogin == null || !userLogin.getSenha().equals(user.getSenha())) {
 
-			model.addAttribute("message", "Login e/ou senha inválidos.");
+			model.addAttribute("message", "Usuário e/ou senha inválidos.");
 
 			return "auth/login";
 		}
@@ -77,5 +77,10 @@ public class LoginController {
 	@RequestMapping(value = "/denied")
 	public String getDeniedPage() {	
 		return "auth/denied";
+	}
+	
+	@RequestMapping(value = "/logout")
+	public String logout() {	
+		return "auth/";
 	}
 }

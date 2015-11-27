@@ -2,6 +2,7 @@ package br.com.system.websys.entities;
 
 public enum Role{
 
+	ROLE_ROOT("ROLE_ROOT"),
 	ROLE_ADMIN("ROLE_ADMIN"),
 	ROLE_MARINHEIRO("ROLE_MARINHEIRO"),
 	ROLE_COTISTA("ROLE_COTISTA");
