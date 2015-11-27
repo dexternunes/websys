@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.TerceiroEndereco;
+import br.com.system.websys.entities.TerceiroTipo;
 
 @Controller
 @RequestMapping("/configuracoes")
@@ -47,7 +49,12 @@ public class ConfiguracoesController {
 	public String cadastroBase(Model model)
 			throws Exception {
 
-		model.addAttribute("terceiro", new Terceiro());
+		Terceiro terceiro = new Terceiro();
+		terceiro.getEnderecos().add(new TerceiroEndereco());
+
+		model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
+		model.addAttribute("terceiro", terceiro);
+		
 		
 		return "config/formulario_terceiro";
 	}
@@ -59,6 +66,11 @@ public class ConfiguracoesController {
 
 		Terceiro terceiro = terceiroBusiness.get(id);
 		
+		if(terceiro.getEnderecos().size() ==0){
+			terceiro.getEnderecos().add(new TerceiroEndereco());
+		}
+		
+		model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 		model.addAttribute("terceiro", terceiro);
 		
 		return "config/formulario_terceiro";
