@@ -160,7 +160,7 @@ table.display thead td:active {
 
 .top, .bottom {
 	background-color: #F5F5F5;
-	border: 1px solid #CCCCCC;
+	border: 1px solid #dbb663;
 }
 
 .top .dataTables_info {

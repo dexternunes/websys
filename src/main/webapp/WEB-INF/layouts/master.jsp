@@ -15,7 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Sistema de Reservas</title>
+    <title>Prime Share Club</title>
     <style type="text/css">
 			.add_endereco{
 			cursor: pointer;
@@ -93,23 +93,23 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>E2A System</span></a>
+                        <a href="index.html" class="site_title"><img src="${pageContext.request.contextPath}/resources/images/prime_icon.svg"/></a>
                     </div>
                     <div class="clearfix"></div>
                     <!-- menu prile quick info -->
                     <div class="profile">
                         <div class="profile_pic">
-                            <img src="${pageContext.request.contextPath}/resources/images/img.jpg" alt="..." class="img-circle profile_img">
+                            <img src="${pageContext.request.contextPath}/resources/images/user.png" alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
                             <span>Bem vindo,</span>
-                            <h2>Anthony Nunes</h2>
+                            <h2>Usuário Logado</h2>
                         </div>
                     </div>
                     <br />
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <h3>General</h3>
+                        	<div>&nbsp</div>
                             <ul class="nav side-menu">
 	                            <sec:authorize url="/home">  
 	                                <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
@@ -158,15 +158,17 @@
                         </div>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="${pageContext.request.contextPath}/resources/images/img.jpg" alt="">Anthony Nunes
-                                    <span class=" fa fa-angle-down"></span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-                               		<li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
-                                    </li>
-                                </ul>
-                            </li>
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="${pageContext.request.contextPath}/resources/images/user.png" alt="">Usuário Logado
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+                                        <li><a href="javascript:;">Perfil</a>
+                                        </li>
+                                        <li><a href="<c:url value="/auth/logout" />"><i class="fa fa-sign-out pull-right"></i>Sair</a>
+                                        </li>
+                                    </ul>
+                                </li>
                         </ul>
                     </nav>
                 </div>
@@ -246,7 +248,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/skycons/skycons.js"></script>
     <script>
         var icons = new Skycons({
-                "color": "#73879C"
+                "color": "#1B3C6A"
             }),
             list = [
                 "clear-day", "clear-night", "partly-cloudy-day",
