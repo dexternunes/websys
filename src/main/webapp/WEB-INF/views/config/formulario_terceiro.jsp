@@ -13,8 +13,8 @@
 <title>Cadastro de Terceiro</title>
 </head>
 <body>
-	<div class="right_col" role="main">
-		<div class="">
+	<div class="left_col" role="main">
+		<div class="left_col">
 
 			<div class="page-title">
 				<div class="title_left">
@@ -31,7 +31,6 @@
 						</div>
 						<div class="wizar_content">
 							<br />
-
 							<form:form cssClass="form-horizontal"
 								action="${pageContext.request.contextPath}/configuracoes/terceiros/cadastro/salvar"
 								commandName="terceiro" method="post">
@@ -47,8 +46,12 @@
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha o nome do terceiro." />
 									</div>
+									<c:if test="${message != '' && message != null}">
+										<div>
+											<div class="alert alert-error col-md-3 col-sm-3 col-xs-12">${message}</div>
+										</div>
+									</c:if>
 								</div>
-
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Documento <span class="required">*</span>
@@ -59,23 +62,22 @@
 											placeholder="Preencha o nome do terceiro." />
 									</div>
 								</div>
-
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Tipo <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:select path="tipos" multiple="true">
-											<form:options items="${listaTerceiroTipo}"
-												itemValue="descricao" itemLabel="descricao"></form:options>
+											<form:options items="${listaTerceiroTipo}" itemValue="code"
+												itemLabel="descricao"></form:options>
 										</form:select>
 									</div>
 								</div>
-								
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Ativo 
-									</label><form:checkbox style="margin-left:10px; margin-top:10px;" path="ativo"/>
+										for="first-name">Ativo </label>
+									<form:checkbox style="margin-left:10px; margin-top:10px;"
+										path="ativo" />
 								</div>
 
 								<br />
@@ -130,6 +132,7 @@
 									</c:if>
 								</div>
 								<div class="form-group">
+									<form:hidden path="contatos[0].id" />
 									<label class="control-label col-md-3 col-sm-3 col-xs-12">
 										Tel. Celular: </label>
 									<div class="col-md-6 col-sm-6 col-xs-12"
@@ -152,6 +155,7 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<form:hidden path="contatos[1].id" />
 									<label class="control-label col-md-3 col-sm-3 col-xs-12">
 										Tel. Residencial: </label>
 									<div class="col-md-6 col-sm-6 col-xs-12"
@@ -174,6 +178,7 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<form:hidden path="contatos[2].id" />
 									<label class="control-label col-md-3 col-sm-3 col-xs-12">
 										Tel. Comercial: </label>
 									<div class="col-md-6 col-sm-6 col-xs-12"

@@ -2,13 +2,15 @@ package br.com.system.websys.entities;
 
 public enum TerceiroTipo{
 
-	CLIENTE("Cliente"),
-	FUNCIONARIO("Funcionario");
+	CLIENTE("CLIENTE", "Cliente"),
+	FUNCIONARIO("FUNCIONARIO","Funcionario");
 	
 	private String descricao;
+	private String code;
 
-	private TerceiroTipo(String descricao){
+	private TerceiroTipo(String code, String descricao){
 		this.descricao = descricao;
+		this.code = code;
 	}
 
 	public String getDescricao() {
@@ -19,4 +21,11 @@ public enum TerceiroTipo{
 		this.descricao = descricao;
 	}
 	
+	public String getCode(){
+		return code;
+	}
+	
+	public void setCode(String code){
+		this.code = code;
+	}
 }
