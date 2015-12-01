@@ -123,6 +123,8 @@
 	                                    <ul class="nav child_menu" style="display: none">
 	                                        <li><a href="<c:url value="/configuracoes/" />">Terceiro</a>
 	                                        </li>
+	                                        <li><a href="<c:url value="/usuarios/" />">Usuarios</a>
+	                                        </li>
 	                                    </ul>
 	                                </li>
                                 </sec:authorize>

@@ -63,7 +63,7 @@ public class LoginController {
 		}
 
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
 		Authentication auth = new UsernamePasswordAuthenticationToken(user.getLogin(), user.getSenha(), authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
