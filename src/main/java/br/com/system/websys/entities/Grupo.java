@@ -20,6 +20,8 @@ import javax.persistence.Table;
 @Table(name="grupo")
 public class Grupo extends EntityBaseRoot {
 
+	private String descricao;
+	
 	private List<Terceiro> terceiros = new ArrayList<Terceiro>();
 	
 	private List<Produto> produtos = new ArrayList<Produto>();
@@ -36,6 +38,14 @@ public class Grupo extends EntityBaseRoot {
 	@Override
 	public Long getId() {
 		return id;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
