@@ -119,9 +119,13 @@
 	                                </li>
 	                            </sec:authorize>   
 	                            <sec:authorize url="/configuracoes/">    	
-				             		<li><a><i class="fa fa-edit"></i>Configuraçoes<span class="fa fa-chevron-down"></span></a>
+				             		<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
 	                                    <ul class="nav child_menu" style="display: none">
 	                                        <li><a href="<c:url value="/configuracoes/" />">Terceiro</a>
+	                                        </li>
+	                                    </ul>
+	                                    <ul class="nav child_menu" style="display: none">
+	                                        <li><a href="<c:url value="/grupo/" />">Grupo</a>
 	                                        </li>
 	                                    </ul>
 	                                </li>
