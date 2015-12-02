@@ -28,12 +28,14 @@
     <link href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.print.css" rel="stylesheet" media="print">
     
-    
+
     <!-- Scripts -->
 		<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 	    <script src="${pageContext.request.contextPath}/resources/js/nprogress.js"></script>
 	    
 	    <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	
+
 	
 	    <!-- gauge js -->
 	    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/gauge/gauge.min.js"></script>
@@ -121,10 +123,9 @@
 	                            <sec:authorize url="/configuracoes/">    	
 				             		<li><a><i class="fa fa-edit"></i>Configuraçoes<span class="fa fa-chevron-down"></span></a>
 	                                    <ul class="nav child_menu" style="display: none">
-	                                        <li><a href="<c:url value="/configuracoes/" />">Terceiro</a>
-	                                        </li>
-	                                        <li><a href="<c:url value="/usuarios/" />">Usuarios</a>
-	                                        </li>
+	                                        <li><a href="<c:url value="/configuracoes/" />">Terceiro</a></li>
+	                                        <li><a href="<c:url value="/usuarios/" />">Usuarios</a> </li>
+	                                        <li><a href="<c:url value="/produtos/" />">Produtos</a> </li>
 	                                    </ul>
 	                                </li>
                                 </sec:authorize>

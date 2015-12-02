@@ -15,61 +15,57 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import br.com.system.websys.business.TerceiroBusiness;
-import br.com.system.websys.business.UserBusiness;
-import br.com.system.websys.entities.Terceiro;
-import br.com.system.websys.entities.User;
+import br.com.system.websys.business.ProdutoBusiness;
+import br.com.system.websys.entities.Produto;
 
 @Controller
-@RequestMapping("/usuarios")
-public class UserController{
+@RequestMapping("/produtos")
+public class ProdutoController{
 	
 	private static final Logger logger = LoggerFactory
 			.getLogger(ConfiguracoesController.class);
 	
 	@Autowired
-	private UserBusiness userBusiness;
-	
-	@Autowired
-	private TerceiroBusiness terceiroBusiness;
+	private ProdutoBusiness ProdutoBusiness;
 
 	//Quando clicado no menu.
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
 
-		model.addAttribute("usersList", userBusiness.getAll());
-		return "user/user";
+		model.addAttribute("produtoList", ProdutoBusiness.getAll());
+		return "produto/produto";
 	}
 
-	//Quando clicar para adicionar usuario
+	//Quando clicar para adicionar produto
 	@RequestMapping(value = "/cadastro", method = RequestMethod.GET)
 	@Transactional(readOnly = true)
 	public String cadastroBase(Model model)
 			throws Exception {
 
-		User usuario = new User();
-		model.addAttribute("usuario", usuario);
+		Produto produto = new Produto();
+		model.addAttribute("produto", produto);
 		
 		
-		return "user/formulario_user";
+		return "produto/formulario_produto";
 	}
 	
-	//Quando clicar em um usuario listado na tabela
+	//Quando clicar em um produto listado na tabela
 	@RequestMapping(value = "/cadastro/{id}", method = RequestMethod.GET)
 	@Transactional(readOnly = true)
 	public String cadastroBase(@PathVariable Long id, Model model)
 			throws Exception {
 
-		User usuario = userBusiness.get(id);
+		Produto produto = ProdutoBusiness.get(id);
 		
 
-		model.addAttribute("usuario", usuario);
+		model.addAttribute("produto", produto);
 		
-		return "user/formulario_user";
+		return "produto/formulario_produto";
 	}
 	
+	
 	@RequestMapping(value = "/cadastro/salvar", method = RequestMethod.POST)
-	public String salvarBase(@Valid @ModelAttribute("usuario") User usuario,
+	public String salvarBase(@Valid @ModelAttribute("produto") Produto produto,
 			BindingResult result, Model model) throws Exception {
 
 		if (result.hasErrors()) {
@@ -77,24 +73,22 @@ public class UserController{
 			for (ObjectError error : result.getAllErrors())
 				logger.info("Erro: " + error.toString());
 			
-			model.addAttribute("usuario", usuario);
+			model.addAttribute("produto", produto);
 			
-			return "user/formulario_user";
+			return "produto/formulario_produto";
 		}
 
 		try {
-			Terceiro t = terceiroBusiness.get(usuario.getTerceiro().getId());
-			usuario.setTerceiro(t);
-			userBusiness.salvar(usuario);
+			ProdutoBusiness.salvar(produto);
 		} catch (Exception e) {
 
-			model.addAttribute("usuario", usuario);
+			model.addAttribute("produto", produto);
 			model.addAttribute("message", e.getMessage());
 			
 			return "user/formulario_user";
 		}
 
-		return "redirect:/usuarios/";
+		return "redirect:/produto/produto";
 	}
 
 	
