@@ -21,11 +21,11 @@ import br.com.system.websys.entities.TerceiroEndereco;
 import br.com.system.websys.entities.TerceiroTipo;
 
 @Controller
-@RequestMapping("/configuracoes")
-public class ConfiguracoesController {
+@RequestMapping("/terceiro")
+public class TerceiroController {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(ConfiguracoesController.class);
+			.getLogger(TerceiroController.class);
 
 	@Autowired
 	private TerceiroBusiness terceiroBusiness;
@@ -33,7 +33,7 @@ public class ConfiguracoesController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configHome() {
 		
-		return "redirect:/configuracoes/terceiros";
+		return "redirect:/terceiro/terceiros";
 	}
 	
 	@RequestMapping(value = "/terceiros", method = RequestMethod.GET)
@@ -41,10 +41,10 @@ public class ConfiguracoesController {
 
 		model.addAttribute("terceiros", terceiroBusiness.getAll());
 
-		return "config/terceiros";
+		return "cadastro/terceiro/terceiros";
 	}
 	
-	@RequestMapping(value = "/terceiros/cadastro", method = RequestMethod.GET)
+	@RequestMapping(value = "/cadastro", method = RequestMethod.GET)
 	@Transactional(readOnly = true)
 	public String cadastroBase(Model model)
 			throws Exception {
@@ -56,10 +56,10 @@ public class ConfiguracoesController {
 		model.addAttribute("terceiro", terceiro);
 		
 		
-		return "config/formulario_terceiro";
+		return "cadastro/terceiro/formulario_terceiro";
 	}
 	
-	@RequestMapping(value = "/terceiros/cadastro/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cadastro/{id}", method = RequestMethod.GET)
 	@Transactional(readOnly = true)
 	public String cadastroBase(@PathVariable Long id, Model model)
 			throws Exception {
@@ -73,10 +73,10 @@ public class ConfiguracoesController {
 		model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 		model.addAttribute("terceiro", terceiro);
 		
-		return "config/formulario_terceiro";
+		return "cadastro/terceiro/formulario_terceiro";
 	}
 	
-	@RequestMapping(value = "/terceiros/cadastro/salvar", method = RequestMethod.POST)
+	@RequestMapping(value = "/cadastro/salvar", method = RequestMethod.POST)
 	public String salvarBase(@Valid @ModelAttribute("terceiro") Terceiro terceiro,
 			BindingResult result, Model model) throws Exception {
 
@@ -85,9 +85,10 @@ public class ConfiguracoesController {
 			for (ObjectError error : result.getAllErrors())
 				logger.info("Erro: " + error.toString());
 			
+			model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 			model.addAttribute("terceiro", terceiro);
 			
-			return "config/formulario_terceiro";
+			return "cadastro/terceiro/formulario_terceiro";
 		}
 
 		try {
@@ -97,9 +98,9 @@ public class ConfiguracoesController {
 			model.addAttribute("terceiros", terceiro);
 			model.addAttribute("message", e.getMessage());
 			
-			return "config/formulario_terceiro";
+			return "cadastro/terceiro/formulario_terceiro";
 		}
 
-		return "redirect:/configuracoes/terceiros";
+		return "redirect:/terceiro/terceiros";
 	}
 }

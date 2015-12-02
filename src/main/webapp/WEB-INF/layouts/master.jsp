@@ -121,7 +121,7 @@
 	                            <sec:authorize url="/configuracoes/">    	
 				             		<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
 	                                    <ul class="nav child_menu" style="display: none">
-	                                        <li><a href="<c:url value="/configuracoes/" />">Terceiro</a>
+	                                        <li><a href="<c:url value="/terceiro/" />">Terceiro</a>
 	                                        </li>
 	                                    </ul>
 	                                    <ul class="nav child_menu" style="display: none">

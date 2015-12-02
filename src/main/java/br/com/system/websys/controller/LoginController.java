@@ -45,13 +45,13 @@ public class LoginController {
 
 		model.addAttribute("user", new User());
 
-		if (result.hasErrors()) {
-
-			for (ObjectError error : result.getAllErrors())
-				logger.info("Erro: " + error.toString());
-
-			return "auth/login";
-		}
+//		if (result.hasErrors()) {
+//
+//			for (ObjectError error : result.getAllErrors())
+//				logger.info("Erro: " + error.toString());
+//
+//			return "auth/login";
+//		}
 
 		User userLogin = userBusiness.getByLogin(user.getLogin());
 
