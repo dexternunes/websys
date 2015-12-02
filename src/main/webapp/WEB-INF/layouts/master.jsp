@@ -10,7 +10,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -121,11 +121,15 @@
 	                                </li>
 	                            </sec:authorize>   
 	                            <sec:authorize url="/configuracoes/">    	
-				             		<li><a><i class="fa fa-edit"></i>Configuraçoes<span class="fa fa-chevron-down"></span></a>
+				             		<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
 	                                    <ul class="nav child_menu" style="display: none">
 	                                        <li><a href="<c:url value="/configuracoes/" />">Terceiro</a></li>
 	                                        <li><a href="<c:url value="/usuarios/" />">Usuarios</a> </li>
 	                                        <li><a href="<c:url value="/produtos/" />">Produtos</a> </li>
+	                                    </ul>
+	                                    <ul class="nav child_menu" style="display: none">
+	                                        <li><a href="<c:url value="/grupo/" />">Grupo</a>
+	                                        </li>
 	                                    </ul>
 	                                </li>
                                 </sec:authorize>

@@ -19,6 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name="terceiro")
 public class Terceiro extends EntityBaseRoot {
@@ -47,7 +50,8 @@ public class Terceiro extends EntityBaseRoot {
 		return id;
 	}
 
-	@NotNull(message="{notnull}") 
+	@NotNull(message="{notnull}")
+	@NotEmpty(message="{min.error}")	
 	public String getNome() {
 		return nome;
 	}
@@ -56,6 +60,8 @@ public class Terceiro extends EntityBaseRoot {
 		this.nome = nome;
 	}
 
+	@NotNull(message="{notnull}")
+	@NotEmpty(message="{Informar o documento!}")
 	public String getDocumento() {
 		return documento;
 	}
@@ -111,6 +117,9 @@ public class Terceiro extends EntityBaseRoot {
 
 	@ElementCollection(targetClass=String.class)
 	@CollectionTable(name = "terceiro_email", joinColumns = @JoinColumn(name = "id_terceiro"))
+	@NotNull(message="{notnull}")
+	@NotEmpty(message="{Informar um email válido!}")
+	@Email(message="Informar um email válido!")
 	public List<String> getEmails() {
 		return emails;
 	}
