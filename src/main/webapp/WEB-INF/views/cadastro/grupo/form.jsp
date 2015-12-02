@@ -51,15 +51,36 @@
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
+										for="first-name">Produto <span class="required">*</span>
+									</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<form:select path="produtos">
+											<form:options items="${listProdutos}" itemValue="id"
+												itemLabel="descricao"></form:options>
+										</form:select>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Cotistas <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="terceiros"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o nome do terceiro." />
+										<form:select path="terceiros" multiple="true">
+											<form:options items="${listTerceiros}" itemValue="id"
+												itemLabel="nome"></form:options>
+										</form:select>
 									</div>
 								</div>
-
+								
+																
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-12"
+										for="first-name">Ativo </label>
+									<form:checkbox style="margin-left:10px; margin-top:10px;"
+										path="ativo" />
+								</div>
+								
 								
 								<div style="clear: both"></div>
 								<br />

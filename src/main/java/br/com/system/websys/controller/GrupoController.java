@@ -1,5 +1,8 @@
 package br.com.system.websys.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -16,7 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.system.websys.business.GrupoBusiness;
+import br.com.system.websys.business.ProdutoBusiness;
+import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.entities.Grupo;
+import br.com.system.websys.entities.ProdutoStatus;
+import br.com.system.websys.entities.ProdutoTipo;
+import br.com.system.websys.entities.TerceiroTipo;
 
 @Controller
 @RequestMapping("/grupo")
@@ -27,6 +35,12 @@ public class GrupoController {
 
 	@Autowired
 	private GrupoBusiness grupoBusiness;
+	
+	@Autowired
+	private TerceiroBusiness terceiroBusiness;
+	
+	@Autowired
+	private ProdutoBusiness produtoBusiness;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String grupo() {
@@ -49,8 +63,12 @@ public class GrupoController {
 
 		Grupo grupo = new Grupo();
 		
-		model.addAttribute("grupo", grupo);
+		List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
+		status.add(ProdutoStatus.A_VENDA);
 		
+		model.addAttribute("grupo", grupo);
+		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
+		model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 		
 		return "cadastro/grupo/form";
 	}
