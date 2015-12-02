@@ -26,21 +26,30 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="terceiro")
 public class Terceiro extends EntityBaseRoot {
 
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String nome;
 	
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String documento;
 	
 	private List<TerceiroEndereco> enderecos = new ArrayList<TerceiroEndereco>();
 	
 	private List<TerceiroContato> contatos = new ArrayList<TerceiroContato>();
 	
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private List<TerceiroTipo> tipos = new ArrayList<TerceiroTipo>(); 
 	
 	private Boolean ativo = true;
 	
 	private Boolean excluido = false;
 	
-	private List<String> emails = new ArrayList<String>();
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
+	@Email(message="Email inválido!")
+	private String emails;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
@@ -50,8 +59,6 @@ public class Terceiro extends EntityBaseRoot {
 		return id;
 	}
 
-	@NotNull(message="{notnull}")
-	@NotEmpty(message="{min.error}")	
 	public String getNome() {
 		return nome;
 	}
@@ -60,8 +67,6 @@ public class Terceiro extends EntityBaseRoot {
 		this.nome = nome;
 	}
 
-	@NotNull(message="{notnull}")
-	@NotEmpty(message="{Informar o documento!}")
 	public String getDocumento() {
 		return documento;
 	}
@@ -115,16 +120,13 @@ public class Terceiro extends EntityBaseRoot {
 		this.ativo = ativo;
 	}
 
-	@ElementCollection(targetClass=String.class)
+//	@ElementCollection(targetClass=String.class)
 	@CollectionTable(name = "terceiro_email", joinColumns = @JoinColumn(name = "id_terceiro"))
-	@NotNull(message="{notnull}")
-	@NotEmpty(message="{Informar um email válido!}")
-	@Email(message="Informar um email válido!")
-	public List<String> getEmails() {
+	public String getEmails() {
 		return emails;
 	}
 
-	public void setEmails(List<String> emails) {
+	public void setEmails(String emails) {
 		this.emails = emails;
 	}
 

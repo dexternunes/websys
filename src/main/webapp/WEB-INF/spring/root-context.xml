@@ -18,7 +18,7 @@
 	
 	<!-- Load everything except @Controllers -->
 	<context:component-scan base-package="br.com.system" >
-		<context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+<!-- 		<context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/> -->
 	</context:component-scan>
 	
 	<!-- <beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

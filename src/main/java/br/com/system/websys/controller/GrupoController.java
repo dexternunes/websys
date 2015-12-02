@@ -31,7 +31,7 @@ import br.com.system.websys.entities.TerceiroTipo;
 public class GrupoController {
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(ConfiguracoesController.class);
+			.getLogger(GrupoController.class);
 
 	@Autowired
 	private GrupoBusiness grupoBusiness;
