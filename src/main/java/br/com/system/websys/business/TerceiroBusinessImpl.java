@@ -39,7 +39,13 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 	
 	@Override
 	public List<Terceiro> getAllByTipo(TerceiroTipo tipo) {
-		return ((TerceiroRepository)repository).findAllByTipo(tipo);
+		
+		List<Terceiro> terceiros = ((TerceiroRepository)repository).findAllByTipo(tipo);
+		
+		if(terceiros == null || terceiros.size() == 0)
+			return ((TerceiroRepository)repository).findAll();
+		else
+			return terceiros; 
 	}
 
 }
