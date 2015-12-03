@@ -12,6 +12,30 @@
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven conversion-service="conversionService" >
+		<message-converters>
+            <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <beans:property name="objectMapper">
+                    <beans:bean class="br.com.system.websys.serializer.HibernateAwareObjectMapper" />
+                </beans:property>
+            </beans:bean>
+        </message-converters>
+	</annotation-driven>
+	
+	<!-- **************************************************************** -->
+  	<!--  Conversores 				                                      -->
+  	<!-- **************************************************************** -->
+	
+	<beans:bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<beans:property name="formatters">
+			<beans:set>
+	        	<beans:ref bean="userFormatter"/>
+	        	<beans:ref bean="terceiroFormatter"/>
+	    	</beans:set>
+	    </beans:property>
+	</beans:bean> 
+
 	<annotation-driven></annotation-driven>
 	<context:component-scan base-package="br.com.system.websys.controller" />
 	<context:annotation-config />

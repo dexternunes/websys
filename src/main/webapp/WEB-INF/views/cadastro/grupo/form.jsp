@@ -34,7 +34,7 @@
 
 							<form:form cssClass="form-horizontal"
 								action="${pageContext.request.contextPath}/grupo/cadastro/salvar"
-								commandName="grupo" method="post">
+								commandName="grupo" method="POST">
 
 								<form:hidden path="id" />
 
@@ -54,9 +54,8 @@
 										for="first-name">Produto <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="produtos">
-											<form:options items="${listProdutos}" itemValue="id"
-												itemLabel="descricao"></form:options>
+										<form:select path="produtos" multiple="false">
+											<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
 										</form:select>
 									</div>
 								</div>
