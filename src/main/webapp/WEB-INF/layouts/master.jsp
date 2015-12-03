@@ -98,7 +98,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Bem vindo,</span>
-                            <h2>Usuário Logado</h2>
+                            <h2>${user.nome}</h2>
                         </div>
                     </div>
                     <br />
@@ -158,7 +158,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <img src="${pageContext.request.contextPath}/resources/images/user.png" alt="">Usuário Logado
+                                        <img src="${pageContext.request.contextPath}/resources/images/user.png" alt="">${user.nome}
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">

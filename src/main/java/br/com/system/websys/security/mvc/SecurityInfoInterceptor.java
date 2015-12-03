@@ -10,11 +10,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.User;
+import br.com.system.websys.entities.UserDTO;
 
 public class SecurityInfoInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private UserBusiness userBusiness;
+	private UserDTO userDTO = new UserDTO();
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request,
@@ -30,14 +32,16 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 		if(SecurityContextHolder.getContext().getAuthentication() == null)
 			return; 
 		
-		if(userBusiness != null && modelAndView != null && userBusiness.getCurrent() != null)
-			modelAndView.addObject("currentLoggedUser", userBusiness.getCurrent());
+		if(userBusiness != null && modelAndView != null && userBusiness.getCurrent() != null){
+				userDTO.setNome(userBusiness.getCurrent().getNome());
+				modelAndView.addObject("user", userDTO);
+		}
 		else {
 			
 			User user = new User();
 			user.setNome("");
 			
-			modelAndView.addObject("currentLoggedUser", user);
+			modelAndView.addObject("user", user);
 		}
 	}
 

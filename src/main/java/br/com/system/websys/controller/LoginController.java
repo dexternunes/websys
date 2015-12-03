@@ -71,6 +71,7 @@ public class LoginController {
 		
 		model.addAttribute("j_username", user.getLogin());
 		model.addAttribute("j_password", user.getSenha());
+		model.addAttribute("user", userLogin);
 		return "auth/callback";
 	}
 	
