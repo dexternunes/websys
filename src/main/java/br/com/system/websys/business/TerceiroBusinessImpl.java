@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroContato;
 import br.com.system.websys.entities.TerceiroEndereco;
+import br.com.system.websys.entities.TerceiroTipo;
 import br.com.system.websys.repository.TerceiroRepository;
 
 @Service  
@@ -34,6 +35,11 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 	@Override
 	public List<Terceiro> getAll() {
 		return ((TerceiroRepository)repository).findAll();
+	}
+	
+	@Override
+	public List<Terceiro> getAllByTipo(TerceiroTipo tipo) {
+		return ((TerceiroRepository)repository).findAllByTipo(tipo);
 	}
 
 }

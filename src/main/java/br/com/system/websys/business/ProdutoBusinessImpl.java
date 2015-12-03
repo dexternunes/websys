@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.Produto;
+import br.com.system.websys.entities.ProdutoStatus;
+import br.com.system.websys.entities.ProdutoTipo;
 import br.com.system.websys.repository.ProdutoRepository;
 
 @Service  
@@ -27,6 +29,11 @@ class ProdutoBusinessImpl extends BusinessBaseRootImpl<Produto, ProdutoRepositor
 	@Override
 	public List<Produto> getAll() {
 		return ((ProdutoRepository)repository).findAll();
+	}
+	
+	@Override
+	public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus>status) {
+		return ((ProdutoRepository)repository).findAllByTipoAndStatus(tipo, status);
 	}
 
 }

@@ -23,7 +23,7 @@
 	                    </div>
 	                    <div class="x_content">
 	                    	<div class="control-group">
-                                <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/configuracoes/terceiros/cadastro">Cadastrar Terceiro</a>
+                                <a type="button" class="btn btn-primary" href="${pageContext.request.contextPath}/terceiro/cadastro">Cadastrar Terceiro</a>
                             </div>
 								<div class="control-group">
 									<table id="entities" class="table table-striped responsive-utilities jambo_table">		
@@ -38,7 +38,7 @@
 										
 											<c:forEach items="${terceiros}" var="terceiro" varStatus="status">
 				
-												<tr onclick="document.location.href='<c:url value="/configuracoes/terceiros/cadastro/${terceiro.id }"/>';" 
+												<tr onclick="document.location.href='<c:url value="/terceiro/cadastro/${terceiro.id }"/>';" 
 												style="cursor: pointer; !important;">
 													<td oName="id" oValue="${terceiro.id}">${terceiro.nome}</td>
 													<td>${terceiro.documento}</td>

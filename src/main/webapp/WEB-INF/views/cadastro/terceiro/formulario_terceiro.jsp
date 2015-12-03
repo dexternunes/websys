@@ -11,6 +11,7 @@
 <html>
 <head>
 <title>Cadastro de Terceiro</title>
+
 </head>
 <body>
 	<div class="left_col" role="main">
@@ -32,7 +33,7 @@
 						<div class="wizar_content">
 							<br />
 							<form:form cssClass="form-horizontal"
-								action="${pageContext.request.contextPath}/configuracoes/terceiros/cadastro/salvar"
+								action="${pageContext.request.contextPath}/terceiro/cadastro/salvar"
 								commandName="terceiro" method="post">
 
 								<form:hidden path="id" />
@@ -46,32 +47,30 @@
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha o nome do terceiro." />
 									</div>
-									<c:if test="${message != '' && message != null}">
-										<div>
-											<div class="alert alert-error col-md-3 col-sm-3 col-xs-12">${message}</div>
-										</div>
-									</c:if>
+									<form:errors cssClass="native-error" path="nome"></form:errors>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Documento <span class="required">*</span>
+										for="documento">Documento <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="documento"
 											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o nome do terceiro." />
+											placeholder="Preencha o documento do terceiro." />
 									</div>
+									<form:errors cssClass="native-error" path="documento"></form:errors>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Tipo <span class="required">*</span>
+										for="tipos">Tipo <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="tipos" multiple="true">
+										<form:select path="tipos" multiple="true" cssClass="select2_multiple form-control">
 											<form:options items="${listaTerceiroTipo}" itemValue="code"
 												itemLabel="descricao"></form:options>
 										</form:select>
 									</div>
+									<form:errors cssClass="native-error" path="tipos"></form:errors>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -94,42 +93,49 @@
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Email <span class="required">*</span></label>
-									<input type="hidden" id="nEmails"
-										value="${fn:length(terceiro.emails)}" />
-
-									<c:forEach items="${terceiro.emails}" var="email"
-										varStatus="status">
-
 										<div class="col-md-6 col-sm-6 col-xs-12">
-
-											<form:input cssClass="form-control col-md-7 col-xs-12"
-												path="emails[${status.index}]"
-												placeholder="exemplo@exemplo.com.br" />
-											<form:errors cssClass="native-error"
-												path="emails[${status.index}]" />
-
-											<c:if test="${status.index == 0}">
-												<a id="add${status.index}" class="btn"
-													onclick="config.newEmail();"><i class="icon-plus"></i></a>
-											</c:if>
-
-											<c:if
-												test="${fn:length(configuracaoEmpresa.emails) - 1 == status.index and status.index > 0}">
-												<a id="del${status.index}" class="btn"
-													onclick="config.removeEmail();"><i class="icon-minus"></i></a>
-											</c:if>
+										<form:input cssClass="form-control col-md-7 col-xs-12"
+												path="emails"
+												placeholder="exemplo@exemplo.com.br" data-toggle="tooltip" data-placement="top"/>
 										</div>
+										<form:errors cssClass="native-error" path="emails"></form:errors>
+<!-- 									<input type="hidden" id="nEmails" -->
+<%-- 										value="${fn:length(terceiro.emails)}" /> --%>
 
-									</c:forEach>
+<%-- 									<c:forEach items="${terceiro.emails}" var="email" --%>
+<%-- 										varStatus="status"> --%>
 
-									<c:if test="${fn:length(terceiro.emails) == 0}">
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<form:input cssClass="form-control col-md-7 col-xs-12"
-												path="emails[0]" placeholder="exemplo@exemplo.com.br" />
-											<a id="add${status.index}" class="btn"
-												onclick="config.newEmail();"><i class="icon-plus"></i></a>
-										</div>
-									</c:if>
+<!-- 										<div class="col-md-6 col-sm-6 col-xs-12"> -->
+
+<%-- 											<form:input cssClass="form-control col-md-7 col-xs-12" --%>
+<%-- 												path="emails[${status.index}]" --%>
+<%-- 												placeholder="exemplo@exemplo.com.br" /> --%>
+<%-- 											<form:errors cssClass="native-error" --%>
+<%-- 												path="emails[${status.index}]" /> --%>
+
+<%-- 											<c:if test="${status.index == 0}"> --%>
+<%-- 												<a id="add${status.index}" class="btn" --%>
+<!-- 													onclick="config.newEmail();"><i class="icon-plus"></i></a> -->
+<%-- 											</c:if> --%>
+
+<%-- 											<c:if --%>
+<%-- 												test="${fn:length(configuracaoEmpresa.emails) - 1 == status.index and status.index > 0}"> --%>
+<%-- 												<a id="del${status.index}" class="btn" --%>
+<!-- 													onclick="config.removeEmail();"><i class="icon-minus"></i></a> -->
+<%-- 											</c:if> --%>
+<!-- 										</div> -->
+<%-- 										<form:errors cssClass="alert-danger alert-dismissible fade in col-md-3 col-sm-3" path="emails[${status.index}]"></form:errors> --%>
+<%-- 									</c:forEach> --%>
+
+<%-- 									<c:if test="${fn:length(terceiro.emails) == 0}"> --%>
+<!-- 										<div class="col-md-6 col-sm-6 col-xs-12"> -->
+<%-- 											<form:input cssClass="form-control col-md-7 col-xs-12" --%>
+<%-- 												path="emails[0]" placeholder="exemplo@exemplo.com.br" /> --%>
+<%-- 											<a id="add${status.index}" class="btn" --%>
+<!-- 												onclick="config.newEmail();"><i class="icon-plus"></i></a> -->
+<!-- 										</div> -->
+<%-- 										<form:errors cssClass="alert-danger alert-dismissible fade in col-md-3 col-sm-3" path="emails[0]"></form:errors> --%>
+<%-- 									</c:if> --%>									
 								</div>
 								<div class="form-group">
 									<form:hidden path="contatos[0].id" />
@@ -311,6 +317,7 @@
 		</div>
 	</div>
 	<script type='text/javascript'>
+	
 		function AddEndereco() {
 			var cont = parseInt($('#nEnderecos').val());
 
