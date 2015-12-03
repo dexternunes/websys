@@ -68,6 +68,34 @@
         NProgress.start();
     </script>
     
+    <style type="text/css">
+    
+    
+		.native-error {
+			display: none;	
+		}
+		
+		.native-error-message {
+			color: #b94a48;
+		}
+		
+		input.cerror, select.cerror, textarea.cerror {
+		  	border-color: #b94a48;
+		  	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+		  	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+		  	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+		}
+		
+		input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
+		  	border-color: #953b39;
+		  	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+		  	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+		  	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+		}
+    
+    
+</style>
+    
     <!--[if lt IE 9]>
         <script src="../assets/js/ie8-responsive-file-warning.js"></script>
         <![endif]-->
@@ -183,6 +211,17 @@
         <div class="clearfix"></div>
         <div id="notif-group" class="tabbed_notifications"></div>
     </div>
+    
+    <script type="text/javascript">
+    
+	    $( document ).ready(function() {
+			$('.native-error').each(function (index){
+				var fieldName = '#' + this.id.replace(".errors", "").replace(/\./g, '\\.');
+				$(fieldName).addClass("cerror");
+			});
+		});
+    </script>
+    
     <script>
         $(document).ready(function () {
             // [17, 74, 6, 39, 20, 85, 7]
@@ -290,9 +329,11 @@
     </script>
     <!-- /dashbord linegraph -->
     <!-- datepicker -->
-    <script type="text/javascript">
+    
+    <script>
         $(document).ready(function () {
-            var cb = function (start, end, label) {
+        	
+        	var cb = function (start, end, label) {
                 console.log(start.toISOString(), end.toISOString(), label);
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                 //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
