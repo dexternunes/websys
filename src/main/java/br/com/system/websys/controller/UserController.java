@@ -1,5 +1,8 @@
 package br.com.system.websys.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,7 @@ public class UserController{
 	public String configBases(Model model) {
 
 		model.addAttribute("usersList", userBusiness.getAll());
-		return "user/user";
+		return "cadastro/user/user";
 	}
 
 	//Quando clicar para adicionar usuario
@@ -42,12 +45,15 @@ public class UserController{
 	public String cadastroBase(Model model)
 			throws Exception {
 
+		List<Terceiro> terceiroList = new ArrayList<Terceiro>(); 
+		terceiroList = terceiroBusiness.getAll();
 		User usuario = new User();
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("listaUserRole", Role.values());
+		model.addAttribute("listaTerceiros", terceiroList);
 		
 		
-		return "user/formulario_user";
+		return "cadastro/user/formulario_user";
 	}
 	
 	//Quando clicar em um usuario listado na tabela
@@ -61,7 +67,7 @@ public class UserController{
 
 		model.addAttribute("usuario", usuario);
 		
-		return "user/formulario_user";
+		return "cadastro/user/formulario_user";
 	}
 	
 	@RequestMapping(value = "/cadastro/salvar", method = RequestMethod.POST)
@@ -72,7 +78,7 @@ public class UserController{
 			
 			model.addAttribute("usuario", usuario);
 			
-			return "user/formulario_user";
+			return "cadastro/user/formulario_user";
 		}
 
 		try {
@@ -84,7 +90,7 @@ public class UserController{
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("message", e.getMessage());
 			
-			return "user/formulario_user";
+			return "cadastro/user/formulario_user";
 		}
 
 		return "redirect:/usuarios/";

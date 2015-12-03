@@ -13,14 +13,8 @@
 <title>Cadastro de Usuário</title>
 </head>
 <body>
-	<div class="left_col" role="main">
+	<div class="" role="main">
 		<div class="">
-
-			<div class="page-title">
-				<div class="title_left">
-					<h3>Cadastro de Usuário</h3>
-				</div>
-			</div>
 			<div class="clearfix"></div>
 			<div class="row">
 				<div class="col-md-12 col-sm-12 col-xs-12">
@@ -49,7 +43,6 @@
 											placeholder="Preencha o login do usuário." />
 									</div>
 								</div>
-								
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -61,27 +54,20 @@
 											placeholder="Preencha a senha do usuário." />
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Nome <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="nome"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o nome do usuário." />
-									</div>
-								</div>
+								
 
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Terceiro <span class="required">*</span>
+										for="tipos">Terceiro <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="terceiro.id"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Selecione o terceiro." />
+										<form:select path="terceiro" multiple="false" cssClass="select2_multiple form-control">
+											<form:options items="${listaTerceiros}" itemValue="id"
+												itemLabel="nome"></form:options>
+										</form:select>
 									</div>
+									<form:errors cssClass="native-error" path="terceiro"></form:errors>
 								</div>
 
 
@@ -91,7 +77,7 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:select path="role" multiple="false" class="select2_single form-control" tabindex="-1">
-											<form:options items="${listaUserRole}" itemValue="code"
+											<form:options items="${listaUserRole}" itemValue="role"
 												itemLabel="role"></form:options>
 										</form:select>
 									</div>
@@ -116,6 +102,12 @@
 								<br />
 								<div class="form-actions">
 									<button type="submit" class="btn btn-primary">Confirmar</button>
+								</div>
+								
+								
+								<div class="control-group">
+									<a type="button" class="btn btn-primary"
+										href="${pageContext.request.contextPath}/usuarios/">Voltar</a>
 								</div>
 
 							</form:form>

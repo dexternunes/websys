@@ -29,7 +29,7 @@ public class ProdutoController{
 	public String configBases(Model model) {
 
 		model.addAttribute("produtoList", ProdutoBusiness.getAll());
-		return "produto/produto";
+		return "cadastro/produto/produto";
 	}
 
 	//Quando clicar para adicionar produto
@@ -44,7 +44,7 @@ public class ProdutoController{
 		model.addAttribute("produto", produto);
 		
 		
-		return "produto/formulario_produto";
+		return "cadastro/produto/formulario_produto";
 	}
 	
 	//Quando clicar em um produto listado na tabela
@@ -58,7 +58,7 @@ public class ProdutoController{
 
 		model.addAttribute("produto", produto);
 		
-		return "produto/formulario_produto";
+		return "cadastro/produto/formulario_produto";
 	}
 	
 	
@@ -70,7 +70,7 @@ public class ProdutoController{
 
 			model.addAttribute("produto", produto);
 			
-			return "produto/formulario_produto";
+			return "cadastro/produto/formulario_produto";
 		}
 
 		try {
@@ -80,10 +80,10 @@ public class ProdutoController{
 			model.addAttribute("produto", produto);
 			model.addAttribute("message", e.getMessage());
 			
-			return "user/formulario_user";
+			return "cadastro/user/formulario_user";
 		}
 
-		return "redirect:/produto/produto";
+		return "redirect:/produtos/";
 	}
 
 	

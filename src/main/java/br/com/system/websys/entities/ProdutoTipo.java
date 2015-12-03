@@ -10,6 +10,7 @@ public enum ProdutoTipo{
 
 	private ProdutoTipo(String code, String descricao){
 		this.descricao = descricao;
+		this.code = code;
 	}
 
 	public String getDescricao() {

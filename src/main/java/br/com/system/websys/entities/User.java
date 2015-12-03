@@ -21,8 +21,6 @@ public class User extends EntityBaseRoot {
 	
 	private String senha;
 	
-	private String nome;
-	
 	private Terceiro terceiro;
 	
 	private Role role;
@@ -53,14 +51,6 @@ public class User extends EntityBaseRoot {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	@NotNull

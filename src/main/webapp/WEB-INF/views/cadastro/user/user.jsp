@@ -30,7 +30,6 @@
 										<thead>
 											<tr>
 												<th>Usuario</th>
-												<th>Nome</th>	
 												<th>Status</th>							
 											</tr>
 										</thead>
@@ -41,7 +40,6 @@
 												<tr onclick="document.location.href='<c:url value="/usuarios/cadastro/${usuarios.id }"/>';" 
 												style="cursor: pointer; !important;">
 													<td oName="id" oValue="${usuarios.id}">${usuarios.login}</td>
-													<td>${usuarios.nome}</td>
 													<c:if test="${usuarios.ativo}">
 														<td>Ativo</td>
 													</c:if>

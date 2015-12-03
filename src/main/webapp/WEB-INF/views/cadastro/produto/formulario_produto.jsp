@@ -14,13 +14,9 @@
 
 </head>
 <body >
-	<div class="right_col" role="main">
+	<div class="" role="main">
 		<div class="">
 
-			<div class="page-title">
-				<div class="title_left">
-					<h3>Cadastro de Produto</h3>
-				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div class="row">
@@ -38,19 +34,6 @@
 								commandName="produto" method="post">
 
 								<form:hidden path="id" />
-
-
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">ID <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="id"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o id do produto." />
-									</div>
-								</div>
-							
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -108,6 +91,18 @@
 										<form:input path="largura"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha a largura do produto." />
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-12"
+										for="first-name">Comprimento <span class="required">*</span>
+									</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<form:input path="comprimento"
+											cssClass="form-control col-md-7 col-xs-12"
+											placeholder="Preencha o comprimento do produto." />
 									</div>
 								</div>
 
