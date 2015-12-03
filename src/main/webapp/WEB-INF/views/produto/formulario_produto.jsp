@@ -12,34 +12,9 @@
 <head>
 <title>Cadastro de Produto</title>
 
-    <!-- select2 -->
-
-        
-        <script>
-            $(document).ready(function () {
-                $(".select2_single").select2({
-                    placeholder: "Select a state",
-                    allowClear: true
-                });
-                $(".select2_group").select2({});
-                $(".select2_multiple").select2({
-                    maximumSelectionLength: 4,
-                    placeholder: "With Max Selection limit 4",
-                    allowClear: true
-                });
-            });
-        </script>
-        <!-- /select2 -->
-
-	<!-- Select -->
-	<link href="${pageContext.request.contextPath}/resources/css/select/select2.min.css" rel="stylesheet">
-        <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/autocomplete/countries.js"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/autocomplete/jquery.autocomplete.js"></script>
-	<!-- Select -->
 </head>
 <body >
-	<div class="left_col" role="main">
+	<div class="right_col" role="main">
 		<div class="">
 
 			<div class="page-title">
@@ -136,15 +111,15 @@
 									</div>
 								</div>
 
-
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Tipo do produto <span class="required">*</span>
+										for="first-name">Tipo <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="tipoProduto"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o tipo do produto." />
+										<form:select path="tipoProduto" multiple="false" class="select2_single form-control" tabindex="-1">
+											<form:options items="${listaProdutoTipo}" itemValue="code"
+												itemLabel="descricao"></form:options>
+										</form:select>
 									</div>
 								</div>
 
@@ -154,54 +129,24 @@
 										for="first-name">Status <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="status"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o status do produto." />
+										<form:select path="status" multiple="false" class="select2_single form-control" tabindex="-1">
+											<form:options items="${listaProdutoStatus}" itemValue="code"
+												itemLabel="descricao"></form:options>
+										</form:select>
 									</div>
 								</div>
 
-
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12">Select
-										Custom</label>
-									<div class="col-md-9 col-sm-9 col-xs-12">
-										<select class="select2_single form-control" tabindex="-1">
-											<option value="AK">Alaska</option>
-											<option value="HI">Hawaii</option>
-											<option value="CA">California</option>
-											<option value="NV">Nevada</option>
-											<option value="OR">Oregon</option>
-											<option value="WA">Washington</option>
-											<option value="AZ">Arizona</option>
-											<option value="CO">Colorado</option>
-											<option value="ID">Idaho</option>
-											<option value="MT">Montana</option>
-											<option value="NE">Nebraska</option>
-											<option value="NM">New Mexico</option>
-											<option value="ND">North Dakota</option>
-											<option value="UT">Utah</option>
-											<option value="WY">Wyoming</option>
-											<option value="AR">Arkansas</option>
-											<option value="IL">Illinois</option>
-											<option value="IA">Iowa</option>
-											<option value="KS">Kansas</option>
-											<option value="KY">Kentucky</option>
-											<option value="LA">Louisiana</option>
-											<option value="MN">Minnesota</option>
-											<option value="MS">Mississippi</option>
-											<option value="MO">Missouri</option>
-											<option value="OK">Oklahoma</option>
-											<option value="SD">South Dakota</option>
-											<option value="TX">Texas</option>
-										</select>
-									</div>
-								</div>
 
 								<div style="clear: both"></div>
 								<br />
 								<br />
 								<div class="form-actions">
 									<button type="submit" class="btn btn-primary">Confirmar</button>
+								</div>
+								
+								<div class="control-group">
+									<a type="button" class="btn btn-primary"
+										href="${pageContext.request.contextPath}/produtos/">Voltar</a>
 								</div>
 
 							</form:form>

@@ -84,17 +84,18 @@
 									</div>
 								</div>
 
+
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Role <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="role"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha a role do usuário." />
+										<form:select path="role" multiple="false" class="select2_single form-control" tabindex="-1">
+											<form:options items="${listaUserRole}" itemValue="code"
+												itemLabel="role"></form:options>
+										</form:select>
 									</div>
 								</div>
-
 								
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"

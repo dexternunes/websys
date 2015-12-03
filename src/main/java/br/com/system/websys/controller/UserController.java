@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.User;
 
@@ -49,6 +50,7 @@ public class UserController{
 
 		User usuario = new User();
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("listaUserRole", Role.values());
 		
 		
 		return "user/formulario_user";

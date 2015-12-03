@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.system.websys.business.ProdutoBusiness;
 import br.com.system.websys.entities.Produto;
+import br.com.system.websys.entities.ProdutoStatus;
+import br.com.system.websys.entities.ProdutoTipo;
 
 @Controller
 @RequestMapping("/produtos")
@@ -43,6 +45,8 @@ public class ProdutoController{
 			throws Exception {
 
 		Produto produto = new Produto();
+		model.addAttribute("listaProdutoTipo", ProdutoTipo.values());
+		model.addAttribute("listaProdutoStatus", ProdutoStatus.values());
 		model.addAttribute("produto", produto);
 		
 		

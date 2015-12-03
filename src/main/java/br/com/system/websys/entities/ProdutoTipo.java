@@ -2,11 +2,13 @@ package br.com.system.websys.entities;
 
 public enum ProdutoTipo{
 
-	EMBARCACAO("Embarcação");
+	EMBARCACAO("EMBARCACAO", "Embarcação");
+	
+	private String code;
 	
 	private String descricao;
 
-	private ProdutoTipo(String descricao){
+	private ProdutoTipo(String code, String descricao){
 		this.descricao = descricao;
 	}
 
@@ -16,6 +18,14 @@ public enum ProdutoTipo{
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 }
