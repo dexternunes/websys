@@ -11,6 +11,7 @@
 <html>
 <head>
 <title>Cadastro de Terceiro</title>
+
 </head>
 <body>
 	<div class="left_col" role="main">
@@ -46,30 +47,30 @@
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha o nome do terceiro." />
 									</div>
-									<form:errors cssClass="alert-danger alert-dismissible fade in col-md-3 col-sm-3" path="nome"></form:errors>
+									<form:errors cssClass="native-error" path="nome"></form:errors>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Documento <span class="required">*</span>
+										for="documento">Documento <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="documento"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha o documento do terceiro." />
 									</div>
-									<form:errors cssClass="alert-danger alert-dismissible fade in col-md-3 col-sm-3" path="documento"></form:errors>
+									<form:errors cssClass="native-error" path="documento"></form:errors>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Tipo <span class="required">*</span>
+										for="tipos">Tipo <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="tipos" multiple="true">
+										<form:select path="tipos" multiple="true" cssClass="select2_multiple form-control">
 											<form:options items="${listaTerceiroTipo}" itemValue="code"
 												itemLabel="descricao"></form:options>
 										</form:select>
 									</div>
-									<form:errors cssClass="alert-danger alert-dismissible fade in col-md-3 col-sm-3" path="tipos"></form:errors>
+									<form:errors cssClass="native-error" path="tipos"></form:errors>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -95,9 +96,9 @@
 										<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input cssClass="form-control col-md-7 col-xs-12"
 												path="emails"
-												placeholder="exemplo@exemplo.com.br" />
+												placeholder="exemplo@exemplo.com.br" data-toggle="tooltip" data-placement="top"/>
 										</div>
-										<form:errors cssClass="alert-danger alert-dismissible fade in col-md-3 col-sm-3" path="emails"></form:errors>
+										<form:errors cssClass="native-error" path="emails"></form:errors>
 <!-- 									<input type="hidden" id="nEmails" -->
 <%-- 										value="${fn:length(terceiro.emails)}" /> --%>
 
@@ -316,6 +317,7 @@
 		</div>
 	</div>
 	<script type='text/javascript'>
+	
 		function AddEndereco() {
 			var cont = parseInt($('#nEnderecos').val());
 

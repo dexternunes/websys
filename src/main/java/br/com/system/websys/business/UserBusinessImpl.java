@@ -1,5 +1,7 @@
 package br.com.system.websys.business;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
+import br.com.system.websys.repository.TerceiroRepository;
 import br.com.system.websys.repository.UserRepository;
 
 @Service  
@@ -56,6 +59,11 @@ class UserBusinessImpl implements UserBusiness {
 	@Transactional(readOnly = true)
 	public User getByLogin(String login) {
 		return userRepository.findByLogin(login);  
+	}
+
+	@Override
+	public List<User> getAll() {
+		return ((UserRepository)userRepository).findAll();
 	}
 
 }
