@@ -41,6 +41,7 @@
 										<form:input path="login"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha o login do usuário." />
+										<form:errors cssClass="native-error" path="login"></form:errors>
 									</div>
 								</div>
 
@@ -52,6 +53,7 @@
 										<form:input path="senha"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha a senha do usuário." />
+										<form:errors cssClass="native-error" path="senha"></form:errors>
 									</div>
 								</div>
 								
