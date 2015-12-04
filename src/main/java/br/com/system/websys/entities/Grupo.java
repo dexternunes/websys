@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name="grupo")
 public class Grupo extends EntityBaseRoot {
@@ -48,6 +50,7 @@ public class Grupo extends EntityBaseRoot {
 		this.descricao = descricao;
 	}
 
+	@NotEmpty(message = "Selecione um cotista")
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
 	@JoinTable(name="grupo_has_terceiros", 
 		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
@@ -61,6 +64,7 @@ public class Grupo extends EntityBaseRoot {
 		this.terceiros = terceiros;
 	}
 
+	@NotEmpty(message = "Selecione um produto")
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
 	@JoinTable(name="grupo_has_produtos", 
 		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
