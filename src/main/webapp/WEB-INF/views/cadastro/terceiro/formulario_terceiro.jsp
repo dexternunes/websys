@@ -87,7 +87,7 @@
 								for="first-name">Email <span class="required">*</span></label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<form:input cssClass="form-control col-md-7 col-xs-12"
-									path="emails" placeholder="exemplo@exemplo.com.br"
+									path="emails"
 									data-toggle="tooltip" data-placement="top" />
 									<form:errors cssClass="native-error" path="emails"></form:errors>
 							</div>
@@ -178,7 +178,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input cssClass="form-control col-md-7 col-xs-12"
 											path="enderecos[${status_endereco.index}].endereco"
-											placeholder="rua do Zé" />
+											 />
 										<form:errors cssClass="native-error"
 											path="enderecos[${status_endereco.index}].endereco" />
 									</div>
@@ -189,7 +189,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input cssClass="form-control col-md-7 col-xs-12"
 											path="enderecos[${status_endereco.index}].numero"
-											placeholder="rua do Zé" />
+											 />
 										<form:errors cssClass="native-error"
 											path="enderecos[${status_endereco.index}].numero" />
 									</div>
@@ -200,7 +200,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input cssClass="form-control col-md-7 col-xs-12"
 											path="enderecos[${status_endereco.index}].bairro"
-											placeholder="bairro da maria" />
+											 />
 										<form:errors cssClass="native-error"
 											path="enderecos[${status_endereco.index}].bairro" />
 									</div>
@@ -211,7 +211,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input cssClass="form-control col-md-7 col-xs-12"
 											path="enderecos[${status_endereco.index}].cidade"
-											placeholder="joaocity" />
+											 />
 										<form:errors cssClass="native-error"
 											path="enderecos[${status_endereco.index}].cidade" />
 									</div>
@@ -222,7 +222,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input cssClass="form-control col-md-7 col-xs-12"
 											path="enderecos[${status_endereco.index}].estado"
-											placeholder="gervazio" />
+											 />
 										<form:errors cssClass="native-error"
 											path="enderecos[${status_endereco.index}].estado" />
 									</div>
@@ -233,7 +233,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input cssClass="form-control col-md-7 col-xs-12"
 											path="enderecos[${status_endereco.index}].pais"
-											placeholder="brasil" />
+											 />
 										<form:errors cssClass="native-error"
 											path="enderecos[${status_endereco.index}].pais" />
 									</div>
