@@ -43,6 +43,7 @@
 										<form:input path="descricao"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha a descrição do produto." />
+										<form:errors cssClass="native-error" path="descricao"></form:errors>
 									</div>
 								</div>
 								
@@ -55,6 +56,7 @@
 										<form:input path="marca"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha a marca do produto." />
+										<form:errors cssClass="native-error" path="marca"></form:errors>
 									</div>
 								</div>
 
@@ -67,6 +69,7 @@
 										<form:input path="modelo"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha o modelo do produto." />
+										<form:errors cssClass="native-error" path="modelo"></form:errors>
 									</div>
 								</div>
 
@@ -77,8 +80,11 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="altura"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha a altura do produto." />
+											id="txtboxToFilter"
+											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
+											placeholder="Preencha a altura do produto."
+											onkeypress="SomenteNumero()"/>
+										<form:errors cssClass="native-error" path="altura"></form:errors>
 									</div>
 								</div>
 
@@ -89,8 +95,10 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="largura"
-											cssClass="form-control col-md-7 col-xs-12"
+											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
+											data-inputmask="'mask' : '9*'"
 											placeholder="Preencha a largura do produto." />
+										<form:errors cssClass="native-error" path="largura"></form:errors>
 									</div>
 								</div>
 
@@ -101,8 +109,10 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="comprimento"
-											cssClass="form-control col-md-7 col-xs-12"
+											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
+											data-inputmask="'mask' : '9*'"
 											placeholder="Preencha o comprimento do produto." />
+										<form:errors cssClass="native-error" path="comprimento"></form:errors>
 									</div>
 								</div>
 
@@ -115,6 +125,7 @@
 											<form:options items="${listaProdutoTipo}" itemValue="code"
 												itemLabel="descricao"></form:options>
 										</form:select>
+										<form:errors cssClass="native-error" path="tipoProduto"></form:errors>
 									</div>
 								</div>
 
@@ -128,9 +139,11 @@
 											<form:options items="${listaProdutoStatus}" itemValue="code"
 												itemLabel="descricao"></form:options>
 										</form:select>
+										<form:errors cssClass="native-error" path="status"></form:errors>
 									</div>
 								</div>
 
+								 
 
 								<div style="clear: both"></div>
 								<br />
@@ -150,7 +163,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 	<script type='text/javascript'>
 
 		function Required() {

@@ -43,6 +43,7 @@
 								<form:input path="descricao"
 									cssClass="form-control col-md-7 col-xs-12"
 									placeholder="Preencha a descrição do grupo" />
+								<form:errors cssClass="native-error" path="descricao"></form:errors>
 							</div>
 						</div>
 
@@ -50,10 +51,20 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12"
 								for="first-name">Produto <span class="required">*</span>
 							</label>
+							
+							
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:select path="produtos" cssClass="select2_single form-control">
-									<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
-								</form:select>
+								<c:if test="${grupo.id == null}">
+									<form:select path="produtos" multiple="false" cssClass="select2_single form-control">
+										<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
+									</form:select>
+									<form:errors cssClass="native-error" path="produtos"></form:errors>
+								</c:if>
+								<c:if test="${grupo.id != null}">
+									<form:hidden path="produtos[0].id" />
+									<form:input path="produtos[0].descricao" readonly="true" cssClass="form-control col-md-7 col-xs-12"
+									placeholder="Preencha a descrição do grupo" />
+								</c:if>
 							</div>
 						</div>
 						
@@ -63,9 +74,9 @@
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<form:select path="terceiros" multiple="true" cssClass="select2_multiple form-control">
-									<form:options items="${listTerceiros}" itemValue="id"
-										itemLabel="nome"></form:options>
+									<form:options items="${listTerceiros}" itemValue="id" itemLabel="nome"></form:options>
 								</form:select>
+								<form:errors cssClass="native-error" path="terceiros"></form:errors>
 							</div>
 						</div>
 						

@@ -52,14 +52,24 @@
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 <script
+	src="${pageContext.request.contextPath}/resources/js/nprogress.js"></script>
+
+<script
 	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 
 
 
+<!-- gauge js -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/gauge/gauge.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/gauge/gauge_demo.js"></script>
 <!-- chart js -->
 <script
 	src="${pageContext.request.contextPath}/resources/js/chartjs/chart.min.js"></script>
 <!-- bootstrap progress js -->
+<script
+	src="${pageContext.request.contextPath}/resources/js/progressbar/bootstrap-progressbar.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/js/nicescroll/jquery.nicescroll.min.js"></script>
 <!-- icheck -->
@@ -94,6 +104,10 @@
 	src="${pageContext.request.contextPath}/resources/js/flot/curvedLines.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/flot/jquery.flot.resize.js"></script>
+
+<script>
+	NProgress.start();
+</script>
 
 <style type="text/css">
 /*
@@ -171,7 +185,42 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+<script type="text/javascript">
+$(document).ready(function() {
 
+    $(".onlyNumbers").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (e.keyCode == 65 && ( e.ctrlKey === true || e.metaKey === true ) ) || 
+             // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    
+    $(document).ready(function () {
+        $(".select2_single").select2({
+            placeholder: "Select a state",
+            allowClear: true
+        });
+        $(".select2_group").select2({});
+        $(".select2_multiple").select2({
+            maximumSelectionLength: 4,
+            placeholder: "With Max Selection limit 4",
+            allowClear: true
+        });
+    });
+});
+
+
+
+</script>
 </head>
 <body class="nav-md">
 	<div class="container body">
@@ -275,10 +324,7 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
 		<div class="clearfix"></div>
 		<div id="notif-group" class="tabbed_notifications"></div>
 	</div>
-    
-    <!-- input mask -->
-    <script src="${pageContext.request.contextPath}/resources/js/input_mask/jquery.inputmask.js"></script>
-    
+
 	<script type="text/javascript">
 		$(document)
 				.ready(
@@ -298,12 +344,7 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
 																$('.native-error'));*/
 											});
 						});
-		
 	</script>
-	 <script>
-        $(document).ready(function () {
-            $(":input").inputmask();
-        });
-    </script>
+
 </body>
 </html>
