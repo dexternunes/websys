@@ -7,23 +7,40 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity 
 @Table(name="produto")
 public class Produto extends EntityBaseRoot {
 	
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String descricao;
 	
+
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String marca;
 	
+
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String modelo;
 	
+
+	@NotNull(message="Campo obrigatório!")
 	private Long comprimento;
-	
+
+	@NotNull(message="Campo obrigatório!")
 	private Long largura;
-	
+
+
+	@NotNull(message="Campo obrigatório!")
 	private Long altura;
 	
+
 	private ProdutoTipo tipoProduto;
 	
 	private ProdutoStatus status;

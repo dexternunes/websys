@@ -13,12 +13,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity 
 @Table(name="user")
 public class User extends EntityBaseRoot {
 	
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String login;
 	
+
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String senha;
 	
 	private Terceiro terceiro;
