@@ -96,6 +96,7 @@
 	src="${pageContext.request.contextPath}/resources/js/flot/jquery.flot.resize.js"></script>
 
 <style type="text/css">
+/*
 .speech-bubble {
 	margin-left: 10px;
 	background-color: #FF6F6F;
@@ -133,10 +134,11 @@
 	position: absolute;
 	text-align:center;
 }
-
+*/
 .native-error {
-	display: none;
+	color: #b94a48;
 }
+
 
 .native-error-message {
 	color: #b94a48;
@@ -147,6 +149,7 @@ input.cerror, select.cerror, textarea.cerror {
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	color: #b94a48;
 }
 
 input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
@@ -155,6 +158,7 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
 		#d59392;
 	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #d59392;
+	color: #b94a48;
 }
 </style>
 
@@ -283,20 +287,15 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
 									.each(
 											function(index) {
 												var fieldName = '#'
-														+ this.id.replace(
-																".errors", "")
-																.replace(/\./g,
-																		'\\.');
-												$(fieldName).attr('title',
-														this.innerHTML);
-												$(fieldName).addClass(
-														"cerror red-tooltip");
-												$(
+														+ this.id.replace(".errors", "").replace(/\./g,'\\.');
+												$(fieldName).attr('title',this.innerHTML);
+												$(fieldName).addClass("cerror red-tooltip");
+												/*$(
 														'<div class="speech-bubble col-md-3 col-sm-3 col-xs-12"><div class="arrow bottom"></div>'
 																+ this.innerHTML
 																+ '</div>')
 														.insertAfter(
-																$('.native-error'));
+																$('.native-error'));*/
 											});
 						});
 		
