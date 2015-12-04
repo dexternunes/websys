@@ -5,14 +5,11 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +26,6 @@ import br.com.system.websys.entities.TerceiroTipo;
 @Controller
 @RequestMapping("/grupo")
 public class GrupoController {
-
-	private static final Logger logger = LoggerFactory
-			.getLogger(GrupoController.class);
 
 	@Autowired
 	private GrupoBusiness grupoBusiness;
@@ -83,10 +77,9 @@ public class GrupoController {
 		List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
 		status.add(ProdutoStatus.A_VENDA);
 		
-		model.addAttribute("grupo", grupo);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
 		model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
-
+		model.addAttribute("grupo", grupo);
 		
 		return "cadastro/grupo/form";
 	}
@@ -97,9 +90,11 @@ public class GrupoController {
 
 		if (result.hasErrors()) {
 
-			for (ObjectError error : result.getAllErrors())
-				logger.info("Erro: " + error.toString());
+			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
+			status.add(ProdutoStatus.A_VENDA);
 			
+			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
+			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 			model.addAttribute("grupo", grupo);
 			
 			return "cadastro/grupo/form";
@@ -109,6 +104,11 @@ public class GrupoController {
 			grupoBusiness.salvar(grupo);
 		} catch (Exception e) {
 
+			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
+			status.add(ProdutoStatus.A_VENDA);
+			
+			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
+			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 			model.addAttribute("grupo", grupo);
 			model.addAttribute("message", e.getMessage());
 			

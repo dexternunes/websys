@@ -13,88 +13,83 @@
 <title>Cadastro de Grupo</title>
 </head>
 <body>
-	<div class="right_col" role="main">
-		<div class="">
-
-			<div class="page-title">
-				<div class="title_left">
-					<h3>Cadastro de Grupo</h3>
+	<div class="page-title">
+		<div class="title_left">
+			<h3>Cadastro de Grupo</h3>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Grupo</h2>
+					<div class="clearfix"></div>
 				</div>
-			</div>
-			<div class="clearfix"></div>
-			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="x_panel">
-						<div class="x_title">
-							<h2>Grupo</h2>
-							<div class="clearfix"></div>
+				<div class="wizar_content">
+					<br />
+
+					<form:form cssClass="form-horizontal"
+						action="${pageContext.request.contextPath}/grupo/cadastro/salvar"
+						commandName="grupo" method="POST">
+
+						<form:hidden path="id" />
+
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="first-name">Grupo <span class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<form:input path="descricao"
+									cssClass="form-control col-md-7 col-xs-12"
+									placeholder="Preencha a descrição do grupo" />
+							</div>
 						</div>
-						<div class="wizar_content">
-							<br />
 
-							<form:form cssClass="form-horizontal"
-								action="${pageContext.request.contextPath}/grupo/cadastro/salvar"
-								commandName="grupo" method="POST">
-
-								<form:hidden path="id" />
-
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Grupo <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="descricao"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha a descrição do grupo" />
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Produto <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="produtos" multiple="false">
-											<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
-										</form:select>
-									</div>
-								</div>
-								
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Cotistas <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="terceiros" multiple="true">
-											<form:options items="${listTerceiros}" itemValue="id"
-												itemLabel="nome"></form:options>
-										</form:select>
-									</div>
-								</div>
-								
-																
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Ativo </label>
-									<form:checkbox style="margin-left:10px; margin-top:10px;"
-										path="ativo" />
-								</div>
-								
-								
-								<div style="clear: both"></div>
-								<br />
-								<br />
-								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">Confirmar</button>
-								</div>
-
-							</form:form>
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="first-name">Produto <span class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<form:select path="produtos" cssClass="select2_single form-control">
+									<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
+								</form:select>
+							</div>
 						</div>
-					</div>
+						
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="first-name">Cotistas <span class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<form:select path="terceiros" multiple="true" cssClass="select2_multiple form-control">
+									<form:options items="${listTerceiros}" itemValue="id"
+										itemLabel="nome"></form:options>
+								</form:select>
+							</div>
+						</div>
+						
+														
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="first-name">Ativo </label>
+							<form:checkbox style="margin-left:10px; margin-top:10px;"
+								path="ativo" />
+						</div>
+						
+						
+						<div style="clear: both"></div>
+						<br />
+						<br />
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">Confirmar</button>
+						</div>
+
+					</form:form>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+
 </body>
 </html>

@@ -37,8 +37,7 @@
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<form:input path="nome"
-									cssClass="form-control col-md-7 col-xs-12"
-									placeholder="Preencha o nome do terceiro." />
+									cssClass="form-control col-md-7 col-xs-12"/>
 								<form:errors cssClass="native-error" path="nome"></form:errors>
 							</div>
 						</div>
@@ -49,7 +48,7 @@
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<form:input path="documento"
 									cssClass="form-control col-md-7 col-xs-12"
-									placeholder="Preencha o documento do terceiro." />
+									 data-inputmask="'mask' : '999.999.999-99'" />
 									<form:errors cssClass="native-error" path="documento"></form:errors>
 							</div>
 						</div>
@@ -101,7 +100,7 @@
 								style="float: left; !important;">
 								<form:input cssClass="form-control"
 									style="float: left; width:60px; !important;"
-									path="contatos[0].ddd" placeholder="DDD" />
+									path="contatos[0].ddd"  data-inputmask="'mask' : '(99)'" />
 								<form:errors cssClass="native-error"
 									style="float: left; width:60px; !important;"
 									path="contatos[0].ddd" />
@@ -109,7 +108,7 @@
 									style="float: left; margin-left: 5px; !important"> - </label>
 								<form:input cssClass="form-control"
 									style="margin-left:5px; float: left; width:160px; !important;"
-									path="contatos[0].telefone" placeholder="000000000" />
+									path="contatos[0].telefone" data-inputmask="'mask' : '99999-9999'" />
 								<form:errors cssClass="native-error"
 									style="margin-left:5px; float: left; width:160px; !important;"
 									path="contatos[0].telefone" />
@@ -123,7 +122,7 @@
 								style="float: left; !important;">
 								<form:input cssClass="form-control"
 									style="float: left; width:60px; !important;"
-									path="contatos[1].ddd" placeholder="DDD" />
+									path="contatos[1].ddd"  data-inputmask="'mask' : '(99)'" />
 								<form:errors cssClass="native-error"
 									style="float: left; width:60px; !important;"
 									path="contatos[1].ddd" />
@@ -131,7 +130,7 @@
 									style="float: left; margin-left: 5px; !important"> - </label>
 								<form:input cssClass="form-control"
 									style="margin-left:5px; float: left; width:160px; !important;"
-									path="contatos[1].telefone" placeholder="000000000" />
+									path="contatos[1].telefone" data-inputmask="'mask' : '9999-9999'"/>
 								<form:errors cssClass="native-error"
 									style="margin-left:5px; float: left; width:160px; !important;"
 									path="contatos[1].telefone" />
@@ -145,7 +144,7 @@
 								style="float: left; !important;">
 								<form:input cssClass="form-control"
 									style="float: left; width:60px; !important;"
-									path="contatos[2].ddd" placeholder="DDD" />
+									path="contatos[2].ddd"  data-inputmask="'mask' : '(99)'" />
 								<form:errors cssClass="native-error"
 									style="float: left; width:60px; !important;"
 									path="contatos[2].ddd" />
@@ -153,7 +152,7 @@
 									style="float: left; margin-left: 5px; !important"> - </label>
 								<form:input cssClass="form-control"
 									style="margin-left:5px; float: left; width:160px; !important;"
-									path="contatos[2].telefone" placeholder="000000000" />
+									path="contatos[2].telefone"  data-inputmask="'mask' : '9999-9999'" />
 								<form:errors cssClass="native-error"
 									style="margin-left:5px; float: left; width:160px; !important;"
 									path="contatos[2].telefone" />
