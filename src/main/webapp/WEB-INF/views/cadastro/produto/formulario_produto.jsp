@@ -80,8 +80,10 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="altura"
-											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha a altura do produto." />
+											id="txtboxToFilter"
+											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
+											placeholder="Preencha a altura do produto."
+											onkeypress="SomenteNumero()"/>
 										<form:errors cssClass="native-error" path="altura"></form:errors>
 									</div>
 								</div>
@@ -93,7 +95,8 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="largura"
-											cssClass="form-control col-md-7 col-xs-12"
+											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
+											data-inputmask="'mask' : '9*'"
 											placeholder="Preencha a largura do produto." />
 										<form:errors cssClass="native-error" path="largura"></form:errors>
 									</div>
@@ -106,7 +109,8 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="comprimento"
-											cssClass="form-control col-md-7 col-xs-12"
+											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
+											data-inputmask="'mask' : '9*'"
 											placeholder="Preencha o comprimento do produto." />
 										<form:errors cssClass="native-error" path="comprimento"></form:errors>
 									</div>
@@ -139,6 +143,7 @@
 									</div>
 								</div>
 
+								 
 
 								<div style="clear: both"></div>
 								<br />
@@ -158,7 +163,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 	<script type='text/javascript'>
 
 		function Required() {
