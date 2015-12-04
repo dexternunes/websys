@@ -52,14 +52,24 @@
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 <script
+	src="${pageContext.request.contextPath}/resources/js/nprogress.js"></script>
+
+<script
 	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 
 
 
+<!-- gauge js -->
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/gauge/gauge.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/gauge/gauge_demo.js"></script>
 <!-- chart js -->
 <script
 	src="${pageContext.request.contextPath}/resources/js/chartjs/chart.min.js"></script>
 <!-- bootstrap progress js -->
+<script
+	src="${pageContext.request.contextPath}/resources/js/progressbar/bootstrap-progressbar.min.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/js/nicescroll/jquery.nicescroll.min.js"></script>
 <!-- icheck -->
@@ -94,6 +104,10 @@
 	src="${pageContext.request.contextPath}/resources/js/flot/curvedLines.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/flot/jquery.flot.resize.js"></script>
+
+<script>
+	NProgress.start();
+</script>
 
 <style type="text/css">
 .speech-bubble {
@@ -271,10 +285,7 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
 		<div class="clearfix"></div>
 		<div id="notif-group" class="tabbed_notifications"></div>
 	</div>
-    
-    <!-- input mask -->
-    <script src="${pageContext.request.contextPath}/resources/js/input_mask/jquery.inputmask.js"></script>
-    
+
 	<script type="text/javascript">
 		$(document)
 				.ready(
@@ -299,12 +310,7 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
 																$('.native-error'));
 											});
 						});
-		
 	</script>
-	 <script>
-        $(document).ready(function () {
-            $(":input").inputmask();
-        });
-    </script>
+
 </body>
 </html>
