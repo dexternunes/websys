@@ -206,8 +206,8 @@ input.cerror:focus, select.cerror:focus, textarea.cerror:focus {
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
 											<li><a href="<c:url value="/home" />">Home</a></li>
-											<li><a href="<c:url value="/agenda/agenda" />">Agenda</a>
-											</li>
+<%-- 											<li><a href="<c:url value="/agenda/agenda" />">Agenda</a> --%>
+<!-- 											</li> -->
 											<li><a href="<c:url value="/relatorios/manutencao" />">Relatório
 													de Manutenção</a></li>
 										</ul></li>
