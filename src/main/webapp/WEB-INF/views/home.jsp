@@ -1,3 +1,5 @@
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+
 <html lang="en">
 
 <head>
@@ -151,11 +153,30 @@
 		<div class="clearfix"></div>
 		<div id="notif-group" class="tabbed_notifications"></div>
 	</div>
-	
-	<script
-		src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
+
+	<script src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
 
 	<script>
+		var reservasJSON = [];
+			
+		$.ajax({
+			url: "${pageContext.request.contextPath}/reserva/get",
+			dataType : "json",
+			contentType: "application/json; charset=utf-8",
+			type: 'GET',
+			async: false,
+			success: function(data){
+				reservasJSON = data.reservas;
+			},
+		    error: function (request, status, error) {
+		        alert("error");
+		    }
+		});
+	
+	 /* 	$.get('${pageContext.request.contextPath}/reserva/get', function(data) { 
+			reservasJSON = data.reservas; 
+		}); */
+	 
 		$(window).load(function() {
 
 			var date = new Date();
@@ -164,7 +185,7 @@
 			var y = date.getFullYear();
 			var started;
 			var categoryClass;
-
+			
 			var calendar = $('#calendar').fullCalendar({
 				header : {
 					left : 'prev,next today',
@@ -219,6 +240,7 @@
 					calendar.fullCalendar('unselect');
 				},
 				editable : true,
+                events: reservasJSON
 			});
 		});
 	</script>
