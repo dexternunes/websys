@@ -3,7 +3,6 @@ package br.com.system.websys.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,9 +13,13 @@ public class Imagem extends EntityBaseRoot {
 	private String imagem;
 	
 	private String uid;
+	
+	private String size;
+	
+	private String name;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue
 	@Column(name = "id_imagem")
 	@Override
 	public Long getId() {
@@ -40,4 +43,20 @@ public class Imagem extends EntityBaseRoot {
 		this.uid = uid;
 	}
 
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }
