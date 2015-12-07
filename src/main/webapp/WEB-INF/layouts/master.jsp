@@ -24,6 +24,11 @@
 <link
 	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
 	rel="stylesheet">
+
+<link
+	href="${pageContext.request.contextPath}/resources/css/timepicker.css"
+	rel="stylesheet">
+
 <link
 	href="${pageContext.request.contextPath}/resources/fonts/css/font-awesome.min.css"
 	rel="stylesheet">
@@ -80,6 +85,9 @@
 	src="${pageContext.request.contextPath}/resources/js/moment.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/datepicker/daterangepicker.js"></script>
+
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/datepicker/timepicker.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
 
@@ -149,10 +157,41 @@
 	text-align:center;
 }
 */
+.daterangepicker {
+	position: absolute !important;
+	z-index: 9999 !important;
+}
+
+.timepicker {
+	position: absolute !important;
+	z-index: 9999 !important;
+}
+
+.ui-timepicker-container {
+	position: absolute;
+	overflow: hidden;
+}
+
+.ui-timepicker {
+	display: block;
+	height: 200px;
+	text-align: center;
+	overflow: auto;
+	overflow-x: hidden; /* IE */
+	margin: 0;
+	padding: 0 0 0 1px;
+	position: absolute !important;
+	z-index: 9999 !important;
+	color: white !important;
+	border-color: white !important;
+	background-color:white !important;
+}
+
+
+
 .native-error {
 	color: #b94a48;
 }
-
 
 .native-error-message {
 	color: #b94a48;
@@ -255,8 +294,8 @@ $(document).ready(function() {
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
 											<li><a href="<c:url value="/home" />">Home</a></li>
-<%-- 											<li><a href="<c:url value="/agenda/agenda" />">Agenda</a> --%>
-<!-- 											</li> -->
+											<%-- 											<li><a href="<c:url value="/agenda/agenda" />">Agenda</a> --%>
+											<!-- 											</li> -->
 											<li><a href="<c:url value="/relatorios/manutencao" />">Relatório
 													de Manutenção</a></li>
 										</ul></li>
