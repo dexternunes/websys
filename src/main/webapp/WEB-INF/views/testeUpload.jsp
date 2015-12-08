@@ -23,7 +23,7 @@
 				</div>
 			    <div class="x_content">
 		        	<form name="form-product-id" id="main-form">
-						<input id="fileupload" type="file" name="fileupload" data-url="${pageContext.request.contextPath}/reservaEvento/upload" multiple style="opacity: 0; filter:alpha(opacity: 0);">
+						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg; image/gif; image/bmp; image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaId=1&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
 					</form>	
 				
 					<p><div style="color:red" class="jquery_error"></div></p>
