@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.ReservaEvento;
+import br.com.system.websys.entities.dto.ReservaEventoDTO;
 import br.com.system.websys.repository.ReservaEventoRepository;
 
 @Service  
@@ -27,6 +29,23 @@ class ReservaEventoBusinessImpl extends BusinessBaseRootImpl<ReservaEvento, Rese
 	@Override
 	public List<ReservaEvento> getAll() {
 		return ((ReservaEventoRepository)repository).findAll();
+	}
+	
+	@Override
+	public ReservaEvento addImagem(ReservaEvento evento, Imagem imagem) throws Exception{
+		evento.getImagens().add(imagem);
+		return salvar(evento);
+	}
+	
+	@Override
+	public ReservaEventoDTO parseToDTO(ReservaEvento reservaEvento){
+		
+		ReservaEventoDTO dto = new ReservaEventoDTO();
+		dto.setHora(reservaEvento.getHora());
+		dto.setMinuto(reservaEvento.getMinuto());
+		dto.setSegundo(reservaEvento.getSegundo());
+	
+		return dto;
 	}
 
 }

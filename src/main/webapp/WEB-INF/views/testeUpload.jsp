@@ -23,7 +23,7 @@
 				</div>
 			    <div class="x_content">
 		        	<form name="form-product-id" id="main-form">
-						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg; image/gif; image/bmp; image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaId=1&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
+						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg; image/gif; image/bmp; image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=1&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
 					</form>	
 				
 					<p><div style="color:red" class="jquery_error"></div></p>
@@ -35,39 +35,39 @@
 					</br> 
 					<button id="btn-upload" class="btn btn-primary">Escolher Fotos</button> ou (Arraste as fotos)
 								<div id="dropbox" class="upload">
-					<%-- <c:choose> --%>
+					<c:choose>
 			
-						<%-- <c:when test="${fn:length(produto.urlsFotosProduto) == 0}"> --%>
+						<c:when test="${fn:length(reservaEvento.imagens) == 0}">
 							<p>Nenhuma foto cadastrada ainda, arraste ou escolha uma foto no botão acima.</p>
-						<%-- </c:when>	 --%>
+						</c:when>	
 					
-						<%-- <c:when test="${fn:length(produto.urlsFotosProduto) >= 5}">
+						<c:when test="${fn:length(reservaEvento.imagens) >= 5}">
 							<ul class="thumbnails">
-								<c:forEach var="photo" items="${produto.urlsFotosProduto}">
+								<c:forEach var="photo" items="${reservaEvento.imagens}">
 									<li class="span3">
 										<a href="#" class="thumbnail">
-											<img src="${photo}" alt="Foto para ${produto.descricao}">
+											<img src="${photo.url}" />
 										</a>
-										<a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${produto.id}/${fn:split(photo, '/')[2]}/" />')">Remover</a>
+										<%-- <a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${produto.id}/${fn:split(photo, '/')[2]}/" />')">Remover</a> --%>
 									</li>
 								</c:forEach>
 							</ul>
 						</c:when>
 					
-						<c:when test="${fn:length(produto.urlsFotosProduto) < 5}">
+						<c:when test="${fn:length(reservaEvento.imagens) < 5}">
 							<ul class="thumbnails">
-								<c:forEach var="photo" items="${produto.urlsFotosProduto}">
+								<c:forEach var="photo" items="${reservaEvento.imagens}">
 									<li class="span3">
 										<a href="#" class="thumbnail">
-											<img src="${photo}" alt="Foto para ${produto.descricao}">
+											<img src="${photo.url}" />
 										</a>
-										<a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${produto.id}/${fn:split(photo, '/')[2]}/" />')">Remover</a>
+										<%-- <a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${produto.id}/${fn:split(photo, '/')[2]}/" />')">Remover</a> --%>
 									</li>
 								</c:forEach>
 							</ul>
-						</c:when> --%>
+						</c:when>
 				
-					<%-- </c:choose> --%>
+					</c:choose>
 					
 					<div style="display: none;" class="progress progress-striped active">
 						<div class="bar" style="width: 100%;"></div>
@@ -96,7 +96,7 @@
 					acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i ,
 					done : function(e, data) {
 						$("div.active:not(.progress)").html(data.result);
-						$("#consultaProduto").submit();
+						document.location="${pageContext.request.contextPath}/reservaEvento/1";
 					},
 					change : function(e, data) {
 						var total = data.files.length + $("a.thumbnail").length;
