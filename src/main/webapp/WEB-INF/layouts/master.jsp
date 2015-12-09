@@ -58,6 +58,8 @@
 	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 
 
+<!-- input mask -->
+    <script src="${pageContext.request.contextPath}/resources/js/input_mask/jquery.inputmask.js"></script>
 
 <!-- gauge js -->
 <script type="text/javascript"
@@ -257,8 +259,6 @@ $(document).ready(function() {
 											<li><a href="<c:url value="/home" />">Home</a></li>
 <%-- 											<li><a href="<c:url value="/agenda/agenda" />">Agenda</a> --%>
 <!-- 											</li> -->
-											<li><a href="<c:url value="/relatorios/manutencao" />">Relatório
-													de Manutenção</a></li>
 										</ul></li>
 								</sec:authorize>
 								<sec:authorize url="/configuracoes/">
@@ -271,6 +271,7 @@ $(document).ready(function() {
 											<li><a href="<c:url value="/produtos/" />">Produtos</a>
 											</li>
 											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
+											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
 										</ul></li>
 								</sec:authorize>
 							</ul>
@@ -324,6 +325,12 @@ $(document).ready(function() {
 		<div class="clearfix"></div>
 		<div id="notif-group" class="tabbed_notifications"></div>
 	</div>
+
+	<script>
+        $(document).ready(function () {
+            $(":input").inputmask();
+        });
+    </script>
 
 	<script type="text/javascript">
 		$(document)
