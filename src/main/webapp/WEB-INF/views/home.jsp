@@ -186,7 +186,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Início</label>
 							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
-								<input id="data_inicio_reserva" class="form-control has-feedback-left"
+								<input id="data_inicio_reserva" class="form-control has-feedback-left data_reserva"
 									style="z-index: 9999 !important;" type="text"
 									aria-describedby="inputSuccess2Status4" placeholder="Data"></input>
 								<span class="fa fa-calendar-o form-control-feedback left"
@@ -195,7 +195,7 @@
 							</div>
 							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
 								<input id="hora_inicio_reserva"
-									class="form-control has-feedback-left timepicker"
+									class="form-control has-feedback-left timepicker hora_reserva"
 									style="z-index: 9999 !important;" type="text"
 									aria-describedby="inputSuccess2Status4" placeholder="Hora"></input>
 								<span class="fa fa-clock-o form-control-feedback left"
@@ -207,7 +207,7 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">Fim</label>
 							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
-								<input id="data_fim_reserva" class="form-control has-feedback-left"
+								<input id="data_fim_reserva" class="form-control has-feedback-left data_reserva"
 									style="z-index: 9999 !important;" type="text"
 									aria-describedby="inputSuccess2Status4" placeholder="Data"></input>
 								<span class="fa fa-calendar-o form-control-feedback left"
@@ -216,7 +216,7 @@
 							</div>
 							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
 								<input id="hora_fim_reserva"
-									class="form-control has-feedback-left timepicker"
+									class="form-control has-feedback-left timepicker hora_reserva"
 									style="z-index: 9999 !important;" type="text"
 									aria-describedby="inputSuccess2Status4" placeholder="Hora"></input>
 								<span class="fa fa-clock-o form-control-feedback left"
@@ -250,25 +250,65 @@
 					<div id="testmodal2" style="padding: 5px 20px;">
 						<form id="antoform2" class="form-horizontal calender" role="form">
 							<div class="form-group">
+								<label class="col-sm-3 control-label">Solicitante</label>
+								${user.nome}
+							</div>
+							<div class="clearfix"></div>
+							<div class="form-group">
 								<label class="col-sm-3 control-label">Título</label>
 								<div class="col-sm-9">
 									<input type="text" class="form-control" id="title2"
 										name="title2">
 								</div>
 							</div>
+							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Descrição</label>
-								<div class="col-sm-9">
-									<textarea class="form-control" style="height: 55px;"
-										id="descr2" name="descr"></textarea>
-								</div>
+							<label class="col-sm-3 control-label">Início</label>
+							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
+								<input id="data_inicio_reserva2" class="form-control has-feedback-left data_reserva"
+									style="z-index: 9999 !important;" type="text"
+									aria-describedby="inputSuccess2Status4" placeholder="Data"></input>
+								<span class="fa fa-calendar-o form-control-feedback left"
+									aria-hidden="true"></span> <span id="inputSuccess2Status4"
+									class="sr-only"></span>
 							</div>
-
+							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
+								<input id="hora_inicio_reserva2"
+									class="form-control has-feedback-left timepicker hora_reserva"
+									style="z-index: 9999 !important;" type="text"
+									aria-describedby="inputSuccess2Status4" placeholder="Hora"></input>
+								<span class="fa fa-clock-o form-control-feedback left"
+									aria-hidden="true"></span> <span id="inputSuccess2Status4"
+									class="sr-only"></span>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Fim</label>
+							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
+								<input id="data_fim_reserva2" class="form-control has-feedback-left data_reserva"
+									style="z-index: 9999 !important;" type="text"
+									aria-describedby="inputSuccess2Status4" placeholder="Data"></input>
+								<span class="fa fa-calendar-o form-control-feedback left"
+									aria-hidden="true"></span> <span id="inputSuccess2Status4"
+									class="sr-only"></span>
+							</div>
+							<div class="col-md-4 xdisplay_inputx form-group has-feedback">
+								<input id="hora_fim_reserva2"
+									class="form-control has-feedback-left timepicker hora_reserva"
+									style="z-index: 9999 !important;" type="text"
+									aria-describedby="inputSuccess2Status4" placeholder="Hora"></input>
+								<span class="fa fa-clock-o form-control-feedback left"
+									aria-hidden="true"></span> <span id="inputSuccess2Status4"
+									class="sr-only"></span>
+							</div>
+						</div>
+						<div class="clearfix"></div>
 						</form>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default remove">Excluir</button>
+					<button type="button" id="remove" class="btn btn-default">Excluir</button>
 					<button type="button" class="btn btn-default antoclose2"
 						data-dismiss="modal">Fechar</button>
 					<button type="button" class="btn btn-primary antosubmit2">Confirmar
@@ -351,15 +391,22 @@
     						
     						var hora_fim = fim.getHours();
     						var hora_inicio = inicio.getHours();
+    						var dia_fim = fim.getDate();
+    						var dia_inicio = inicio.getDate();
     						
-    						if(hora_fim && hora_inicio){
-    							allDay=false;
-    						}
-    						else{
-    							allDay=true;
-    							inicio.setHours(0, 0, 0, 0);
-    							fim.setHours(0, 0, 0, 0);
-    						}
+   							if(dia_fim > dia_inicio){
+   								if(hora_fim && hora_inicio)
+   									allDay=false;
+   								else
+   									allDay=true;
+   							}
+   							else{
+   								if(hora_fim && hora_inicio)
+   									allDay=false;
+   								else
+   									allDay=true;
+   							}
+   							
                             calendar.fullCalendar('renderEvent', {
                             	title : title,
     							start : inicio,
@@ -391,9 +438,10 @@
                     });
 				},
 				eventClick : function(calEvent, jsEvent, view) {
-					alert(calEvent._id);
 					
-					$('.remove').click(function() {
+					$("#data_inicio_reserva2").val(moment(calEvent.start).format("YYYY/MM/DD"));
+					
+					$('#remove').click(function() {
 						calendar.fullCalendar('removeEvents',calEvent._id);
 						$('.antoclose2').click();
 		            });
@@ -403,7 +451,39 @@
 					categoryClass = $("#event_type").val();
 
 					$(".antosubmit2").on("click", function() {
+						
+						var inicio2 = new Date($("#data_inicio_reserva2").val() +' '+ $("#hora_inicio_reserva2").val());
+						var fim2 = new Date($("#data_fim_reserva2").val() +' '+ $("#hora_fim_reserva2").val());
+						
+						var hora_fim2 = fim2.getHours();
+						var hora_inicio2 = inicio2.getHours();
+						var dia_fim2 = fim2.getDate();
+						var dia_inicio2 = inicio2.getDate();
+						var allDay2 = false;
+						
+						if(dia_fim2 > dia_inicio2){
+								if(hora_fim2 && hora_inicio2)
+									allDay2=false;
+								else
+									allDay2=true;
+							}
+							else{
+								if(hora_fim2 && hora_inicio2)
+									allDay2=false;
+								else
+									allDay2=true;
+							}
+						
 						calEvent.title = $("#title2").val();
+						calEvent.start = inicio2;
+						calEvent.end = fim2;
+						calEvent.allDay = allDay2;
+						
+						$('#title2').val('');
+                        $('#data_inicio_reserva2').val('');
+                        $('#data_fim_reserva2').val('');
+                        $('#hora_inicio_reserva2').val('');
+                        $('#hora_fim_reserva2').val('');       
 
 						calendar.fullCalendar('updateEvent', calEvent);
 
@@ -418,51 +498,18 @@
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#data_inicio_reserva').daterangepicker({
+			$('.data_reserva').daterangepicker({
 				singleDatePicker : true,
 				format : 'YYYY/MM/DD',
 				calender_style : "picker_4"
 			}, function(start, end, label) {
 				console.log(start.toISOString(), end.toISOString(), label);
-			}),
-			$('#data_fim_reserva').daterangepicker({
-				singleDatePicker : true,
-				format : 'YYYY/MM/DD',
-				calender_style : "picker_4"
-			}, function(start, end, label) {
-				console.log(start.toISOString(), end.toISOString(), label);
-			}),
+			}),			
 
-			$('#hora_inicio_reserva').timepicker();
-			$('#hora_fim_reserva').timepicker();
-		});
-	</script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			// initialize both timepickers at once
-			$('input.timepicker').timepicker({
+			$('.hora_reserva').timepicker({
 				timeFormat : 'hh:mm p',
-				// year, month, day and seconds are not important
-				minTime : new Date(0, 0, 0, 8, 0, 0),
-				maxTime : new Date(0, 0, 0, 15, 0, 0),
-				// time entries start being generated at 6AM but the plugin 
-				// shows only those within the [minTime, maxTime] interval
-				startHour : 6,
-				// the value of the first item in the dropdown, when the input
-				// field is empty. This overrides the startHour and startMinute 
-				// options
-				startTime : new Date(0, 0, 0, 8, 20, 0),
-				// items in the dropdown are separated by at interval minutes
-				interval : 10,
-				change : function(time) {
-					var element = $(this), text, color;
-					var timepicker = element.timepicker();
-
-					color = '#' + (~~(Math.random() * 16777215)).toString(16);
-					element.css({
-						'background' : color
-					});
-				}
+				startHour : 7,
+				interval : 30
 			});
 		});
 	</script>
