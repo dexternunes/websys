@@ -56,9 +56,9 @@
 <!-- Scripts -->
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-<script
+<%-- <script
 	src="${pageContext.request.contextPath}/resources/js/nprogress.js"></script>
-
+ --%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
 
@@ -66,12 +66,12 @@
 <!-- input mask -->
     <script src="${pageContext.request.contextPath}/resources/js/input_mask/jquery.inputmask.js"></script>
 
-<!-- gauge js -->
+<%-- <!-- gauge js -->
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/gauge/gauge.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/gauge/gauge_demo.js"></script>
-<!-- chart js -->
+ --%><!-- chart js -->
 <script
 	src="${pageContext.request.contextPath}/resources/js/chartjs/chart.min.js"></script>
 <!-- bootstrap progress js -->
@@ -143,6 +143,11 @@
 	src="${pageContext.request.contextPath}/resources/js/jquery.loadmask.min.js"
 	type="text/javascript"></script>
 
+<!-- select2 -->
+<link href="${pageContext.request.contextPath}/resources/css/select/select2.min.css" rel="stylesheet">
+        <!-- select2 -->
+        <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
+    
 <style>
 #holder {
 	border: 10px dashed #ccc;
@@ -185,10 +190,10 @@ progress:after {
 </style>
 
 
-<script>
+<!-- <script>
 	NProgress.start();
 </script>
-
+ -->
 <style type="text/css">
 /*
 .speech-bubble {
