@@ -1,0 +1,141 @@
+div.active:not (.progress ) {
+	background-color: #E5E5E5;
+	border-top-right-radius: 10px;
+	margin: 0 10px 0 0;
+	min-height: 470px;
+	padding: 20px;
+	position: fixed;
+	width: 67%;
+}
+
+
+.hero-unit {
+	color: white;
+	border-radius: 0;
+	margin-bottom: 0;
+	margin-bottom: 0;
+	padding: 30px;
+}
+
+.no-margin{
+	margin-top:2px;
+}
+
+#main-form{
+	display:none;
+	position:absolute;
+	right:-9000px;
+}
+
+.upload {
+	display: block;
+	padding: 15px;
+	border: 1px solid #CCCCCC;
+	border-radius: 10px;
+	margin: 20px 0;
+	color: #666;
+	text-align: center;
+	-webkit-transition: box-shadow linear 0.2s;
+	-moz-transition: box-shadow linear 0.2s;
+	transition: box-shadow linear 0.2s;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0) inset;
+	min-height: 200px;
+}
+
+.upload:hover {
+	color: #666;
+	border: 1px dotted #CCCCCC;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.4) inset
+}
+
+.loadmask {
+	z-index: 100;
+	position: absolute;
+	top: 0;
+	left: 0;
+	-moz-opacity: 0.5;
+	opacity: .50;
+	filter: alpha(opacity = 50);
+	background-color: #CCC;
+	width: 100%;
+	height: 100%;
+	zoom: 1;
+}
+
+.loadmask-msg {
+	z-index: 20001;
+	position: absolute;
+	top: 0;
+	left: 0;
+	border: 1px solid #6593cf;
+	background: #c3daf9;
+	padding: 2px;
+}
+
+.loadmask-msg div {
+	padding: 5px 10px 5px 25px;
+	background: #fbfbfb url('../../resources/img/loading.gif') no-repeat 5px 5px;
+	line-height: 16px;
+	border: 1px solid #a3bad9;
+	color: #222;
+	font: normal 11px tahoma, arial, helvetica, sans-serif;
+	cursor: wait;
+}
+
+.masked {
+	overflow: hidden !important;
+}
+
+.masked-relative {
+	position: relative !important;
+}
+
+.masked-hidden {
+	visibility: hidden !important;
+}
+
+.thumbnail>img {
+	width: 255px;
+}
+
+.thumbnail {
+	margin-bottom: 10px;
+}
+
+.form-search .input-append{
+	width:100%;
+}
+.form-search .input-append .search-query{
+border-radius: 5px 0 0 5px;
+width:70%
+}
+.form-search .input-append .btn{
+border-radius: 0 5px 5px 0;	
+}
+
+@media (max-width:650px){
+	.content, 
+	.content > .aside,
+	.content > .main{
+		display:block;
+		width:100%;
+		margin:0;
+		padding:0
+	}
+	.content > .aside{
+		margin-bottom: 20px;
+	}
+	#dropbox{
+		margin:5px;
+	}
+	.tab-pane{
+		padding:0 10px 0 10px;
+	}
+	.nav {
+		margin:0 10px 0 10px;
+	}
+	
+	.container{
+		font-size:0.5em;
+	}
+}

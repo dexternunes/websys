@@ -1,5 +1,6 @@
 package br.com.system.websys.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @Table(name="reserva_evento")
 public class ReservaEvento extends EntityBaseRoot {
 
-	private List<Imagem> imagens;
+	private List<Imagem> imagens = new ArrayList<Imagem>();
 	
 	private Long hora;
 	
