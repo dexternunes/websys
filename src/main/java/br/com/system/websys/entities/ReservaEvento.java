@@ -1,5 +1,6 @@
 package br.com.system.websys.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -7,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name="reserva_evento")
 public class ReservaEvento extends EntityBaseRoot {
 
-	private List<Imagem> imagens;
+	private List<Imagem> imagens = new ArrayList<Imagem>();
 	
 	private Long hora;
 	
@@ -27,7 +27,7 @@ public class ReservaEvento extends EntityBaseRoot {
 	private Long segundo;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue
 	@Column(name = "id_reserva_evento")
 	@Override
 	public Long getId() {

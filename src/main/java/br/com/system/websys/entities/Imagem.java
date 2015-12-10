@@ -1,35 +1,38 @@
 package br.com.system.websys.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="imagem")
 public class Imagem extends EntityBaseRoot {
 
-	private String imagem;
-	
 	private String uid;
+	
+	private Long size;
+	
+	private String name;
+	
+	private ReservaEvento reservaEvento;
+	
+	private String url;
+	
+	private byte[] imagem;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue
 	@Column(name = "id_imagem")
 	@Override
 	public Long getId() {
 		return id;
-	}
-
-	@Column(columnDefinition="LONGTEXT")
-	public String getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
 	}
 
 	public String getUid() {
@@ -40,4 +43,48 @@ public class Imagem extends EntityBaseRoot {
 		this.uid = uid;
 	}
 
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@JoinColumn(name="id_reserva_evento", referencedColumnName="id_reserva_evento")
+	public ReservaEvento getReservaEvento() {
+		return reservaEvento;
+	}
+
+	public void setReservaEvento(ReservaEvento reservaEvento) {
+		this.reservaEvento = reservaEvento;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	@Lob
+    @Column(name="imagem", nullable=false, columnDefinition="mediumblob")
+	public byte[] getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(byte[] imagem) {
+		this.imagem = imagem;
+	}
+    
 }

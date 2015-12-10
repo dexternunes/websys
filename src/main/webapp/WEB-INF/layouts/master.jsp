@@ -24,6 +24,11 @@
 <link
 	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
 	rel="stylesheet">
+
+<link
+	href="${pageContext.request.contextPath}/resources/css/timepicker.css"
+	rel="stylesheet">
+
 <link
 	href="${pageContext.request.contextPath}/resources/fonts/css/font-awesome.min.css"
 	rel="stylesheet">
@@ -83,6 +88,9 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/datepicker/daterangepicker.js"></script>
 
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/datepicker/timepicker.js"></script>
+
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
 
 
@@ -106,6 +114,76 @@
 	src="${pageContext.request.contextPath}/resources/js/flot/curvedLines.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/flot/jquery.flot.resize.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/dropzone/dropzone.js"></script>
+
+<link
+	href="${pageContext.request.contextPath}/resources/bootstrap-fileinput/css/fileinput.css"
+	media="all" rel="stylesheet" type="text/css" />
+<link href="${pageContext.request.contextPath}/resources/css/upload.css"
+	media="all" rel="stylesheet" type="text/css" />
+
+<script
+	src="${pageContext.request.contextPath}/resources/bootstrap-fileinput/js/fileinput.min.js"
+	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/bootstrap-fileinput/js/fileinput_locale_pt-BR.js"
+	type="text/javascript"></script>
+
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.ui.widget.js"
+	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.iframe-transport.js"
+	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.fileupload.js"
+	type="text/javascript"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.loadmask.min.js"
+	type="text/javascript"></script>
+
+<style>
+#holder {
+	border: 10px dashed #ccc;
+	width: 300px;
+	min-height: 300px;
+	margin: 20px auto;
+}
+
+#holder.hover {
+	border: 10px dashed #0c0;
+}
+
+#holder img {
+	display: block;
+	margin: 10px auto;
+}
+
+#holder p {
+	margin: 10px;
+	font-size: 14px;
+}
+
+progress {
+	width: 100%;
+}
+
+progress:after {
+	content: '%';
+}
+
+.fail {
+	background: #c00;
+	padding: 2px;
+	color: #fff;
+}
+
+.hidden {
+	display: none !important;
+}
+</style>
+
 
 <script>
 	NProgress.start();
@@ -151,10 +229,41 @@
 	text-align:center;
 }
 */
+.daterangepicker {
+	position: absolute !important;
+	z-index: 9999 !important;
+}
+
+.timepicker {
+	position: absolute !important;
+	z-index: 9999 !important;
+}
+
+.ui-timepicker-container {
+	position: absolute;
+	overflow: hidden;
+}
+
+.ui-timepicker {
+	display: block;
+	height: 200px;
+	text-align: center;
+	overflow: auto;
+	overflow-x: hidden; /* IE */
+	margin: 0;
+	padding: 0 0 0 1px;
+	position: absolute !important;
+	z-index: 9999 !important;
+	color: white !important;
+	border-color: white !important;
+	background-color:white !important;
+}
+
+
+
 .native-error {
 	color: #b94a48;
 }
-
 
 .native-error-message {
 	color: #b94a48;
@@ -257,8 +366,8 @@ $(document).ready(function() {
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
 											<li><a href="<c:url value="/home" />">Home</a></li>
-<%-- 											<li><a href="<c:url value="/agenda/agenda" />">Agenda</a> --%>
-<!-- 											</li> -->
+											<li><a href="<c:url value="/relatorios/manutencao" />">Relatório
+													de Manutenção</a></li>
 										</ul></li>
 								</sec:authorize>
 								<sec:authorize url="/configuracoes/">

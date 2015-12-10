@@ -9,7 +9,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,7 +38,7 @@ public class Reserva extends EntityBaseRoot {
 	private ReservaEvento eventoFim;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue
 	@Column(name = "id_reserva")
 	@Override
 	public Long getId() {
@@ -73,7 +72,7 @@ public class Reserva extends EntityBaseRoot {
 	public void setInicioReserva(Date inicioReserva) {
 		this.inicioReserva = inicioReserva;
 	}
-
+	
 	public Date getFimReserva() {
 		return fimReserva;
 	}
