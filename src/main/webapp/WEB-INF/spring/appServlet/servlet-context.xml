@@ -12,9 +12,12 @@
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- **************************************************************** -->
+  	<!--  Serviços de Conversão		                                      -->
+  	<!-- **************************************************************** -->
 	<annotation-driven conversion-service="conversionService" >
 		<message-converters>
+			<beans:bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
             <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <beans:property name="objectMapper">
                     <beans:bean class="br.com.system.websys.serializer.HibernateAwareObjectMapper" />
@@ -22,6 +25,13 @@
             </beans:bean>
         </message-converters>
 	</annotation-driven>
+	
+	<task:scheduler id="schedulersc"/>
+	<task:annotation-driven executor="executorWithPoolSizeRangesc" scheduler="schedulersc"/>
+	<task:executor id="executorWithPoolSizeRangesc" pool-size="5-25" queue-capacity="100"/>
+	
+	<context:component-scan base-package="br.com.system.websys.controller" />
+	<context:annotation-config />
 	
 	<!-- **************************************************************** -->
   	<!--  Conversores 				                                      -->
@@ -37,14 +47,6 @@
 	    </beans:property>
 	</beans:bean> 
 
-	<annotation-driven></annotation-driven>
-	<context:component-scan base-package="br.com.system.websys.controller" />
-	<context:annotation-config />
-
-	<task:scheduler id="schedulersc"/>
-	<task:annotation-driven executor="executorWithPoolSizeRangesc" scheduler="schedulersc"/>
-	<task:executor id="executorWithPoolSizeRangesc" pool-size="5-25" queue-capacity="100"/>
-	
 	<!-- **************************************************************** -->
   	<!--  Interceptors 				                                      -->
   	<!-- **************************************************************** -->
@@ -53,6 +55,7 @@
       <interceptor>
       	<mapping path="/**"/>
         <exclude-mapping path="/api/**"/>
+        <exclude-mapping path="/reserva/api/**"/>
         <beans:bean class="br.com.system.websys.security.mvc.SecurityInfoInterceptor" />
       </interceptor>
     </interceptors> 
@@ -126,5 +129,3 @@
 	<tx:annotation-driven/>
 	
 </beans:beans>
-
-
