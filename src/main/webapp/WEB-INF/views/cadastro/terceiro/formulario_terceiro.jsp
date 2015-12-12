@@ -57,13 +57,12 @@
 								for="tipos">Tipo <span class="required">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-							<form:errors cssClass="native-error" path="tipos"></form:errors>
-								<form:select path="tipos" multiple="true"
+								<form:select path="tipos" multiple="false"
 									cssClass="select2_multiple form-control">
 									<form:options items="${listaTerceiroTipo}" itemValue="code"
 										itemLabel="descricao"></form:options>
 								</form:select>
-								
+								<form:errors cssClass="native-error" path="tipos"></form:errors>
 							</div>
 						</div>
 						<div class="form-group">

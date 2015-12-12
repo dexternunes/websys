@@ -94,7 +94,8 @@ public class TerceiroController {
 		try {
 			terceiroBusiness.salvar(terceiro);
 		} catch (Exception e) {
-
+			
+			model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 			model.addAttribute("terceiros", terceiro);
 			model.addAttribute("message", e.getMessage());
 			
