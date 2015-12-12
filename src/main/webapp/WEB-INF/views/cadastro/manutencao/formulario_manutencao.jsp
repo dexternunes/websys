@@ -11,6 +11,130 @@
 <html>
 <head>
 <title>Cadastro de Manutenção</title>
+<style type="text/css">
+.daterangepicker {
+	position: absolute !important;
+	z-index: 9999 !important;
+}
+
+.timepicker {
+	position: absolute !important;
+	z-index: 9999 !important;
+}
+
+.ui-timepicker-container {
+	position: absolute;
+	overflow: hidden;
+}
+
+.ui-timepicker {
+	display: block;
+	height: 200px;
+	text-align: center;
+	list-style: none outside none;
+	overflow: auto;
+	overflow-x: hidden; /* IE */
+	margin: 0;
+	padding: 0 0 0 1px;
+	position: absolute !important;
+	z-index: 9999 !important;
+}
+
+.ui-timepicker-standard {
+	/* .ui-widget */
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 1.1em;
+	/* .ui-widget-content */
+	background-color: #FFF;
+	border: 1px solid #AAA;
+	color: #222;
+	/* .ui-menu */
+	margin: 0;
+	padding: 2px;
+}
+
+.ui-timepicker-standard a {
+	/* .ui-widget-content a */
+	color: #222;
+}
+
+.ui-timepicker-standard .ui-state-hover {
+	/* .ui-state-hover */
+	background-color: #DADADA;
+	border: 1px solid #999;
+	font-weight: normal;
+	color: #212121;
+}
+
+.ui-timepicker-standard .ui-menu-item {
+	/* .ui-menu .ui-menu-item */
+	/*clear: left;
+    float: left;*/
+	margin: 0;
+	padding: 0;
+	/*width: 100%;*/
+}
+
+.ui-timepicker-standard .ui-menu-item a {
+	/* .ui-menu .ui-menu-item a */
+	display: block;
+	padding: 0.2em 0.4em;
+	line-height: 1.5;
+	text-decoration: none;
+}
+
+.ui-timepicker-standard .ui-menu-item a.ui-state-hover {
+	/* .ui-menu .ui-menu-item a.ui-state-hover */
+	font-weight: normal;
+	margin: -1px -1px -1px -1px;
+}
+
+.ui-timepicker-corners, .ui-timepicker-corners .ui-corner-all {
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
+
+.ui-timepicker-hidden {
+	/* .ui-helper-hidden */
+	display: none;
+}
+
+
+</style>
+<!-- Bootstrap core CSS -->
+
+<link
+	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
+	rel="stylesheet">
+
+<link
+	href="${pageContext.request.contextPath}/resources/css/timepicker.css"
+	rel="stylesheet">
+
+<link
+	href="${pageContext.request.contextPath}/resources/fonts/css/font-awesome.min.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/css/animate.min.css"
+	rel="stylesheet">
+
+<!-- Custom styling plus plugins -->
+<link href="${pageContext.request.contextPath}/resources/css/custom.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/css/icheck/flat/green.css"
+	rel="stylesheet">
+
+<link
+	href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.css"
+	rel="stylesheet">
+<link
+	href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.print.css"
+	rel="stylesheet" media="print">
+
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+
 
 </head>
 <body >
@@ -45,6 +169,7 @@
 											<form:options items="${listaProdutos}" itemValue="id"
 												itemLabel="descricao"></form:options>
 										</form:select>
+										<form:errors cssClass="native-error" path="produto"></form:errors>
 									</div>
 									<form:errors cssClass="native-error" path="produto"></form:errors>
 								</div>
@@ -62,31 +187,6 @@
 								</div>
 								
 
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Data/Hora início <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="inicioManutencao"
-											cssClass="form-control col-md-7 col-xs-12"
-											data-inputmask="'mask' : '99/99/9999 99:99:99'"
-											placeholder="Preencha a data de início." />
-										<form:errors cssClass="native-error" path="inicioManutencao"></form:errors>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Data/Hora final <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="fimManutencao"
-											cssClass="form-control col-md-7 col-xs-12"
-											data-inputmask="'mask' : '99/99/9999 99:99:99'"
-											placeholder="Preencha a data/hora final." />
-										<form:errors cssClass="native-error" path="fimManutencao"></form:errors>
-									</div>
-								</div>
 								
 
 								<div class="form-group">
@@ -117,10 +217,39 @@
 								</div>
 
 								 
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Data Início</label>
+									<div class="col-md-4 xdisplay_inputx form-group has-feedback">
+										<form:input path="inicioManutencao" id="data_inicio_reserva" class="form-control has-feedback-left data_reserva"
+											style="z-index: 9999 !important;" type="text" 
+											aria-describedby="inputSuccess2Status4" placeholder="Data" ></form:input>
+											<form:errors cssClass="native-error" path="inicioManutencao"></form:errors>
+										<span class="fa fa-calendar-o form-control-feedback left"
+											aria-hidden="true"></span> <span id="inputSuccess2Status4"
+											class="sr-only"></span>
+									</div>
+									
+								</div>
+								
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Data fim</label>
+									<div class="col-md-4 xdisplay_inputx form-group has-feedback">
+										<form:input path="fimManutencao" id="data_fim_reserva" class="form-control has-feedback-left data_reserva"
+											style="z-index: 9999 !important;" type="text"
+											aria-describedby="inputSuccess2Status4" placeholder="Data" ></form:input>
+										<form:errors cssClass="native-error" path="fimManutencao"></form:errors>
+										<span class="fa fa-calendar-o form-control-feedback left"
+											aria-hidden="true"></span> <span id="inputSuccess2Status4"
+											class="sr-only"></span>
+									</div>
+									
+								</div>
+				
+						
 
 								<div style="clear: both"></div>
 								<br />
-								<br />
+								<br /> 
 								<div class="form-actions">
 									<button type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
@@ -141,6 +270,31 @@
 		function Required() {
 
 		}
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+
+			$('#data_fim_reserva').daterangepicker({
+				singleDatePicker : true,
+				timePicker: true,
+				timePicker12Hour: false,
+				format : 'DD/MM/YYYY hh:mm:ss',
+				calender_style : "picker_4"
+			}, function(start, end, label) {
+			  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+			});
+			
+			$('#data_inicio_reserva').daterangepicker({
+				singleDatePicker : true,
+				timePicker: true,
+				timePicker12Hour: false,
+				format : 'DD/MM/YYYY hh:mm:ss',
+				calender_style : "picker_4"
+			}, function(start, end, label) {
+			  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+			});
+		});
 	</script>
 </body>
 </html>
