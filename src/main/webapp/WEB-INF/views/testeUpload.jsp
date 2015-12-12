@@ -34,7 +34,7 @@
 					
 					</br> 
 					<button id="btn-upload" class="btn btn-primary">Escolher Fotos</button> ou (Arraste as fotos)
-								<div id="dropbox" class="upload">
+				<div id="dropbox" class="upload">
 					<c:choose>
 			
 						<c:when test="${fn:length(reservaEvento.imagens) == 0}">
@@ -48,7 +48,7 @@
 										<a href="#" class="thumbnail">
 											<img src="${photo.url}" />
 										</a>
-										<%-- <a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${produto.id}/${fn:split(photo, '/')[2]}/" />')">Remover</a> --%>
+										<a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${photo.id}" />')">Remover</a>
 									</li>
 								</c:forEach>
 							</ul>
@@ -61,7 +61,7 @@
 										<a href="#" class="thumbnail">
 											<img src="${photo.url}" />
 										</a>
-										<%-- <a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${produto.id}/${fn:split(photo, '/')[2]}/" />')">Remover</a> --%>
+										<a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/imagens/delete/${photo.id}" />')">Remover</a>
 									</li>
 								</c:forEach>
 							</ul>
@@ -82,6 +82,24 @@
 			});
 
 			var $interval;
+			
+			function deleteImage(url){
+
+				$("body").mask("Aguarde ...");
+				$('.progress.active .bar').css('width', '0%');
+				
+				$.get(url,function(data) {
+				}).done(function() {
+					document.location="${pageContext.request.contextPath}/reservaEvento/1";
+				  })
+				  .fail(function() {
+				    alert( "Erro ao remover a imagem" );
+				  })
+				  .always(function() {
+					$('.progress.active .bar').css('width', '0%');
+					$('.progress').hide();
+				  });
+			}
 			
 			function prepareUpload() {
 				$('.progress').hide();

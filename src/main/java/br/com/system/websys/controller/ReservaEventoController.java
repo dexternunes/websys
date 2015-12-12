@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.com.system.websys.business.ImageResizeBusiness;
 import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
@@ -22,13 +21,10 @@ import br.com.system.websys.entities.ReservaEvento;
 public class ReservaEventoController{
 	
 	@Autowired
-	ImageResizeBusiness imageResizeBusiness;
+	private ImagemBusiness imagemBusiness;
 	
 	@Autowired
-	ImagemBusiness imagemBusiness;
-	
-	@Autowired
-	ReservaEventoBusiness reservaEventoBusiness;
+	private ReservaEventoBusiness reservaEventoBusiness;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String root(Model model, HttpServletRequest request) throws Exception {
@@ -38,13 +34,13 @@ public class ReservaEventoController{
 		return "testeUpload";
 	}
 	
-	@RequestMapping(value = "/{reservaEventoId}", method = RequestMethod.GET)
-	public String get(@PathVariable("reservaEventoId") Long reservaEventoId, Model model, HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/imagem/delete/{idImagem}", method = RequestMethod.GET)
+	public String deleteImagem(@PathVariable("idImagem") Long idImagem, Model model, HttpServletRequest request) throws Exception {
 		
-		ReservaEvento reservaEvento = reservaEventoBusiness.get(reservaEventoId);
-		model.addAttribute("reservaEvento", reservaEvento);
+		Imagem imagem = imagemBusiness.get(idImagem);
+		//model.addAttribute("reservaEvento", reservaEvento);
 		
-		return "testeUpload";
+		return "ok";
 	}
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -69,6 +65,15 @@ public class ReservaEventoController{
 		reservaEvento = reservaEventoBusiness.addImagem(reservaEvento, imagem);
         
 		return "redirect:/reservaEvento/"+reservaEvento.getId();
+	}
+	
+	@RequestMapping(value = "/{reservaEventoId}", method = RequestMethod.GET)
+	public String get(@PathVariable("reservaEventoId") Long reservaEventoId, Model model, HttpServletRequest request) throws Exception {
+		
+		ReservaEvento reservaEvento = reservaEventoBusiness.get(reservaEventoId);
+		model.addAttribute("reservaEvento", reservaEvento);
+		
+		return "testeUpload";
 	}
 		
 }

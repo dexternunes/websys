@@ -1,8 +1,14 @@
 package br.com.system.websys.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ReservaDTO {
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class ReservaDTO  implements Serializable {
+
+	private static final long serialVersionUID = 8631801890193962830L;
 	
 	private String title;
 	
@@ -14,6 +20,10 @@ public class ReservaDTO {
 	
 	private String url;
 
+	public ReservaDTO(){
+		
+	}
+	
 	public ReservaDTO(String title, Date start, Date end, Boolean allDay, String url){
 		this.title = title;
 		this.start = start;
