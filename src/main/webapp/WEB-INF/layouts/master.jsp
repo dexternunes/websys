@@ -88,9 +88,6 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/js/datepicker/daterangepicker.js"></script>
 
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/datepicker/timepicker.js"></script>
-
 <script src="${pageContext.request.contextPath}/resources/js/custom.js"></script>
 
 
@@ -236,11 +233,15 @@ progress:after {
 */
 .daterangepicker {
 	position: absolute !important;
-	z-index: 9999 !important;
+	z-index: 9998 !important;
 }
 
 .timepicker {
 	position: absolute !important;
+	z-index: 9998 !important;
+}
+
+.hourselect {
 	z-index: 9999 !important;
 }
 
@@ -318,24 +319,18 @@ $(document).ready(function() {
         if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
         }
+    }),
+    $(".select2_single").select2({
+        placeholder: "Select a state",
+        allowClear: true
     });
-    
-    $(document).ready(function () {
-        $(".select2_single").select2({
-            placeholder: "Select a state",
-            allowClear: true
-        });
-        $(".select2_group").select2({});
-        $(".select2_multiple").select2({
-            maximumSelectionLength: 4,
-            placeholder: "With Max Selection limit 4",
-            allowClear: true
-        });
+    $(".select2_group").select2({});
+    $(".select2_multiple").select2({
+        maximumSelectionLength: 4,
+        placeholder: "With Max Selection limit 4",
+        allowClear: true
     });
 });
-
-
-
 </script>
 </head>
 <body class="nav-md">
