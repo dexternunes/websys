@@ -73,5 +73,28 @@ class ImagemBusinessImpl extends BusinessBaseRootImpl<Imagem, ImagemRepository> 
 		
 		 return null;
 	}
+
+	public Boolean delete(Imagem imagem){
+		
+		 try {
+				String filePath = "/mnt/files/" + imagem.getName();
+				File file = new File(filePath);
+				if(file.exists())
+				{
+					file.delete();
+				}
+				
+				imagem.getReservaEvento().getImagens().remove(imagem);
+				
+				super.removeLocal(imagem);
+				
+				return true;
+				
+		 }
+		 catch(Exception e){
+			 return false;
+		 }
+		 
+	}
 	
 }
