@@ -50,8 +50,8 @@
 										style="cursor: pointer; !important;">
 											<td oName="id" oValue="${manutencoes.id}">${manutencao.produto}</td>
 											<td>${manutencoes.obs}</td>
-											<td>${manutencoes.inicioManutencao}</td>
-											<td>${manutencoes.fimManutencao}</td>
+											<td class="tdDate">${manutencoes.inicioManutencao}</td>
+											<td class="tdDate">${manutencoes.fimManutencao}</td>
 											<td>${manutencoes.valor}</td>
 											<td>${manutencoes.status}</td>
 										</tr>
@@ -77,6 +77,15 @@
                 $('input.tableflat').iCheck({
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
+                });
+                
+                $('.tdDate').iCheck({
+                    checkboxClass: 'icheckbox_flat-green',
+                    radioClass: 'iradio_flat-green'
+                });
+                
+                $( ".tdDate" ).each(function( index ) {
+                	$( this ).text(formatMyDate($(this).text()));
                 });
             });
 
@@ -115,6 +124,29 @@
                     }
                 });
             });
+            
+            
+			function formatMyDate(data) {
+				var date = new Date(data);
+				var day = complet(date.getDate());
+				var month = complet(date.getMonth()) + 1;
+				var year = complet(date.getFullYear());
+				var hour = complet(date.getHours());
+				var min = complet(date.getMinutes());
+
+				return day + '/' + month + '/' + year + ' ' + hour +':'+min;              
+			}
+
+
+	
+			
+			function complet(value){
+				if(value < 10)
+					return "0" + value;
+				else
+					return value;
+			} 
+	
         </script>
 </body>
 </html>

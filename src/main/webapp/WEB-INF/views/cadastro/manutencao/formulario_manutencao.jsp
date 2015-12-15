@@ -274,26 +274,98 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 
-
+			
+			
+			
 			$('#data_fim_reserva').daterangepicker({
 				singleDatePicker : true,
+			    timePickerIncrement: 15,
 				timePicker: true,
 				timePicker12Hour: false,
-				format : 'DD/MM/YYYY hh:mm:ss',
-				calender_style : "picker_4"
+				format : 'DD/MM/YYYY hh:mm',
+				calender_style : "picker_4",
+				locale: {
+			          cancelLabel: 'Cancelar',
+				      applyLabel: 'Ok'
+			      }
 			}, function(start, end, label) {
 			  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 			});
 			
 			$('#data_inicio_reserva').daterangepicker({
 				singleDatePicker : true,
+			    timePickerIncrement: 15,
 				timePicker: true,
 				timePicker12Hour: false,
-				format : 'DD/MM/YYYY hh:mm:ss',
-				calender_style : "picker_4"
+				format : 'DD/MM/YYYY hh:mm',
+				calender_style : "picker_4",
+				locale: {
+			          cancelLabel: 'Cancelar',
+				      applyLabel: 'Ok'
+			      }
 			}, function(start, end, label) {
 			  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 			});
+			
+			function formatMyDate(date) {
+				//var date = new Date($('#data_inicio_reserva').val());
+				var day = complet(date.getDate());
+				var month = complet(date.getMonth());
+				var year = complet(date.getFullYear());
+				var hour = complet(date.getHours());
+				var min = complet(date.getMinutes());
+
+				return day + '/' + month + '/' + year + ' ' + hour +':'+min;              
+			}
+
+			if($('#data_inicio_reserva').val() != ""){
+				$('#data_inicio_reserva').val(formatMyDate($('#data_inicio_reserva').val()));
+				$('#data_fim_reserva').val(formatMyDate($('#data_fim_reserva').val()));	
+				var dateIni = new Date($('#data_inicio_reserva').val());
+				var dateFim = new Date($('#data_fim_reserva').val());
+				$('#data_fim_reserva').daterangepicker({
+					singleDatePicker : true,
+				    timePickerIncrement: 15,
+					timePicker: true,
+					timePicker12Hour: false,
+					format : 'DD/MM/YYYY hh:mm',
+					startDate: dateFim,
+					calender_style : "picker_4",
+					locale: {
+				          cancelLabel: 'Cancelar',
+					      applyLabel: 'Ok'
+				      }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+				});
+				
+				$('#data_inicio_reserva').daterangepicker({
+					singleDatePicker : true,
+				    timePickerIncrement: 15,
+					timePicker: true,
+					timePicker12Hour: false,
+					format : 'DD/MM/YYYY hh:mm',
+					startDate: dateIni,
+					calender_style : "picker_4",
+					locale: {
+				          cancelLabel: 'Cancelar',
+					      applyLabel: 'Ok'
+				      }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+				});
+				
+			}
+			
+			function complet(value){
+				if(value < 10)
+					return "0" + value;
+				else
+					return value;
+			} 
+		
+			
+	
 		});
 	</script>
 </body>

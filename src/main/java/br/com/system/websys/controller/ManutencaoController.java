@@ -1,15 +1,20 @@
 package br.com.system.websys.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +38,13 @@ public class ManutencaoController {
 	@Autowired
 	private ProdutoBusiness produtoBusiness;
 
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
+	            dateFormat, false));
+	}
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
 
@@ -83,7 +95,7 @@ public class ManutencaoController {
 	public String manutencaoSalvar(@Valid @ModelAttribute("manutencao") Manutencao manutencao, BindingResult result, Model model)
 			throws Exception {
 
-		if (result.hasErrors()) {
+		if (result.hasErrors()) { 
 			
 			List<Produto> produtosList = new ArrayList<Produto>(); 
 			produtosList = produtoBusiness.getAll();
