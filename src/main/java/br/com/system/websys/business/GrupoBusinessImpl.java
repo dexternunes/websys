@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.ProdutoStatus;
+import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.repository.GrupoRepository;
 
 @Service  
@@ -46,6 +47,12 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	@Override
 	public List<Grupo> getAll() {
 		return ((GrupoRepository)repository).findAll();
+	}
+
+	@Override
+	public List<Grupo> findAllByTerceito(Terceiro terceiro) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
