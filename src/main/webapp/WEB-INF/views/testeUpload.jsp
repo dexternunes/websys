@@ -18,7 +18,7 @@
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 		    	<div class="x_title">
-					<h3>Upload de Imagens</h3>
+					<h3>Registro de Embarcação</h3>
 					<div class="clearfix"></div>
 				</div>
 			    <div class="x_content">
@@ -29,13 +29,16 @@
 						
 						
 						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Tempo do motor<span class="required">*</span>
-							</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:input path="hora"
-									cssClass="form-control col-md-1"
-									 data-inputmask="'mask' : '99999'" />
-									<form:errors cssClass="native-error" path="hora"></form:errors>
+							<label class="control-label col-md-3 col-sm-3 col-xs-12">Tempo do motor<span class="required">*</span></label>
+							<form:hidden path="id"/>
+							<div class="col-md-2 col-sm-2">
+								<form:input path="hora" cssClass="form-control col-md-2"/>horas
+							</div>
+							<div class="col-md-2 col-sm-2">
+								<form:input path="minuto" cssClass="form-control col-md-2"/>minutos
+							</div>
+							<div class="col-md-2 col-sm-2">
+								<form:input path="segundo" cssClass="form-control col-md-2"/>segundos
 							</div>
 						</div>
 						
@@ -43,7 +46,7 @@
 					</form:form>
 			    
 		        	<form name="form-product-id" id="main-form">
-						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg; image/gif; image/bmp; image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=1&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
+						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg;image/gif;image/bmp;image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=1&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
 					</form>	
 				
 					<p><div style="color:red" class="jquery_error"></div></p>
@@ -61,30 +64,25 @@
 								<p>Nenhuma foto cadastrada ainda, arraste ou escolha uma foto no botão acima.</p>
 							</c:when>	
 						
-							<c:when test="${fn:length(reservaEvento.imagens) >= 5}">
-								<ul class="thumbnails">
+							<c:when test="${fn:length(reservaEvento.imagens) > 0}">
+							<div class="x_content">
+								<div class="row">
 									<c:forEach var="photo" items="${reservaEvento.imagens}">
-										<li class="span3">
-											<a href="#" class="thumbnail">
-												<img src="${photo.url}" />
-											</a>
-											<a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}" />')">Remover</a>
-										</li>
+									<div class="col-md-55">
+										<div class="thumbnail">
+											<div class="image view view-first">
+												<img src="${photo.url}" style="height: 100%; display: block;"/>
+												<div class="mask">
+                                                    <div class="tools tools-bottom">
+                                                        <a onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}" />')"><i class="fa fa-times"></i></a>
+                                                    </div>
+                                                </div>
+											</div>
+										</div>
+									</div>
 									</c:forEach>
-								</ul>
-							</c:when>
-						
-							<c:when test="${fn:length(reservaEvento.imagens) < 5}">
-								<ul class="thumbnails">
-									<c:forEach var="photo" items="${reservaEvento.imagens}">
-										<li class="span3">
-											<a href="#" class="thumbnail">
-												<img src="${photo.url}" />
-											</a>
-											<a class="btn btn-danger btn-small remove"  onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}" />')">Remover</a>
-										</li>
-									</c:forEach>
-								</ul>
+								</div>
+							</div>
 							</c:when>
 					
 						</c:choose>
@@ -92,12 +90,24 @@
 						<div style="display: none;" class="progress progress-striped active">
 							<div class="bar" style="width: 100%;"></div>
 						</div>
+						
 				    </div>
+				    
+				    <div style="clear: both"></div>
+					<br />
+					<div class="form-actions">
+						<button type="button" onclick="javascript:submit()" class="btn btn-primary">Salvar</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
+	
+		function submit(){
+			$("#reservaEvento").submit();
+		}
+	
 		$(document).bind('drop dragover', function(e) {
 			e.preventDefault();
 		});
@@ -111,7 +121,7 @@
 			
 			$.get(url,function(data) {
 			}).done(function() {
-				document.location="${pageContext.request.contextPath}/reservaEvento/1";
+				$("#reservaEvento").submit();
 			  })
 			  .fail(function() {
 			    alert( "Erro ao remover a imagem" );
@@ -135,24 +145,15 @@
 				acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i ,
 				done : function(e, data) {
 					$("div.active:not(.progress)").html(data.result);
-					document.location="${pageContext.request.contextPath}/reservaEvento/1";
+					$("#reservaEvento").submit();
 				},
 				change : function(e, data) {
-					var total = data.files.length + $("a.thumbnail").length;
-					if (total > 5) {
-						alert("Só é possível realizar o upload de até 5 fotos.");
-						upload.abort();
-					}
+
 				},
 				start : function(e, data) {
-					if ($("a.thumbnail").length <= 5) {
-						$("body").mask("Aguarde ...");
-						$(".progress").show();
-						$('.progress.active .bar').css('width', '0%');
-					} else {
-						alert("Só é possível realizar o upload de até 5 fotos.");
-						upload.abort();
-					}
+					$("body").mask("Aguarde ...");
+					$(".progress").show();
+					$('.progress.active .bar').css('width', '0%');
 				},
 				always : function(e) {
 					$("body").unmask();
@@ -166,9 +167,12 @@
 		}
 
 		$(document).ready(function () {
-			prepareUpload();
+			prepareUpload();			
 		});
 		
+		$('#hora').inputmask('99999',{placeholder:'0', numericInput:true});
+		$('#minuto').inputmask('99',{placeholder:'0', numericInput:true});
+		$('#segundo').inputmask('99',{placeholder:'0', numericInput:true});
 		
 	</script>					
 </body>

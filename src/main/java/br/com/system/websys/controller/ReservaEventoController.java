@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +19,6 @@ import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.ReservaEvento;
-import br.com.system.websys.entities.Terceiro;
-import br.com.system.websys.entities.TerceiroTipo;
 
 @Controller
 @RequestMapping("/reservaEvento")
@@ -54,6 +51,13 @@ public class ReservaEventoController{
 	
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(@RequestParam("fileupload") MultipartFile fileupload, @RequestParam("reservaEventoId") Long reservaEventoId, Model model, HttpServletRequest request) throws Exception {
+		
+		
+		if(!(fileupload.getContentType().equals("image/png")
+			|| fileupload.getContentType().equals("image/bmp")
+			|| fileupload.getContentType().equals("image/gif")
+			|| fileupload.getContentType().equals("image/jpeg")))
+			throw new Exception("Fomato invalido");
 		
 		ReservaEvento reservaEvento = null;
 		
@@ -89,6 +93,10 @@ public class ReservaEventoController{
 	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
 			BindingResult result, Model model) throws Exception {
 
+		ReservaEvento reservaEventoBD = reservaEventoBusiness.get(reservaEvento.getId());
+		
+		reservaEvento.setImagens(reservaEventoBD.getImagens());		
+		
 		if (result.hasErrors()) {
 
 			model.addAttribute("reservaEvento", reservaEvento);
