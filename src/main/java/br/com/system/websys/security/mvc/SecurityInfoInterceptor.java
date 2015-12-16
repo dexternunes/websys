@@ -41,7 +41,12 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 				userDTO.setNome(userBusiness.getCurrent().getTerceiro().getNome());
 				userDTO.setGrupos(grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro()));
 				modelAndView.addObject("user", userDTO);
-				modelAndView.addObject("grupos", grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro()));
+				/*
+				 * select descricao
+from grupo g
+join grupo_has_terceiros ght on ght.id_grupo = g.id_grupo
+where ght.id_terceiro
+				 */
 		}
 		else {
 			
