@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.system.websys.business.ImagemBusiness;
+import br.com.system.websys.business.MailBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.ReservaEvento;
@@ -29,6 +30,18 @@ public class ReservaEventoController{
 	
 	@Autowired
 	private ReservaEventoBusiness reservaEventoBusiness;
+	
+	@Autowired 
+	private MailBusiness mailBusiness;
+	
+	
+	@RequestMapping(value = "/testeEmail", method = RequestMethod.GET)
+	public String testeEmail(Model model, HttpServletRequest request) throws Exception {
+		
+		mailBusiness.sendMail("e2a.system@gmail.com", new String[]{"dex.luiz@gmail.com", "ailtongjunior@hotmail.com", "erickmob@gmail.com"}, "E-mail Teste", "Este é um e-mail teste do Prime Share System");
+		
+		return "reservaEvento";
+	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String root(Model model, HttpServletRequest request) throws Exception {
