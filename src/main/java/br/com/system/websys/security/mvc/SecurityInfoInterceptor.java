@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.entities.UserDTO;
@@ -17,9 +16,6 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private UserBusiness userBusiness;
-	
-	@Autowired
-	private GrupoBusiness grupoBusiness;
 	
 	private UserDTO userDTO = new UserDTO();
 	
@@ -39,19 +35,11 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 		
 		if(userBusiness != null && modelAndView != null && userBusiness.getCurrent() != null){
 				userDTO.setNome(userBusiness.getCurrent().getTerceiro().getNome());
-				userDTO.setGrupos(grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro()));
 				modelAndView.addObject("user", userDTO);
-				/*
-				 * select descricao
-from grupo g
-join grupo_has_terceiros ght on ght.id_grupo = g.id_grupo
-where ght.id_terceiro
-				 */
 		}
 		else {
 			
-			User user = new User();
-			
+			User user = new User();			
 			
 			modelAndView.addObject("user", user);
 		}

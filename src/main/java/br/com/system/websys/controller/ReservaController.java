@@ -3,9 +3,16 @@ package br.com.system.websys.controller;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
+import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservasDTO;
 
@@ -21,10 +29,35 @@ import br.com.system.websys.entities.ReservasDTO;
 @RequestMapping("/reserva")
 public class ReservaController{
 	
+	private static final Logger logger = LoggerFactory
+			.getLogger(TerceiroController.class);
+	
 	@Autowired
 	ReservaBusiness reservaBusiness;
 	UserBusiness userBusiness;
 	TerceiroBusiness terceiroBusiness;
+	
+	@RequestMapping(value="/salvar", method = RequestMethod.POST)
+	public String salvarBase(@Valid @ModelAttribute("reserva") Reserva reserva,
+			BindingResult result, Model model) throws Exception {
+
+		if (result.hasErrors()) {
+
+			for (ObjectError error : result.getAllErrors())
+				logger.info("Erro: " + error.toString());
+			
+			return "home";
+
+		}
+
+		try {
+			reservaBusiness.salvar(reserva);
+		} catch (Exception e) {
+			return "home";
+		}
+
+		return "home";
+	}
 	
 	@SuppressWarnings("deprecation")
 	@ResponseBody
@@ -50,12 +83,6 @@ public class ReservaController{
 		return "home";
 	}
 	
-	@RequestMapping(value = "/post2" , method = RequestMethod.POST)
+	
 
-	public @ResponseBody ReservaDTO addNewWorker(@RequestBody ReservaDTO jsonString) {
-		
-		jsonString.getTitle();
-
-	    return jsonString;
-	}
 }

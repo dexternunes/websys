@@ -51,8 +51,7 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 
 	@Override
 	public List<Grupo> findAllByTerceito(Terceiro terceiro) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Grupo> grupos = ((GrupoRepository)repository).findByTerceiro(terceiro);
+		return grupos;
 	}
-
 }

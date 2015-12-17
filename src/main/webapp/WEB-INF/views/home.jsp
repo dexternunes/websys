@@ -85,13 +85,14 @@
 						aria-hidden="true">×</button>
 					<h4 class="modal-title" id="myModalLabel">Nova reserva</h4>
 				</div>
+				<form:form id="antoform2" class="form-horizontal calender" role="form" commandName="reserva"
+					action="${pageContext.request.contextPath}/reserva/salvar">
 				<div class="modal-body">
-					<div id="testmodal2" style="padding: 5px 20px;">
-						<form id="antoform2" class="form-horizontal calender" role="form">
+					<div id="testmodal2" style="padding: 5px 20px;">					
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Solicitante</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<form:input path="user.nome"
+									<form:input path="solicitante.nome" id="title"
 										cssClass="form-control col-md-7 col-xs-12" disabled="true" />
 								</div>
 							</div>
@@ -99,9 +100,9 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Grupo</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<form:select path="user.grupos" multiple="false"
+									<form:select path="grupo" multiple="false"
 										cssClass="select2_single form-control">
-<%-- 										<form:options items="${grupos}" itemValue="grupos.id" itemLabel="grupo.descricao"/> --%>
+ 										<form:options items="${grupos}" itemValue="id" itemLabel="descricao"/>
 									</form:select>
 								</div>
 							</div>
@@ -109,12 +110,12 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
-									<input id="data_inicio_reserva"
+									<form:input id="data_inicio_reserva" path="inicioReserva"
 										class="form-control has-feedback-left data_reserva"
 										style="z-index: 9999 !important;" type="text"
 										data-inputmask="'mask' : '9999/99/99 99:99'"
 										aria-describedby="inputSuccess2Status4"
-										placeholder="Data/Hora"></input> <span
+										placeholder="Data/Hora"></form:input> <span
 										class="fa fa-calendar-o form-control-feedback left"
 										aria-hidden="true"></span> <span id="inputSuccess2Status4"
 										class="sr-only"></span>
@@ -124,28 +125,29 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Fim(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
-									<input id="data_fim_reserva"
+									<form:input id="data_fim_reserva" path="fimReserva"
 										class="form-control has-feedback-left data_reserva"
 										style="z-index: 9999 !important;" type="text"
 										data-inputmask="'mask' : '9999/99/99 99:99'"
 										aria-describedby="inputSuccess2Status4"
-										placeholder="Data/Hora"></input> <span
+										placeholder="Data/Hora"></form:input> <span
 										class="fa fa-calendar-o form-control-feedback left"
 										aria-hidden="true"></span> <span id="inputSuccess2Status4"
 										class="sr-only"></span>
 								</div>
 							</div>
 							<div class="clearfix"></div>
-						</form>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<div class="form-actions">
 						<button type="button" class="btn btn-default antoclose"
 							data-dismiss="modal">Fechar</button>
-						<button type="submit" class="btn btn-primary antosubmit">Confirmar</button>
+						<button type="submit" class="btn btn-primary antosubmit">Confirmar
+					</button>
 					</div>
 				</div>
+				</form:form>
 			</div>
 		</div>
 	</div>
@@ -158,31 +160,35 @@
 						aria-hidden="true">×</button>
 					<h4 class="modal-title" id="myModalLabel2">Editar reserva</h4>
 				</div>
+				<form:form id="antoform2" class="form-horizontal calender" commandName="reserva" role="form"
+					action="${pageContext.request.contextPath}/reserva/salvar">
 				<div class="modal-body">
 					<div id="testmodal2" style="padding: 5px 20px;">
-						<form id="antoform2" class="form-horizontal calender" role="form">
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Solicitante</label>
-								${user.nome}
-							</div>
+							<label class="col-sm-3 control-label">Solicitante</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form:input path="solicitante.nome" id="title2"
+										cssClass="form-control col-md-7 col-xs-12" disabled="true" />
+								</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Título</label>
-								<div class="col-sm-9">
-									<input type="text" class="form-control" id="title2"
-										name="title2">
+								<label class="col-sm-3 control-label">Grupo</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form:select path="grupo" multiple="false"
+										cssClass="select2_single form-control">
+ 										<form:options items="${grupos}" itemValue="id" itemLabel="descricao"/>
+									</form:select>
 								</div>
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
-									<input id="data_inicio_reserva2"
+									<form:input id="data_inicio_reserva2" path="inicioReserva"
 										class="form-control has-feedback-left data_reserva2"
 										style="z-index: 9999 !important;" type="text"
 										data-inputmask="'mask' : '9999/99/99 99:99'"
 										aria-describedby="inputSuccess2Status4"
-										placeholder="Data/Hora"></input> <span
+										placeholder="Data/Hora"></form:input> <span
 										class="fa fa-calendar-o form-control-feedback left"
 										aria-hidden="true"></span> <span id="inputSuccess2Status4"
 										class="sr-only"></span>
@@ -192,28 +198,28 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Fim</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
-									<input id="data_fim_reserva2"
+									<form:input id="data_fim_reserva2" path="fimReserva"
 										class="form-control has-feedback-left data_reserva2"
 										style="z-index: 9999 !important;" type="text"
 										data-inputmask="'mask' : '9999/99/99 99:99'"
 										aria-describedby="inputSuccess2Status4"
-										placeholder="Data/Hora"></input> <span
+										placeholder="Data/Hora"></form:input> <span
 										class="fa fa-calendar-o form-control-feedback left"
 										aria-hidden="true"></span> <span id="inputSuccess2Status4"
 										class="sr-only"></span>
 								</div>
 							</div>
 							<div class="clearfix"></div>
-						</form>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" id="remove" class="btn btn-default">Excluir</button>
 					<button type="button" class="btn btn-default antoclose2"
 						data-dismiss="modal">Fechar</button>
-					<button type="button" class="btn btn-primary antosubmit2">Confirmar
+					<button type="submit" class="btn btn-primary antosubmit2">Confirmar
 					</button>
 				</div>
+				</form:form>
 			</div>
 		</div>
 	</div>
@@ -239,8 +245,7 @@
 
 	<script>
 		var reservasJSON = [];
-		var novasreservasJSON = new Array([ "titulo", ], [ "inicio", ], [
-				"fim", ], [ "tododia", ]);
+		var novasreservasJSON = new Array([ "titulo", ], [ "inicio", ], ["fim", ], [ "tododia", ]);
 		var novasreservasJSON_index = 0;
 
 		$.ajax({
@@ -257,15 +262,11 @@
 			}
 		});
 
-		$(window)
-				.load(
-						function() {
+		$(window).load(function() {
 							var started;
 							var categoryClass;
 
-							var calendar = $('#calendar')
-									.fullCalendar(
-											{
+							var calendar = $('#calendar').fullCalendar({
 												header : {
 													left : 'prev,next today',
 													center : 'title',
@@ -274,12 +275,9 @@
 												selectable : true,
 												selectHelper : true,
 												eventLimit : true,
-												select : function(start, end,
-														allDay) {
+												select : function(start, end,allDay) {
 
-													$('#data_inicio_reserva')
-															.daterangepicker(
-																	{
+													$('#data_inicio_reserva').daterangepicker({
 																		singleDatePicker : true,
 																		timePicker : true,
 																		timePickerIncrement : 15,
@@ -287,16 +285,10 @@
 																		format : 'YYYY/MM/DD hh:mm',
 																		calender_style : "picker_4",
 																		parentEl : '#CalenderModalNew',
-																		startDate : moment(
-																				start)
-																				.format(
-																						"YYYY/MM/DD")
-																				+ "06:00"
+																		startDate : moment(start).format("YYYY/MM/DD")+ "06:00"
 																	});
 
-													$('#data_fim_reserva')
-															.daterangepicker(
-																	{
+													$('#data_fim_reserva').daterangepicker({
 																		singleDatePicker : true,
 																		timePicker : true,
 																		timePickerIncrement : 15,
@@ -306,46 +298,23 @@
 																		parentEl : '#CalenderModalNew',
 																	});
 
-													$("#data_inicio_reserva")
-															.val(
-																	moment(
-																			start)
-																			.format(
-																					"YYYY/MM/DD")
-																			+ "06:00");
+													$("#data_inicio_reserva").val(moment(start).format("YYYY/MM/DD")+ "06:00");
 													$('#fc_create').click();
 
-													$(".antosubmit")
-															.on(
-																	"click",
-																	function() {
+													$(".antosubmit").on("click",function() {
 
-																		var title = $(
-																				"#title")
-																				.val();
+																		var title = $("#title").val();
 
-																		categoryClass = $(
-																				"#event_type")
-																				.val();
+																		categoryClass = $("#event_type").val();
 
 																		if (title) {
-																			var inicio = new Date(
-																					$(
-																							'#data_inicio_reserva')
-																							.val());
-																			var fim = new Date(
-																					$(
-																							'#data_fim_reserva')
-																							.val());
+																			var inicio = new Date($('#data_inicio_reserva').val());
+																			var fim = new Date($('#data_fim_reserva').val());
 
-																			var hora_fim = fim
-																					.getHours();
-																			var hora_inicio = inicio
-																					.getHours();
-																			var dia_fim = fim
-																					.getDate();
-																			var dia_inicio = inicio
-																					.getDate();
+																			var hora_fim = fim.getHours();
+																			var hora_inicio = inicio.getHours();
+																			var dia_fim = fim.getDate();
+																			var dia_inicio = inicio.getDate();
 
 																			if (dia_fim > dia_inicio) {
 																				//if(hora_fim && hora_inicio)
@@ -360,9 +329,7 @@
 																					allDay = true;
 																			}
 
-																			calendar
-																					.fullCalendar(
-																							'renderEvent',
+																			calendar.fullCalendar('renderEvent',
 																							{
 																								title : title,
 																								start : inicio,
@@ -380,42 +347,22 @@
 																			novasreservasJSON_index++;
 																		}
 
-																		$(
-																				'#title')
-																				.val(
-																						'');
-																		$(
-																				'#data_inicio_reserva')
-																				.val(
-																						'');
-																		$(
-																				'#data_fim_reserva')
-																				.val(
-																						'');
-																		$(
-																				'#hora_inicio_reserva')
-																				.val(
-																						'');
-																		$(
-																				'#hora_fim_reserva')
-																				.val(
-																						'');
+																		$('#title').val('');
+																		$('#data_inicio_reserva').val('');
+																		$('#data_fim_reserva').val('');
+																		$('#hora_inicio_reserva').val('');
+																		$('#hora_fim_reserva').val('');
 
-																		calendar
-																				.fullCalendar('unselect');
+																		calendar.fullCalendar('unselect');
 
-																		$(
-																				'.antoclose')
-																				.click();
+																		$('.antoclose').click();
 
 																		return false;
 																	});
 												},
-												eventClick : function(calEvent,
-														jsEvent, view) {
+												eventClick : function(calEvent,jsEvent, view) {
 
-													$('#data_inicio_reserva2')
-															.daterangepicker(
+													$('#data_inicio_reserva2').daterangepicker(
 																	{
 																		singleDatePicker : true,
 																		timePicker : true,
@@ -424,26 +371,13 @@
 																		format : 'YYYY/MM/DD hh:mm',
 																		calender_style : "picker_4",
 																		parentEl : '#CalenderModalEdit',
-																		startDate : moment(
-																				calEvent.start)
-																				.format(
-																						"YYYY/MM/DD hh:mm")
+																		startDate : moment(calEvent.start).format("YYYY/MM/DD hh:mm")
 																	},
-																	function(
-																			start,
-																			end,
-																			label) {
-																		console
-																				.log(
-																						start
-																								.toISOString(),
-																						end
-																								.toISOString(),
-																						label);
+																	function(start,end,label) {
+																		console.log(start.toISOString(),end.toISOString(),label);
 																	});
 
-													$('#data_fim_reserva2')
-															.daterangepicker(
+													$('#data_fim_reserva2').daterangepicker(
 																	{
 																		singleDatePicker : true,
 																		timePicker : true,
@@ -452,78 +386,33 @@
 																		format : 'YYYY/MM/DD hh:mm',
 																		calender_style : "picker_4",
 																		parentEl : '#CalenderModalEdit',
-																		startDate : moment(
-																				calEvent.end)
-																				.format(
-																						"YYYY/MM/DD hh:mm")
+																		startDate : moment(calEvent.end).format("YYYY/MM/DD hh:mm")
 																	},
-																	function(
-																			start,
-																			end,
-																			label) {
-																		console
-																				.log(
-																						start
-																								.toISOString(),
-																						end
-																								.toISOString(),
-																						label);
+																	function(start,end,label) {
+																		console.log(start.toISOString(),end.toISOString(),label);
 																	});
 
-													$("#data_inicio_reserva2")
-															.val(
-																	moment(
-																			calEvent.start)
-																			.format(
-																					"YYYY/MM/DD hh:mm"));
-													$("#data_fim_reserva2")
-															.val(
-																	moment(
-																			calEvent.end)
-																			.format(
-																					"YYYY/MM/DD hh:mm"));
+													$("#data_inicio_reserva2").val(moment(calEvent.start).format("YYYY/MM/DD hh:mm"));
+													$("#data_fim_reserva2").val(moment(calEvent.end).format("YYYY/MM/DD hh:mm"));
 
-													$('#remove')
-															.click(
-																	function() {
-																		calendar
-																				.fullCalendar(
-																						'removeEvents',
-																						calEvent._id);
-																		$(
-																				'.antoclose2')
-																				.click();
+													$('#remove').click(function() {
+																		calendar.fullCalendar('removeEvents',calEvent._id);
+																		$('.antoclose2').click();
 																	});
 
 													$('#fc_edit').click();
-													$('#title2').val(
-															calEvent.title);
-													categoryClass = $(
-															"#event_type")
-															.val();
+													$('#title2').val(calEvent.title);
+													categoryClass = $("#event_type").val();
 
-													$(".antosubmit2")
-															.on(
-																	"click",
-																	function() {
+													$(".antosubmit2").on("click", function() {
 
-																		var inicio2 = new Date(
-																				$(
-																						"#data_inicio_reserva2")
-																						.val());
-																		var fim2 = new Date(
-																				$(
-																						"#data_fim_reserva2")
-																						.val());
+																		var inicio2 = new Date($("#data_inicio_reserva2").val());
+																		var fim2 = new Date($("#data_fim_reserva2").val());
 
-																		var hora_fim2 = fim2
-																				.getHours();
-																		var hora_inicio2 = inicio2
-																				.getHours();
-																		var dia_fim2 = fim2
-																				.getDate();
-																		var dia_inicio2 = inicio2
-																				.getDate();
+																		var hora_fim2 = fim2.getHours();
+																		var hora_inicio2 = inicio2.getHours();
+																		var dia_fim2 = fim2.getDate();
+																		var dia_inicio2 = inicio2.getDate();
 																		var allDay2 = false;
 
 																		if (dia_fim2 > dia_inicio2) {
@@ -539,45 +428,22 @@
 																				allDay2 = true;
 																		}
 
-																		calEvent.title = $(
-																				"#title2")
-																				.val();
+																		calEvent.title = $("#title2").val();
 																		calEvent.start = inicio2;
 																		calEvent.end = fim2;
 																		calEvent.allDay = allDay2;
+																		
+																		calendar.fullCalendar('updateEvent',calEvent);
 
-																		$(
-																				'#title2')
-																				.val(
-																						'');
-																		$(
-																				'#data_inicio_reserva2')
-																				.val(
-																						'');
-																		$(
-																				'#data_fim_reserva2')
-																				.val(
-																						'');
-																		$(
-																				'#hora_inicio_reserva2')
-																				.val(
-																						'');
-																		$(
-																				'#hora_fim_reserva2')
-																				.val(
-																						'');
+																		$('#title2').val('');
+																		$('#data_inicio_reserva2').val('');
+																		$('#data_fim_reserva2').val('');
+																		$('#hora_inicio_reserva2').val('');
+																		$('#hora_fim_reserva2').val('');
 
-																		calendar
-																				.fullCalendar(
-																						'updateEvent',
-																						calEvent);
-
-																		$(
-																				'.antoclose2')
-																				.click();
+																		$('.antoclose2').click();
 																	});
-													calendar
-															.fullCalendar('unselect');
+													calendar.fullCalendar('unselect');
 												},
 												editable : false,
 												events : reservasJSON
@@ -586,34 +452,6 @@
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			/*$('.data_reserva').daterangepicker({
-				singleDatePicker : true,
-				timePicker: true,
-			    timePickerIncrement: 15,
-			    timePicker24Hour: true,
-				format: 'YYYY/MM/DD hh:mm',
-				calender_style : "picker_4",
-				parentEl:'#CalenderModalNew'
-			}, function(start, end, label) {
-				console.log(start.toISOString(), end.toISOString(), label);
-			});*/
-
-			/*$('.data_reserva2').daterangepicker({
-				singleDatePicker : true,
-				timePicker: true,
-			    timePickerIncrement: 15,
-			    timePicker24Hour: true,
-				format: 'YYYY/MM/DD hh:mm',
-				calender_style : "picker_4",
-				parentEl:'#CalenderModalEdit'
-			}, function(start, end, label) {
-				console.log(start.toISOString(), end.toISOString(), label);
-			});
-			
-			$("#DOBD").append("<option value='31'>31</option>");
-			
-			 */
-
 			$('.confirma_reserva').click(function() {
 				var reserva1 = {
 					title : "teste",

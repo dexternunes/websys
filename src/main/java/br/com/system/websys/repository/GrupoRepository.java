@@ -10,8 +10,8 @@ import br.com.system.websys.entities.Terceiro;
 
 public interface GrupoRepository extends RepositoryBaseRoot<Grupo> {
 
-	//@Query("SELECT g.descricao FROM Grupo g JOIN g.terceiros t WHERE t.terceiro = :terceiro")
-	@Query("SELECT g.descricao FROM Grupo g WHERE g.terceiros IN (:terceiro)")
+	@Query("SELECT g FROM Grupo g JOIN g.terceiros t WHERE t = :terceiro")
+	//@Query("SELECT g.descricao FROM Grupo g WHERE g.terceiros IN (:terceiro)")
 	List<Grupo> findByTerceiro(@Param("terceiro") Terceiro terceiro);
 }
 
