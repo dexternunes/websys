@@ -13,4 +13,6 @@ public interface ImagemBusiness extends BusinessBaseRoot<Imagem, ImagemRepositor
 
 	public Imagem upload(MultipartFile fileupload, String server) throws Exception;
 	
+	public Boolean delete(Imagem imagem);
+	
 }
