@@ -1,6 +1,7 @@
 package br.com.system.websys.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
+import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservasDTO;
@@ -36,6 +39,7 @@ public class ReservaController{
 	ReservaBusiness reservaBusiness;
 	UserBusiness userBusiness;
 	TerceiroBusiness terceiroBusiness;
+	GrupoBusiness grupoBusiness;
 	
 	@RequestMapping(value="/salvar", method = RequestMethod.POST)
 	public String salvarBase(@Valid @ModelAttribute("reserva") Reserva reserva,
@@ -46,17 +50,17 @@ public class ReservaController{
 			for (ObjectError error : result.getAllErrors())
 				logger.info("Erro: " + error.toString());
 			
-			return "home";
+			return "redirect:/home";
 
 		}
 
 		try {
 			reservaBusiness.salvar(reserva);
 		} catch (Exception e) {
-			return "home";
+			return "redirect:/home";
 		}
 
-		return "home";
+		return "redirect:/home";
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -83,6 +87,18 @@ public class ReservaController{
 		return "home";
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(value = "/nova", method = RequestMethod.GET )
+	public String getNovaReserva(HttpServletRequest request, Model model) throws Exception {
+		
+		Reserva reserva = new Reserva();
+		reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
+		
+		List<Grupo> grupos = grupoBusiness.findAllByTerceito(reserva.getSolicitante());
 
+		model.addAttribute("reserva", reserva);
+		model.addAttribute("grupos", grupos);
+		
+		return "ok";
+	}
 }

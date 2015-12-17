@@ -67,7 +67,7 @@
 				<div class="x_content">
 					<div id='calendar'></div>
 					<div class="clearfix"></div>
-					<button type="submit" class="btn btn-primary confirma_reserva">Confirmar</button>
+					<button type="button" class="btn btn-primary confirma_reserva">Confirmar</button>
 					<div class="clearfix"></div>
 				</div>
 			</div>
@@ -213,11 +213,13 @@
 					</div>
 				</div>
 				<div class="modal-footer">
+				<div class="form-actions">
 					<button type="button" id="remove" class="btn btn-default">Excluir</button>
 					<button type="button" class="btn btn-default antoclose2"
 						data-dismiss="modal">Fechar</button>
 					<button type="submit" class="btn btn-primary antosubmit2">Confirmar
 					</button>
+					</div>
 				</div>
 				</form:form>
 			</div>
@@ -357,7 +359,6 @@
 
 																		$('.antoclose').click();
 
-																		return false;
 																	});
 												},
 												eventClick : function(calEvent,jsEvent, view) {
@@ -367,7 +368,7 @@
 																		singleDatePicker : true,
 																		timePicker : true,
 																		timePickerIncrement : 15,
-																		timePicker24Hour : true,
+																		timePicker12Hour : false,
 																		format : 'YYYY/MM/DD hh:mm',
 																		calender_style : "picker_4",
 																		parentEl : '#CalenderModalEdit',
@@ -382,7 +383,7 @@
 																		singleDatePicker : true,
 																		timePicker : true,
 																		timePickerIncrement : 15,
-																		timePicker24Hour : true,
+																		timePicker12Hour : false,
 																		format : 'YYYY/MM/DD hh:mm',
 																		calender_style : "picker_4",
 																		parentEl : '#CalenderModalEdit',
