@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 @Entity 
@@ -22,17 +25,21 @@ public class Manutencao extends EntityBaseRoot {
 	private ManutencaoStatus status;
 	
 
+	@NotNull(message="Campo obrigatório!")
+	@NotEmpty(message="Campo obrigatório!")
 	private String obs = "";
 	
 
+	@NotNull(message="Campo obrigatório!")
 	private Double valor;
 	
 
+	@NotNull(message="Campo obrigatório!")
 	private Date inicioManutencao;
 	
 
 	private Date fimManutencao;
-	
+
 	private Produto produto;
 	
 	@Id

@@ -146,6 +146,11 @@
         <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
     
 <style>
+.select2-selection__clear {
+	/* CLEAR DO SELECT */
+	display: none !important;
+}
+
 #holder {
 	border: 10px dashed #ccc;
 	width: 300px;

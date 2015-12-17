@@ -62,12 +62,15 @@ public class ManutencaoController {
 	@Transactional(readOnly = true)
 	public String cadastroBase(@PathVariable Long id, Model model)
 			throws Exception {
-
+		 
+		List<Produto> produtosList = new ArrayList<Produto>(); 
+		produtosList = produtoBusiness.getAll();
 		Manutencao manutencao = ManutencaoBusiness.get(id);
 		
 		Produto p = produtoBusiness.get(manutencao.getProduto().getId());
 		manutencao.setProduto(p);
 		model.addAttribute("manutencao", manutencao);
+		model.addAttribute("listaProdutos", produtosList);
 		
 		return "cadastro/manutencao/formulario_manutencao";
 	}
@@ -81,14 +84,16 @@ public class ManutencaoController {
 			throws Exception {
 
 		if (result.hasErrors()) {
-
+			
+			List<Produto> produtosList = new ArrayList<Produto>(); 
+			produtosList = produtoBusiness.getAll();
 			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
 			status.add(ProdutoStatus.A_VENDA);
 
 			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 			model.addAttribute("manutencao", manutencao);
-
-			return "cadastro/manutencao/form";
+			model.addAttribute("listaProdutos", produtosList);
+			return "cadastro/manutencao/formulario_manutencao";
 		}
 
 		try {
