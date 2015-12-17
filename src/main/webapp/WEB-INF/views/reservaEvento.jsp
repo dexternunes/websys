@@ -58,40 +58,28 @@
 					</br> 
 					<button id="btn-upload" class="btn btn-primary">Escolher Fotos</button> ou (Arraste as fotos)
 					<div id="dropbox" class="upload">
-						<c:choose>
-				
-							<c:when test="${fn:length(reservaEvento.imagens) == 0}">
-								<p>Nenhuma foto cadastrada ainda, arraste ou escolha uma foto no botão acima.</p>
-							</c:when>	
-						
-							<c:when test="${fn:length(reservaEvento.imagens) > 0}">
-							<div class="x_content">
-								<div class="row">
-									<c:forEach var="photo" items="${reservaEvento.imagens}">
-									<div class="col-md-55">
-										<div class="thumbnail">
-											<div class="image view view-first">
-												<img src="${photo.url}" style="height: 100%; display: block;"/>
-												<div class="mask">
-                                                    <div class="tools tools-bottom">
-                                                        <a onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}" />')"><i class="fa fa-times"></i></a>
-                                                    </div>
-                                                </div>
-											</div>
-										</div>
-									</div>
-									</c:forEach>
-								</div>
-							</div>
-							</c:when>
-					
-						</c:choose>
-						
+						<p>Arraste e solte aqui.</p>
 						<div style="display: none;" class="progress progress-striped active">
 							<div class="bar" style="width: 100%;"></div>
 						</div>
-						
 				    </div>
+				    
+				    <div class="attachment">
+						<c:forEach var="photo" items="${reservaEvento.imagens}">
+							<div class="col-md-55">
+								<div class="thumbnail">
+									<div class="view view-first">
+										<img src="${photo.url}" style="width: 100%; display: block;"/>
+										<div class="mask">
+                                            <div class="tools tools-bottom">
+                                                <a onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}" />')"><i class="fa fa-times"></i></a>
+                                            </div>
+                                        </div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
 				    
 				    <div style="clear: both"></div>
 					<br />

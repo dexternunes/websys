@@ -35,7 +35,7 @@ public class ReservaEventoController{
 		
 		model.addAttribute("reservaEvento", new ReservaEvento());
 		
-		return "testeUpload";
+		return "reservaEvento";
 	}
 	
 	@ResponseBody
@@ -86,7 +86,7 @@ public class ReservaEventoController{
 		ReservaEvento reservaEvento = reservaEventoBusiness.get(reservaEventoId);
 		model.addAttribute("reservaEvento", reservaEvento);
 		
-		return "testeUpload";
+		return "reservaEvento";
 	}
 	
 	@RequestMapping(value = "/salvar", method = RequestMethod.POST)
@@ -101,7 +101,7 @@ public class ReservaEventoController{
 
 			model.addAttribute("reservaEvento", reservaEvento);
 			
-			return "testeUpload";
+			return "reservaEvento";
 		}
 
 		try {
@@ -111,10 +111,10 @@ public class ReservaEventoController{
 			model.addAttribute("reservaEvento", reservaEvento);
 			model.addAttribute("message", e.getMessage());
 			
-			return "testeUpload";
+			return "reservaEvento";
 		}
 
-		return "testeUpload";
+		return "reservaEvento";
 	}
 		
 }
