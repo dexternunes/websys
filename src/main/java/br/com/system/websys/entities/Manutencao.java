@@ -37,6 +37,7 @@ public class Manutencao extends EntityBaseRoot {
 	
 
 	@NotNull(message="Campo obrigatório!")
+	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double valor;
 	
 
@@ -51,7 +52,7 @@ public class Manutencao extends EntityBaseRoot {
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "id_user")	
+	@Column(name = "id_manutencao")	
 	@Override
 	public Long getId() {
 		return id;
