@@ -64,8 +64,11 @@ public class UserController{
 
 		User usuario = userBusiness.get(id);
 		
+		List<Terceiro> terceiroList = new ArrayList<Terceiro>(); 
+		terceiroList = terceiroBusiness.getAll();
 
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("listaTerceiros", terceiroList);
 		
 		return "cadastro/user/formulario_user";
 	}

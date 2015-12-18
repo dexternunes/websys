@@ -16,6 +16,7 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private UserBusiness userBusiness;
+	
 	private UserDTO userDTO = new UserDTO();
 	
 	@Override
@@ -33,13 +34,12 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 			return; 
 		
 		if(userBusiness != null && modelAndView != null && userBusiness.getCurrent() != null){
-				userDTO.setNome(userBusiness.getCurrent().getLogin());
+				userDTO.setNome(userBusiness.getCurrent().getTerceiro().getNome());
 				modelAndView.addObject("user", userDTO);
 		}
 		else {
 			
-			User user = new User();
-			
+			User user = new User();			
 			
 			modelAndView.addObject("user", user);
 		}
