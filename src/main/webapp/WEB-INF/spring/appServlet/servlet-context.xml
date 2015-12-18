@@ -43,6 +43,7 @@
 	        	<beans:ref bean="userFormatter"/>
 	        	<beans:ref bean="terceiroFormatter"/>
 	        	<beans:ref bean="produtoFormatter"/>
+	        	<beans:ref bean="grupoFormatter"/>
 	    	</beans:set>
 	    </beans:property>
 	</beans:bean> 
