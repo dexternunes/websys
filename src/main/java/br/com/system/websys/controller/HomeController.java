@@ -31,15 +31,18 @@ public class HomeController {
 	 }
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home(HttpServletRequest request, Locale locale, Model model) {
+	public String home(HttpServletRequest request, Locale locale, Model model, Reserva reserva) {
 		
-		Reserva reserva = new Reserva();
-		reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
+		if(reserva.getId() == null){
+			reserva = new Reserva();
+			reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
+		}
 		
 		List<Grupo> grupos = grupoBusiness.findAllByTerceito(reserva.getSolicitante());
 
 		model.addAttribute("reserva", reserva);
-		model.addAttribute("grupos", grupos);
+		model.addAttribute("listaReservaGrupos", grupos);
+		
 		return "home";
 	}
 }
