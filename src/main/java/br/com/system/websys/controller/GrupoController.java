@@ -25,6 +25,7 @@ import br.com.system.websys.entities.TerceiroTipo;
 
 @Controller
 @RequestMapping("/grupo")
+@Transactional
 public class GrupoController {
 
 	@Autowired
