@@ -258,7 +258,8 @@
 				reservasJSON = data.reservas;
 			},
 			error : function(request, status, error) {
-				alert("error");
+				//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
+				//alert("error");
 			}
 		});
 
