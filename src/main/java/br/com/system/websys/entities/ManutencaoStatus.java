@@ -2,8 +2,8 @@ package br.com.system.websys.entities;
 
 public enum ManutencaoStatus{
 
-	CONCLUIDA("CONCLUIDA", "Concluída"),
-	EM_ANDAMENTO("EM_ANDAMENTO", "Em andamento");
+	PENDENTE("PENDENTE", "Pendente"),
+	PAGA("PAGA", "Paga");
 
 	
 	private String descricao;

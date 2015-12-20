@@ -155,7 +155,7 @@
 
 							<form:form cssClass="form-horizontal"
 								action="${pageContext.request.contextPath}/manutencao/cadastro/salvar"
-								commandName="manutencao" method="post">
+								commandName="manutencao" method="post" id="form1">
 
 								<form:hidden path="id" />
 
@@ -196,7 +196,10 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="valor"
 											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o valor." />
+											placeholder="Preencha o valor."
+											id="inputValor" 
+											data-thousands="." data-decimal="," data-prefix="R$ "/>
+											
 										<form:errors cssClass="native-error" path="valor"></form:errors>
 									</div>
 								</div>
@@ -251,7 +254,7 @@
 								<br />
 								<br /> 
 								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">Confirmar</button>
+									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
 								
 								<div class="control-group">
@@ -274,7 +277,14 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 
+
+			$("#inputValor").maskMoney();
 			
+
+			$( "#confirmar" ).click(function() {
+				  $("#inputValor").val($("#inputValor").val().replace(",","")); 
+				  $( "#target" ).submit();
+				});
 			
 			
 			$('#data_fim_reserva').daterangepicker({
@@ -282,7 +292,8 @@
 			    timePickerIncrement: 15,
 				timePicker: true,
 				timePicker12Hour: false,
-				format : 'DD/MM/YYYY hh:mm',
+				timePicker24Hour: true,
+				format : 'DD/MM/YYYY HH:mm',
 				calender_style : "picker_4",
 				locale: {
 			          cancelLabel: 'Cancelar',
@@ -297,7 +308,8 @@
 			    timePickerIncrement: 15,
 				timePicker: true,
 				timePicker12Hour: false,
-				format : 'DD/MM/YYYY hh:mm',
+				timePicker24Hour: true,
+				format : 'DD/MM/YYYY HH:mm',
 				calender_style : "picker_4",
 				locale: {
 			          cancelLabel: 'Cancelar',
@@ -328,7 +340,8 @@
 				    timePickerIncrement: 15,
 					timePicker: true,
 					timePicker12Hour: false,
-					format : 'DD/MM/YYYY hh:mm',
+					timePicker24Hour: true,
+					format : 'DD/MM/YYYY HH:mm',
 					startDate: dateFim,
 					calender_style : "picker_4",
 					locale: {
@@ -344,7 +357,8 @@
 				    timePickerIncrement: 15,
 					timePicker: true,
 					timePicker12Hour: false,
-					format : 'DD/MM/YYYY hh:mm',
+					timePicker24Hour: true,
+					format : 'DD/MM/YYYY HH:mm',
 					startDate: dateIni,
 					calender_style : "picker_4",
 					locale: {
@@ -354,6 +368,7 @@
 				}, function(start, end, label) {
 				  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 				});
+				
 				
 			}
 			

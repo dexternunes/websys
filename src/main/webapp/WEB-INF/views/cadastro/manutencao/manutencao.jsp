@@ -48,7 +48,7 @@
 
 										<tr onclick="document.location.href='<c:url value="/manutencao/cadastro/${manutencoes.id }"/>';"
 										style="cursor: pointer; !important;">
-											<td oName="id" oValue="${manutencoes.id}">${manutencao.produto}</td>
+											<td oName="id" oValue="${manutencoes.id}">${manutencoes.produto.descricao}</td>
 											<td>${manutencoes.obs}</td>
 											<td class="tdDate">${manutencoes.inicioManutencao}</td>
 											<td class="tdDate">${manutencoes.fimManutencao}</td>

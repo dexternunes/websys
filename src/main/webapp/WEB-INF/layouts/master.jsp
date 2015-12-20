@@ -65,6 +65,9 @@
 
 <!-- input mask -->
     <script src="${pageContext.request.contextPath}/resources/js/input_mask/jquery.inputmask.js"></script>
+    
+<!-- mask money -->
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.maskMoney.js"></script>
 
 <%-- <!-- gauge js -->
 <script type="text/javascript"
