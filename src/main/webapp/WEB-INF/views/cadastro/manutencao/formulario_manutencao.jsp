@@ -277,12 +277,14 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 
-
-			$("#inputValor").maskMoney();
+	
+			$("#inputValor").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 			
 
 			$( "#confirmar" ).click(function() {
-				  $("#inputValor").val($("#inputValor").val().replace(",","")); 
+				var valor = $("#inputValor").val().replace(".", "");
+				valor = valor.replace(",",".");
+				  $("#inputValor").val(valor); 
 				  $( "#target" ).submit();
 				});
 			

@@ -29,7 +29,7 @@
 						<div class="wizar_content">
 							<br />
 
-							<form:form cssClass="form-horizontal"
+							<form:form cssClass="form-horizontal" id="target"
 								action="${pageContext.request.contextPath}/produtos/cadastro/salvar"
 								commandName="produto" method="post">
 
@@ -80,10 +80,9 @@
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="altura"
-											id="txtboxToFilter"
 											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
 											placeholder="Preencha a altura do produto."
-											onkeypress="SomenteNumero()"/>
+											id="altura" />
 										<form:errors cssClass="native-error" path="altura"></form:errors>
 									</div>
 								</div>
@@ -96,7 +95,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="largura"
 											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
-											data-inputmask="'mask' : '9*'"
+											id="largura" data-thousands="" data-decimal="," data-prefix=""
 											placeholder="Preencha a largura do produto." />
 										<form:errors cssClass="native-error" path="largura"></form:errors>
 									</div>
@@ -110,7 +109,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="comprimento"
 											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
-											data-inputmask="'mask' : '9*'"
+											id="comprimento" data-thousands="" data-decimal="," data-prefix=""
 											placeholder="Preencha o comprimento do produto." />
 										<form:errors cssClass="native-error" path="comprimento"></form:errors>
 									</div>
@@ -149,7 +148,7 @@
 								<br />
 								<br />
 								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">Confirmar</button>
+									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
 								
 								<div class="control-group">
@@ -168,6 +167,39 @@
 		function Required() {
 
 		}
+	</script>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			$("#altura").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+			$("#largura").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+			$("#comprimento").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+	
+		
+			
+			$( "#confirmar" ).click(function() {
+				var valor = $("#altura").val().replace(".", "");
+				valor = valor.replace(",",".");
+				  $("#altura").val(valor); 
+				  
+					valor = $("#largura").val().replace(".", "");
+					valor = valor.replace(",",".");
+					  $("#largura").val(valor); 
+					  
+						valor = $("#comprimento").val().replace(".", "");
+						valor = valor.replace(",",".");
+						  $("#comprimento").val(valor); 
+				  
+				  $( "#target" ).submit();
+				});
+			
+			
+	
+		});
+		
+		
+
 	</script>
 </body>
 </html>

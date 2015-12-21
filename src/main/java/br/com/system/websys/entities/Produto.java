@@ -31,14 +31,17 @@ public class Produto extends EntityBaseRoot {
 	
 
 	@NotNull(message="Campo obrigatório!")
-	private Long comprimento;
+	@Column(columnDefinition="Decimal(10,2) default '0.00'")
+	private Double comprimento;
 
 	@NotNull(message="Campo obrigatório!")
-	private Long largura;
+	@Column(columnDefinition="Decimal(10,2) default '0.00'")
+	private Double largura;
 
 
 	@NotNull(message="Campo obrigatório!")
-	private Long altura;
+	@Column(columnDefinition="Decimal(10,2) default '0.00'")
+	private Double altura;
 	
 
 	private ProdutoTipo tipoProduto;
@@ -77,27 +80,29 @@ public class Produto extends EntityBaseRoot {
 		this.modelo = modelo;
 	}
 
-	public Long getComprimento() {
+
+
+	public Double getComprimento() {
 		return comprimento;
 	}
 
-	public void setComprimento(Long comprimento) {
+	public void setComprimento(Double comprimento) {
 		this.comprimento = comprimento;
 	}
 
-	public Long getLargura() {
+	public Double getLargura() {
 		return largura;
 	}
 
-	public void setLargura(Long largura) {
+	public void setLargura(Double largura) {
 		this.largura = largura;
 	}
 
-	public Long getAltura() {
+	public Double getAltura() {
 		return altura;
 	}
 
-	public void setAltura(Long altura) {
+	public void setAltura(Double altura) {
 		this.altura = altura;
 	}
 

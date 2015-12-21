@@ -52,7 +52,7 @@
 											<td>${manutencoes.obs}</td>
 											<td class="tdDate">${manutencoes.inicioManutencao}</td>
 											<td class="tdDate">${manutencoes.fimManutencao}</td>
-											<td>${manutencoes.valor}</td>
+											<td class="tdValor">${manutencoes.valor}</td>
 											<td>${manutencoes.status}</td>
 										</tr>
 
@@ -86,6 +86,15 @@
                 
                 $( ".tdDate" ).each(function( index ) {
                 	$( this ).text(formatMyDate($(this).text()));
+                });
+                
+
+                $( ".tdValor" ).each(function( index ) {
+                	var valor = $( this ).text();
+                	valor = valor.replace(".", ",");
+                	var moeda = "R$ ";
+                	valor = moeda.concat(valor);
+                	$( this ).text(valor);
                 });
             });
 
