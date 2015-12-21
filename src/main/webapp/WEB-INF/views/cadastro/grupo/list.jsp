@@ -42,12 +42,23 @@
 												<tr onclick="document.location.href='<c:url value="/grupo/cadastro/${grupo.id}"/>';" 
 												style="cursor: pointer; !important;">
 													<td>${grupo.descricao}</td>
-													<td>Listar Produtos</td>
-													<td>Listar Cotistas</td>
-													<c:if test="${terceiro.ativo}">
+													<td>
+														<lu>
+															<c:forEach items="${grupo.produtos}" var="produto" varStatus="statusProd">
+																<li>${produto.descricao}</li>
+															</c:forEach>
+														</lu>
+													</td>
+													<td><lu>
+															<c:forEach items="${grupo.terceiros}" var="terceiro" varStatus="statusTerc">
+																<li>${terceiro.nome}</li>
+															</c:forEach>
+														</lu>
+													</td>
+													<c:if test="${grupo.ativo}">
 														<td>Ativo</td>
 													</c:if>
-													<c:if test="${!terceiro.ativo}">
+													<c:if test="${!grupo.ativo}">
 														<td>Inativo</td>
 													</c:if>
 												</tr>
