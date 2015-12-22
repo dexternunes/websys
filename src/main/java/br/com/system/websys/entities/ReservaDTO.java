@@ -10,6 +10,8 @@ public class ReservaDTO  implements Serializable {
 
 	private static final long serialVersionUID = 8631801890193962830L;
 	
+	private Long id;
+	
 	private String title;
 	
 	private Date start;
@@ -24,14 +26,23 @@ public class ReservaDTO  implements Serializable {
 		
 	}
 	
-	public ReservaDTO(String title, Date start, Date end, Boolean allDay, String url){
+	public ReservaDTO(Long id, String title, Date start, Date end, Boolean allDay, String url){
+		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
 		this.url = url;
 	}
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -70,6 +81,5 @@ public class ReservaDTO  implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-				
+	}		
 }

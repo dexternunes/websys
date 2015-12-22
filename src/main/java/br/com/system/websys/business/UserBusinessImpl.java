@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
-import br.com.system.websys.repository.TerceiroRepository;
 import br.com.system.websys.repository.UserRepository;
 
 @Service  
