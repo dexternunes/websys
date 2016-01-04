@@ -50,7 +50,6 @@ public class ReservaController{
 				logger.info("Erro: " + error.toString());
 			
 			return "redirect:/home";
-
 		}
 
 		try {
@@ -58,12 +57,16 @@ public class ReservaController{
 				reserva.setEventoInicio(new ReservaEvento());
 				reserva.setEventoFim(new ReservaEvento());
 			}
+			else{
+				reserva.setEventoInicio(reservaBusiness.get(reserva.getId()).getEventoInicio());
+				reserva.setEventoFim(reservaBusiness.get(reserva.getId()).getEventoFim());
+			}
 			reservaBusiness.salvar(reserva);
 		} catch (Exception e) {
 			return "redirect:/home";
 		}
 		
-		//attr.addFlashAttribute("reserva", reserva);
+		attr.addFlashAttribute("reserva", reserva);
 		return "redirect:/home";
 	}
 	
@@ -83,11 +86,12 @@ public class ReservaController{
 		return reservas;
 	}
 	
-	@RequestMapping(value= "/api/salvar_edit", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
+	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public String postReserva(@RequestBody ReservaDTO reservaDTO) throws Exception {
+	public String postReserva(@RequestBody Long id_reserva) throws Exception {
 		
-		Reserva reserva = reservaBusiness.get(reservaDTO.getId());		
+		Reserva reserva = reservaBusiness.get(id_reserva);
+		reserva.setExcluido(true);
 
 		try {
 			reservaBusiness.salvar(reserva);

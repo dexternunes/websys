@@ -78,7 +78,7 @@
 				</div>
 				<form:form id="antoform2" class="form-horizontal calender" role="form" commandName="reserva"
 					action="${pageContext.request.contextPath}/reserva/salvar">
-					<form:hidden path="id"/>
+					<form:hidden path="id" id="id"/>
 				<div class="modal-body">
 					<div id="testmodal2" style="padding: 5px 20px;">					
 							<div class="form-group">
@@ -135,9 +135,10 @@
 				</div>
 				<div class="modal-footer">
 					<div class="form-actions">
-						<button type="button" class="btn btn-default antoclose"
-							data-dismiss="modal">Fechar</button>
-						<button type="button" class="btn btn-primary antosubmit">Confirmar
+						<button type="button" class="btn btn-default exclui_reserva" data-dismiss="modal"
+							style="display:none !important">Excluir</button>
+						<button type="button" class="btn btn-default antoclose" data-dismiss="modal">Fechar</button>
+						<button type="submit" class="btn btn-primary antosubmit">Confirmar
 					</button>
 					</div>
 				</div>
@@ -145,6 +146,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div id="reserva_evento" data-toggle="modal" data-target="#CalenderModal"></div>
 	<div id="custom_notifications" class="custom-notifications dsp_none">
 		<ul class="list-unstyled notifications clearfix"
@@ -154,7 +156,8 @@
 		<div id="notif-group" class="tabbed_notifications"></div>
 	</div>
 
-	<script src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/moment.min2.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/datepicker/daterangepicker.js"></script>
@@ -189,11 +192,11 @@
 												selectable : true,
 												selectHelper : true,
 												eventLimit : true,
+												timezone: 'local',
 												select : function(start, end,allDay) {
 													ReservaEvento(start,end);
 												},
 												eventClick : function(calEvent,jsEvent, view) {
-													alert(calEvent.id);
 													ReservaEvento(calEvent.start, calEvent.end, calEvent);
 												},
 												editable : false,
@@ -202,11 +205,38 @@
 						});
 	</script>
 	<script type="text/javascript">
-		
+		$(document).ready(function() {
+			$('.confirma_reserva').click(function() {
+				var reserva1 = {
+					title : "teste",
+					start : "2015-12-15 09:00:00",
+					end : "2015-12-15 09:00:00",
+					allDay : "false",
+					url : "google.com.br"
+				};
+
+				/*$.ajax({
+					url : "${pageContext.request.contextPath}/reserva/post2",
+					type : "POST",
+					contentType : "application/json; charset=utf-8",
+					data : JSON.stringify(reserva1), //Stringified Json Object
+					async : false, //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+					cache : false, //This will force requested pages not to be cached by the browser  
+					processData : false, //To avoid making query String instead of JSON
+					success : function(resposeJsonObject) {
+						alert('foi' + resposeJsonObject);
+					},
+					error : function(error) {
+						alert('erro:' + error);
+					}
+				});*/
+			});
+		});		
 		
 		function ReservaEvento(start, end, calEvent) {
 			$('#data_inicio_reserva').val('');
 			$('#data_fim_reserva').val('');
+			$('.exclui_reserva').hide();
 			
 			var data_inicio;
 			var data_fim;
@@ -216,7 +246,29 @@
 				data_fim = moment(end).format("YYYY/MM/DD HH:mm");
 				$('#data_inicio_reserva').val(data_inicio);
 				$('#data_fim_reserva').val(data_fim);
-				
+				$('#id').val(calEvent.id);
+				$('.exclui_reserva').show();
+				$('.exclui_reserva').click(function() {
+					
+					
+					$.ajax({
+					url : "${pageContext.request.contextPath}/reserva/api/remove",
+					type : "POST",
+					contentType : "application/json; charset=utf-8",
+					data : JSON.stringify(calEvent._id), //Stringified Json Object
+					async : false, //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
+					cache : false, //This will force requested pages not to be cached by the browser  
+					processData : false, //To avoid making query String instead of JSON
+					success : function(resposeJsonObject) {							
+							$('#calendar').fullCalendar('removeEvents',calEvent.id);
+						},
+					error : function(error) {
+							alert('erro:' + error);
+						}
+					});
+					
+					$('.antoclose2').click();
+				});
 			} else {
 				data_inicio = moment(start).format("YYYY/MM/DD " + "06:00");
 				data_fim = data_inicio;
@@ -229,6 +281,7 @@
 				timePickerIncrement : 15,
 				timePicker12Hour : false,
 				format : 'YYYY/MM/DD HH:mm',
+				timezone: 'local',
 				calender_style : "picker_4",
 				parentEl : '#CalenderModal',
 				startDate : data_inicio
@@ -240,6 +293,7 @@
 				timePickerIncrement : 15,
 				timePicker12Hour : false,
 				format : 'YYYY/MM/DD HH:mm',
+				timezone: 'local',
 				calender_style : "picker_4",
 				parentEl : '#CalenderModal',
 				startDate : data_fim
@@ -254,8 +308,8 @@
 				categoryClass = $("#event_type").val();
 
 				if (title) {
-					var inicio = new Date($('#data_inicio_reserva').val());
-					var fim = new Date($('#data_fim_reserva').val());
+					var inicio = new Date(moment(start).format("YYYY/MM/DD HH:mm"));
+					var fim = new Date(moment(end).format("YYYY/MM/DD HH:mm"));
 
 					var hora_fim = fim.getHours();
 					var hora_inicio = inicio.getHours();
@@ -272,45 +326,19 @@
 					}
 
 					if (calEvent) {
-						var reserva_edit = {
-								id : calEvent.id,
-								title : title,
-								start : inicio,
-								end : fim,
-								allDay : allDay,
-								url : " "
-							};
-
-							$.ajax({
-								url : "${pageContext.request.contextPath}/reserva/api/salvar_edit",
-								type : "POST",
-								contentType : "application/json; charset=utf-8",
-								data : JSON.stringify(reserva_edit), //Stringified Json Object
-								async : false, //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
-								cache : false, //This will force requested pages not to be cached by the browser  
-								processData : false, //To avoid making query String instead of JSON
-								success : function(resposeJsonObject) {
-									calendar.fullCalendar('updateEvent', calEvent);
-
-									$('.antoclose').click();
-								},
-								error : function(error) {
-									return false;
-								}
-							});											
+						$('#calendar').fullCalendar('updateEvent', calEvent);
 					}
 					else {
-						calendar.fullCalendar('renderEvent', {
+						$('#calendar').fullCalendar('renderEvent', {
 							title : title,
 							start : inicio,
 							end : fim,
 							allDay : allDay
 						}, true);
-						$('#antoform2').submit();
 					}
 				}
 
-				calendar.fullCalendar('unselect');
+				$('#calendar').fullCalendar('unselect');
 
 				$('.antoclose').click();
 
