@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
-import br.com.system.websys.repository.TerceiroRepository;
 import br.com.system.websys.repository.UserRepository;
 
 @Service  
@@ -45,7 +44,10 @@ class UserBusinessImpl implements UserBusiness {
 
 	@Override
 	public void salvar(User user) throws Exception {
-		user.setRole(Role.valueOf(primaryRole));		
+		
+		if(user.getRole() == null)
+			user.setRole(Role.valueOf(primaryRole));
+		
 		userRepository.save(user);				
 	}
 

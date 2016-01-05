@@ -16,9 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.system.websys.business.TerceiroBusiness;
+import br.com.system.websys.business.UserBusiness;
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroEndereco;
 import br.com.system.websys.entities.TerceiroTipo;
+import br.com.system.websys.entities.User;
 
 @Controller
 @RequestMapping("/terceiro")
@@ -29,6 +32,9 @@ public class TerceiroController {
 
 	@Autowired
 	private TerceiroBusiness terceiroBusiness;
+	
+	@Autowired
+	private UserBusiness userBusiness;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configHome() {
@@ -39,8 +45,16 @@ public class TerceiroController {
 	@RequestMapping(value = "/terceiros", method = RequestMethod.GET)
 	public String configBases(Model model) {
 
+		User user = userBusiness.getCurrent();
+		
+		if(user.getRole().equals(Role.ROLE_COTISTA) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
+			model.addAttribute("terceiro", user.getTerceiro());
+			model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
+			model.addAttribute("readonly", true);
+			return "cadastro/terceiro/formulario_terceiro";
+		}
+		
 		model.addAttribute("terceiros", terceiroBusiness.getAll());
-
 		return "cadastro/terceiro/terceiros";
 	}
 	

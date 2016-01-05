@@ -37,7 +37,7 @@
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<form:input path="nome"
-									cssClass="form-control col-md-7 col-xs-12"/>
+									cssClass="form-control col-md-7 col-xs-12" readonly="${readonly}"/>
 								<form:errors cssClass="native-error" path="nome"></form:errors>
 							</div>
 						</div>
@@ -48,7 +48,7 @@
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<form:input path="documento"
 									cssClass="form-control col-md-7 col-xs-12"
-									 data-inputmask="'mask' : '999.999.999-99'" />
+									 data-inputmask="'mask' : '999.999.999-99'"  readonly="${readonly}" />
 									<form:errors cssClass="native-error" path="documento"></form:errors>
 							</div>
 						</div>
@@ -57,10 +57,10 @@
 								for="tipos">Tipo <span class="required">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:select path="tipos" multiple="false"
+								<form:select path="tipos" multiple="false" disabled="${readonly}"
 									cssClass="select2_multiple form-control">
 									<form:options items="${listaTerceiroTipo}" itemValue="code"
-										itemLabel="descricao"></form:options>
+										itemLabel="descricao" readonly="${readonly}"></form:options>
 								</form:select>
 								<form:errors cssClass="native-error" path="tipos"></form:errors>
 							</div>
@@ -68,7 +68,7 @@
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12"
 								for="first-name">Ativo </label>
-							<form:checkbox style="margin-left:10px; margin-top:10px;"
+							<form:checkbox style="margin-left:10px; margin-top:10px;" disabled="${readonly}"
 								path="ativo" />
 						</div>
 

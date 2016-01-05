@@ -14,16 +14,24 @@
 	
 		<intercept-url pattern="/callback.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
 	
+		
+	
 		<intercept-url pattern="/" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>		
 		<intercept-url pattern="/home" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>
 		<intercept-url pattern="/home/**" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>
 		
-		<intercept-url pattern="/configuracoes/" access="hasRole('ROLE_ADMIN')"/>		
-		<intercept-url pattern="/configuracoes/terceiros" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/configuracoes/terceiros/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/relatorios/manutencao/**" access="hasRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/agenda/agenda/**" access="hasRole('ROLE_ADMIN')"/>
-			
+		<intercept-url pattern="/grupo" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		<intercept-url pattern="/grupo/" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		<intercept-url pattern="/grupo/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		
+		<intercept-url pattern="/produtos" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		<intercept-url pattern="/produtos/" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		<intercept-url pattern="/produtos/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		
+		<intercept-url pattern="/manutencao" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		<intercept-url pattern="/manutencao/" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		<intercept-url pattern="/manutencao/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
+		
 		<form-login
 	    	login-page="/auth/"
 	    	authentication-failure-url="/auth/login?error=true"

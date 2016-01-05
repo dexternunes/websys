@@ -53,7 +53,7 @@
 							</label>
 							
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:select path="produtos" multiple="false" readonly="readonly" cssClass="select2_single form-control">
+								<form:select path="produtos" multiple="false" readonly="readonly" cssClass="select2_single form-control select2_readonly">
 									<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
 								</form:select>
 								<form:errors cssClass="native-error" path="produtos"></form:errors>
