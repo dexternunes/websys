@@ -158,6 +158,7 @@
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/calendar/lang-all.js"></script>
 
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/moment.min2.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/datepicker/daterangepicker.js"></script>
@@ -193,6 +194,7 @@
 												selectHelper : true,
 												eventLimit : true,
 												timezone: 'local',
+												lang: 'pt-br',
 												select : function(start, end,allDay) {
 													ReservaEvento(start,end);
 												},
