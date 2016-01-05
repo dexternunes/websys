@@ -8,12 +8,12 @@
 
 <html>  
 	<head>
-		<title>Terceiros Cadastrados</title>
+		<title>Relatório de Manutenção</title>
 	</head>
 	<body>
 		<div class="row">
 			<div class="x_title">
-            	<h2>Manutenção</small></h2>
+            	<h2>Relatório de Manutenção</small></h2>
                 <div class="clearfix"></div>
             </div>
 			</div>

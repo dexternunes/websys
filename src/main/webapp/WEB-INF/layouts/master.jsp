@@ -374,8 +374,6 @@ $(document).ready(function() {
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
 											<li><a href="<c:url value="/home" />">Home</a></li>
-											<li><a href="<c:url value="/relatorios/manutencao" />">Relatório
-													de Manutenção</a></li>
 										</ul></li>
 								</sec:authorize>
 								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
@@ -389,6 +387,16 @@ $(document).ready(function() {
 										<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
 									</ul>
 								</li>
+
+								<!-- Relatorios -->
+								<sec:authorize url="/relatorios/">
+									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
+											class="fa fa-chevron-down"></span></a>
+										<ul class="nav child_menu" style="display: none">
+											<li><a href="<c:url value="/relatorios/manutencao/" />">Relatório Manutenção/Horas</a></li>
+										</ul></li>
+								</sec:authorize>
+								
 							</ul>
 						</div>
 					</div>

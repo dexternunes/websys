@@ -1,7 +1,5 @@
 package br.com.system.websys.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,9 +22,9 @@ import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
-import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
+import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservasDTO;
 
 @Controller
@@ -53,10 +50,17 @@ public class ReservaController{
 				logger.info("Erro: " + error.toString());
 			
 			return "redirect:/home";
-
 		}
 
 		try {
+			if(reserva.getId()==null){
+				reserva.setEventoInicio(new ReservaEvento());
+				reserva.setEventoFim(new ReservaEvento());
+			}
+			else{
+				reserva.setEventoInicio(reservaBusiness.get(reserva.getId()).getEventoInicio());
+				reserva.setEventoFim(reservaBusiness.get(reserva.getId()).getEventoFim());
+			}
 			reservaBusiness.salvar(reserva);
 		} catch (Exception e) {
 			return "redirect:/home";
@@ -75,42 +79,26 @@ public class ReservaController{
 		
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
-			reservas.getReservas().add(new ReservaDTO(reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
+			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
 					reserva.getFimReserva(), false, ""));
 			}
 		}
-
-		/*
-		reservas.getReservas().add(new ReservaDTO("Locação 1", new Date(115, 11, 5), new Date(115, 11, 7), false, "google.com.br"));
-		reservas.getReservas().add(new ReservaDTO("Locação 2", new Date(115, 11, 8), new Date(115, 11, 9), false, "google.com.br"));
-		reservas.getReservas().add(new ReservaDTO("Locação 3", new Date(115, 11, 10), new Date(115, 11, 12), false, "google.com.br"));
-		reservas.getReservas().add(new ReservaDTO("Locação 4", new Date(115, 11, 30), new Date(115, 12, 6), false, "google.com.br"));
-		reservas.getReservas().add(new ReservaDTO("Locação 5", new Date(115, 12, 7), new Date(115, 12, 12), false, "google.com.br"));
-		*/
 		return reservas;
 	}
 	
-	@RequestMapping(value= "/post", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
+	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public String postReserva(@RequestBody ReservaDTO reserva) throws Exception {
+	public String postReserva(@RequestBody Long id_reserva) throws Exception {
 		
-		reserva.getTitle();
+		Reserva reserva = reservaBusiness.get(id_reserva);
+		reserva.setExcluido(true);
 
-		return "home";
-	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/nova", method = RequestMethod.GET )
-	public String getNovaReserva(HttpServletRequest request, Model model) throws Exception {
+		try {
+			reservaBusiness.salvar(reserva);
+		} catch (Exception e) {
+			return "redirect:/home";
+		}
 		
-		Reserva reserva = new Reserva();
-		reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
-		
-		List<Grupo> grupos = grupoBusiness.findAllByTerceito(reserva.getSolicitante());
-
-		model.addAttribute("reserva", reserva);
-		model.addAttribute("grupos", grupos);
-		
-		return "ok";
+		return "redirect:/home";
 	}
 }

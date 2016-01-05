@@ -18,31 +18,31 @@ import br.com.system.websys.entities.Reserva;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	private UserBusiness userBusiness;
-	
+
 	@Autowired
 	private GrupoBusiness grupoBusiness;
-	
-	 @RequestMapping(value = "/", method = RequestMethod.GET)
-	 public String root() {
-		 return "redirect:/home";
-	 }
+
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String root() {
+		return "redirect:/home";
+	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(HttpServletRequest request, Locale locale, Model model, Reserva reserva) {
-		
-		if(reserva.getId() == null){
+
+		if (reserva.getId() == null) {
 			reserva = new Reserva();
 			reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
 		}
-		
-		List<Grupo> grupos = grupoBusiness.findAllByTerceito(reserva.getSolicitante());
+
+		List<Grupo> grupos = grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro());
 
 		model.addAttribute("reserva", reserva);
 		model.addAttribute("listaReservaGrupos", grupos);
-		
+
 		return "home";
 	}
 }

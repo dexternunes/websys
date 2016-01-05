@@ -276,7 +276,10 @@
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			var valorVirgula = $("#inputValor").val();
+			valorVirgula = valorVirgula.replace(".",",");
 
+			$("#inputValor").val(valorVirgula);
 	
 			$("#inputValor").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 			

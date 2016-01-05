@@ -9,14 +9,27 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "faturamento_rateio")
-public class FaturamentoRateio extends EntityBaseRoot {
+@Table(name="faturamento_rateio")
+public class FaturamentoRateio extends EntityBaseRoot  {
 
-	private Terceiro terceiro;
 
 	private Double valor;
+	private Terceiro terceiro = new Terceiro();
+	private Faturamento faturamento = new Faturamento();
+	
+	
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	@JoinColumn(name="id_faturamento", referencedColumnName="id_faturamento")
+	public Faturamento getFaturamento() {
+		return faturamento;
+	}
+
+	public void setFaturamento(Faturamento faturamento) {
+		this.faturamento = faturamento;
+	}
 
 	@Id
 	@GeneratedValue
@@ -25,7 +38,6 @@ public class FaturamentoRateio extends EntityBaseRoot {
 	public Long getId() {
 		return id;
 	}
-
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
 	public Terceiro getTerceiro() {
@@ -36,6 +48,8 @@ public class FaturamentoRateio extends EntityBaseRoot {
 		this.terceiro = terceiro;
 	}
 
+	@NotNull(message="Campo obrigatório!")
+	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	public Double getValor() {
 		return valor;
 	}
@@ -43,5 +57,5 @@ public class FaturamentoRateio extends EntityBaseRoot {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
+	
 }
