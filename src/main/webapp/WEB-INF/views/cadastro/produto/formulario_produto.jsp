@@ -172,6 +172,10 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 
+			$("#altura").val(decimal($("#altura").val()));
+			$("#largura").val(decimal($("#largura").val()));
+			$("#comprimento").val(decimal($("#comprimento").val()));
+			
 			$("#altura").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 			$("#largura").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 			$("#comprimento").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
@@ -198,6 +202,9 @@
 	
 		});
 		
+		function decimal(decimal){
+			return decimal.replace(".", ",");
+		}
 		
 
 	</script>
