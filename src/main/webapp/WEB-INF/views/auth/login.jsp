@@ -92,7 +92,7 @@ body {
 								id="senha" name="senha">
 						</div>
 						<div>
-							<a class="btn btn-default submit" onclick="javascript:$('form').submit()">Entrar</button>
+							<a id="confirmar" class="btn btn-default submit" onclick="javascript:">Entrar</button>
 							<a class="reset_pass" href="#">Esqueceu sua senha?</a>
 						</div>
 						<div class="clearfix"></div>
@@ -115,7 +115,24 @@ body {
 			</div>
 		</div>
 	</div>
+<script type="text/javascript">
+		$(document).ready(function() {
+	
+			$( "#confirmar" ).click(function() {
+				$('form').submit();
+			});
+			
+			$( '#senha' ).keypress(function (e) {
+				  if (e.which == 13) {
+					  $('form').submit();
+				    return false;    //<---- Add this line
+				  }
+			});
 
+	
+			
+		});
+	</script>
 </body>
 
 </html>

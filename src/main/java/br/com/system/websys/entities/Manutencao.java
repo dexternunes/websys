@@ -15,7 +15,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import br.com.system.websys.serializer.JsonDateTimeDeserializer;
+import br.com.system.websys.serializer.JsonDateTimeSerializer;
 
 
 @Entity 
@@ -31,20 +37,22 @@ public class Manutencao extends EntityBaseRoot {
 	
 
 	@NotNull(message="Campo obrigatório!")
+	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double valor;
 	
 
+	@DateTimeFormat(pattern="dd/MM/YYYY hh:mm")
 	@NotNull(message="Campo obrigatório!")
 	private Date inicioManutencao;
 	
-
+	@DateTimeFormat(pattern="dd/MM/YYYY hh:mm")
 	private Date fimManutencao;
 
 	private Produto produto;
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "id_user")	
+	@Column(name = "id_manutencao")	
 	@Override
 	public Long getId() {
 		return id;
@@ -75,18 +83,22 @@ public class Manutencao extends EntityBaseRoot {
 		this.valor = valor;
 	}
 
+	@JsonSerialize( using=JsonDateTimeSerializer.class)
 	public Date getInicioManutencao() {
 		return inicioManutencao;
 	}
 
+	@JsonDeserialize( using=JsonDateTimeDeserializer.class)
 	public void setInicioManutencao(Date inicioManutencao) {
 		this.inicioManutencao = inicioManutencao;
 	}
 
+	@JsonSerialize( using=JsonDateTimeSerializer.class)
 	public Date getFimManutencao() {
 		return fimManutencao;
 	}
-
+	
+	@JsonDeserialize( using=JsonDateTimeDeserializer.class)
 	public void setFimManutencao(Date fimManutencao) {
 		this.fimManutencao = fimManutencao;
 	}

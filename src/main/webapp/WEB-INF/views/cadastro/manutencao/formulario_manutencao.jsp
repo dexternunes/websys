@@ -155,7 +155,7 @@
 
 							<form:form cssClass="form-horizontal"
 								action="${pageContext.request.contextPath}/manutencao/cadastro/salvar"
-								commandName="manutencao" method="post">
+								commandName="manutencao" method="post" id="form1">
 
 								<form:hidden path="id" />
 
@@ -196,7 +196,10 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="valor"
 											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o valor." />
+											placeholder="Preencha o valor."
+											id="inputValor" 
+											data-thousands="." data-decimal="," data-prefix="R$ "/>
+											
 										<form:errors cssClass="native-error" path="valor"></form:errors>
 									</div>
 								</div>
@@ -251,7 +254,7 @@
 								<br />
 								<br /> 
 								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">Confirmar</button>
+									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
 								
 								<div class="control-group">
@@ -273,27 +276,116 @@
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			var valorVirgula = $("#inputValor").val();
+			valorVirgula = valorVirgula.replace(".",",");
 
+			$("#inputValor").val(valorVirgula);
+	
+			$("#inputValor").maskMoney({ allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+			
 
+			$( "#confirmar" ).click(function() {
+				var valor = $("#inputValor").val().replace(".", "");
+				valor = valor.replace(",",".");
+				  $("#inputValor").val(valor); 
+				  $( "#target" ).submit();
+				});
+			
+			
 			$('#data_fim_reserva').daterangepicker({
 				singleDatePicker : true,
+			    timePickerIncrement: 15,
 				timePicker: true,
 				timePicker12Hour: false,
-				format : 'DD/MM/YYYY hh:mm:ss',
-				calender_style : "picker_4"
+				timePicker24Hour: true,
+				format : 'DD/MM/YYYY HH:mm',
+				calender_style : "picker_4",
+				locale: {
+			          cancelLabel: 'Cancelar',
+				      applyLabel: 'Ok'
+			      }
 			}, function(start, end, label) {
 			  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 			});
 			
 			$('#data_inicio_reserva').daterangepicker({
 				singleDatePicker : true,
+			    timePickerIncrement: 15,
 				timePicker: true,
 				timePicker12Hour: false,
-				format : 'DD/MM/YYYY hh:mm:ss',
-				calender_style : "picker_4"
+				timePicker24Hour: true,
+				format : 'DD/MM/YYYY HH:mm',
+				calender_style : "picker_4",
+				locale: {
+			          cancelLabel: 'Cancelar',
+				      applyLabel: 'Ok'
+			      }
 			}, function(start, end, label) {
 			  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 			});
+			
+			function formatMyDate(date) {
+				//var date = new Date($('#data_inicio_reserva').val());
+				var day = complet(date.getDate());
+				var month = complet(date.getMonth());
+				var year = complet(date.getFullYear());
+				var hour = complet(date.getHours());
+				var min = complet(date.getMinutes());
+
+				return day + '/' + month + '/' + year + ' ' + hour +':'+min;              
+			}
+
+			if($('#data_inicio_reserva').val() != ""){
+				$('#data_inicio_reserva').val(formatMyDate($('#data_inicio_reserva').val()));
+				$('#data_fim_reserva').val(formatMyDate($('#data_fim_reserva').val()));	
+				var dateIni = new Date($('#data_inicio_reserva').val());
+				var dateFim = new Date($('#data_fim_reserva').val());
+				$('#data_fim_reserva').daterangepicker({
+					singleDatePicker : true,
+				    timePickerIncrement: 15,
+					timePicker: true,
+					timePicker12Hour: false,
+					timePicker24Hour: true,
+					format : 'DD/MM/YYYY HH:mm',
+					startDate: dateFim,
+					calender_style : "picker_4",
+					locale: {
+				          cancelLabel: 'Cancelar',
+					      applyLabel: 'Ok'
+				      }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+				});
+				
+				$('#data_inicio_reserva').daterangepicker({
+					singleDatePicker : true,
+				    timePickerIncrement: 15,
+					timePicker: true,
+					timePicker12Hour: false,
+					timePicker24Hour: true,
+					format : 'DD/MM/YYYY HH:mm',
+					startDate: dateIni,
+					calender_style : "picker_4",
+					locale: {
+				          cancelLabel: 'Cancelar',
+					      applyLabel: 'Ok'
+				      }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+				});
+				
+				
+			}
+			
+			function complet(value){
+				if(value < 10)
+					return "0" + value;
+				else
+					return value;
+			} 
+		
+			
+	
 		});
 	</script>
 </body>

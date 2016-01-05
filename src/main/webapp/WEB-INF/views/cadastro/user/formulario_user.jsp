@@ -40,7 +40,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="login"
 											cssClass="form-control col-md-7 col-xs-12"
-											placeholder="Preencha o login do usuário." />
+											placeholder="Preencha o login do usuário." readonly="${readonly}" />
 										<form:errors cssClass="native-error" path="login"></form:errors>
 									</div>
 								</div>
@@ -50,7 +50,7 @@
 										for="first-name">Senha <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="senha"
+										<form:password path="senha"
 											cssClass="form-control col-md-7 col-xs-12"
 											placeholder="Preencha a senha do usuário." />
 										<form:errors cssClass="native-error" path="senha"></form:errors>
@@ -64,7 +64,7 @@
 										for="tipos">Terceiro <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="terceiro" multiple="false" cssClass="select2_multiple form-control">
+										<form:select path="terceiro" multiple="false" cssClass="select2_multiple form-control" readonly="${readonly}">
 											<form:options items="${listaTerceiros}" itemValue="id"
 												itemLabel="nome"></form:options>
 										</form:select>
@@ -78,7 +78,7 @@
 										for="first-name">Role <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="role" multiple="false" class="select2_single form-control" tabindex="-1">
+										<form:select path="role" multiple="false" class="select2_single form-control" tabindex="-1" readonly="${readonly}">
 											<form:options items="${listaUserRole}" itemValue="role"
 												itemLabel="role"></form:options>
 										</form:select>
@@ -88,28 +88,16 @@
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Ativo 
-									</label><form:checkbox style="margin-left:10px; margin-top:10px;" path="ativo"/>
+									</label><form:checkbox style="margin-left:10px; margin-top:10px;" path="ativo" disabled="${readonly}"/>
 								</div>
 
-							
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Excluído
-									</label><form:checkbox style="margin-left:10px; margin-top:10px;" path="excluido"/>
-								</div>
-
-
+								<hidden style="margin-left:10px; margin-top:10px;" path="excluido"/>
+								
 								<div style="clear: both"></div>
 								<br />
 								<br />
 								<div class="form-actions">
 									<button type="submit" class="btn btn-primary">Confirmar</button>
-								</div>
-								
-								
-								<div class="control-group">
-									<a type="button" class="btn btn-primary"
-										href="${pageContext.request.contextPath}/usuarios/">Voltar</a>
 								</div>
 
 							</form:form>

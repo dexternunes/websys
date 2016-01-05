@@ -65,6 +65,9 @@
 
 <!-- input mask -->
     <script src="${pageContext.request.contextPath}/resources/js/input_mask/jquery.inputmask.js"></script>
+    
+<!-- mask money -->
+    <script src="${pageContext.request.contextPath}/resources/js/jquery.maskMoney.js"></script>
 
 <%-- <!-- gauge js -->
 <script type="text/javascript"
@@ -371,23 +374,29 @@ $(document).ready(function() {
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
 											<li><a href="<c:url value="/home" />">Home</a></li>
-											<li><a href="<c:url value="/relatorios/manutencao" />">Relatório
-													de Manutenção</a></li>
 										</ul></li>
 								</sec:authorize>
-								<sec:authorize url="/configuracoes/">
-									<li><a><i class="fa fa-edit"></i>Cadastros<span
+								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu" style="display: none">
+										<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
+										<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
+										<li><a href="<c:url value="/produtos/" />">Produtos</a></li>
+										<sec:authorize url="/grupo">
+											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
+										</sec:authorize>
+										<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+									</ul>
+								</li>
+
+								<!-- Relatorios -->
+								<sec:authorize url="/relatorios/">
+									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
-											<li><a href="<c:url value="/usuarios/" />">Usuarios</a>
-											</li>
-											<li><a href="<c:url value="/produtos/" />">Produtos</a>
-											</li>
-											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
-											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+											<li><a href="<c:url value="/relatorios/manutencao/" />">Relatório Manutenção/Horas</a></li>
 										</ul></li>
 								</sec:authorize>
+								
 							</ul>
 						</div>
 					</div>

@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -34,11 +32,7 @@ public class ReservaEvento extends EntityBaseRoot {
 		return id;
 	}
 
-	@OneToMany(cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
-	@JoinTable(name="reserva_evento_has_imagem", 
-		joinColumns = {@JoinColumn(name="id_reserva_evento", referencedColumnName="id_reserva_evento")},
-		inverseJoinColumns = {@JoinColumn(name="id_imagem", referencedColumnName="id_imagem")}
-	)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="reservaEvento")
 	public List<Imagem> getImagens() {
 		return imagens;
 	}

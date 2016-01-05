@@ -17,6 +17,9 @@ import br.com.system.websys.repository.ReservaEventoRepository;
 class ReservaEventoBusinessImpl extends BusinessBaseRootImpl<ReservaEvento, ReservaEventoRepository> implements ReservaEventoBusiness {
     
 	@Autowired
+	private ImagemBusiness imagemBusiness;
+	
+	@Autowired
 	protected ReservaEventoBusinessImpl(ReservaEventoRepository repository) {
 		super(repository, ReservaEvento.class);
 	}
@@ -34,7 +37,11 @@ class ReservaEventoBusinessImpl extends BusinessBaseRootImpl<ReservaEvento, Rese
 	@Override
 	public ReservaEvento addImagem(ReservaEvento evento, Imagem imagem) throws Exception{
 		evento.getImagens().add(imagem);
-		return salvar(evento);
+		evento = salvar(evento);
+		imagem.setReservaEvento(evento);
+		imagemBusiness.salvar(imagem);
+		
+		return evento;
 	}
 	
 	@Override
