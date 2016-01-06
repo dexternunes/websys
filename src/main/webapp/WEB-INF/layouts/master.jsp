@@ -61,6 +61,9 @@
  --%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	
+<!--  Validador para CPF/CNPJ -->
+<script src="${pageContext.request.contextPath}/resources/js/validadoc.js"></script>	
 
 
 <!-- input mask -->
