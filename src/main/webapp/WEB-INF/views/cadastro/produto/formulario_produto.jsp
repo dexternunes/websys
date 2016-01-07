@@ -95,7 +95,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="largura"
 											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
-											id="largura" data-thousands="" data-decimal="," data-prefix=""
+											id="largura"
 											placeholder="Preencha a largura do produto." />
 										<form:errors cssClass="native-error" path="largura"></form:errors>
 									</div>
@@ -109,7 +109,7 @@
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="comprimento"
 											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
-											id="comprimento" data-thousands="" data-decimal="," data-prefix=""
+											id="comprimento"
 											placeholder="Preencha o comprimento do produto." />
 										<form:errors cssClass="native-error" path="comprimento"></form:errors>
 									</div>
@@ -150,11 +150,7 @@
 								<div class="form-actions">
 									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
-								
-								<div class="control-group">
-									<a type="button" class="btn btn-primary"
-										href="${pageContext.request.contextPath}/produtos/">Voltar</a>
-								</div>
+
 
 							</form:form>
 						</div>
