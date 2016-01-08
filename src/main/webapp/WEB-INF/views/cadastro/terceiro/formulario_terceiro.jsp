@@ -47,9 +47,10 @@
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
 								<form:input path="documento"
-									cssClass="form-control col-md-7 col-xs-12"
-									 data-inputmask="'mask' : '999.999.999-99'"  readonly="${readonly}" />
-									<form:errors cssClass="native-error" path="documento"></form:errors>
+									cssClass="form-control col-md-7 col-xs-12  onlyNumbers"
+									 readonly="${readonly}" />
+									<form:errors cssClass="native-error onlyNumbers" path="documento"></form:errors>
+									<div id="doc_invalido" class="native-error" style='display:none;'>Documento inválido</div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -275,10 +276,29 @@
 
 			$('#nEnderecos').val(cont);
 		}
-
-		function Required() {
-
-		}
+		
+		$(document).ready(function(){
+			$('#documento').blur(function(){
+				
+				if(ValidaDocs($('#documento').val())){
+					$('#doc_invalido').hide();
+				
+					if($('#documento').val().length > 11){
+						$('#documento').inputmask("99.999.999/9999-99");				
+					}
+					else{
+						$('#documento').inputmask("999.999.999-99");
+					}
+				}
+				else{
+					$('#doc_invalido').show();
+				}
+			});
+			
+			$('#documento').focus(function() {
+				$('#documento').inputmask('remove');
+			});
+		});
 	</script>
 </body>
 </html>
