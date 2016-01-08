@@ -4,17 +4,26 @@ function ValidaDocs(doc) {
 
 	doc = doc.replace(/[^0-9]/g, '');
 
-	if (doc.length == 11) {
-		if(ValidaCPF(doc))
-			return true;
-	} else {
-		if (doc.length == 14) {
-			if(ValidaCNPJ(doc))
+	var primeiro = doc.substring(0, 1);
+	var replace = new RegExp(primeiro,'g');
+
+	doc = doc.replace(replace,'');
+
+	if (doc != '') {
+		if (doc.length == 11) {
+			if (ValidaCPF(doc))
 				return true;
 		} else {
-			return false;
+			if (doc.length == 14) {
+				if (ValidaCNPJ(doc))
+					return true;
+			} else {
+				return false;
+			}
 		}
 	}
+	else
+		return false;
 }
 
 function ValidaCPF(doc) {
@@ -53,10 +62,9 @@ function ValidaCNPJ(doc) {
 	dig1 = (((dig1 % 11) < 2) ? 0 : (11 - (dig1 % 11)));
 	dig2 = (((dig2 % 11) < 2) ? 0 : (11 - (dig2 % 11)));
 
-	if (((dig1 * 10) + dig2) != digito){
+	if (((dig1 * 10) + dig2) != digito) {
 		return false;
-	}
-	else{
+	} else {
 		return true;
 	}
 }
