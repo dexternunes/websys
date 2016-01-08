@@ -376,20 +376,18 @@ $(document).ready(function() {
 											<li><a href="<c:url value="/home" />">Home</a></li>
 										</ul></li>
 								</sec:authorize>
-								<sec:authorize url="/configuracoes/">
-									<li><a><i class="fa fa-edit"></i>Cadastros<span
-											class="fa fa-chevron-down"></span></a>
-										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
-											<li><a href="<c:url value="/usuarios/" />">Usuarios</a>
-											</li>
-											<li><a href="<c:url value="/produtos/" />">Produtos</a>
-											</li>
+								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu" style="display: none">
+										<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
+										<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
+										<li><a href="<c:url value="/produtos/" />">Produtos</a></li>
+										<sec:authorize url="/grupo">
 											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
-											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
-										</ul></li>
-								</sec:authorize>
-								
+										</sec:authorize>
+										<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+									</ul>
+								</li>
+
 								<!-- Relatorios -->
 								<sec:authorize url="/relatorios/">
 									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span

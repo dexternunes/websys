@@ -1,6 +1,5 @@
 package br.com.system.websys.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -35,6 +34,13 @@ public class UserController{
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
 
+		User user = userBusiness.getCurrent();
+		
+		if(user.getRole().equals(Role.ROLE_COTISTA) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
+			addAtributes(model, user);
+			return "cadastro/user/formulario_user";
+		}
+		
 		model.addAttribute("usersList", userBusiness.getAll());
 		return "cadastro/user/user";
 	}
@@ -45,14 +51,7 @@ public class UserController{
 	public String cadastroBase(Model model)
 			throws Exception {
 
-		List<Terceiro> terceiroList = new ArrayList<Terceiro>(); 
-		terceiroList = terceiroBusiness.getAll();
-		User usuario = new User();
-		model.addAttribute("usuario", usuario);
-		model.addAttribute("listaUserRole", Role.values());
-		model.addAttribute("listaTerceiros", terceiroList);
-		
-		
+		addAtributes(model, new User());
 		return "cadastro/user/formulario_user";
 	}
 	
@@ -64,11 +63,7 @@ public class UserController{
 
 		User usuario = userBusiness.get(id);
 		
-		List<Terceiro> terceiroList = new ArrayList<Terceiro>(); 
-		terceiroList = terceiroBusiness.getAll();
-
-		model.addAttribute("usuario", usuario);
-		model.addAttribute("listaTerceiros", terceiroList);
+		addAtributes(model, usuario);
 		
 		return "cadastro/user/formulario_user";
 	}
@@ -78,9 +73,7 @@ public class UserController{
 			BindingResult result, Model model) throws Exception {
 
 		if (result.hasErrors()) {
-			
-			model.addAttribute("usuario", usuario);
-			
+			addAtributes(model, usuario);
 			return "cadastro/user/formulario_user";
 		}
 
@@ -90,13 +83,26 @@ public class UserController{
 			userBusiness.salvar(usuario);
 		} catch (Exception e) {
 
-			model.addAttribute("usuario", usuario);
+			addAtributes(model, usuario);
 			model.addAttribute("message", e.getMessage());
 			
 			return "cadastro/user/formulario_user";
 		}
 
 		return "redirect:/usuarios/";
+	}
+	
+	public void addAtributes(Model model, User usuario){
+		
+		User userCurrent = userBusiness.getCurrent();
+		List<Terceiro> terceiroList = terceiroBusiness.getAll();
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("listaUserRole", Role.values());
+		model.addAttribute("listaTerceiros", terceiroList);
+		if(userCurrent.getRole().equals(Role.ROLE_COTISTA) || userCurrent.getRole().equals(Role.ROLE_MARINHEIRO))
+			model.addAttribute("readonly", true);
+		
+		
 	}
 
 	

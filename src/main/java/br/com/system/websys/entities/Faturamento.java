@@ -69,13 +69,12 @@ public class Faturamento extends EntityBaseRoot {
 	}
 
 
-	 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-	 			CascadeType.REFRESH }, fetch = FetchType.LAZY)
-		@JoinTable(name = "faturamento_has_faturamento_rateio", joinColumns = {
-	 			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
-	 					@JoinColumn(name = "id_faturamento_rateio", referencedColumnName = "id_faturamento_rateio") })
-	 	
-	public List<FaturamentoRateio> getFaturamentoRateios() {
+ 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
+ 			CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinTable(name = "faturamento_has_faturamento_rateio", joinColumns = {
+ 			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
+ 					@JoinColumn(name = "id_faturamento_rateio", referencedColumnName = "id_faturamento_rateio") })
+ 	public List<FaturamentoRateio> getFaturamentoRateios() {
 		return faturamentoRateios;
 	}
 

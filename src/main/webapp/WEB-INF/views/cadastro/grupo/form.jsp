@@ -52,19 +52,11 @@
 								for="first-name">Produto <span class="required">*</span>
 							</label>
 							
-							
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<c:if test="${grupo.id == null}">
-									<form:select path="produtos" multiple="false" cssClass="select2_single form-control">
-										<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
-									</form:select>
-									<form:errors cssClass="native-error" path="produtos"></form:errors>
-								</c:if>
-								<c:if test="${grupo.id != null}">
-									<form:hidden path="produtos[0].id" />
-									<form:input path="produtos[0].descricao" readonly="true" cssClass="form-control col-md-7 col-xs-12"
-									placeholder="Preencha a descrição do grupo" />
-								</c:if>
+								<form:select path="produtos" multiple="false" readonly="readonly" cssClass="select2_single form-control select2_readonly">
+									<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
+								</form:select>
+								<form:errors cssClass="native-error" path="produtos"></form:errors>
 							</div>
 						</div>
 						

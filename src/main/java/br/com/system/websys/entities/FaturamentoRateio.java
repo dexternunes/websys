@@ -57,7 +57,5 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
-	
 	
 }

@@ -44,7 +44,10 @@ class UserBusinessImpl implements UserBusiness {
 
 	@Override
 	public void salvar(User user) throws Exception {
-		user.setRole(Role.valueOf(primaryRole));		
+		
+		if(user.getRole() == null)
+			user.setRole(Role.valueOf(primaryRole));
+		
 		userRepository.save(user);				
 	}
 
