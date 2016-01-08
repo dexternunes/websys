@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.ProdutoTipo;
+import br.com.system.websys.repository.GrupoRepository;
 import br.com.system.websys.repository.ProdutoRepository;
 
 @Service  
@@ -35,5 +37,11 @@ class ProdutoBusinessImpl extends BusinessBaseRootImpl<Produto, ProdutoRepositor
 	public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus>status) {
 		return ((ProdutoRepository)repository).findAllByTipoAndStatus(tipo, status);
 	}
-
+    /*
+	@Override
+	public List<Produto> findAllByGrupo(Grupo grupo) {
+		List<Produto> produtos = ((ProdutoRepository)repository).findByGrupo(grupo);
+		return produtos;
+	}
+	*/
 }

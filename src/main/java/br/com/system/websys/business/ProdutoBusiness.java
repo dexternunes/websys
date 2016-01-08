@@ -2,6 +2,7 @@ package br.com.system.websys.business;
 
 import java.util.List;
 
+import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.ProdutoTipo;
@@ -13,4 +14,5 @@ public interface ProdutoBusiness extends BusinessBaseRoot<Produto, ProdutoReposi
 
 	public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus> status);
 	
+	//public List<Produto> findAllByGrupo(Grupo grupo);
 }
