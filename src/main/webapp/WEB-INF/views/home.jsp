@@ -279,7 +279,6 @@
 			}
 
 			$('#data_inicio_reserva').daterangepicker({
-				singleDatePicker : true,
 				timePicker : true,
 				timePickerIncrement : 15,
 				timePicker12Hour : false,
@@ -287,7 +286,14 @@
 				timezone: 'local',
 				calender_style : "picker_4",
 				parentEl : '#CalenderModal',
-				startDate : data_inicio
+				startDate : data_inicio,
+				singleDatePicker : true,
+				locale:{
+					applyLabel: 'Ok',
+					cancelLabel: 'Cancelar',
+					daysOfWeek :['Dom','Seg','Ter','Qua','Qui','Sex','Sab'],
+					monthNames :['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+				}
 			});
 
 			$('#data_fim_reserva').daterangepicker({
@@ -299,7 +305,13 @@
 				timezone: 'local',
 				calender_style : "picker_4",
 				parentEl : '#CalenderModal',
-				startDate : data_fim
+				startDate : data_fim,
+				locale:{
+					applyLabel: 'Ok',
+					cancelLabel: 'Cancelar',
+					daysOfWeek :['Dom','Seg','Ter','Qua','Qui','Sex','Sab'],
+					monthNames :['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro']
+				}
 			});
 
 			$('#reserva_evento').click();

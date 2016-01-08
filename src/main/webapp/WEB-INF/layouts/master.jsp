@@ -61,6 +61,9 @@
  --%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	
+<!--  Validador para CPF/CNPJ -->
+<script src="${pageContext.request.contextPath}/resources/js/validadoc.js"></script>	
 
 
 <!-- input mask -->
@@ -239,16 +242,16 @@ progress:after {
 	text-align:center;
 }
 */
-.daterangepicker {
+/*.daterangepicker {
 	position: absolute !important;
 	z-index: 9998 !important;
-}
+}*/
 
-.timepicker {
+/*.timepicker {
 	position: absolute !important;
 	z-index: 9998 !important;
-}
-
+}*/
+/*
 .hourselect {
 	z-index: 9999 !important;
 }
@@ -263,7 +266,7 @@ progress:after {
 	height: 200px;
 	text-align: center;
 	overflow: auto;
-	overflow-x: hidden; /* IE */
+	overflow-x: hidden;
 	margin: 0;
 	padding: 0 0 0 1px;
 	position: absolute !important;
@@ -272,8 +275,12 @@ progress:after {
 	border-color: white !important;
 	background-color:white !important;
 }
+*/
 
-
+.calendar-time{
+	float:left !important;
+	border-color: #b94a48 !important;
+}
 
 .native-error {
 	color: #b94a48;
