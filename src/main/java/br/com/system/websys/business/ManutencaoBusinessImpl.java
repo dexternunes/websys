@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.Manutencao;
+import br.com.system.websys.entities.ManutencaoStatus;
+import br.com.system.websys.entities.Produto;
 import br.com.system.websys.repository.ManutencaoRepository;
 
 @Service  
@@ -30,4 +32,10 @@ class ManutencaoBusinessImpl extends BusinessBaseRootImpl<Manutencao, Manutencao
 		return ((ManutencaoRepository)repository).findAll();
 	}
 
+	@Override
+	public List<Manutencao> findByProdutoByStatus(Produto produto, ManutencaoStatus status) {
+		List<Manutencao> manutencoes = ((ManutencaoRepository)repository).findByProdutoByStatus(produto, status);
+		return manutencoes;
+	}
+	
 }

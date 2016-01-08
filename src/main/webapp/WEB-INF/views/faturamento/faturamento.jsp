@@ -9,7 +9,39 @@
 
 <html>
 <head>
-<title>Manutenções Cadastradas</title>
+	<title>A Faturar:</title>
+	<link
+		href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
+		rel="stylesheet">
+	
+	<link
+		href="${pageContext.request.contextPath}/resources/css/timepicker.css"
+		rel="stylesheet">
+	
+	<link
+		href="${pageContext.request.contextPath}/resources/fonts/css/font-awesome.min.css"
+		rel="stylesheet">
+	<link
+		href="${pageContext.request.contextPath}/resources/css/animate.min.css"
+		rel="stylesheet">
+	
+	<!-- Custom styling plus plugins -->
+	<link href="${pageContext.request.contextPath}/resources/css/custom.css"
+		rel="stylesheet">
+	<link
+		href="${pageContext.request.contextPath}/resources/css/icheck/flat/green.css"
+		rel="stylesheet">
+	
+	<link
+		href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.css"
+		rel="stylesheet">
+	<link
+		href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.print.css"
+		rel="stylesheet" media="print">
+	
+	<script
+		src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+
 </head>
 <body>
 	<div class="row">
@@ -19,58 +51,27 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2>Manutenções Cadastradas</h2>
+						<h2>Faturar</h2>
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content">
-						<div class="control-group">
-							<a type="button" class="btn btn-primary"
-								href="${pageContext.request.contextPath}/manutencao/cadastro">Cadastrar
-								Manutenção</a>
+					<div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipos">Grupo </label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<select id="grupoSelect" class="select2_multiple form-control">
+								<c:forEach items="${listaGrupos}" var="grupo" varStatus="status">
+									<option value="${grupo.id}">${grupo.descricao}</option>
+								</c:forEach>
+								
+							</select>
 						</div>
-						<div class="control-group">
-							<table id="entities"
-								class="table table-striped responsive-utilities jambo_table">
-								<thead>
-									<tr>
-										<th>Produto</th>
-										<th>Descrção da manuteção</th>
-										<!-- 
-										<th>Data início</th>
-										<th>Data fim</th>
-										
-										 -->
-										<th>Valor</th>
-										<th>Status</th>
-									</tr>
-								</thead>
-								<tbody>
-
-									<c:forEach items="${manutencaoList}" var="manutencoes"
-										varStatus="status">
-
-										<tr onclick="document.location.href='<c:url value="/manutencao/cadastro/${manutencoes.id }"/>';"
-										style="cursor: pointer; !important;">
-											<td oName="id" oValue="${manutencoes.id}">${manutencoes.produto.descricao}</td>
-											<td>${manutencoes.obs}</td>
-											<!-- 
-											<td class="tdDate">${manutencoes.inicioManutencao}</td>
-											<td class="tdDate">${manutencoes.fimManutencao}</td>
-											 -->
-											<td class="tdValor">${manutencoes.valor}</td>
-											<td>${manutencoes.status}</td>
-										</tr>
-
-									</c:forEach>
-
-								</tbody>
-							</table>
-						</div>
+					</div>
+					<div class="control-group">
+						<a type="button" id="proximo" class="btn btn-primary">Próximo</a>
 					</div>
 				</div>
 			</div>
 		</form:form>
-	</div>
+		</div>
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/js/jquery.dataTables.js"></script>
@@ -84,30 +85,21 @@
                     radioClass: 'iradio_flat-green'
                 });
                 
-                $('.tdDate').iCheck({
-                    checkboxClass: 'icheckbox_flat-green',
-                    radioClass: 'iradio_flat-green'
-                });
-                
-                $( ".tdDate" ).each(function( index ) {
-                	$( this ).text(formatMyDate($(this).text()));
-                });
-                
+                $( "#proximo" ).attr("href", "${pageContext.request.contextPath}/faturamento/grupo/"+$( "#grupoSelect" ).val());
 
-                $( ".tdValor" ).each(function( index ) {
-                	var valor = $( this ).text();
-                	valor = valor.replace(".", ",");
-                	var moeda = "R$ ";
-                	valor = moeda.concat(valor);
-                	$( this ).text(valor);
-                });
+
+                $( "#grupoSelect" ).change(function() {
+                	$( "#proximo" ).attr("href", "${pageContext.request.contextPath}/faturamento/grupo/"+$( "#grupoSelect" ).val());
+                });   
+                
+                
             });
 
             var asInitVals = new Array();
             $(document).ready(function () {
                 var oTable = $('#example').dataTable({
                     "oLanguage": {
-                        "sSearch": "Search all columns:"
+                        "sSearch": "Procurar em todas as colunas:"
                     },
                     "aoColumnDefs": [
                         {
@@ -138,29 +130,6 @@
                     }
                 });
             });
-            
-            
-			function formatMyDate(data) {
-				var date = new Date(data);
-				var day = parseInt(complet(date.getDate()));
-				var month = parseInt(complet(date.getMonth()));
-				var year = complet(date.getFullYear());
-				var hour = complet(date.getHours());
-				var min = complet(date.getMinutes());
-
-				return day + '/' + month + '/' + year + ' ' + hour +':'+min;              
-			}
-
-
-	
-			
-			function complet(value){
-				if(value < 10)
-					return "0" + value;
-				else
-					return value;
-			} 
-	
         </script>
 </body>
 </html>
