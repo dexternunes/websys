@@ -71,29 +71,37 @@ body {
 		<div id="wrapper">
 			<div id="login" class="animate form">
 				<section class="login_content">
-					<form:form action="${pageContext.request.contextPath}/auth/login"
-						commandName="user" method="post">
+					<form:form action="${pageContext.request.contextPath}/usuarios/recuperarsenha/submitnova"
+						commandName="definirNovaSenhaDTO" method="post">
 						<h1>
 							<img
 								src="${pageContext.request.contextPath}/resources/images/prime_login.png"
 								width="98" height="130" />
 						</h1>
+						
+						<form:hidden path="idUser" />
+						<form:hidden path="uid" />
+						
 						<c:if test="${message != '' && message != null}">
 							<div>
 								<div class="alert alert-error">${message}</div>
 							</div>
 						</c:if>
+						<c:if test="${messageOk != '' && messageOk != null}">
+							<div>
+								<div class="alert alert-info">${messageOk}</div>
+							</div>
+						</c:if>
 						<div>
-							<input type="text" class="form-control" placeholder="Usuário"
-								id="loginl" name="login" style="margin-bottom: 20px;">
+							<input type="password" class="form-control" placeholder="Nova Senha"
+								id="senha" name="senha" style="margin-bottom: 20px;">
 						</div>
 						<div>
-							<input type="password" class="form-control" placeholder="Senha"
-								id="senha" name="senha">
+							<input type="password" class="form-control" placeholder="Repetir Senha"
+								id="repetirSenha" name="repetirSenha">
 						</div>
 						<div>
-							<a id="confirmar" class="btn btn-default submit" onclick="javascript:">Entrar</button>
-							<a class="reset_pass" href="${pageContext.request.contextPath}/usuarios/recuperarsenha">Esqueceu sua senha?</a>
+							<a id="confirmar" class="btn btn-default submit">Confirmar</a>
 						</div>
 						<div class="clearfix"></div>
 						<div class="separator">

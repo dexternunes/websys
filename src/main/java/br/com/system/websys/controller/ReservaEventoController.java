@@ -70,7 +70,7 @@ public class ReservaEventoController{
 			|| fileupload.getContentType().equals("image/bmp")
 			|| fileupload.getContentType().equals("image/gif")
 			|| fileupload.getContentType().equals("image/jpeg")))
-			throw new Exception("Fomato invalido");
+			throw new Exception("Formato invalido");
 		
 		ReservaEvento reservaEvento = null;
 		

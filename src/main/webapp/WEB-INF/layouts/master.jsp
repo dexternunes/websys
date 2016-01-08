@@ -378,13 +378,21 @@ $(document).ready(function() {
 								</sec:authorize>
 								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu" style="display: none">
-										<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
-										<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
-										<li><a href="<c:url value="/produtos/" />">Produtos</a></li>
+										<sec:authorize url="/terceiro/cadastro">
+											<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
+										</sec:authorize>
+										<sec:authorize url="/usuarios/cadastro">
+											<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
+										</sec:authorize>	
+										<sec:authorize url="/produtos">
+											<li><a href="<c:url value="/produtos/" />">Produtos</a></li>
+										</sec:authorize>
 										<sec:authorize url="/grupo">
 											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
 										</sec:authorize>
-										<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+										<sec:authorize url="/manutencao">
+											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+										</sec:authorize>
 									</ul>
 								</li>
 
@@ -428,9 +436,9 @@ $(document).ready(function() {
 							</a>
 								<ul
 									class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-									<li><a href="javascript:;">Perfil</a></li>
-									<li><a href="<c:url value="/auth/logout" />"><i
-											class="fa fa-sign-out pull-right"></i>Sair</a></li>
+									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Perfil</a></li>
+									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Alterar Senha</a></li>
+									<li><a href="<c:url value="/auth/logout" />"><i class="fa fa-sign-out pull-right"></i>Sair</a></li>
 								</ul></li>
 						</ul>
 					</nav>

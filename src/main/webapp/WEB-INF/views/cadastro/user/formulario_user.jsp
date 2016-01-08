@@ -13,29 +13,34 @@
 <title>Cadastro de Usuário</title>
 </head>
 <body>
-	<div class="" role="main">
-		<div class="">
-			<div class="clearfix"></div>
+	<div role="main">
+		<div class="clearfix"></div>
+		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="x_panel">
-						<div class="x_title">
-							<h2>Usuário</h2>
-							<div class="clearfix"></div>
-						</div>
-						<div class="wizar_content">
-							<br />
-
-							<form:form cssClass="form-horizontal"
-								action="${pageContext.request.contextPath}/usuarios/cadastro/salvar"
-								commandName="usuario" method="post">
-
+				<form:form cssClass="form-horizontal"
+									action="${pageContext.request.contextPath}/usuarios/cadastro/salvar"
+									commandName="usuario" method="post">
+					<div class="col-md-12 col-sm-12 col-xs-12">
+						<div class="x_panel">
+							<div class="x_title">
+								<h2>Usuário</h2>
+								<div class="clearfix"></div>
+							</div>
+							<div class="x_content">
+								<br />
+	
+		
+								<c:if test="${message != '' && message != null}">
+									<div>
+										<div class="alert alert-error">${message}</div>
+									</div>
+								</c:if>
+							
 								<form:hidden path="id" />
-
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Login <span class="required">*</span>
+										for="login">Login <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="login"
@@ -47,7 +52,7 @@
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Senha <span class="required">*</span>
+										for="senha">Senha <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:password path="senha"
@@ -57,14 +62,24 @@
 									</div>
 								</div>
 								
-
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-12"
+										for="confirmarSenha">Confirmar Senha <span class="required">*</span>
+									</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<form:password path="confirmarSenha"
+											cssClass="form-control col-md-7 col-xs-12"
+											placeholder="Confirme a senha do usuário." />
+										<form:errors cssClass="native-error" path="senha"></form:errors>
+									</div>
+								</div>
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="tipos">Terceiro <span class="required">*</span>
+										for="terceiro">Terceiro <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="terceiro" multiple="false" cssClass="select2_multiple form-control" readonly="${readonly}">
+										<form:select path="terceiro" multiple="false" cssClass="select2_multiple form-control" disabled="${readonly}">
 											<form:options items="${listaTerceiros}" itemValue="id"
 												itemLabel="nome"></form:options>
 										</form:select>
@@ -75,10 +90,10 @@
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Role <span class="required">*</span>
+										for="role">Role <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:select path="role" multiple="false" class="select2_single form-control" tabindex="-1" readonly="${readonly}">
+										<form:select path="role" multiple="false" class="select2_single form-control" tabindex="-1" disabled="${readonly}">
 											<form:options items="${listaUserRole}" itemValue="role"
 												itemLabel="role"></form:options>
 										</form:select>
@@ -87,7 +102,7 @@
 								
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Ativo 
+										for="ativo">Ativo 
 									</label><form:checkbox style="margin-left:10px; margin-top:10px;" path="ativo" disabled="${readonly}"/>
 								</div>
 
@@ -97,21 +112,23 @@
 								<br />
 								<br />
 								<div class="form-actions">
-									<button type="submit" class="btn btn-primary">Confirmar</button>
+									<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
 								</div>
-
-							</form:form>
+							</div>
 						</div>
 					</div>
-				</div>
+				</form:form>
 			</div>
 		</div>
 	</div>
 	<script type='text/javascript'>
 
-		function Required() {
-
-		}
+	function submitFormulario() {
+		$("#terceiro").attr("disabled", false);
+		$("#role").attr("disabled", false);
+		$("#ativo").attr("disabled", false);
+		$("#usuario").submit();
+	}
 	</script>
 </body>
 </html>

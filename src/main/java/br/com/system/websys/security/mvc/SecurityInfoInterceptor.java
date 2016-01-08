@@ -36,6 +36,7 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 		if(userBusiness != null && modelAndView != null && userBusiness.getCurrent() != null){
 				userDTO.setNome(userBusiness.getCurrent().getTerceiro().getNome());
 				userDTO.setIdTerceiro(userBusiness.getCurrent().getTerceiro().getId());
+				userDTO.setIdUser(userBusiness.getCurrent().getId());
 
 				modelAndView.addObject("user", userDTO);
 		}

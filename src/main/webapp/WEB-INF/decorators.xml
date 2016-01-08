@@ -4,5 +4,8 @@
     </decorator>
     <excludes>
 	    <pattern>/auth/*</pattern>
+	    <pattern>/usuarios/recuperarsenha</pattern>
+	    <pattern>/usuarios/recuperarsenha/</pattern>
+	    <pattern>/usuarios/recuperarsenha/*</pattern>
 	</excludes>
 </decorators>

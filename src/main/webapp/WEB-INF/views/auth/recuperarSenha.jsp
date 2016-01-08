@@ -71,8 +71,8 @@ body {
 		<div id="wrapper">
 			<div id="login" class="animate form">
 				<section class="login_content">
-					<form:form action="${pageContext.request.contextPath}/auth/login"
-						commandName="user" method="post">
+					<form:form action="${pageContext.request.contextPath}/usuarios/recuperarsenha/submit"
+						commandName="recuperarSenhaDTO" method="post">
 						<h1>
 							<img
 								src="${pageContext.request.contextPath}/resources/images/prime_login.png"
@@ -83,17 +83,21 @@ body {
 								<div class="alert alert-error">${message}</div>
 							</div>
 						</c:if>
+						<c:if test="${messageOk != '' && messageOk != null}">
+							<div>
+								<div class="alert alert-info">${messageOk}</div>
+							</div>
+						</c:if>
 						<div>
-							<input type="text" class="form-control" placeholder="Usuário"
+							<input type="text" class="form-control" placeholder="Login"
 								id="loginl" name="login" style="margin-bottom: 20px;">
 						</div>
 						<div>
-							<input type="password" class="form-control" placeholder="Senha"
-								id="senha" name="senha">
+							<input type="text" class="form-control" placeholder="E-mail"
+								id="email" name="email">
 						</div>
 						<div>
-							<a id="confirmar" class="btn btn-default submit" onclick="javascript:">Entrar</button>
-							<a class="reset_pass" href="${pageContext.request.contextPath}/usuarios/recuperarsenha">Esqueceu sua senha?</a>
+							<a id="confirmar" class="btn btn-default submit">Confirmar</a>
 						</div>
 						<div class="clearfix"></div>
 						<div class="separator">
@@ -115,14 +119,14 @@ body {
 			</div>
 		</div>
 	</div>
-<script type="text/javascript">
+	<script type="text/javascript">
 		$(document).ready(function() {
 	
 			$( "#confirmar" ).click(function() {
 				$('form').submit();
 			});
 			
-			$( '#senha' ).keypress(function (e) {
+			$( '#email' ).keypress(function (e) {
 				  if (e.which == 13) {
 					  $('form').submit();
 				    return false;    //<---- Add this line
