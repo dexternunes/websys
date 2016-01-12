@@ -51,7 +51,10 @@
 
                         </table>
                     </div>
-
+					<div class="control-group">
+						<a type="button" class="btn btn-primary"
+							href="${pageContext.request.contextPath}/faturamento/historico/">Voltar</a>
+					</div>
 				</div>
 			</div>
 		</form:form>

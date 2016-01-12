@@ -19,11 +19,43 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2>Faturar</h2>
+						<h2>Manutenções</h2>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<!-- id="example" para ordenar e filtrar -->
+                        <table id="example2" class="table table-striped responsive-utilities jambo_table ">
+                            <thead>
+                                <tr class="headings">
+                                    <th>
+                                        <input type="checkbox" id="check-all" class="tableflat">
+                                    </th>
+                                    <th>Data </th>
+                                    <th>Descrição </th>
+                                    <th>Valor </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            	<c:forEach items="${manutencaoList}" var="manutencoes" varStatus="status">
+	                                 <tr class="even pointer">
+	                                     <td class="a-center "  oName="id" oValue="${manutencoes.id}">
+	                                         <input type="checkbox" class="tableflat">
+	                                     </td>
+	                                     <td class=" ">${manutencoes.inicioManutencao}</td>
+	                                     <td class=" ">${manutencoes.obs}</td>
+	                                     <td class=" ">R$ ${manutencoes.valor} </td>
+	                                 </tr>
+                            	</c:forEach>
+							</tbody>
+
+                        </table>
+                    </div>
+                    <div class="x_title">
+						<h2>Horas Motor</h2>
+						<div class="clearfix"></div>
+					</div>
+                    <div class="x_content">
                         <table id="example" class="table table-striped responsive-utilities jambo_table ">
                             <thead>
                                 <tr class="headings">
@@ -54,72 +86,75 @@
                     
 								
 					<div class="control-group">
+						
 						<a type="button" class="btn btn-primary"
 							href="${pageContext.request.contextPath}/faturamento/">Voltar</a>
-
-						<a type="button" class="btn btn-primary">Faturar</a>
+						<div id="fc_edit" data-toggle="modal" data-target="#my-modal">
+							<a type="button" id="faturar" class="btn btn-primary">Faturar</a>
+						</div>
 					</div>
+					
+					
 				</div>
 			</div>
 		</form:form>
 		
 		<!-- Cropping modal -->
-        <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+        <div class="modal fade" id="my-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form class="avatar-form" action="crop.php" enctype="multipart/form-data" method="post">
+                   <!--  <form class="avatar-form" action="" enctype="multipart/form-data" method="post"> -->
                         <div class="modal-header">
                             <button class="close" data-dismiss="modal" type="button">&times;</button>
-                            <h4 class="modal-title" id="avatar-modal-label">Change Avatar</h4>
+                            <h4 class="modal-title" id="avatar-modal-label">Resumo de faturamento</h4>
                         </div>
                         <div class="modal-body">
                             <div class="avatar-body">
-
-                                <!-- Upload image and data -->
-                                <div class="avatar-upload">
-                                    <input class="avatar-src" name="avatar_src" type="hidden">
-                                    <input class="avatar-data" name="avatar_data" type="hidden">
-                                    <label for="avatarInput">Local upload</label>
-                                    <input class="avatar-input" id="avatarInput" name="avatar_file" type="file">
-                                </div>
-
-                                <!-- Crop and preview -->
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <div class="avatar-wrapper"></div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="avatar-preview preview-lg"></div>
-                                        <div class="avatar-preview preview-md"></div>
-                                        <div class="avatar-preview preview-sm"></div>
-                                    </div>
-                                </div>
+		 						<div class="">
+		                            <div class="x_panel">
+		                                <div class="x_title">
+		                                    <h2>Faturar</h2>
+											<div class="clearfix"></div>
+		                                </div>
+		                                <div class="x_content">
+		                                    <table class="table table-hover">
+		                                        <thead>
+		                                            <tr>
+		                                                <th>Nome Cotista</th>
+		                                                <th>Valor Manuteção</th>
+		                                                <th>Valor Horas Motor</th>
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+					                            	<c:forEach items="${terceiroList}" var="terceiro" varStatus="status">
+						                                 <tr >
+						                                     <td >${terceiro.nome}</td>
+						                                     <td>aaaaa</td>
+						                                     <td >bbbbb </td>
+						                                 </tr>
+					                            	</c:forEach>
+												</tbody>
+		                                    </table>
+		
+		                                </div>
+		                            </div>
+		                        </div>
+		                                
 
                                 <div class="row avatar-btns">
                                     <div class="col-md-9">
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-90" type="button" title="Rotate -90 degrees">Rotate Left</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-15" type="button">-15deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-30" type="button">-30deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="-45" type="button">-45deg</button>
-                                        </div>
-                                        <div class="btn-group">
-                                            <button class="btn btn-primary" data-method="rotate" data-option="90" type="button" title="Rotate 90 degrees">Rotate Right</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="15" type="button">15deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="30" type="button">30deg</button>
-                                            <button class="btn btn-primary" data-method="rotate" data-option="45" type="button">45deg</button>
-                                        </div>
+
                                     </div>
                                     <div class="col-md-3">
-                                        <button class="btn btn-primary btn-block avatar-save" type="submit">Done</button>
+                                        <button  class="btn btn-primary btn-block avatar-save" type="submit">Faturar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="modal-footer">
-          <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
-        </div> -->
-                    </form>
+                       <div class="modal-footer">
+				          <button class="btn btn-default" data-dismiss="modal" type="button">Cancelar</button>
+				        </div> 
+                   <!--  </form> -->
                 </div>
             </div>
         </div>
@@ -137,6 +172,15 @@
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 });
+                
+ 
+                
+                $( "#faturar" ).click(function() {
+                	//passar parametros para controler Faturamento
+                	//que vai passar para o fat business que por sua vez vai fazer o calculo 
+                	
+                });
+                
             });
 
             var asInitVals = new Array();

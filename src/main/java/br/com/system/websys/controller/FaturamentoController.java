@@ -18,6 +18,7 @@ import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Manutencao;
 import br.com.system.websys.entities.ManutencaoStatus;
 import br.com.system.websys.entities.Produto;
+import br.com.system.websys.entities.Terceiro;
 
 @Controller
 @RequestMapping("/faturamento")
@@ -57,10 +58,11 @@ public class FaturamentoController{
 		
 		Produto produto =  grupo.getProdutos().get(0);
 
-
+		List<Terceiro> terceiroList = grupo.getTerceiros();
 		List<Manutencao> manutencaoList =  ManutencaoBusiness.findByProdutoByStatus(produto, ManutencaoStatus.PENDENTE);
 		
-		
+
+		model.addAttribute("terceiroList", terceiroList);
 		model.addAttribute("manutencaoList", manutencaoList);
 
 
