@@ -6,10 +6,10 @@ function ValidaDocs(doc) {
 
 	var primeiro = doc.substring(0, 1);
 	var replace = new RegExp(primeiro,'g');
+	
+	var doc_igual = doc.replace(replace,'');
 
-	doc = doc.replace(replace,'');
-
-	if (doc != '') {
+	if (doc_igual != '') {
 		if (doc.length == 11) {
 			if (ValidaCPF(doc))
 				return true;

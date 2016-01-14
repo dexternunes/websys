@@ -15,6 +15,7 @@ import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
+import br.com.system.websys.entities.ReservaStatus;
 
 @Controller
 public class HomeController {
@@ -33,15 +34,16 @@ public class HomeController {
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(HttpServletRequest request, Locale locale, Model model, Reserva reserva) {
 
-		if (reserva.getId() == null) {
-			reserva = new Reserva();
-			reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
-		}
+//		if (reserva.getId() == null) {
+//			reserva = new Reserva();
+//			reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
+//		}
 
 		List<Grupo> grupos = grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro());
 
-		model.addAttribute("reserva", reserva);
+//		model.addAttribute("reserva", reserva);
 		model.addAttribute("listaReservaGrupos", grupos);
+		model.addAttribute("listaReservaStatus", ReservaStatus.values());
 
 		return "home";
 	}

@@ -21,18 +21,28 @@ public class ReservaDTO  implements Serializable {
 	private Boolean allDay;
 	
 	private String url;
+	
+	private Boolean utilizaMarinheiro = false;
+	
+	private String obs;
+	
+	private ReservaStatus status;
 
 	public ReservaDTO(){
 		
 	}
 	
-	public ReservaDTO(Long id, String title, Date start, Date end, Boolean allDay, String url){
+	public ReservaDTO(Long id, String title, Date start, Date end, Boolean allDay, String url, Boolean utilizaMarinheiro, String obs,
+			ReservaStatus status){
 		this.id = id;
 		this.title = title;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
 		this.url = url;
+		this.utilizaMarinheiro = utilizaMarinheiro;
+		this.obs = obs;
+		this.status = status;
 	}
 
 	public Long getId() {
@@ -81,5 +91,29 @@ public class ReservaDTO  implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}		
+	}
+
+	public Boolean getUtilizaMarinheiro() {
+		return utilizaMarinheiro;
+	}
+
+	public void setUtilizaMarinheiro(Boolean utilizaMarinheiro) {
+		this.utilizaMarinheiro = utilizaMarinheiro;
+	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
+	}
+	
+	public ReservaStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ReservaStatus status) {
+		this.status = status;
+	}
 }
