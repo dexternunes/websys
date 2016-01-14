@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.repository.ReservaRepository;
 
@@ -27,6 +28,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@Override
 	public List<Reserva> getAll() {
 		return ((ReservaRepository)repository).findAll();
+	}
+
+	@Override
+	public List<Reserva> getAllByGrupo(List<Grupo> grupos) {
+		List<Reserva> reserva = ((ReservaRepository) repository).getAllByGrupo(grupos);
+		return reserva;
 	}
 
 }

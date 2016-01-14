@@ -157,6 +157,9 @@
 	display: none !important;
 }
 
+.calendar-date{
+	float: left !important;}
+
 #holder {
 	border: 10px dashed #ccc;
 	width: 300px;

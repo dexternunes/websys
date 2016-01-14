@@ -9,9 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +27,9 @@ import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
+import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservasDTO;
+import br.com.system.websys.entities.Role;
 
 @Controller
 @RequestMapping("/reserva")
@@ -36,8 +40,14 @@ public class ReservaController{
 	
 	@Autowired
 	ReservaBusiness reservaBusiness;
+	
+	@Autowired
 	UserBusiness userBusiness;
+	
+	@Autowired
 	TerceiroBusiness terceiroBusiness;
+	
+	@Autowired
 	GrupoBusiness grupoBusiness;
 	
 	@RequestMapping(value="/salvar", method = RequestMethod.POST)
@@ -56,10 +66,13 @@ public class ReservaController{
 			if(reserva.getId()==null){
 				reserva.setEventoInicio(new ReservaEvento());
 				reserva.setEventoFim(new ReservaEvento());
+				reserva.setStatus(ReservaStatus.AGUARDANDO_APROVACAO);
+				reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
 			}
 			else{
 				reserva.setEventoInicio(reservaBusiness.get(reserva.getId()).getEventoInicio());
 				reserva.setEventoFim(reservaBusiness.get(reserva.getId()).getEventoFim());
+				reserva.setSolicitante(reservaBusiness.get(reserva.getId()).getSolicitante());
 			}
 			reservaBusiness.salvar(reserva);
 		} catch (Exception e) {
@@ -75,15 +88,29 @@ public class ReservaController{
 	public ReservasDTO getReserva(HttpServletRequest request) throws Exception {
 		
 		ReservasDTO reservas = new ReservasDTO();
-		List<Reserva> listReservas = reservaBusiness.getAll();
+		List<Reserva> listReservas;
+		if(userBusiness.getCurrent().getRole().equals(Role.ROLE_ADMIN) || userBusiness.getCurrent().getRole().equals(Role.ROLE_MARINHEIRO)){
+			listReservas = reservaBusiness.getAll();
+		}
+		else		
+			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro()));
 		
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
+
 			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
-					reserva.getFimReserva(), false, ""));
+					reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus()));
 			}
 		}
 		return reservas;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET )
+	public void getReservaById(@PathVariable Long id, Model model) throws Exception {
+		
+		Reserva reserva = reservaBusiness.get(id);
+		model.addAttribute("reserva", reserva);
 	}
 	
 	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
