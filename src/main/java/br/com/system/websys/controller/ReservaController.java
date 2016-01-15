@@ -26,10 +26,9 @@ import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
-import br.com.system.websys.entities.ReservaEvento;
-import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
+import br.com.system.websys.entities.User;
 
 @Controller
 @RequestMapping("/reserva")
@@ -51,7 +50,7 @@ public class ReservaController{
 	GrupoBusiness grupoBusiness;
 	
 	@RequestMapping(value="/salvar", method = RequestMethod.POST)
-	public String salvarBase(@Valid @ModelAttribute("reserva") Reserva reserva,
+	public String salvarBase(HttpServletRequest request, @Valid @ModelAttribute("reserva") Reserva reserva,
 			BindingResult result, RedirectAttributes attr) throws Exception {
 
 		if (result.hasErrors()) {
@@ -63,18 +62,24 @@ public class ReservaController{
 		}
 
 		try {
+			
+			String server;
+			if(request.getServerPort() == 80)
+				server = "http://" + request.getServerName();
+			else
+				server = "http://" + request.getServerName() + ":" + request.getServerPort();
+			
 			if(reserva.getId()==null){
-				reserva.setEventoInicio(new ReservaEvento());
-				reserva.setEventoFim(new ReservaEvento());
-				reserva.setStatus(ReservaStatus.AGUARDANDO_APROVACAO);
-				reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
+				reserva = reservaBusiness.createReserva(reserva);				
 			}
-			else{
-				reserva.setEventoInicio(reservaBusiness.get(reserva.getId()).getEventoInicio());
-				reserva.setEventoFim(reservaBusiness.get(reserva.getId()).getEventoFim());
-				reserva.setSolicitante(reservaBusiness.get(reserva.getId()).getSolicitante());
+			else{				
+				Reserva reservaBD = reservaBusiness.get(reserva.getId());
+				reserva.setEventoInicio(reservaBD.getEventoInicio());
+				reserva.setEventoFim(reservaBD.getEventoFim());
+				reserva.setSolicitante(reservaBD.getSolicitante());
 			}
-			reservaBusiness.salvar(reserva);
+			reserva = reservaBusiness.salvar(reserva);
+			reservaBusiness.sendEmailValidacao(reserva, server);
 		} catch (Exception e) {
 			return "redirect:/home";
 		}
@@ -89,11 +94,14 @@ public class ReservaController{
 		
 		ReservasDTO reservas = new ReservasDTO();
 		List<Reserva> listReservas;
-		if(userBusiness.getCurrent().getRole().equals(Role.ROLE_ADMIN) || userBusiness.getCurrent().getRole().equals(Role.ROLE_MARINHEIRO)){
+		
+		User userBD = userBusiness.getCurrent();
+		
+		if(userBD.getRole().equals(Role.ROLE_ADMIN) || userBD.getRole().equals(Role.ROLE_MARINHEIRO)){
 			listReservas = reservaBusiness.getAll();
 		}
 		else		
-			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro()));
+			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(userBD.getTerceiro()));
 		
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
