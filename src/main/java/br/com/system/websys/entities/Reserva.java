@@ -37,9 +37,44 @@ public class Reserva extends EntityBaseRoot {
 
 	private ReservaEvento eventoFim;
 
+
 	private Boolean utilizaMarinheiro = false;
 
 	private String obs;
+
+	private FaturamentoStatus faturamentoStatus;
+
+	private Long horaMotorTotal;
+
+
+
+	public Long getHoraMotorTotal() {
+		return horaMotorTotal;
+	}
+
+	public void setHoraMotorTotal(Long horaMotorTotal) {
+		this.horaMotorTotal = horaMotorTotal;
+	}
+
+	@Enumerated(EnumType.STRING)
+	public FaturamentoStatus getFaturamentoStatus() {
+		return faturamentoStatus;
+	}
+
+	public void setFaturamentoStatus(FaturamentoStatus faturamentoStatus) {
+		this.faturamentoStatus = faturamentoStatus;
+	}
+
+	private Long segundoTotal;
+
+	public Long getSegundoTotal() {
+		return segundoTotal;
+	}
+
+	public void setSegundoTotal(Long segundoTotal) {
+		this.segundoTotal = segundoTotal;
+	}
+
 
 	@Id
 	@GeneratedValue
@@ -110,6 +145,7 @@ public class Reserva extends EntityBaseRoot {
 		this.ativo = ativo;
 	}
 
+
 	public Boolean getUtilizaMarinheiro() {
 		return utilizaMarinheiro;
 	}
@@ -126,8 +162,8 @@ public class Reserva extends EntityBaseRoot {
 		this.obs = obs;
 	}
 
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_reserva_evento_inicio", referencedColumnName = "id_reserva_evento")
 	public ReservaEvento getEventoInicio() {
 		return eventoInicio;
@@ -137,8 +173,8 @@ public class Reserva extends EntityBaseRoot {
 		this.eventoInicio = eventoInicio;
 	}
 
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_reserva_evento_fim", referencedColumnName = "id_reserva_evento")
 	public ReservaEvento getEventoFim() {
 		return eventoFim;
