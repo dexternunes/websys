@@ -28,7 +28,6 @@
                             <thead>
                                 <tr class="headings">
                                     <th>
-                                        <input type="checkbox" id="check-all" class="tableflat">
                                     </th>
                                     <th>Data </th>
                                     <th>Descrição </th>
@@ -40,7 +39,7 @@
                             	<c:forEach items="${manutencaoList}" var="manutencoes" varStatus="status">
 	                                 <tr class="even pointer">
 	                                     <td class="a-center "  oName="id" oValue="${manutencoes.id}">
-	                                         <input type="checkbox" class="tableflat">
+	                                         <input type="checkbox" name="mCheckBox" value="${manutencoes.id}" class="tableflat">
 	                                     </td>
 	                                     <td class=" ">${manutencoes.inicioManutencao}</td>
 	                                     <td class=" ">${manutencoes.obs}</td>
@@ -60,23 +59,22 @@
                             <thead>
                                 <tr class="headings">
                                     <th>
-                                        <input type="checkbox" id="check-all" class="tableflat">
                                     </th>
                                     <th>Data </th>
-                                    <th>Descrição </th>
-                                    <th>Valor </th>
+                                    <th>Usuário </th>
+                                    <th>Horas Motor </th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                            	<c:forEach items="${manutencaoList}" var="manutencoes" varStatus="status">
+                            	<c:forEach items="${reservaList}" var="reservas" varStatus="status">
 	                                 <tr class="even pointer">
-	                                     <td class="a-center "  oName="id" oValue="${manutencoes.id}">
-	                                         <input type="checkbox" class="tableflat">
+	                                     <td class="a-center "  oName="id" oValue="${reservas.id}">
+	                                         <input type="checkbox" class="tableflat" value="${reservas.id}">
 	                                     </td>
-	                                     <td class=" ">${manutencoes.inicioManutencao}</td>
-	                                     <td class=" ">${manutencoes.obs}</td>
-	                                     <td class=" ">R$ ${manutencoes.valor} </td>
+	                                     <td class=" ">${reservas.inicioReserva}</td>
+	                                     <td class=" ">${reservas.solicitante.nome}</td>
+	                                     <td class=" ">${reservas.horaMotorTotal} Horas</td>
 	                                 </tr>
                             	</c:forEach>
 							</tbody>
@@ -113,7 +111,7 @@
 		 						<div class="">
 		                            <div class="x_panel">
 		                                <div class="x_title">
-		                                    <h2>Faturar</h2>
+		                                    <h2>Valor Total de Manuteção:</h2>    <h2 id="valorTotal"></h2>
 											<div class="clearfix"></div>
 		                                </div>
 		                                <div class="x_content">
@@ -121,18 +119,12 @@
 		                                        <thead>
 		                                            <tr>
 		                                                <th>Nome Cotista</th>
-		                                                <th>Valor Manuteção</th>
-		                                                <th>Valor Horas Motor</th>
+		                                                <th>Horas</th>
+		                                                <th>Valor</th>
 		                                            </tr>
 		                                        </thead>
-		                                        <tbody>
-					                            	<c:forEach items="${terceiroList}" var="terceiro" varStatus="status">
-						                                 <tr >
-						                                     <td >${terceiro.nome}</td>
-						                                     <td>aaaaa</td>
-						                                     <td >bbbbb </td>
-						                                 </tr>
-					                            	</c:forEach>
+		                                        <tbody id="tBody">
+
 												</tbody>
 		                                    </table>
 		
@@ -146,7 +138,7 @@
 
                                     </div>
                                     <div class="col-md-3">
-                                        <button  class="btn btn-primary btn-block avatar-save" type="submit">Faturar</button>
+                                        <button  id="faturarModal" class="btn btn-primary btn-block avatar-save" type="submit">Faturar</button>
                                     </div>
                                 </div>
                             </div>
@@ -172,14 +164,105 @@
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 });
+
+
+
                 
- 
                 
                 $( "#faturar" ).click(function() {
                 	//passar parametros para controler Faturamento
                 	//que vai passar para o fat business que por sua vez vai fazer o calculo 
                 	
+                	
+                	//TODO: Validar se selecionou Horas Motor pois eh obrigatorio
+
+					var retorno = [];
+                	
+                	
+                	$.ajax({
+                		async : true,
+                		url : '${pageContext.request.contextPath}/faturamento/api/faturar',
+                		dataType : "json",
+                		contentType : "application/json; charset=utf-8",
+                		type : 'POST',
+                		data : createArrayIds(),
+                		success : function(data) {
+                			retorno = data;
+							popularTabela(data);
+                		},
+                		error : function(request, status, error) {
+                			alert("Ocorreu um erro. Favor reportar com o codigo de erro:77");
+                		}
+                	});
+                	
                 });
+                
+        		function popularTabela(data){
+        			$("#valorTotal").text("R$"+data.valorTotalString);
+        			
+        			var html ="";
+        			var i;
+        			
+        			for (i = 0; i < data.faturamentoRateioLista.length; i++) { 
+
+            			html = html + "<tr>";
+        			    //text += cars[i] + "<br>";
+        			    html = html + "<td>" + data.faturamentoRateioLista[i].terceiro.nome + "</td>";
+        			    html = html + "<td>" + data.faturamentoRateioLista[i].horas + "</td>";
+        			    html = html + "<td> R$ " + data.faturamentoRateioLista[i].valorStr + "</td>";
+        			}
+        			 html = html + "</tr>";
+        			
+        			$("#tBody").html(html);
+        			
+        		}
+        		
+        		function createArrayIds(){
+        			var stringIds = "[";
+                	var i = 0;
+		            $("input:checkbox[name=mCheckBox]:checked").each(function(){
+
+		            	stringIds = stringIds + $(this).val()+",";
+		            	i++;
+		            	
+		            });
+	                
+	 				if(i == 0){
+	 					alert("nenhum selecionado.. colocar uma modal de alerta");
+	 					return false;
+	 					
+	 				}
+	 				
+		            stringIds = stringIds.substring(0, stringIds.length-1);
+		            stringIds = stringIds + "]";
+
+        			return stringIds;
+        			
+        		}
+        		
+        		$( "#faturarModal" ).click(function() {
+                	$.ajax({
+                		async : true,
+                		url : '${pageContext.request.contextPath}/faturamento/api/salvar',
+                		dataType : "json",
+                		contentType : "application/json; charset=utf-8",
+                		type : 'POST',
+                		data : createArrayIds(),
+                		success : function(data) {
+                			retorno = data;
+                			//Tratar para exibir uma modal de sucesso ou erro
+                			//Tratar exibicao de data na tabela
+                			//Adicionar reserva manual
+                			//Adicionar reserva no calculo
+                			//Conferir valor calculo
+                		},
+                		error : function(request, status, error) {
+                			alert("Ocorreu um erro. Favor reportar com o codigo de erro:88");
+                		}
+                	});        			
+        			
+                });
+        		
                 
             });
 
@@ -217,6 +300,16 @@
                         this.value = asInitVals[$("tfoot input").index(this)];
                     }
                 });
+                
+                
+        		$("#opa").click(function(){
+        			alert("s");
+        		    $('input:checkbox').not(this).prop('checked', this.checked);
+        		});
+        		
+        		$("#checkAllMotor").click(function(){
+        		    $('input:checkbox').not(this).prop('checked', this.checked);
+        		});
             });
         </script>
 </body>

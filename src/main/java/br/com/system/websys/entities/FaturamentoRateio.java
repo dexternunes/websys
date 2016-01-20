@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 @Entity
 @Table(name="faturamento_rateio")
 public class FaturamentoRateio extends EntityBaseRoot  {
@@ -23,6 +25,7 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 	
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_faturamento", referencedColumnName="id_faturamento")
+	@JsonManagedReference
 	public Faturamento getFaturamento() {
 		return faturamento;
 	}
