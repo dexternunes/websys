@@ -17,6 +17,7 @@ import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
 
 @Service  
@@ -63,6 +64,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				ReservaValidacao validacao = new ReservaValidacao();
 				validacao.setTerceiro(terceiro);
 				validacao.setUid(UUID.randomUUID().toString());
+				validacao.setReserva(reserva);
 				validacoes.add(validacao);
 			}
 		}
@@ -76,7 +78,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@Override
 	public Boolean sendEmailValidacao(Reserva reserva, String server) throws MessagingException{
 		
-		String link = server + "/websys/reserva/recuperarsenha/"; 
+		String link = server + "/websys/reserva/validar/"; 
 		
 		for(ReservaValidacao validacao : reserva.getValidacoes()){
 			mailBusiness.sendMail("e2a.system@gmail.com"
@@ -85,12 +87,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					, "Uma nova reserva foi solicitada <br />"
 							+ "<br />Embarcação: " + reserva.getGrupo().getProdutos().get(0).getDescricao()
 							+ "<br />Solicitante: " + reserva.getSolicitante().getNome()
-							+ "<br />Data inicio da reserva: " + reserva.getInicioReserva().toString()
-							+ "<br />Data fim da reserva: " + reserva.getFimReserva().toString()
+							+ "<br />Data inicio da reserva: " + Formatters.formatDate(reserva.getInicioReserva())
+							+ "<br />Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
 							+ "<br /><br />Clique <a href='" + link + validacao.getUid() + "'>aqui</a> para validar/questionar a reserva" 
 							+ "<br /><br /><br />Att"
-							+ "<br />Equipe Prime Share Club"
-							+ reserva.getGrupo().getProdutos().get(0).getDescricao());
+							+ "<br />Equipe Prime Share Club");
 		}
 		return false;
 	}

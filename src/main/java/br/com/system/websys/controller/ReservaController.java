@@ -22,10 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
-import br.com.system.websys.business.TerceiroBusiness;
+import br.com.system.websys.business.ReservaValidacaoBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
+import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
@@ -38,16 +39,16 @@ public class ReservaController{
 			.getLogger(TerceiroController.class);
 	
 	@Autowired
-	ReservaBusiness reservaBusiness;
+	private ReservaBusiness reservaBusiness;
 	
 	@Autowired
-	UserBusiness userBusiness;
+	private UserBusiness userBusiness;
 	
 	@Autowired
-	TerceiroBusiness terceiroBusiness;
+	private ReservaValidacaoBusiness reservaValidacaoBusiness;
 	
 	@Autowired
-	GrupoBusiness grupoBusiness;
+	private GrupoBusiness grupoBusiness;
 	
 	@RequestMapping(value="/salvar", method = RequestMethod.POST)
 	public String salvarBase(HttpServletRequest request, @Valid @ModelAttribute("reserva") Reserva reserva,
@@ -119,6 +120,22 @@ public class ReservaController{
 		
 		Reserva reserva = reservaBusiness.get(id);
 		model.addAttribute("reserva", reserva);
+	}
+	
+	@RequestMapping(value = "/validar/{uid}", method = RequestMethod.GET )
+	public String validarReserva(@PathVariable String uid, Model model) throws Exception {
+		
+		ReservaValidacao reservaValidacao = reservaValidacaoBusiness.getByUid(uid);
+		model.addAttribute("reservaValidacao", reservaValidacao);
+		
+		return "reserva/validarReserva";
+	}
+	
+	@RequestMapping(value="/validar/salvar", method = RequestMethod.POST)
+	public String salvarValidacao(HttpServletRequest request, @ModelAttribute("reservaValidacao") ReservaValidacao reservaValidacao,
+			BindingResult result){
+		
+		return "reserva/validarReserva";
 	}
 	
 	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")

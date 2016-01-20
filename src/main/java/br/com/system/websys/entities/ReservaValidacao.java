@@ -14,6 +14,8 @@ import javax.persistence.Table;
 @Table(name = "reserva_validacao")
 public class ReservaValidacao extends EntityBaseRoot {
 
+	private Reserva reserva;
+
 	private Terceiro terceiro;
 
 	private String uid;
@@ -22,7 +24,7 @@ public class ReservaValidacao extends EntityBaseRoot {
 
 	private Boolean aprovado = false;
 
-	private String obs;
+	private String motivo;
 
 	@Id
 	@GeneratedValue
@@ -32,8 +34,20 @@ public class ReservaValidacao extends EntityBaseRoot {
 		return id;
 	}
 
-	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
- 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva")
+	public Reserva getReserva() {
+		return reserva;
+	}
+
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
+	}
+
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_terceiro", referencedColumnName = "id_terceiro")
 	public Terceiro getTerceiro() {
 		return terceiro;
 	}
@@ -66,12 +80,12 @@ public class ReservaValidacao extends EntityBaseRoot {
 		this.aprovado = aprovado;
 	}
 
-	public String getObs() {
-		return obs;
+	public String getMotivo() {
+		return motivo;
 	}
 
-	public void setObs(String obs) {
-		this.obs = obs;
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
 	}
 
 }
