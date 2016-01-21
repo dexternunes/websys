@@ -91,7 +91,7 @@
 
 						<a type="button" class="btn btn-primary"
 							href="${pageContext.request.contextPath}/faturamento/">Voltar</a>
-						<div id="fc_edit" data-toggle="modal" data-target="#my-modal">
+						<div id="fc_edit" data-toggle="modal">
 							<a type="button" id="faturar" class="btn btn-primary">Faturar</a>
 						</div>
 					</div>
@@ -157,6 +157,25 @@
 			</div>
 		</div>
 		<!-- /.modal -->
+
+
+		<!-- Alert Modal -->
+		<div class="modal fade" id="messageModal">
+			<div class="modal-dialog">
+				<div class="modal-content alert-warning">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<div class="clearfix"></div>
+					<div class="modal-body">
+						<!-- The messages container -->
+						<div id="errors">
+							<span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 	<script
@@ -167,6 +186,7 @@
 		$(document)
 				.ready(
 						function() {
+
 							$('input.tableflat').iCheck({
 								checkboxClass : 'icheckbox_flat-green',
 								radioClass : 'iradio_flat-green'
@@ -175,32 +195,12 @@
 							$("#faturar")
 									.click(
 											function() {
-												//passar parametros para controler Faturamento
-												//que vai passar para o fat business que por sua vez vai fazer o calculo 
-
-												//TODO: Validar se selecionou Horas Motor pois eh obrigatorio
-
+												
+												
 												var retorno = [];
-
-												/*
-												var json = createArrayIds();
-												alert(JSON.stringify(json)); 
+												var objeto = JSON.stringify(createArrayIds())
 												
-												var faturamentoDto = {
-														idsManutencao : null,
-														idsHoraMotor : null
-												};
-												
-												var x = [];
-												x.push(1);
-												
-												var y = [];
-												y.push(2);
-												
-												faturamentoDto.idsManutencao = x;
-												faturamentoDto.idsHoraMotor = y;
-												*/
-												if (true) {
+												if (objeto != '{"idsManutencao":[],"idsHoraMotor":[]}') {
 
 													$
 															.ajax({
@@ -209,17 +209,19 @@
 																dataType : "json",
 																contentType : "application/json; charset=utf-8",
 																type : 'POST',
-																data : JSON.stringify(createArrayIds()),
+																data : objeto,
 																success : function(
 																		data) {
 																	retorno = data;
 																	popularTabela(data);
+																	$("#my-modal").modal('show');
 																},
 																error : function(
 																		request,
 																		status,
 																		error) {
-																	alert("Ocorreu um erro. Favor reportar com o codigo de erro:77");
+																	$('#errors span').text('Ocorreu um erro. Favor reportar com o codigo de erro:77');
+																	$('#messageModal').modal('show');
 																}
 															});
 												} else {
@@ -260,14 +262,12 @@
 
 							function createArrayIds() {
 
-								var idsManutencao=[];
-								var idsHoraMotor=[];
-								var dto =[];
-								
-								
-								var json = {
-								};
-								
+								var idsManutencao = [];
+								var idsHoraMotor = [];
+								var dto = [];
+
+								var json = {};
+
 								var faturamentoDTO = {
 									idsManutencao : null,
 									idsHoraMotor : null
@@ -278,25 +278,32 @@
 
 								//Pegar Ids Manutencao
 								$("input:checkbox[name=mCheckBox]:checked")
-										.each(function() {
-											idsManutencao.push(parseInt($(this).val()));
-											m++;
-										});
+										.each(
+												function() {
+													idsManutencao
+															.push(parseInt($(
+																	this).val()));
+													m++;
+												});
 
 								faturamentoDTO.idsManutencao = idsManutencao;
 
 								//Pegar Ids Hora motor
 								$("input:checkbox[name=hCheckBox]:checked")
-										.each(function() {
-											idsHoraMotor.push(parseInt($(this).val()));
-											h++;
-										});
+										.each(
+												function() {
+													idsHoraMotor
+															.push(parseInt($(
+																	this).val()));
+													h++;
+												});
 								faturamentoDTO.idsHoraMotor = idsHoraMotor;
-								
-								
+
 								//Obrigatorio ter ao menos uma hora motor selecionada
 								if (h == 0) {
-									alert("nenhum selecionado.. colocar uma modal de alerta");
+
+									$('#errors span').text('Favor selecionar ao menos uma hora motor.');
+									$('#messageModal').modal('show');
 								}
 
 								dto.push(faturamentoDTO);
@@ -315,7 +322,8 @@
 															dataType : "json",
 															contentType : "application/json; charset=utf-8",
 															type : 'POST',
-															data : JSON.stringify(createArrayIds()),
+															data : JSON
+																	.stringify(createArrayIds()),
 															success : function(
 																	data) {
 																retorno = data;
