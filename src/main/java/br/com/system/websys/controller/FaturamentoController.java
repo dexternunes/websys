@@ -147,12 +147,14 @@ public class FaturamentoController{
 
 	@ResponseBody
 	@RequestMapping(value= "/api/faturar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-	public FaturamentoDTO postReserva(HttpServletRequest request, @RequestBody List<Long> ids) throws Exception {
+	public FaturamentoDTO postReserva(HttpServletRequest request, @RequestBody FaturamentoDTO faturamentoDto) throws Exception {
 		
 		
 		Faturamento faturamento = new Faturamento();
 		List<Manutencao> manutencoesSelecionadasList = new ArrayList<Manutencao>();
 		Manutencao manutencao = new Manutencao();
+		List<Reserva> reservasSelecionadasList = new ArrayList<Reserva>();
+		Reserva reserva = new Reserva();
 		FaturamentoDTO faturamentoDTO = new FaturamentoDTO();
 		FaturamentoRateioDTO faturamentoRateioDTO = new FaturamentoRateioDTO();
 		List<FaturamentoRateioDTO> faturamentoRateioDTOList = new ArrayList <FaturamentoRateioDTO>();
@@ -161,13 +163,19 @@ public class FaturamentoController{
 		
 		
 		
-		for (long id:ids){
+		for (long id:faturamentoDto.getIdsManutencao()){
 			manutencao = ManutencaoBusiness.get(id);
 			manutencoesSelecionadasList.add(manutencao);
 		}
 		
 		
-		faturamento = FaturamentoBusiness.calcularFaturamento(manutencoesSelecionadasList);
+		
+		for (long id:faturamentoDto.getIdsHoraMotor()){
+			reserva = ReservaBusiness.get(id);
+			reservasSelecionadasList.add(reserva);
+		}
+
+		faturamento = FaturamentoBusiness.calcularFaturamento(manutencoesSelecionadasList, reservasSelecionadasList);
 		
 		for (FaturamentoRateio f:faturamento.getFaturamentoRateios()){
 			faturamentoRateioDTO = new FaturamentoRateioDTO();
@@ -194,24 +202,30 @@ public class FaturamentoController{
 	//salvar
 	@ResponseBody
 	@RequestMapping(value= "/api/salvar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-	public String salvarFaturamento(HttpServletRequest request, @RequestBody List<Long> ids) throws Exception {
+	public String salvarFaturamento(HttpServletRequest request, @RequestBody FaturamentoDTO faturamentoDto) throws Exception {
 
 		
 		Faturamento faturamento = new Faturamento();
 		List<Manutencao> manutencoesSelecionadasList = new ArrayList<Manutencao>();
 		Manutencao manutencao = new Manutencao();
+		List<Reserva> reservasSelecionadasList = new ArrayList<Reserva>();
+		Reserva reserva = new Reserva();
 		
 		
 		
 		
-		for (long id:ids){
+		for (long id:faturamentoDto.getIdsManutencao()){
 			manutencao = ManutencaoBusiness.get(id);
 			manutencao.setStatus(ManutencaoStatus.PAGA);
 			manutencoesSelecionadasList.add(manutencao);
 		}
 		
-		
-		faturamento = FaturamentoBusiness.calcularFaturamento(manutencoesSelecionadasList);
+		for (long id:faturamentoDto.getIdsHoraMotor()){
+			reserva = ReservaBusiness.get(id);
+			reserva.setFaturamentoStatus(FaturamentoStatus.PAGA);
+			reservasSelecionadasList.add(reserva);
+		}		
+		faturamento = FaturamentoBusiness.calcularFaturamento(manutencoesSelecionadasList, reservasSelecionadasList);
 		
 		
 		try {

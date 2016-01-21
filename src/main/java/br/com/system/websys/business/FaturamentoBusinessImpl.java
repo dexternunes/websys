@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.system.websys.entities.Faturamento;
 import br.com.system.websys.entities.FaturamentoRateio;
 import br.com.system.websys.entities.Manutencao;
+import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.repository.FaturamentoRepository;
 
@@ -43,7 +44,7 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 	
 	
 	@Override
-	public Faturamento calcularFaturamento(List<Manutencao> listaManutencao){
+	public Faturamento calcularFaturamento(List<Manutencao> listaManutencao, List<Reserva> listaReserva){
 		Faturamento faturamento = new Faturamento();
 		
 		//Calcula Valor total da manutencao:
@@ -67,17 +68,45 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 		//Determina o valor para cada cotista, sendo 50% + (os outro 50% proporcionais as horas utilizadas)
 
 		List<FaturamentoRateio> listaFaturamentoRateio = new ArrayList<FaturamentoRateio>();
+
+		Long totalHorasPorTerceiro;
+		Long totalHorasMotor = (long) 0;
 		
 		for (Terceiro t:faturamento.getGrupo().getTerceiros()){
+			
+			totalHorasPorTerceiro = (long) 0;
+			for (Reserva r:listaReserva){
+				if(r.getSolicitante().equals(t)){
+					totalHorasPorTerceiro = totalHorasPorTerceiro + r.getHoraMotorTotal();
+				}
+				totalHorasMotor = totalHorasMotor + r.getHoraMotorTotal();
+			}
+			
+			
+			//(valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valortotal/2)*percentHoras)/100)
+			
+
 			//%Y = (100 x HY)/TOTALHOras -->Porcentagem de horas que o terceiro usou
+			Long percentHoras;
+			percentHoras = (100 * totalHorasPorTerceiro)/totalHorasMotor;
+			
 			//x = (V50% X %Y)/100 --> valor em reais pela porcentagem de horas que o terceiro usou
+			
+			
 			//Horas motor é obrigado a escolher.
 			//Manutencao, se nao for selecionada nenhuma, nao gera valor, e zera as horas motor selecionadas.
 			
 			FaturamentoRateio faturamentoRateio = new FaturamentoRateio();
 			faturamentoRateio.setFaturamento(faturamento);
 			faturamentoRateio.setTerceiro(t);
-			valorRateio = ((valorTotal/2)/faturamento.getGrupo().getTerceiros().size()) + 20;
+			
+			if(listaManutencao.size() > 0){
+
+				valorRateio = (valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valorTotal/2)*percentHoras)/100);
+				
+			}
+			
+			
 			faturamentoRateio.setValor(valorRateio);
 			listaFaturamentoRateio.add(faturamentoRateio);
 			
