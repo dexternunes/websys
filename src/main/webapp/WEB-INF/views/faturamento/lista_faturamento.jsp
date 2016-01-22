@@ -175,7 +175,22 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- Info Modal -->
+		<div class="modal fade" id="messageModalInfo">
+			<div class="modal-dialog" >
+				<div class="modal-content info-warning" style="background-color: rgba(52, 152, 219, 0.88)">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<div class="clearfix"></div>
+					<div class="modal-body">
+						<!-- The messages container -->
+						<div id="info">
+							<span><font color="#E9EDEF"></font></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script
@@ -183,10 +198,28 @@
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/tools/js/dataTables.tableTools.js"></script>
 	<script type="text/javascript">
+	
+	(function ($) {
+	      $.each(['show', 'hide'], function (i, ev) {
+	        var el = $.fn[ev];
+	        $.fn[ev] = function () {
+	          this.trigger(ev);
+	          return el.apply(this, arguments);
+	        };
+	      });
+	    })(jQuery);
+	
 		$(document)
 				.ready(
 						function() {
 
+							
+							 
+							$('#messageModalInfo').on('hide', function() {
+								location.reload();
+							});
+
+							
 							$('input.tableflat').iCheck({
 								checkboxClass : 'icheckbox_flat-green',
 								radioClass : 'iradio_flat-green'
@@ -311,9 +344,7 @@
 
 							}
 
-							$("#faturarModal")
-									.click(
-											function() {
+							$("#faturarModal").click(function() {
 												$
 														.ajax({
 															async : true,
@@ -326,12 +357,27 @@
 															success : function(
 																	data) {
 																retorno = data;
+
+																$("#my-modal").modal('hide');
+																
+																if(retorno == "Faturado com sucesso."){
+																	$('#info span font').text(retorno);
+																	$('#messageModalInfo').modal('show');
+
+																	
+																}else{
+																	$('#errors span').text(retorno);
+																	$('#messageModal').modal('show');
+																}
 															},
 															error : function(
 																	request,
 																	status,
 																	error) {
-																alert("Ocorreu um erro. Favor reportar com o codigo de erro:88");
+
+																$("#my-modal").modal('hide');
+																$('#errors span').text('Ocorreu um erro. Favor reportar com o codigo de erro:88');
+																$('#messageModal').modal('show');
 															}
 														});
 
