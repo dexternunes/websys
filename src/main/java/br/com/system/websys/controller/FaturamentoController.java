@@ -71,16 +71,6 @@ public class FaturamentoController{
 	public String cadastroBase(@PathVariable Long id, Model model)
 			throws Exception {
 
-		/*
-		Long totalSecs = (long) 8024;
-		Long hours;
-		Long minutes;
-		Long seconds;
-		
-		hours = totalSecs / 3600;
-		minutes = (totalSecs % 3600) / 60;
-		seconds = totalSecs % 60;
-		*/
 		
 		Grupo grupo = grupoBusiness.get(id);
 		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, FaturamentoStatus.PENDENTE);
@@ -133,10 +123,12 @@ public class FaturamentoController{
 		Produto produto =  grupo.getProdutos().get(0);
 
 
+		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, FaturamentoStatus.PAGA);
 		List<Manutencao> manutencaoList =  ManutencaoBusiness.findByProdutoByStatus(produto, ManutencaoStatus.PAGA);
 		
 		
 		model.addAttribute("manutencaoList", manutencaoList);
+		model.addAttribute("reservaList", reservaList);
 
 
 		
