@@ -56,7 +56,7 @@
 
 </head>
 <body>
-                <section class="main_content">
+	<section class="main_content">
 	<div class="page-title">
 		<div class="title_left">
 			<h3>Validação de reservas</h3>
@@ -67,91 +67,104 @@
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 			
-				<form:form cssClass="form-horizontal"
-							action="${pageContext.request.contextPath}/reserva/validar/salvar"
-							commandName="reservaValidacao" method="POST">
-					<div class="x_title">
-						<h2>Validação de reservas</h2>
-						<div class="clearfix"></div>
+				<c:if test="${message != '' && message != null}">
+					<div>
+						<div class="alert">${message}</div>
 					</div>
-					<div class="wizar_content">
-						<br />
-						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"></label>
-						<div class="form-group">
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								Eu ${reservaValidacao.terceiro.nome},  
-								<input type="radio" value="true" checked="checked" id="optionsRadios1" name="optionsRadios"> aprovo
-								<input type="radio" value="false" id="optionsRadios2" name="optionsRadios"> reprovo
-								a reserva a seguir
+				</c:if>
+				
+				<c:if test="${message == '' || message == null}">
+			
+					<form:form cssClass="form-horizontal"
+								action="${pageContext.request.contextPath}/reserva/validar/salvar"
+								commandName="reservaValidacao" method="POST">
+								
+						<form:hidden path="uid" />
+						<form:hidden path="aprovado" />
+								
+						<div class="x_title">
+							<h2>Validação de reservas</h2>
+							<div class="clearfix"></div>
+						</div>
+						<div class="wizar_content">
+							<br />
+							<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"></label>
+							<div class="form-group">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									Eu ${reservaValidacao.terceiro.nome},  
+									<input type="radio" value="true" checked="checked" id="optionsRadios1" name="optionsRadios"> aprovo
+									<input type="radio" value="false" id="optionsRadios2" name="optionsRadios"> reprovo
+									a reserva a seguir
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="wizar_content">
-						<br />
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12"
-								for="first-name">Motivo
-							</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:textarea path="motivo"
-									cssClass="form-control col-md-7 col-xs-12"
-									placeholder="Preencha o motivo" />
+						<div class="wizar_content">
+							<br />
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12"
+									for="first-name">Motivo
+								</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form:textarea path="motivo"
+										cssClass="form-control col-md-7 col-xs-12"
+										placeholder="Preencha o motivo" />
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="x_title">
-						<h2>Dados da solicitação</h2>
-						<div class="clearfix"></div>
-					</div>
-					<div class="wizar_content">
-						<br />
-
-						<form:hidden path="id" />
+						<div class="x_title">
+							<h2>Dados da solicitação</h2>
+							<div class="clearfix"></div>
+						</div>
+						<div class="wizar_content">
+							<br />
 	
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12"
-								for="first-name">Embarcação
-							</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:input path="reserva.grupo.produtos[0].descricao"
-									cssClass="form-control col-md-7 col-xs-12" readonly="true"/>
+							<form:hidden path="id" />
+		
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12"
+									for="first-name">Embarcação
+								</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form:input path="reserva.grupo.produtos[0].descricao"
+										cssClass="form-control col-md-7 col-xs-12" readonly="true"/>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12"
+									for="first-name">Solicitante
+								</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form:input path="reserva.solicitante.nome"
+										cssClass="form-control col-md-7 col-xs-12" readonly="true" />
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Data/Hora inicio</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form:input path="reserva.inicioReserva"
+										cssClass="form-control col-md-7 col-xs-12" readonly="true" />
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Data/Hora Fim</label>
+								<div class="col-md-6 col-sm-6 col-xs-12">
+									<form:input path="reserva.fimReserva"
+										cssClass="form-control col-md-7 col-xs-12" readonly="true" />
+								</div>
+							</div>
+		
+							<div style="clear: both"></div>
+							<br />
+							<br />
+							<div class="form-actions">
+								<button id="confirmar" type="button" class="btn btn-primary">Confirmar</button>
 							</div>
 						</div>
-						
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12"
-								for="first-name">Solicitante
-							</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:input path="reserva.solicitante.nome"
-									cssClass="form-control col-md-7 col-xs-12" readonly="true" />
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Data/Hora inicio</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:input path="reserva.inicioReserva"
-									cssClass="form-control col-md-7 col-xs-12" readonly="true" />
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label class="control-label col-md-3 col-sm-3 col-xs-12">Data/Hora Fim</label>
-							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:input path="reserva.fimReserva"
-									cssClass="form-control col-md-7 col-xs-12" readonly="true" />
-							</div>
-						</div>
-	
-						<div style="clear: both"></div>
-						<br />
-						<br />
-						<div class="form-actions">
-							<button type="button" onclick="javascript:submit();" class="btn btn-primary">Confirmar</button>
-						</div>
-					</div>
-				</form:form>
+					</form:form>
+				</c:if>
 			</div>
 
 		</div>
@@ -159,18 +172,22 @@
 	
 	<script type="text/javascript">
 	
-		function submit(){
-			
-			if($('input[name=optionsRadios]:checked').val() == "true"){
-				$("form").submit();
-			}
-			else{
-				if($('#motivo').val() == "")
-					alert("Informe um motivo!");
-			}
-				
-			
-		}
+	
+		$("#confirmar").click(
+				function(){
+					if($('input[name=optionsRadios]:checked').val() == "true"){
+						$("#aprovado").val(true);
+						$("form").submit();
+					}
+					else{
+						$("#aprovado").val(false);
+						if($('#motivo').val() == "")
+							alert("Informe um motivo!");
+						else
+							$("form").submit();
+					}
+				});
+
 	
 	</script>
 	

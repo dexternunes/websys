@@ -64,7 +64,7 @@ public class Reserva extends EntityBaseRoot {
 		this.solicitante = solicitante;
 	}
 
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
 	public Grupo getGrupo() {
 		return grupo;

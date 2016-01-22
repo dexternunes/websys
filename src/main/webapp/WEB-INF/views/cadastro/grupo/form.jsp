@@ -53,10 +53,16 @@
 							</label>
 							
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:select path="produtos" multiple="false" readonly="readonly" cssClass="select2_single form-control select2_readonly">
-									<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
-								</form:select>
-								<form:errors cssClass="native-error" path="produtos"></form:errors>
+								<c:if test="${!readonly}">
+									<form:select path="produtos" multiple="false" readonly="readonly" cssClass="select2_single form-control select2_readonly">
+										<form:options items="${listProdutos}" itemValue="id" itemLabel="descricao" />
+									</form:select>
+									<form:errors cssClass="native-error" path="produtos"></form:errors>
+								</c:if>
+								<c:if test="${readonly}">
+									<form:input path="produtos[0].descricao" cssClass="form-control col-md-7 col-xs-12" readonly="${readonly}"/>
+									<form:hidden path="produtos[0].id"/>
+								</c:if>
 							</div>
 						</div>
 						
@@ -65,10 +71,20 @@
 								for="first-name">Cotistas <span class="required">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<form:select path="terceiros" multiple="true" cssClass="select2_multiple form-control">
-									<form:options items="${listTerceiros}" itemValue="id" itemLabel="nome"></form:options>
-								</form:select>
-								<form:errors cssClass="native-error" path="terceiros"></form:errors>
+								<c:if test="${!readonly}">
+									<form:select path="terceiros" multiple="true" cssClass="select2_multiple form-control">
+										<form:options items="${listTerceiros}" itemValue="id" itemLabel="nome"></form:options>
+									</form:select>
+									<form:errors cssClass="native-error" path="terceiros"></form:errors>
+								</c:if>
+								<c:if test="${readonly}">
+									<lu>
+										<c:forEach items="${grupo.terceiros}" var="terceiro" varStatus="statusTerc">
+											<form:hidden path="terceiros[${statusTerc.index}].id"/>
+											<li>${terceiro.nome}</li>
+										</c:forEach>
+									</lu>
+								</c:if>
 							</div>
 						</div>
 						

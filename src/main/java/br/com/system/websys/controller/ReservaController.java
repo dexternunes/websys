@@ -133,7 +133,17 @@ public class ReservaController{
 	
 	@RequestMapping(value="/validar/salvar", method = RequestMethod.POST)
 	public String salvarValidacao(HttpServletRequest request, @ModelAttribute("reservaValidacao") ReservaValidacao reservaValidacao,
-			BindingResult result){
+			BindingResult result, Model model) throws Exception{
+		
+		ReservaValidacao reservaValidacaoDB = reservaValidacaoBusiness.getByUid(reservaValidacao.getUid());
+		
+		reservaValidacaoDB.setValidado(true);
+		reservaValidacaoDB.setMotivo(reservaValidacao.getMotivo());
+		reservaValidacaoDB.setAprovado(reservaValidacao.getAprovado());
+		
+		reservaValidacaoBusiness.salvar(reservaValidacaoDB);
+		
+		model.addAttribute("message", "Obrigado validar a locação!");
 		
 		return "reserva/validarReserva";
 	}
