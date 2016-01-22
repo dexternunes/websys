@@ -57,6 +57,7 @@
       	<mapping path="/**"/>
         <exclude-mapping path="/api/**"/>
         <exclude-mapping path="/reserva/api/**"/>
+        <exclude-mapping path="/faturamento/api/**"/>
         <beans:bean class="br.com.system.websys.security.mvc.SecurityInfoInterceptor" />
       </interceptor>
     </interceptors> 

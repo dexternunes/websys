@@ -46,76 +46,96 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 	@Override
 	public Faturamento calcularFaturamento(List<Manutencao> listaManutencao, List<Reserva> listaReserva){
 		Faturamento faturamento = new Faturamento();
+		List<FaturamentoRateio> listaFaturamentoRateio = new ArrayList<FaturamentoRateio>();
+		
 		
 		//Calcula Valor total da manutencao:
 		 Double valorTotal= new Double(0); 
 		
-		for (Manutencao m:listaManutencao){
-			valorTotal = valorTotal + m.getValor();
-		}
-		
-
-		//Seta uns valores na entidade
-		faturamento.setValor(valorTotal);
-		faturamento.setManutencoes(listaManutencao);
-		faturamento.setGrupo(GrupoBusiness.findAllByProduto(listaManutencao.get(0).getProduto()).get(0));
-		
-		
-		//50% do valor Total de manutenca é dividido entre os cotistas
-		Double valorRateio= new Double(0); 
-		
-		
-		//Determina o valor para cada cotista, sendo 50% + (os outro 50% proporcionais as horas utilizadas)
-
-		List<FaturamentoRateio> listaFaturamentoRateio = new ArrayList<FaturamentoRateio>();
-
-		Long totalHorasPorTerceiro;
-		Long totalHorasMotor = (long) 0;
-		
-		for (Terceiro t:faturamento.getGrupo().getTerceiros()){
-			
-			totalHorasPorTerceiro = (long) 0;
-			for (Reserva r:listaReserva){
-				if(r.getSolicitante().equals(t)){
-					totalHorasPorTerceiro = totalHorasPorTerceiro + r.getHoraMotorTotal();
-				}
-				totalHorasMotor = totalHorasMotor + r.getHoraMotorTotal();
+		if(listaManutencao.size() > 0){
+			for (Manutencao m:listaManutencao){
+				valorTotal = valorTotal + m.getValor();
 			}
 			
-			
-			//(valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valortotal/2)*percentHoras)/100)
-			
-
-			//%Y = (100 x HY)/TOTALHOras -->Porcentagem de horas que o terceiro usou
-			Long percentHoras;
-			percentHoras = (100 * totalHorasPorTerceiro)/totalHorasMotor;
-			
-			//x = (V50% X %Y)/100 --> valor em reais pela porcentagem de horas que o terceiro usou
+	
+			//Seta uns valores na entidade
+			faturamento.setValor(valorTotal);
+			faturamento.setManutencoes(listaManutencao);
+			faturamento.setGrupo(listaReserva.get(0).getGrupo());
 			
 			
-			//Horas motor é obrigado a escolher.
-			//Manutencao, se nao for selecionada nenhuma, nao gera valor, e zera as horas motor selecionadas.
+			//50% do valor Total de manutenca é dividido entre os cotistas
+			Double valorRateio= new Double(0); 
 			
-			FaturamentoRateio faturamentoRateio = new FaturamentoRateio();
-			faturamentoRateio.setFaturamento(faturamento);
-			faturamentoRateio.setTerceiro(t);
 			
-			if(listaManutencao.size() > 0){
-
-				valorRateio = (valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valorTotal/2)*percentHoras)/100);
+			//Determina o valor para cada cotista, sendo 50% + (os outro 50% proporcionais as horas utilizadas)
+	
+	
+			Long totalHorasPorTerceiro;
+			Long totalHorasMotor = (long) 0;
+			
+			for (Terceiro t:faturamento.getGrupo().getTerceiros()){
+				
+				totalHorasPorTerceiro = (long) 0;
+				for (Reserva r:listaReserva){
+					if(r.getSolicitante().equals(t)){
+						totalHorasPorTerceiro = totalHorasPorTerceiro + r.getHoraMotorTotal();
+					}
+					totalHorasMotor = totalHorasMotor + r.getHoraMotorTotal();
+				}
+				
+				
+				//%Y = (100 x HY)/TOTALHOras -->Porcentagem de horas que o terceiro usou
+				Long percentHoras;
+				percentHoras = (100 * totalHorasPorTerceiro)/totalHorasMotor;
+				
+				//x = (V50% X %Y)/100 --> valor em reais pela porcentagem de horas que o terceiro usou
+				
+				
+				//Horas motor é obrigado a escolher.
+				//Manutencao, se nao for selecionada nenhuma, nao gera valor, e zera as horas motor selecionadas.
+				
+				FaturamentoRateio faturamentoRateio = new FaturamentoRateio();
+				faturamentoRateio.setFaturamento(faturamento);
+				faturamentoRateio.setTerceiro(t);
+				
+				if(listaManutencao.size() > 0){
+	
+					valorRateio = (valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valorTotal/2)*percentHoras)/100);
+					
+				}
+				
+				
+				faturamentoRateio.setValor(valorRateio);
+				listaFaturamentoRateio.add(faturamentoRateio);
 				
 			}
 			
+			faturamento.setFaturamentoRateios(listaFaturamentoRateio);
+			//faturamento.setReservas(listaReserva);
 			
-			faturamentoRateio.setValor(valorRateio);
-			listaFaturamentoRateio.add(faturamentoRateio);
+		//Se nao tiver manutencao selecionada, apenas zera as horas. 	
+		}else{
+			faturamento.setValor(valorTotal);
+			faturamento.setGrupo(listaReserva.get(0).getGrupo());
+			
+
+			
+			for (Terceiro t:faturamento.getGrupo().getTerceiros()){
+
+				FaturamentoRateio faturamentoRateio = new FaturamentoRateio();
+				faturamentoRateio.setFaturamento(faturamento);
+				faturamentoRateio.setTerceiro(t);
+				faturamentoRateio.setValor(valorTotal);
+				listaFaturamentoRateio.add(faturamentoRateio);
+
+					
+				
+			}
+
+			faturamento.setFaturamentoRateios(listaFaturamentoRateio);
 			
 		}
-		
-		faturamento.setFaturamentoRateios(listaFaturamentoRateio);
-		
-		//faturamento.setReservas(listaReservas);
-		
 		return faturamento;
 		
 	}

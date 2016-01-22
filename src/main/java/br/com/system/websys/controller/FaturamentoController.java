@@ -182,7 +182,7 @@ public class FaturamentoController{
 			faturamentoRateioDTO.setHoras(20.00);
 			faturamentoRateioDTO.setTerceiro(f.getTerceiro());
 			faturamentoRateioDTO.setValor(f.getValor());
-			faturamentoDTO.setValorTotal(faturamentoDTO.getValorTotal() + faturamentoRateioDTO.getValor());
+			faturamentoDTO.setValorTotal(faturamento.getValor());
 			//DecimalFormat twoDForm = new DecimalFormat("#.##");
 			//faturamentoDTO.setValorTotal(Double.valueOf(twoDForm.format(faturamentoDTO.getValorTotal())));
 			faturamentoRateioDTOList.add(faturamentoRateioDTO);

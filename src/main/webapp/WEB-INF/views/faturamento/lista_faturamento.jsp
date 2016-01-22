@@ -197,11 +197,11 @@
 											function() {
 												
 												
-												var retorno = [];
-												var objeto = JSON.stringify(createArrayIds())
+												var retorno = createArrayIds();
+												var objeto = JSON.stringify(retorno);
 												
-												if (objeto != '{"idsManutencao":[],"idsHoraMotor":[]}') {
-
+												if (retorno.idsHoraMotor.length > 0) {
+												
 													$
 															.ajax({
 																async : true,
@@ -261,7 +261,6 @@
 							}
 
 							function createArrayIds() {
-
 								var idsManutencao = [];
 								var idsHoraMotor = [];
 								var dto = [];
