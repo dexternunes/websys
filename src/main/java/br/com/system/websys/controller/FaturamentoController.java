@@ -179,7 +179,7 @@ public class FaturamentoController{
 		
 		for (FaturamentoRateio f:faturamento.getFaturamentoRateios()){
 			faturamentoRateioDTO = new FaturamentoRateioDTO();
-			faturamentoRateioDTO.setHoras(20.00);
+			faturamentoRateioDTO.setHoras(f.getHoras());
 			faturamentoRateioDTO.setTerceiro(f.getTerceiro());
 			faturamentoRateioDTO.setValor(f.getValor());
 			faturamentoDTO.setValorTotal(faturamento.getValor());
@@ -234,10 +234,10 @@ public class FaturamentoController{
 
 
 			
-			return "erro";
+			return "Ocorreu um erro ao faturar. Favor contatar o administrador do sistema";
 		}
 
-		return "foi";
+		return "Faturado com sucesso.";
 	}
 
 	

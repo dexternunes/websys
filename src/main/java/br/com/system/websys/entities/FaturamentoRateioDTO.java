@@ -10,7 +10,7 @@ public class FaturamentoRateioDTO {
 	
 	private String valorStr;
 
-	private Double horas;
+	private Long horas;
 
 	public Terceiro getTerceiro() {
 		return terceiro;
@@ -29,13 +29,7 @@ public class FaturamentoRateioDTO {
 		this.valor = valor;
 	}
 
-	public Double getHoras() {
-		return horas;
-	}
 
-	public void setHoras(Double horas) {
-		this.horas = horas;
-	}
 
 	public String getValorStr() {
 		return valorStr;
@@ -43,6 +37,14 @@ public class FaturamentoRateioDTO {
 
 	public void setValorStr(String valorStr) {
 		this.valorStr = valorStr;
+	}
+
+	public Long getHoras() {
+		return horas;
+	}
+
+	public void setHoras(Long horas) {
+		this.horas = horas;
 	}
 
 

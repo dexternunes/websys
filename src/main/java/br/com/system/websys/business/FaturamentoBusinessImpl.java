@@ -98,6 +98,7 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 				FaturamentoRateio faturamentoRateio = new FaturamentoRateio();
 				faturamentoRateio.setFaturamento(faturamento);
 				faturamentoRateio.setTerceiro(t);
+				faturamentoRateio.setHoras(totalHorasPorTerceiro);
 				
 				if(listaManutencao.size() > 0){
 	
@@ -119,14 +120,24 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 			faturamento.setValor(valorTotal);
 			faturamento.setGrupo(listaReserva.get(0).getGrupo());
 			
-
+			Long totalHorasPorTerceiro;
+			Long totalHorasMotor = (long) 0;
 			
 			for (Terceiro t:faturamento.getGrupo().getTerceiros()){
-
+				
+				totalHorasPorTerceiro = (long) 0;
+				for (Reserva r:listaReserva){
+					if(r.getSolicitante().equals(t)){
+						totalHorasPorTerceiro = totalHorasPorTerceiro + r.getHoraMotorTotal();
+					}
+					totalHorasMotor = totalHorasMotor + r.getHoraMotorTotal();
+				}
+				
 				FaturamentoRateio faturamentoRateio = new FaturamentoRateio();
 				faturamentoRateio.setFaturamento(faturamento);
 				faturamentoRateio.setTerceiro(t);
 				faturamentoRateio.setValor(valorTotal);
+				faturamentoRateio.setHoras(totalHorasPorTerceiro);
 				listaFaturamentoRateio.add(faturamentoRateio);
 
 					
