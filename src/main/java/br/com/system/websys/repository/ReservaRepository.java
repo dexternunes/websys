@@ -7,10 +7,14 @@ import org.springframework.data.repository.query.Param;
 
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
+import br.com.system.websys.entities.Terceiro;
 
 public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	
 	@Query("SELECT  r FROM Reserva r WHERE r.grupo IN(:grupo) AND r.excluido = 0 AND r.ativo = 1")
 	List<Reserva> getAllByGrupo(@Param("grupo") List<Grupo> grupos);
+	
+	@Query("SELECT r FROM Reserva r WHERE r.solicitante = :terceiro AND r.excluido = 0 AND r.ativo = 1")
+	Reserva getGetProprietario(@Param("terceiro") Terceiro terceiro);	
 }
 

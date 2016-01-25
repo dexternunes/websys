@@ -30,6 +30,7 @@ import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
+import br.com.system.websys.entities.User;
 
 @Controller
 @RequestMapping("/reserva")
@@ -89,17 +90,19 @@ public class ReservaController{
 		
 		ReservasDTO reservas = new ReservasDTO();
 		List<Reserva> listReservas;
-		if(userBusiness.getCurrent().getRole().equals(Role.ROLE_ADMIN) || userBusiness.getCurrent().getRole().equals(Role.ROLE_MARINHEIRO)){
+		User user = userBusiness.getCurrent();
+		if(user.getRole().equals(Role.ROLE_ADMIN) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
 			listReservas = reservaBusiness.getAll();
 		}
 		else		
-			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(userBusiness.getCurrent().getTerceiro()));
+			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(user.getTerceiro()));
 		
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
 
 			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
-					reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus()));
+					reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
+					reserva.getEventoInicio(), reserva.getEventoFim()));
 			}
 		}
 		return reservas;
@@ -107,10 +110,25 @@ public class ReservaController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET )
-	public void getReservaById(@PathVariable Long id, Model model) throws Exception {
+	public ReservasDTO getReservaById(@PathVariable Long id, Model model) throws Exception {
 		
+		ReservasDTO reservas = new ReservasDTO();
 		Reserva reserva = reservaBusiness.get(id);
-		model.addAttribute("reserva", reserva);
+		reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
+				reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
+				reserva.getEventoInicio(), reserva.getEventoFim()));
+		
+		return reservas;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/validaExclusao/{id}", method = RequestMethod.GET )
+	public String validaExclusao(@PathVariable Long id) throws Exception {
+		Reserva reserva = reservaBusiness.get(id);
+		
+		String retorno = reservaBusiness.validaExclusao(reserva);
+		
+		return retorno;
 	}
 	
 	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")

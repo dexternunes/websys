@@ -12,6 +12,7 @@ public enum ReservaStatus{
 
 	private ReservaStatus(String code, String descricao){
 		this.descricao = descricao;
+		this.code = code;
 	}
 
 	public String getDescricao() {
