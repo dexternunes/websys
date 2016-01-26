@@ -426,7 +426,7 @@
 
 					$("#opa").click(
 							function() {
-								alert("s");
+								//alert("s");
 								$('input:checkbox').not(this).prop('checked',
 										this.checked);
 							});

@@ -73,8 +73,7 @@
 									varStatus="status">
 									<tr class="even pointer">
 										<td class="a-center " oName="id" oValue="${reservas.id}">
-											<input type="checkbox" name="hCheckBox" class="tableflat"
-											value="${reservas.id}">
+											
 										</td>
 										<td class=" ">${reservas.inicioReserva}</td>
 										<td class=" ">${reservas.solicitante.nome}</td>
