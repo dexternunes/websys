@@ -57,8 +57,8 @@
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="dysplay: none !important">
-						VocÃª possui uma reserva em aberto. Somente poderÃ¡ cadastrar uma
-						nova reserva apÃ³s a finalizaÃ§Ã£o da atual.</div>
+						Você possui uma reserva em aberto. Somente poderá cadastrar uma
+						nova reserva após a finalização da atual.</div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
