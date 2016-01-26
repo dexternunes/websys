@@ -51,7 +51,7 @@
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
-					<h3>Reservas</h3>
+					<h3>Calendário</h3>
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
@@ -436,7 +436,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'MarÃ§o',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]
@@ -461,7 +461,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'MarÃ§o',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]

@@ -10,7 +10,7 @@
 
 <html>
 <head>
-<title>Cadastro de Produto</title>
+<title>Cadastro de Embarcação</title>
 
 </head>
 <body >
@@ -23,7 +23,7 @@
 				<div class="col-md-12 col-sm-12 col-xs-12">
 					<div class="x_panel">
 						<div class="x_title">
-							<h2>Produto</h2>
+							<h2>Embarcação</h2>
 							<div class="clearfix"></div>
 						</div>
 						<div class="wizar_content">

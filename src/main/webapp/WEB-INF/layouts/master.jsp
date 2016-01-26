@@ -380,22 +380,22 @@ $(document).ready(function() {
 							<div>&nbsp</div>
 							<ul class="nav side-menu">
 								<sec:authorize url="/home">
-									<li><a><i class="fa fa-home"></i> Home <span
+									<li><a><i class="fa fa-home"></i> Reservas <span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/home" />">Home</a></li>
+											<li><a href="<c:url value="/home" />">Calendário</a></li>
 										</ul></li>
 								</sec:authorize>
 								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu" style="display: none">
 										<sec:authorize url="/terceiro/cadastro">
-											<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
+											<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
 										</sec:authorize>
 										<sec:authorize url="/usuarios/cadastro">
 											<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
 										</sec:authorize>	
 										<sec:authorize url="/produtos">
-											<li><a href="<c:url value="/produtos/" />">Produtos</a></li>
+											<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>
 										</sec:authorize>
 										<sec:authorize url="/grupo">
 											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
