@@ -13,11 +13,13 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	public List<Reserva> getAll();
 
 	public List<Reserva> getByGrupoByStatus(Grupo grupo, FaturamentoStatus faturamentoStatus);
+
 	
 	public List<Reserva> getAllByGrupo(List<Grupo> grupos);
 	
 	public Reserva getGetProprietario(Terceiro terceiro);
 	
 	public String validaExclusao(Reserva reserva);
-	
+
+
 }

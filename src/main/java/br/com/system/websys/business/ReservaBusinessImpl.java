@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import br.com.system.websys.entities.FaturamentoStatus;
-
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.Terceiro;
@@ -35,6 +33,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public List<Reserva> getAll() {
 		return ((ReservaRepository)repository).findAll();
 	}
+
 
 
 	public List<Reserva> getAllByGrupo(List<Grupo> grupos) {
@@ -66,6 +65,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Reserva> reservas = ((ReservaRepository)repository).findByReservaByGrupoByStatus(grupo, faturamentoStatus);
 		return reservas;
 	}
+
+
+
+
 
 
 }

@@ -37,7 +37,6 @@ public class Reserva extends EntityBaseRoot {
 
 	private ReservaEvento eventoFim;
 
-
 	private Boolean utilizaMarinheiro = false;
 
 	private String obs;
@@ -161,6 +160,7 @@ public class Reserva extends EntityBaseRoot {
 	public void setObs(String obs) {
 		this.obs = obs;
 	}
+
 
 
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
