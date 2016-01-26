@@ -57,8 +57,8 @@
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="dysplay: none !important">
-						Voce possui uma reserva em aberto. Somente poderá cadastrar uma
-						nova reserva após a finalização da atual.</div>
+						Voce possui uma reserva em aberto. Somente poderÃ¡ cadastrar uma
+						nova reserva apÃ³s a finalizaÃ§Ã£o da atual.</div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
@@ -112,7 +112,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
+								<label class="col-sm-3 control-label">InÃ­cio(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
 									<form:input id="data_inicio_reserva" path="inicioReserva"
 										class="form-control has-feedback-left data_reserva"
@@ -158,7 +158,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">ObservaÃ§Ãµes
 								</label>
 								<form:textarea rows="5" path="obs" id="obs" />
 							</div>
@@ -455,6 +455,7 @@
 							timePickerIncrement : 15,
 							timePicker12Hour : false,
 							format : 'YYYY/MM/DD HH:mm',
+							
 							timezone : 'local',
 							calender_style : "picker_4",
 							parentEl : '#CalenderModal',
@@ -465,7 +466,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'MarÃ§o',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]
@@ -490,7 +491,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'MarÃ§o',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]
@@ -532,12 +533,28 @@
 								$('#calendar').fullCalendar('updateEvent',
 										calEvent);
 							} else {
-								$('#calendar').fullCalendar('renderEvent', {
-									title : title,
-									start : inicio,
-									end : fim,
-									allDay : allDay
-								}, true);
+								if(allDay){
+									if (moment().diff(start, 'hours') > 24){
+										$('#calendar').fullCalendar('renderEvent', {
+											title : title,
+											start : inicio,
+											end : fim,
+											allDay : allDay
+										}, true);
+									}
+									else{
+										$('#calendar').fullCalendar('unselect');
+										return false;
+									}
+								}
+								else{
+									$('#calendar').fullCalendar('renderEvent', {
+										title : title,
+										start : inicio,
+										end : fim,
+										allDay : allDay
+									}, true);
+								}
 							}
 						}
 
