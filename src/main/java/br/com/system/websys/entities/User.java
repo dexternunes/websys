@@ -1,7 +1,5 @@
 package br.com.system.websys.entities;
 
-import java.beans.Transient;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Transient;
 
 @Entity 
 @Table(name="user")

@@ -112,7 +112,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">InÃ­cio(Data/Hora)</label>
+								<label class="col-sm-3 control-label">Iní­cio(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
 									<form:input id="data_inicio_reserva" path="inicioReserva"
 										class="form-control has-feedback-left data_reserva"
@@ -158,7 +158,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">ObservaÃ§Ãµes
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
 								</label>
 								<form:textarea rows="5" path="obs" id="obs" />
 							</div>
