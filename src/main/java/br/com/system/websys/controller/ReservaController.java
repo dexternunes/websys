@@ -108,7 +108,8 @@ public class ReservaController{
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
 
 			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
-					reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus()));
+					reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
+					reserva.getEventoInicio(), reserva.getEventoFim()));
 			}
 		}
 		return reservas;
@@ -116,10 +117,25 @@ public class ReservaController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET )
-	public void getReservaById(@PathVariable Long id, Model model) throws Exception {
+	public ReservasDTO getReservaById(@PathVariable Long id, Model model) throws Exception {
 		
+		ReservasDTO reservas = new ReservasDTO();
 		Reserva reserva = reservaBusiness.get(id);
-		model.addAttribute("reserva", reserva);
+		reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
+				reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
+				reserva.getEventoInicio(), reserva.getEventoFim()));
+		
+		return reservas;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/validaExclusao/{id}", method = RequestMethod.GET )
+	public String validaExclusao(@PathVariable Long id) throws Exception {
+		Reserva reserva = reservaBusiness.get(id);
+		
+		String retorno = reservaBusiness.validaExclusao(reserva);
+		
+		return retorno;
 	}
 	
 	@RequestMapping(value = "/validar/{uid}", method = RequestMethod.GET )

@@ -411,10 +411,18 @@ $(document).ready(function() {
 									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/relatorios/manutencao/" />">Relatório Manutenção/Horas</a></li>
+											<li><a href="<c:url value="/faturamento/historico/" />">Relatório Manutenção/Horas</a></li>
 										</ul></li>
 								</sec:authorize>
 								
+								<!-- Faturamento -->
+								<sec:authorize url="/faturamento/">
+									<li><a><i class="fa fa-usd"></i>Faturar<span
+											class="fa fa-chevron-down"></span></a>
+										<ul class="nav child_menu" style="display: none">
+											<li><a href="<c:url value="/faturamento/" />">Faturar</a></li>
+										</ul></li>
+								</sec:authorize>
 							</ul>
 						</div>
 					</div>

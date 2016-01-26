@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 @Entity
 @Table(name="faturamento_rateio")
 public class FaturamentoRateio extends EntityBaseRoot  {
@@ -19,10 +21,12 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 	private Double valor;
 	private Terceiro terceiro = new Terceiro();
 	private Faturamento faturamento = new Faturamento();
+	private Long horas;
 	
 	
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_faturamento", referencedColumnName="id_faturamento")
+	@JsonManagedReference
 	public Faturamento getFaturamento() {
 		return faturamento;
 	}
@@ -56,6 +60,14 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 
 	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+
+	public Long getHoras() {
+		return horas;
+	}
+
+	public void setHoras(Long horas) {
+		this.horas = horas;
 	}
 	
 }

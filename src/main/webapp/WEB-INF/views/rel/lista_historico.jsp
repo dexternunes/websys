@@ -9,7 +9,7 @@
 
 <html>
 <head>
-<title>Manutenções Cadastradas</title>
+<title>Relaório de faturamento</title>
 </head>
 <body>
 	<div class="row">
@@ -19,57 +19,80 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2>Manutenções Cadastradas</h2>
+						<h2>Manutenções</h2>
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="x_content">
+						<!-- id="example" para ordenar e filtrar -->
+                        <table id="example2" class="table table-striped responsive-utilities jambo_table ">
+                            <thead>
+                                <tr class="headings">
+                                    <th>
+                                        
+                                    </th>
+                                    <th>Data </th>
+                                    <th>Descrição </th>
+                                    <th>Valor </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            	<c:forEach items="${manutencaoList}" var="manutencoes" varStatus="status">
+	                                 <tr class="even pointer">
+	                                     <td class="a-center "  oName="id" oValue="${manutencoes.id}">
+	                                        
+	                                     </td>
+	                                     <td class=" ">${manutencoes.inicioManutencao}</td>
+	                                     <td class=" ">${manutencoes.obs}</td>
+	                                     <td class=" ">R$ ${manutencoes.valor} </td>
+	                                 </tr>
+                            	</c:forEach>
+							</tbody>
+
+                        </table>
+                    </div>
+                    <div class="x_title">
+						<h2>Horas Motor</h2>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<div class="control-group">
-							<a type="button" class="btn btn-primary"
-								href="${pageContext.request.contextPath}/manutencao/cadastro">Cadastrar
-								Manutenção</a>
-						</div>
-						<div class="control-group">
-							<table id="entities"
-								class="table table-striped responsive-utilities jambo_table">
-								<thead>
-									<tr>
-										<th>Produto</th>
-										<th>Descrção da manuteção</th>
-										<!-- 
-										<th>Data início</th>
-										<th>Data fim</th>
-										
-										 -->
-										<th>Valor</th>
-										<th>Status</th>
+						<table id="example"
+							class="table table-striped responsive-utilities jambo_table ">
+							<thead>
+								<tr class="headings">
+									<th></th>
+									<th>Data</th>
+									<th>Usuário</th>
+									<th>Horas Motor</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<c:forEach items="${reservaList}" var="reservas"
+									varStatus="status">
+									<tr class="even pointer">
+										<td class="a-center " oName="id" oValue="${reservas.id}">
+											<input type="checkbox" name="hCheckBox" class="tableflat"
+											value="${reservas.id}">
+										</td>
+										<td class=" ">${reservas.inicioReserva}</td>
+										<td class=" ">${reservas.solicitante.nome}</td>
+										<td class=" ">${reservas.horaMotorTotal}Horas</td>
 									</tr>
-								</thead>
-								<tbody>
+								</c:forEach>
+							</tbody>
 
-									<c:forEach items="${manutencaoList}" var="manutencoes"
-										varStatus="status">
-
-										<tr onclick="document.location.href='<c:url value="/manutencao/cadastro/${manutencoes.id }"/>';"
-										style="cursor: pointer; !important;">
-											<td oName="id" oValue="${manutencoes.id}">${manutencoes.produto.descricao}</td>
-											<td>${manutencoes.obs}</td>
-											<!-- 
-											<td class="tdDate">${manutencoes.inicioManutencao}</td>
-											<td class="tdDate">${manutencoes.fimManutencao}</td>
-											 -->
-											<td class="tdValor">${manutencoes.valor}</td>
-											<td>${manutencoes.status}</td>
-										</tr>
-
-									</c:forEach>
-
-								</tbody>
-							</table>
-						</div>
+						</table>
+					</div>
+					<div class="control-group">
+						<a type="button" class="btn btn-primary"
+							href="${pageContext.request.contextPath}/faturamento/historico/">Voltar</a>
 					</div>
 				</div>
 			</div>
 		</form:form>
+
 	</div>
 
 	<script
@@ -83,31 +106,13 @@
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 });
-                
-                $('.tdDate').iCheck({
-                    checkboxClass: 'icheckbox_flat-green',
-                    radioClass: 'iradio_flat-green'
-                });
-                
-                $( ".tdDate" ).each(function( index ) {
-                	$( this ).text(formatMyDate($(this).text()));
-                });
-                
-
-                $( ".tdValor" ).each(function( index ) {
-                	var valor = $( this ).text();
-                	valor = valor.replace(".", ",");
-                	var moeda = "R$ ";
-                	valor = moeda.concat(valor);
-                	$( this ).text(valor);
-                });
             });
 
             var asInitVals = new Array();
             $(document).ready(function () {
                 var oTable = $('#example').dataTable({
                     "oLanguage": {
-                        "sSearch": "Search all columns:"
+                        "sSearch": "Procurar em todas as colunas:"
                     },
                     "aoColumnDefs": [
                         {
@@ -138,29 +143,6 @@
                     }
                 });
             });
-            
-            
-			function formatMyDate(data) {
-				var date = new Date(data);
-				var day = parseInt(complet(date.getDate()));
-				var month = parseInt(complet(date.getMonth()));
-				var year = complet(date.getFullYear());
-				var hour = complet(date.getHours());
-				var min = complet(date.getMinutes());
-
-				return day + '/' + month + '/' + year + ' ' + hour +':'+min;              
-			}
-
-
-	
-			
-			function complet(value){
-				if(value < 10)
-					return "0" + value;
-				else
-					return value;
-			} 
-	
         </script>
 </body>
 </html>

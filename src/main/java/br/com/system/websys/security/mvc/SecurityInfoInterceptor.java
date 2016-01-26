@@ -31,17 +31,19 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 			ModelAndView modelAndView) throws Exception {
 				
 		if(SecurityContextHolder.getContext().getAuthentication() == null)
-			return; 
+			return;
 		
-		if(userBusiness != null && modelAndView != null && userBusiness.getCurrent() != null){
-				userDTO.setNome(userBusiness.getCurrent().getTerceiro().getNome());
-				userDTO.setIdTerceiro(userBusiness.getCurrent().getTerceiro().getId());
-				userDTO.setIdUser(userBusiness.getCurrent().getId());
+		User user = userBusiness.getCurrent();
+		
+		if(user != null && modelAndView != null && user.getTerceiro() != null){
+				userDTO.setNome(user.getTerceiro().getNome());
+				userDTO.setIdTerceiro(user.getTerceiro().getId());
+				userDTO.setIdUser(user.getId());
 
 				modelAndView.addObject("user", userDTO);
 		}
 		else {			
-			User user = new User();			
+			user = new User();			
 			modelAndView.addObject("user", user);
 		}
 	}

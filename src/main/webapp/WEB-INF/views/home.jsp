@@ -55,6 +55,12 @@
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
+					<div class="alert alert-warning alert-dismissible fade in"
+						role="alert" id="possuiReserva" style="dysplay: none !important">
+						Você possui uma reserva em aberto. Somente poderá cadastrar uma
+						nova reserva após a finalização da atual.</div>
+					<div class="clearfix"></div>
+					<br>
 					<div id='calendar'></div>
 					<div class="clearfix"></div>
 					<br>
@@ -65,8 +71,6 @@
 		</div>
 	</div>
 
-	<!-- footer content -->
-	<!-- /footer content -->
 	<div id="CalenderModal" class="modal fade" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -80,15 +84,19 @@
 					role="form" commandName="reserva"
 					action="${pageContext.request.contextPath}/reserva/salvar">
 					<form:hidden path="id" id="id" />
+					<input type="hidden" value="${user.nome}" id="nome_terceiro">
+					<input type="hidden" value="${proprietarioReserva}"
+						id="proprietarioReserva" />
+					<input type="hidden" value="${admin}" id="admin" />
+					<input type="hidden" value="${marinheiro}" id="marinheiro" />
 					<div class="modal-body">
 						<div id="testmodal2" style="padding: 5px 20px;">
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Solicitante</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
 									<form:hidden path="solicitante" />
-									<input type="text" value="${user.nome}"
-										id="title" readonly="true"
-										class="form-control col-md-7 col-xs-12" />
+									<input type="text" value="${user.nome}" id="title"
+										readonly="true" class="form-control col-md-7 col-xs-12" />
 								</div>
 							</div>
 							<div class="clearfix"></div>
@@ -136,22 +144,33 @@
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Utiliza
 									Marinheiro </label>
-								<form:checkbox style="margin-left:10px; margin-top:10px;" id="utilizaMarinheiro"
-									path="utilizaMarinheiro" />
+								<form:checkbox style="margin-left:10px; margin-top:10px;"
+									id="utilizaMarinheiro" path="utilizaMarinheiro" />
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
 								<form:select path="status" multiple="false" id="status"
-										cssClass="select2_multiple">
-										<form:options items="${listaReservaStatus}" itemLabel="descricao" iitemValue="code" ></form:options>
-									</form:select>
+									cssClass="select2_multiple">
+									<form:options items="${listaReservaStatus}" itemValue="code"
+										itemLabel="descricao"></form:options>
+								</form:select>
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
 								</label>
-								<form:textarea rows="5" path="obs" id="obs"/>
+								<form:textarea rows="5" path="obs" id="obs" />
+							</div>
+							<div class="clearfix"></div>
+							<div class="form-group">
+							<input type="hidden" value="${pageContext.request.contextPath}/reservaEvento/" id="caminhoEvento"/>
+								<button type="button" class="btn" id="btnEventoInicio"
+									data-dismiss="modal" style="display: none !important">Evento
+									Inicio</button>
+								<button type="button" class="btn" id="btnEventoFim"
+									data-dismiss="modal" style="display: none !important">Evento
+									Fim</button>
 							</div>
 							<div class="clearfix"></div>
 						</div>
@@ -160,6 +179,8 @@
 						<div class="form-actions">
 							<button type="button" class="btn btn-default exclui_reserva"
 								data-dismiss="modal" style="display: none !important">Excluir</button>
+							<button type="button" class="btn btn-default finaliza_reserva"
+								data-dismiss="modal" style="display: none !important">Finalizar</button>
 							<button type="button" class="btn btn-default antoclose"
 								data-dismiss="modal">Fechar</button>
 							<button type="submit" class="btn btn-primary antosubmit">Confirmar
@@ -225,8 +246,18 @@
 		});
 
 		$(window).load(function() {
-			var started;
-			var categoryClass;
+			var seleciona;
+			var edita;
+
+			if ($('#proprietarioReserva').val() != '') {
+				edita = true;
+				seleciona = false;
+				$('#possuiReserva').show();
+			} else {
+				edita = false;
+				seleciona = true;
+				$('#possuiReserva').hide();
+			}
 
 			var calendar = $('#calendar').fullCalendar({
 				header : {
@@ -234,44 +265,30 @@
 					center : 'title',
 					right : 'month,agendaWeek,agendaDay'
 				},
-				selectable : true,
+				selectable : seleciona,
 				selectHelper : true,
 				eventLimit : true,
 				timezone : 'local',
 				lang : 'pt-br',
 				select : function(start, end, allDay) {
+// 					alert(start);
+// 					alert(new Date());
+// 					if(start < new Date())
+// 						alert('não pode');
+					
 					ReservaEvento(start, end);
 				},
 				eventClick : function(calEvent, jsEvent, view) {
 					ReservaEvento(calEvent.start, calEvent.end, calEvent);
 				},
-				editable : false,
+				editable : edita,
 				events : reservasJSON
 			});
 		});
 	</script>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$('.confirma_reserva').click(function() {
-				/*$.ajax({
-					url : "${pageContext.request.contextPath}/reserva/post2",
-					type : "POST",
-					contentType : "application/json; charset=utf-8",
-					data : JSON.stringify(reserva1), //Stringified Json Object
-					async : false, //Cross-domain requests and dataType: "jsonp" requests do not support synchronous operation
-					cache : false, //This will force requested pages not to be cached by the browser  
-					processData : false, //To avoid making query String instead of JSON
-					success : function(resposeJsonObject) {
-						alert('foi' + resposeJsonObject);
-					},
-					error : function(error) {
-						alert('erro:' + error);
-					}
-				});*/
-			});
-		});
-
 		function ReservaEvento(start, end, calEvent) {
+			
 			$('#data_inicio_reserva').val('');
 			$('#data_fim_reserva').val('');
 			$('.exclui_reserva').hide();
@@ -280,6 +297,25 @@
 			var data_fim;
 
 			if (calEvent) {
+
+				var reservaJSON = [];
+
+				$.ajax({
+					url : "${pageContext.request.contextPath}/reserva/get/"+ calEvent._id,
+					dataType : "json",
+					contentType : "application/json; charset=utf-8",
+					type : 'GET',
+					async : false,
+					success : function(data) {
+						reservaJSON = data.reservas;
+					},
+					error : function(request, status, error) {
+						//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
+						//alert("error" + error);
+					}
+				});
+
+				$('#myModalLabel').text('Editar Reserva');
 				$('#title').val(calEvent.title);
 				data_inicio = moment(start).format("YYYY/MM/DD HH:mm");
 				data_fim = moment(end).format("YYYY/MM/DD HH:mm");
@@ -288,93 +324,166 @@
 				$('#id').val(calEvent.id);
 				$('#utilizaMarinheiro').prop("checked", calEvent.utilizaMarinheiro);
 				$('#obs').val(calEvent.obs);
-				$('#status option[value="'+calEvent.status+'"]').attr({ selected : "selected" });
-				$('#status').
+				$('#status option[value="' + calEvent.status + '"]').attr({selected : "selected"});
 				$('.exclui_reserva').show();
 				$('.exclui_reserva').click(function() {
-									$.ajax({url : "${pageContext.request.contextPath}/reserva/api/remove",
-												type : "POST",
-												contentType : "application/json; charset=utf-8",
-												data : JSON.stringify(calEvent._id),
-												async : false,
-												cache : false,
-												processData : false,
-												success : function(resposeJsonObject) {
-													$('#calendar').fullCalendar('removeEvents',	calEvent.id);
-												},
-												error : function(error) {
-													alert('erro:' + error);
-												}
-											});
+					var permiteExclusao = [];
+					
+					$.ajax({
+						url : "${pageContext.request.contextPath}/reserva/validaExclusao/"+reservaJSON[0].id,
+						dataType : "json",
+						contentType : "application/json; charset=utf-8",
+						type : 'GET',
+						async : false,
+						success : function(data) {
+							permiteExclusao = data;
+						},
+						error : function(request, status, error) {
+							//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
+							//alert("error" + error);
+						}
+					});
+					
+					if(permiteExclusao){
+						$.ajax({
+								url : "${pageContext.request.contextPath}/reserva/api/remove",
+								type : "POST",
+								contentType : "application/json; charset=utf-8",
+								data : JSON.stringify(calEvent._id),
+								async : false,
+								cache : false,
+								processData : false,
+								success : function(resposeJsonObject) {
+									$('#calendar').fullCalendar('removeEvents',	calEvent.id);
+								},
+								error : function(error) {
+									alert('erro:' + error);
+								}
+							});
+						document.location.reload();
+					}
+				});
 
-									$('.antoclose2').click();
-								});
+				if ($('#proprietarioReserva').val() != calEvent._id
+						&& $('#admin').val() != 1) {
+					$('#data_inicio_reserva').attr("disabled", true);
+					$('#data_fim_reserva').attr("disabled", true);
+					$('#id').attr("disabled", true);
+					$('#utilizaMarinheiro').attr("disabled", true);
+					$('#obs').attr("disabled", true);
+					$('#status').attr("disabled", true);
+					$('#grupo').attr("disabled", true);
+					$('.exclui_reserva').hide();
+					$(".antosubmit").hide();
+				}
+
+				if ($('#admin').val() == 1 || $('#marinheiro').val() == 1) {
+					if (reservaJSON[0].eventoInicio != null
+							&& reservaJSON[0].eventoInicio.hora == null
+							&& reservaJSON[0].eventoFim != null
+							&& reservaJSON[0].eventoFim.hora == null) {
+						$('#btnEventoInicio').click(function(){
+							document.location.href=$('#caminhoEvento').val() + reservaJSON[0].eventoInicio.id;
+						});
+						$('#btnEventoInicio').show();
+					}
+
+					if (reservaJSON[0].eventoFim != null
+							&& reservaJSON[0].eventoFim.hora == null
+							&& reservaJSON[0].eventoInicio != null
+							&& reservaJSON[0].eventoInicio.hora != null) {
+						$('#btnEventoFim').click(function(){
+							document.location.href=$('#caminhoEvento').val() + reservaJSON[0].eventoFim.id;
+						});
+						$('#btnEventoFim').show();
+					}
+				}
 			} else {
+
+				$('#myModalLabel').text('Editar Reserva');
+				$('#title').val($('#nome_terceiro').val());
 				data_inicio = moment(start).format("YYYY/MM/DD " + "06:00");
 				data_fim = data_inicio;
 				$('#data_inicio_reserva').val(data_inicio);
 				$('#id').val('');
 				$('#utilizaMarinheiro').prop("checked", false);
 				$('#obs').val('');
+				$('#data_inicio_reserva').attr("disabled", false);
+				$('#data_fim_reserva').attr("disabled", false);
+				$('#id').attr("disabled", false);
+				$('#utilizaMarinheiro').attr("disabled", false);
+				$('#obs').attr("disabled", false);
+				$('#status').attr("disabled", false);
+				$('#grupo').attr("disabled", false);
+				$('.exclui_reserva').show();
+				$(".antosubmit").show();
 			}
 
-			$('#data_inicio_reserva').daterangepicker(
-					{
-						timePicker : true,
-						timePickerIncrement : 15,
-						timePicker12Hour : false,
-						format : 'YYYY/MM/DD HH:mm',
-						timezone : 'local',
-						calender_style : "picker_4",
-						parentEl : '#CalenderModal',
-						startDate : data_inicio,
-						singleDatePicker : true,
-						locale : {
-							applyLabel : 'Ok',
-							cancelLabel : 'Cancelar',
-							daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui',
-									'Sex', 'Sab' ],
-							monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-									'Abril', 'Maio', 'Junho', 'Julho',
-									'Agosto', 'Setembro', 'Outubro',
-									'Novembro', 'Dezembro' ]
-						}
-					});
+			if (!$('#proprietarioReserva').val()) {
+				$('#data_inicio_reserva').daterangepicker(
+						{
+							timePicker : true,
+							timePickerIncrement : 15,
+							timePicker12Hour : false,
+							format : 'YYYY/MM/DD HH:mm',
+							timezone : 'local',
+							calender_style : "picker_4",
+							parentEl : '#CalenderModal',
+							startDate : data_inicio,
+							singleDatePicker : true,
+							locale : {
+								applyLabel : 'Ok',
+								cancelLabel : 'Cancelar',
+								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sab' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ]
+							}
+						});
+			}
 
-			$('#data_fim_reserva').daterangepicker(
-					{
-						singleDatePicker : true,
-						timePicker : true,
-						timePickerIncrement : 15,
-						timePicker12Hour : false,
-						format : 'YYYY/MM/DD HH:mm',
-						timezone : 'local',
-						calender_style : "picker_4",
-						parentEl : '#CalenderModal',
-						startDate : data_fim,
-						locale : {
-							applyLabel : 'Ok',
-							cancelLabel : 'Cancelar',
-							daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui',
-									'Sex', 'Sab' ],
-							monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-									'Abril', 'Maio', 'Junho', 'Julho',
-									'Agosto', 'Setembro', 'Outubro',
-									'Novembro', 'Dezembro' ]
-						}
-					});
+			if (!$('#proprietarioReserva').val()) {
+				$('#data_fim_reserva').daterangepicker(
+						{
+							singleDatePicker : true,
+							timePicker : true,
+							timePickerIncrement : 15,
+							timePicker12Hour : false,
+							format : 'YYYY/MM/DD HH:mm',
+							timezone : 'local',
+							calender_style : "picker_4",
+							parentEl : '#CalenderModal',
+							startDate : data_fim,
+							locale : {
+								applyLabel : 'Ok',
+								cancelLabel : 'Cancelar',
+								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sab' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ]
+							}
+						});
+			}
 
 			$('#reserva_evento').click();
 
-			$(".antosubmit").on("click",function() {
+			$(".antosubmit").on(
+					"click",
+					function() {
 
 						var title = $("#title").val();
 
 						categoryClass = $("#event_type").val();
 
 						if (title) {
-							var inicio = new Date(moment(start).format("YYYY/MM/DD HH:mm"));
-							var fim = new Date(moment(end).format("YYYY/MM/DD HH:mm"));
+							var inicio = new Date(moment(start).format(
+									"YYYY/MM/DD HH:mm"));
+							var fim = new Date(moment(end).format(
+									"YYYY/MM/DD HH:mm"));
 
 							var hora_fim = fim.getHours();
 							var hora_inicio = inicio.getHours();
@@ -391,7 +500,8 @@
 							}
 
 							if (calEvent) {
-								$('#calendar').fullCalendar('updateEvent', calEvent);
+								$('#calendar').fullCalendar('updateEvent',
+										calEvent);
 							} else {
 								$('#calendar').fullCalendar('renderEvent', {
 									title : title,
