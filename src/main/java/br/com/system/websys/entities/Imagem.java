@@ -24,8 +24,6 @@ public class Imagem extends EntityBaseRoot {
 	private ReservaEvento reservaEvento;
 	
 	private String url;
-	
-	private byte[] imagem;
 
 	@Id
 	@GeneratedValue
@@ -77,14 +75,4 @@ public class Imagem extends EntityBaseRoot {
 		this.url = url;
 	}
 
-	@Lob
-    @Column(name="imagem", nullable=false, columnDefinition="mediumblob")
-	public byte[] getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(byte[] imagem) {
-		this.imagem = imagem;
-	}
-    
 }

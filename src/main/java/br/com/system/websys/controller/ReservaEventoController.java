@@ -34,15 +34,6 @@ public class ReservaEventoController{
 	@Autowired 
 	private MailBusiness mailBusiness;
 	
-	
-	@RequestMapping(value = "/testeEmail", method = RequestMethod.GET)
-	public String testeEmail(Model model, HttpServletRequest request) throws Exception {
-		
-		mailBusiness.sendMail("e2a.system@gmail.com", new String[]{"dex.luiz@gmail.com", "ailtongjunior@hotmail.com", "erickmob@gmail.com"}, "E-mail Teste", "Este é um e-mail teste do Prime Share System");
-		
-		return "reservaEvento";
-	}
-	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String root(Model model, HttpServletRequest request) throws Exception {
 		
@@ -127,7 +118,7 @@ public class ReservaEventoController{
 			return "reservaEvento";
 		}
 
-		return "reservaEvento";
+		return "redirect:/home";
 	}
 		
 }
