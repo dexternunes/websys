@@ -21,7 +21,6 @@ import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.Terceiro;
-import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
 
@@ -104,8 +103,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Override
 	public Reserva getGetProprietario(Terceiro terceiro) {
-		Reserva proprietarioreserva = ((ReservaRepository)repository).getGetProprietario(terceiro);
-		return proprietarioreserva;
+		List<Reserva> reservas = ((ReservaRepository)repository).getGetProprietario(terceiro);
+		if(reservas == null || reservas.size() == 0)
+			return null;
+		
+		return reservas.get(0);
 	}
 
 	@Override

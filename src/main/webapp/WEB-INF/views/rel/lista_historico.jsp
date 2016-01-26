@@ -43,7 +43,7 @@
 	                                     <td class="a-center "  oName="id" oValue="${manutencoes.id}">
 	                                        
 	                                     </td>
-	                                     <td class=" ">${manutencoes.inicioManutencao}</td>
+	                                     <td class=" "><fmt:formatDate value="${manutencoes.inicioManutencao}"  pattern="dd/MM/yyyy"/></td>
 	                                     <td class=" ">${manutencoes.obs}</td>
 	                                     <td class=" ">R$ ${manutencoes.valor} </td>
 	                                 </tr>
@@ -75,7 +75,7 @@
 										<td class="a-center " oName="id" oValue="${reservas.id}">
 											
 										</td>
-										<td class=" ">${reservas.inicioReserva}</td>
+										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${reservas.solicitante.nome}</td>
 										<td class=" ">${reservas.horaMotorTotal}Horas</td>
 									</tr>

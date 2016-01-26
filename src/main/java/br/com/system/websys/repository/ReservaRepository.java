@@ -18,7 +18,7 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	List<Reserva> getAllByGrupo(@Param("grupo") List<Grupo> grupos);
 	
 	@Query("SELECT r FROM Reserva r WHERE r.solicitante = :terceiro AND r.excluido = 0 AND r.ativo = 1")
-	Reserva getGetProprietario(@Param("terceiro") Terceiro terceiro);	
+	List<Reserva> getGetProprietario(@Param("terceiro") Terceiro terceiro);	
 
 
 	@Query("SELECT r FROM Reserva r  WHERE r.grupo = :grupo and r.faturamentoStatus = :faturamentoStatus")
