@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
 	prefix="decorator"%>
@@ -383,7 +382,7 @@ $(document).ready(function() {
 									<li><a><i class="fa fa-home"></i> Reservas <span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/home" />">Calendário</a></li>
+											<li><a href="<c:url value="/home" />">CalendÃ¡rio</a></li>
 										</ul></li>
 								</sec:authorize>
 								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
@@ -395,13 +394,13 @@ $(document).ready(function() {
 											<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
 										</sec:authorize>	
 										<sec:authorize url="/produtos">
-											<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>
+											<li><a href="<c:url value="/produtos/" />">EmbarcaÃ§Ãµes</a></li>
 										</sec:authorize>
 										<sec:authorize url="/grupo">
 											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
 										</sec:authorize>
 										<sec:authorize url="/manutencao">
-											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+											<li><a href="<c:url value="/manutencao/" />">ManutenÃ§Ã£o</a></li>
 										</sec:authorize>
 									</ul>
 								</li>
@@ -411,7 +410,7 @@ $(document).ready(function() {
 									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/faturamento/historico/" />">Relatório Manutenção/Horas</a></li>
+											<li><a href="<c:url value="/faturamento/historico/" />">RelatÃ³rio ManutenÃ§Ã£o/Horas</a></li>
 										</ul></li>
 								</sec:authorize>
 								

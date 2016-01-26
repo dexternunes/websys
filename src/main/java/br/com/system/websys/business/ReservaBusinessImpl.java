@@ -18,14 +18,12 @@ import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
-<<<<<<< HEAD
-=======
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
->>>>>>> refs/remotes/origin/master
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
+
 
 @Service  
 @Transactional(propagation=Propagation.REQUIRED)

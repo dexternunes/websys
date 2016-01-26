@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <html lang="en">
@@ -113,7 +114,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">In�cio(Data/Hora)</label>
+								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
 									<form:input id="data_inicio_reserva" path="inicioReserva"
 										class="form-control has-feedback-left data_reserva"
@@ -159,7 +160,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observa��es
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
 								</label>
 								<form:textarea rows="5" path="obs" id="obs" />
 							</div>
@@ -168,7 +169,7 @@
 							<input type="hidden" value="${pageContext.request.contextPath}/reservaEvento/" id="caminhoEvento"/>
 								<button type="button" class="btn" id="btnEventoInicio"
 									data-dismiss="modal" style="display: none !important">Evento
-									Inicio</button>
+									Início</button>
 								<button type="button" class="btn" id="btnEventoFim"
 									data-dismiss="modal" style="display: none !important">Evento
 									Fim</button>

@@ -36,9 +36,6 @@ public class ReservaEventoController{
 	@Autowired
 	private ReservaBusiness reservaBusiness;
 	
-	@Autowired 
-	private MailBusiness mailBusiness;
-	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String root(Model model, HttpServletRequest request) throws Exception {
 		
@@ -117,6 +114,7 @@ public class ReservaEventoController{
 
 		if(reservaEventoBD.equals(reserva.getEventoFim())){
 			reserva.setAtivo(false);
+			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 			reservaBusiness.salvar(reserva);
 		}
 
