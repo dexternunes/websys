@@ -391,7 +391,7 @@ $(document).ready(function() {
 											<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
 										</sec:authorize>
 										<sec:authorize url="/usuarios/cadastro">
-											<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
+											<li><a href="<c:url value="/usuarios/" />">Usuários</a></li>
 										</sec:authorize>	
 										<sec:authorize url="/produtos">
 											<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>

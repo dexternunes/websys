@@ -20,8 +20,30 @@
 		<intercept-url pattern="/home" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>
 		<intercept-url pattern="/home/**" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>
 		
+		<intercept-url pattern="/manutencao" access="hasAnyRole('ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/manutencao/" access="hasAnyRole('ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/manutencao/**" access="hasAnyRole('ROLE_MARINHEIRO')"/>
+
+		<intercept-url pattern="/faturamento" access="hasAnyRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/faturamento/" access="hasAnyRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/faturamento/**" access="hasAnyRole('ROLE_ADMIN')"/>
+		
+		<intercept-url pattern="/reserva" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/reserva/" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/reserva/**" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		
+		<intercept-url pattern="/reservaEvento" access="hasAnyRole('ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/reservaEvento/" access="hasAnyRole('ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/reservaEvento/**" access="hasAnyRole('ROLE_MARINHEIRO')"/>
+		
+		<intercept-url pattern="/terceiro" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/terceiro/" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/terceiro/**" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
 		<intercept-url pattern="/terceiro/cadastro" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
 		
+		<intercept-url pattern="/usuarios" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/usuarios/" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/usuarios/**" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
 		<intercept-url pattern="/usuarios/cadastro" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
 		
 		<intercept-url pattern="/grupo" access="hasAnyRole('ROLE_ADMIN', 'ROLE_ROOT')"/>
@@ -96,6 +118,7 @@
 	        	<!-- As roles cadastradas no banco devem ser as mesmas utilizadas nessa configuração -->
 	            ROLE_ADMIN > ROLE_COTISTA
 	            ROLE_ADMIN > ROLE_MARINHEIRO
+	            ROLE_ROOT > ROLE_ADMIN
 	        </beans:value>
 	    </beans:property>
 	</beans:bean>

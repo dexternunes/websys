@@ -109,7 +109,7 @@ public class ReservaController{
 
 			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
 					reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
-					reserva.getEventoInicio(), reserva.getEventoFim()));
+					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor()));
 			}
 		}
 		return reservas;
@@ -123,7 +123,7 @@ public class ReservaController{
 		Reserva reserva = reservaBusiness.get(id);
 		reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
 				reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
-				reserva.getEventoInicio(), reserva.getEventoFim()));
+				reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor()));
 		
 		return reservas;
 	}
