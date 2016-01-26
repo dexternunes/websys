@@ -57,8 +57,8 @@
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="dysplay: none !important">
-						VocÃª possui uma reserva em aberto. Somente poderÃ¡ cadastrar uma
-						nova reserva apÃ³s a finalizaÃ§Ã£o da atual.</div>
+						Voce possui uma reserva em aberto. Somente poderá cadastrar uma
+						nova reserva após a finalização da atual.</div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
@@ -112,7 +112,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">InÃ­cio(Data/Hora)</label>
+								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
 									<form:input id="data_inicio_reserva" path="inicioReserva"
 										class="form-control has-feedback-left data_reserva"
@@ -158,7 +158,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">ObservaÃ§Ãµes
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
 								</label>
 								<form:textarea rows="5" path="obs" id="obs" />
 							</div>
@@ -271,16 +271,22 @@
 				timezone : 'local',
 				lang : 'pt-br',
 				select : function(start, end, allDay) {
-// 					alert(start);
-// 					alert(new Date());
-// 					if(start < new Date())
-// 						alert('nÃ£o pode');
-					
-					ReservaEvento(start, end);
+					if (moment().diff(start, 'days') > 0) {
+						$('#calendar').fullCalendar('unselect');
+		                return false;
+		            }
+					else{
+						ReservaEvento(start, end);
+					}
 				},
 				eventClick : function(calEvent, jsEvent, view) {
 					ReservaEvento(calEvent.start, calEvent.end, calEvent);
 				},
+				eventAfterRender: function (event, element, view) {
+			            element.css('background-color', '#FFB347');
+			            if(event.allDay)
+			            	element.attr('disabled', true);
+			    },
 				editable : edita,
 				events : reservasJSON
 			});
@@ -288,7 +294,7 @@
 	</script>
 	<script type="text/javascript">
 		function ReservaEvento(start, end, calEvent) {
-			
+
 			$('#data_inicio_reserva').val('');
 			$('#data_fim_reserva').val('');
 			$('.exclui_reserva').hide();
@@ -301,7 +307,8 @@
 				var reservaJSON = [];
 
 				$.ajax({
-					url : "${pageContext.request.contextPath}/reserva/get/"+ calEvent._id,
+					url : "${pageContext.request.contextPath}/reserva/get/"
+							+ calEvent._id,
 					dataType : "json",
 					contentType : "application/json; charset=utf-8",
 					type : 'GET',
@@ -322,47 +329,61 @@
 				$('#data_inicio_reserva').val(data_inicio);
 				$('#data_fim_reserva').val(data_fim);
 				$('#id').val(calEvent.id);
-				$('#utilizaMarinheiro').prop("checked", calEvent.utilizaMarinheiro);
+				$('#utilizaMarinheiro').prop("checked",
+						calEvent.utilizaMarinheiro);
 				$('#obs').val(calEvent.obs);
-				$('#status option[value="' + calEvent.status + '"]').attr({selected : "selected"});
-				$('.exclui_reserva').show();
-				$('.exclui_reserva').click(function() {
-					var permiteExclusao = [];
-					
-					$.ajax({
-						url : "${pageContext.request.contextPath}/reserva/validaExclusao/"+reservaJSON[0].id,
-						dataType : "json",
-						contentType : "application/json; charset=utf-8",
-						type : 'GET',
-						async : false,
-						success : function(data) {
-							permiteExclusao = data;
-						},
-						error : function(request, status, error) {
-							//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
-							//alert("error" + error);
-						}
-					});
-					
-					if(permiteExclusao){
-						$.ajax({
-								url : "${pageContext.request.contextPath}/reserva/api/remove",
-								type : "POST",
-								contentType : "application/json; charset=utf-8",
-								data : JSON.stringify(calEvent._id),
-								async : false,
-								cache : false,
-								processData : false,
-								success : function(resposeJsonObject) {
-									$('#calendar').fullCalendar('removeEvents',	calEvent.id);
-								},
-								error : function(error) {
-									alert('erro:' + error);
-								}
-							});
-						document.location.reload();
-					}
+				$('#status option[value="' + calEvent.status + '"]').attr({
+					selected : "selected"
 				});
+				$('.exclui_reserva').show();
+				$('.exclui_reserva')
+						.click(
+								function() {
+									var permiteExclusao = [];
+
+									$
+											.ajax({
+												url : "${pageContext.request.contextPath}/reserva/validaExclusao/"
+														+ reservaJSON[0].id,
+												dataType : "json",
+												contentType : "application/json; charset=utf-8",
+												type : 'GET',
+												async : false,
+												success : function(data) {
+													permiteExclusao = data;
+												},
+												error : function(request,
+														status, error) {
+													//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
+													//alert("error" + error);
+												}
+											});
+
+									if (permiteExclusao) {
+										$
+												.ajax({
+													url : "${pageContext.request.contextPath}/reserva/api/remove",
+													type : "POST",
+													contentType : "application/json; charset=utf-8",
+													data : JSON
+															.stringify(calEvent._id),
+													async : false,
+													cache : false,
+													processData : false,
+													success : function(
+															resposeJsonObject) {
+														$('#calendar')
+																.fullCalendar(
+																		'removeEvents',
+																		calEvent.id);
+													},
+													error : function(error) {
+														alert('erro:' + error);
+													}
+												});
+										document.location.reload();
+									}
+								});
 
 				if ($('#proprietarioReserva').val() != calEvent._id
 						&& $('#admin').val() != 1) {
@@ -382,9 +403,13 @@
 							&& reservaJSON[0].eventoInicio.hora == null
 							&& reservaJSON[0].eventoFim != null
 							&& reservaJSON[0].eventoFim.hora == null) {
-						$('#btnEventoInicio').click(function(){
-							document.location.href=$('#caminhoEvento').val() + reservaJSON[0].eventoInicio.id;
-						});
+						$('#btnEventoInicio')
+								.click(
+										function() {
+											document.location.href = $(
+													'#caminhoEvento').val()
+													+ reservaJSON[0].eventoInicio.id;
+										});
 						$('#btnEventoInicio').show();
 					}
 
@@ -392,9 +417,13 @@
 							&& reservaJSON[0].eventoFim.hora == null
 							&& reservaJSON[0].eventoInicio != null
 							&& reservaJSON[0].eventoInicio.hora != null) {
-						$('#btnEventoFim').click(function(){
-							document.location.href=$('#caminhoEvento').val() + reservaJSON[0].eventoFim.id;
-						});
+						$('#btnEventoFim')
+								.click(
+										function() {
+											document.location.href = $(
+													'#caminhoEvento').val()
+													+ reservaJSON[0].eventoFim.id;
+										});
 						$('#btnEventoFim').show();
 					}
 				}
@@ -436,7 +465,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'MarÃ§o',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]
@@ -461,7 +490,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'MarÃ§o',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]

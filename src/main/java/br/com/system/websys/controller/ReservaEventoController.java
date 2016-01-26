@@ -17,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.MailBusiness;
+import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
+import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
 
 @Controller
@@ -30,6 +32,9 @@ public class ReservaEventoController{
 	
 	@Autowired
 	private ReservaEventoBusiness reservaEventoBusiness;
+	
+	@Autowired
+	private ReservaBusiness reservaBusiness;
 	
 	@Autowired 
 	private MailBusiness mailBusiness;
@@ -115,6 +120,13 @@ public class ReservaEventoController{
 			model.addAttribute("reservaEvento", reservaEvento);
 			
 			return "reservaEvento";
+		}
+		
+		Reserva reserva = reservaBusiness.getReservaByEventoFim(reservaEventoBD);
+
+		if(reservaEventoBD.equals(reserva.getEventoFim())){
+			reserva.setAtivo(false);
+			reservaBusiness.salvar(reserva);
 		}
 
 		try {
