@@ -8,7 +8,10 @@ import br.com.system.websys.entities.User;
 public interface UserRepository extends RepositoryBaseRoot<User> {
 
 	@Query("select u from User u where u.login = :login")
-	User findByLogin(@Param("login") String login); 
+	User findByLogin(@Param("login") String login);
+	
+	@Query("select u from User u where u.uidRecurerarSenha = :uid")
+	User findByUid(@Param("uid") String uid);
 	
 }
 

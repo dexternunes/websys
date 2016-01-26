@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Transient;
 
 @Entity 
 @Table(name="user")
@@ -28,9 +29,13 @@ public class User extends EntityBaseRoot {
 	@NotEmpty(message="Campo obrigatório!")
 	private String senha;
 	
+	private String confirmarSenha;
+	
 	private Terceiro terceiro;
 	
 	private Role role;
+	
+	private String uidRecurerarSenha;
 	
 	private Boolean ativo = true;
 	
@@ -60,6 +65,15 @@ public class User extends EntityBaseRoot {
 		this.senha = senha;
 	}
 
+	@Transient
+	public String getConfirmarSenha() {
+		return confirmarSenha;
+	}
+
+	public void setConfirmarSenha(String confirmarSenha) {
+		this.confirmarSenha = confirmarSenha;
+	}
+
 	@NotNull
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
@@ -78,6 +92,14 @@ public class User extends EntityBaseRoot {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public String getUidRecurerarSenha() {
+		return uidRecurerarSenha;
+	}
+
+	public void setUidRecurerarSenha(String uidRecurerarSenha) {
+		this.uidRecurerarSenha = uidRecurerarSenha;
 	}
 
 	public Boolean getAtivo() {

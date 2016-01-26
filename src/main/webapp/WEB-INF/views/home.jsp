@@ -51,7 +51,7 @@
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
-					<h3>Reservas</h3>
+					<h3>Calendário</h3>
 					<div class="clearfix"></div>
 				</div>
 				<div class="x_content">
@@ -59,6 +59,7 @@
 						role="alert" id="possuiReserva" style="dysplay: none !important">
 						Voce possui uma reserva em aberto. Somente poderá cadastrar uma
 						nova reserva após a finalização da atual.</div>
+
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
@@ -112,7 +113,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
+								<label class="col-sm-3 control-label">In�cio(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
 									<form:input id="data_inicio_reserva" path="inicioReserva"
 										class="form-control has-feedback-left data_reserva"
@@ -158,7 +159,7 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observa��es
 								</label>
 								<form:textarea rows="5" path="obs" id="obs" />
 							</div>
@@ -466,7 +467,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Mar�o',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]
@@ -491,7 +492,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Mar�o',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]

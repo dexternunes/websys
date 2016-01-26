@@ -35,8 +35,11 @@
 									<tr>
 										<th>Produto</th>
 										<th>Descrção da manuteção</th>
+										<!-- 
 										<th>Data início</th>
 										<th>Data fim</th>
+										
+										 -->
 										<th>Valor</th>
 										<th>Status</th>
 									</tr>
@@ -50,8 +53,10 @@
 										style="cursor: pointer; !important;">
 											<td oName="id" oValue="${manutencoes.id}">${manutencoes.produto.descricao}</td>
 											<td>${manutencoes.obs}</td>
+											<!-- 
 											<td class="tdDate">${manutencoes.inicioManutencao}</td>
 											<td class="tdDate">${manutencoes.fimManutencao}</td>
+											 -->
 											<td class="tdValor">${manutencoes.valor}</td>
 											<td>${manutencoes.status}</td>
 										</tr>
@@ -137,8 +142,8 @@
             
 			function formatMyDate(data) {
 				var date = new Date(data);
-				var day = complet(date.getDate());
-				var month = complet(date.getMonth()) + 1;
+				var day = parseInt(complet(date.getDate()));
+				var month = parseInt(complet(date.getMonth()));
 				var year = complet(date.getFullYear());
 				var hour = complet(date.getHours());
 				var min = complet(date.getMinutes());

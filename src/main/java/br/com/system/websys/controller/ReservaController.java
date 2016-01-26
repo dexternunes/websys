@@ -22,12 +22,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
-import br.com.system.websys.business.TerceiroBusiness;
+import br.com.system.websys.business.ReservaValidacaoBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
-import br.com.system.websys.entities.ReservaEvento;
-import br.com.system.websys.entities.ReservaStatus;
+import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
@@ -40,19 +39,19 @@ public class ReservaController{
 			.getLogger(TerceiroController.class);
 	
 	@Autowired
-	ReservaBusiness reservaBusiness;
+	private ReservaBusiness reservaBusiness;
 	
 	@Autowired
-	UserBusiness userBusiness;
+	private UserBusiness userBusiness;
 	
 	@Autowired
-	TerceiroBusiness terceiroBusiness;
+	private ReservaValidacaoBusiness reservaValidacaoBusiness;
 	
 	@Autowired
-	GrupoBusiness grupoBusiness;
+	private GrupoBusiness grupoBusiness;
 	
 	@RequestMapping(value="/salvar", method = RequestMethod.POST)
-	public String salvarBase(@Valid @ModelAttribute("reserva") Reserva reserva,
+	public String salvarBase(HttpServletRequest request, @Valid @ModelAttribute("reserva") Reserva reserva,
 			BindingResult result, RedirectAttributes attr) throws Exception {
 
 		if (result.hasErrors()) {
@@ -64,18 +63,24 @@ public class ReservaController{
 		}
 
 		try {
+			
+			String server;
+			if(request.getServerPort() == 80)
+				server = "http://" + request.getServerName();
+			else
+				server = "http://" + request.getServerName() + ":" + request.getServerPort();
+			
 			if(reserva.getId()==null){
-				reserva.setEventoInicio(new ReservaEvento());
-				reserva.setEventoFim(new ReservaEvento());
-				reserva.setStatus(ReservaStatus.AGUARDANDO_APROVACAO);
-				reserva.setSolicitante(userBusiness.getCurrent().getTerceiro());
+				reserva = reservaBusiness.createReserva(reserva);				
 			}
-			else{
-				reserva.setEventoInicio(reservaBusiness.get(reserva.getId()).getEventoInicio());
-				reserva.setEventoFim(reservaBusiness.get(reserva.getId()).getEventoFim());
-				reserva.setSolicitante(reservaBusiness.get(reserva.getId()).getSolicitante());
+			else{				
+				Reserva reservaBD = reservaBusiness.get(reserva.getId());
+				reserva.setEventoInicio(reservaBD.getEventoInicio());
+				reserva.setEventoFim(reservaBD.getEventoFim());
+				reserva.setSolicitante(reservaBD.getSolicitante());
 			}
-			reservaBusiness.salvar(reserva);
+			reserva = reservaBusiness.salvar(reserva);
+			reservaBusiness.sendEmailValidacao(reserva, server);
 		} catch (Exception e) {
 			return "redirect:/home";
 		}
@@ -90,12 +95,14 @@ public class ReservaController{
 		
 		ReservasDTO reservas = new ReservasDTO();
 		List<Reserva> listReservas;
-		User user = userBusiness.getCurrent();
-		if(user.getRole().equals(Role.ROLE_ADMIN) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
+		
+		User userBD = userBusiness.getCurrent();
+		
+		if(userBD.getRole().equals(Role.ROLE_ADMIN) || userBD.getRole().equals(Role.ROLE_MARINHEIRO)){
 			listReservas = reservaBusiness.getAll();
 		}
 		else		
-			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(user.getTerceiro()));
+			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(userBD.getTerceiro()));
 		
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
@@ -129,6 +136,32 @@ public class ReservaController{
 		String retorno = reservaBusiness.validaExclusao(reserva);
 		
 		return retorno;
+	}
+	
+	@RequestMapping(value = "/validar/{uid}", method = RequestMethod.GET )
+	public String validarReserva(@PathVariable String uid, Model model) throws Exception {
+		
+		ReservaValidacao reservaValidacao = reservaValidacaoBusiness.getByUid(uid);
+		model.addAttribute("reservaValidacao", reservaValidacao);
+		
+		return "reserva/validarReserva";
+	}
+	
+	@RequestMapping(value="/validar/salvar", method = RequestMethod.POST)
+	public String salvarValidacao(HttpServletRequest request, @ModelAttribute("reservaValidacao") ReservaValidacao reservaValidacao,
+			BindingResult result, Model model) throws Exception{
+		
+		ReservaValidacao reservaValidacaoDB = reservaValidacaoBusiness.getByUid(reservaValidacao.getUid());
+		
+		reservaValidacaoDB.setValidado(true);
+		reservaValidacaoDB.setMotivo(reservaValidacao.getMotivo());
+		reservaValidacaoDB.setAprovado(reservaValidacao.getAprovado());
+		
+		reservaValidacaoBusiness.salvar(reservaValidacaoDB);
+		
+		model.addAttribute("message", "Obrigado validar a locação!");
+		
+		return "reserva/validarReserva";
 	}
 	
 	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")

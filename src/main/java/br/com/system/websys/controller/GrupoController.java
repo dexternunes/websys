@@ -78,8 +78,8 @@ public class GrupoController {
 		List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
 		status.add(ProdutoStatus.A_VENDA);
 		
+		model.addAttribute("readonly", true);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-		model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 		model.addAttribute("grupo", grupo);
 		
 		return "cadastro/grupo/form";

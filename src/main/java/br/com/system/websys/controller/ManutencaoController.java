@@ -111,6 +111,7 @@ public class ManutencaoController {
 		try {
 			Produto p = produtoBusiness.get(manutencao.getProduto().getId());
 			manutencao.setProduto(p);
+			manutencao.setFimManutencao(manutencao.getInicioManutencao());
 			ManutencaoBusiness.salvar(manutencao);
 		} catch (Exception e) {
 

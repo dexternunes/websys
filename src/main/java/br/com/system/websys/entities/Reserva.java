@@ -1,6 +1,7 @@
 package br.com.system.websys.entities;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -39,7 +42,43 @@ public class Reserva extends EntityBaseRoot {
 
 	private Boolean utilizaMarinheiro = false;
 
+	private List<ReservaValidacao> validacoes;
+	
 	private String obs;
+
+	private FaturamentoStatus faturamentoStatus;
+
+	private Long horaMotorTotal;
+
+
+
+	public Long getHoraMotorTotal() {
+		return horaMotorTotal;
+	}
+
+	public void setHoraMotorTotal(Long horaMotorTotal) {
+		this.horaMotorTotal = horaMotorTotal;
+	}
+
+	@Enumerated(EnumType.STRING)
+	public FaturamentoStatus getFaturamentoStatus() {
+		return faturamentoStatus;
+	}
+
+	public void setFaturamentoStatus(FaturamentoStatus faturamentoStatus) {
+		this.faturamentoStatus = faturamentoStatus;
+	}
+
+	private Long segundoTotal;
+
+	public Long getSegundoTotal() {
+		return segundoTotal;
+	}
+
+	public void setSegundoTotal(Long segundoTotal) {
+		this.segundoTotal = segundoTotal;
+	}
+
 
 	@Id
 	@GeneratedValue
@@ -59,7 +98,7 @@ public class Reserva extends EntityBaseRoot {
 		this.solicitante = solicitante;
 	}
 
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
 	public Grupo getGrupo() {
 		return grupo;
@@ -110,6 +149,7 @@ public class Reserva extends EntityBaseRoot {
 		this.ativo = ativo;
 	}
 
+
 	public Boolean getUtilizaMarinheiro() {
 		return utilizaMarinheiro;
 	}
@@ -126,8 +166,9 @@ public class Reserva extends EntityBaseRoot {
 		this.obs = obs;
 	}
 
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+
+
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_reserva_evento_inicio", referencedColumnName = "id_reserva_evento")
 	public ReservaEvento getEventoInicio() {
 		return eventoInicio;
@@ -137,8 +178,8 @@ public class Reserva extends EntityBaseRoot {
 		this.eventoInicio = eventoInicio;
 	}
 
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_reserva_evento_fim", referencedColumnName = "id_reserva_evento")
 	public ReservaEvento getEventoFim() {
 		return eventoFim;
@@ -147,5 +188,20 @@ public class Reserva extends EntityBaseRoot {
 	public void setEventoFim(ReservaEvento eventoFim) {
 		this.eventoFim = eventoFim;
 	}
+
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
+ 			CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinTable(name = "reserva_has_reserva_validacao", joinColumns = {
+ 			@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva") }, inverseJoinColumns = {
+ 					@JoinColumn(name = "id_reserva_validacao", referencedColumnName = "id_reserva_validacao") })
+ 	public List<ReservaValidacao> getValidacoes() {
+		return validacoes;
+	}
+
+	public void setValidacoes(List<ReservaValidacao> validacoes) {
+		this.validacoes = validacoes;
+	}
+	
+	
 
 }

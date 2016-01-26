@@ -9,7 +9,39 @@
 
 <html>
 <head>
-<title>Embarcações Cadastradas</title>
+	<title>Histórico:</title>
+	<link
+		href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
+		rel="stylesheet">
+	
+	<link
+		href="${pageContext.request.contextPath}/resources/css/timepicker.css"
+		rel="stylesheet">
+	
+	<link
+		href="${pageContext.request.contextPath}/resources/fonts/css/font-awesome.min.css"
+		rel="stylesheet">
+	<link
+		href="${pageContext.request.contextPath}/resources/css/animate.min.css"
+		rel="stylesheet">
+	
+	<!-- Custom styling plus plugins -->
+	<link href="${pageContext.request.contextPath}/resources/css/custom.css"
+		rel="stylesheet">
+	<link
+		href="${pageContext.request.contextPath}/resources/css/icheck/flat/green.css"
+		rel="stylesheet">
+	
+	<link
+		href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.css"
+		rel="stylesheet">
+	<link
+		href="${pageContext.request.contextPath}/resources/css/calendar/fullcalendar.print.css"
+		rel="stylesheet" media="print">
+	
+	<script
+		src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+
 </head>
 <body>
 	<div class="row">
@@ -19,49 +51,27 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2>Embarcações Cadastradas</h2>
+						<h2>histórico</h2>
 						<div class="clearfix"></div>
 					</div>
-					<div class="x_content">
-						<div class="control-group">
-							<a type="button" class="btn btn-primary"
-								href="${pageContext.request.contextPath}/produtos/cadastro">Cadastrar
-								Embarcação</a>
+					<div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipos">Grupo </label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<select id="grupoSelect"  class="select2_multiple form-control">
+								<c:forEach items="${listaGrupos}" var="grupo" varStatus="status">
+									<option value="${grupo.id}">${grupo.descricao}</option>
+								</c:forEach>
+								
+							</select>
 						</div>
-						<div class="control-group">
-							<table id="entities"
-								class="table table-striped responsive-utilities jambo_table">
-								<thead>
-									<tr>
-										<th>Tipo Produto</th>
-										<th>Descrição</th>
-										<th>Marca</th>
-										<th>Modelo</th>
-									</tr>
-								</thead>
-								<tbody>
-
-									<c:forEach items="${produtoList}" var="produtos"
-										varStatus="status">
-
-										<tr onclick="document.location.href='<c:url value="/produtos/cadastro/${produtos.id }"/>';"
-										style="cursor: pointer; !important;">
-											<td oName="id" oValue="${produtos.id}">${produtos.tipoProduto}</td>
-											<td>${produtos.descricao}</td>
-											<td>${produtos.marca}</td>
-											<td>${produtos.modelo}</td>
-										</tr>
-
-									</c:forEach>
-
-								</tbody>
-							</table>
-						</div>
+					</div>
+					<div class="control-group">
+						<a type="button" id="proximo" class="btn btn-primary">Próximo</a>
 					</div>
 				</div>
 			</div>
 		</form:form>
-	</div>
+		</div>
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/js/jquery.dataTables.js"></script>
@@ -74,13 +84,22 @@
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 });
+                
+                $( "#proximo" ).attr("href", "${pageContext.request.contextPath}/faturamento/historico/grupo/"+$( "#grupoSelect" ).val());
+
+
+                $( "#grupoSelect" ).change(function() {
+                	$( "#proximo" ).attr("href", "${pageContext.request.contextPath}/faturamento/historico/grupo/"+$( "#grupoSelect" ).val());
+                });   
+                
+                
             });
 
             var asInitVals = new Array();
             $(document).ready(function () {
                 var oTable = $('#example').dataTable({
                     "oLanguage": {
-                        "sSearch": "Search all columns:"
+                        "sSearch": "Procurar em todas as colunas:"
                     },
                     "aoColumnDefs": [
                         {

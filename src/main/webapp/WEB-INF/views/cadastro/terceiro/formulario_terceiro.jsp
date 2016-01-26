@@ -16,7 +16,7 @@
 	<div class="row">
 		<form:form cssClass="form-horizontal"
 			action="${pageContext.request.contextPath}/terceiro/cadastro/salvar"
-			commandName="terceiro" method="post">
+			commandName="terceiro"  method="post">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
@@ -245,7 +245,7 @@
 						<div style="clear: both"></div>
 						<br /> <br />
 						<div class="form-actions">
-							<button type="submit" class="btn btn-primary">Confirmar</button>
+							<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
 						</div>
 					</div>
 				</div>
@@ -276,6 +276,12 @@
 
 			$('#nEnderecos').val(cont);
 		}
+
+		function submitFormulario() {
+			$("#tipos").attr("disabled", false);
+			$("#ativo").attr("disabled", false);
+			$("#terceiro").submit();
+		}
 		
 		$(document).ready(function(){
 			$('#documento').blur(function(){
@@ -299,6 +305,7 @@
 				$('#documento').inputmask('remove');
 			});
 		});
+
 	</script>
 </body>
 </html>

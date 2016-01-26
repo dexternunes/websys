@@ -221,7 +221,7 @@
 
 								 
 								<div class="form-group">
-									<label class="col-sm-3 control-label">Data Início</label>
+									<label class="col-sm-3 control-label">Data</label>
 									<div class="col-md-4 xdisplay_inputx form-group has-feedback">
 										<form:input path="inicioManutencao" id="data_inicio_reserva" class="form-control has-feedback-left data_reserva"
 											style="z-index: 9999 !important;" type="text" 
@@ -234,6 +234,7 @@
 									
 								</div>
 								
+								<!-- 
 								<div class="form-group">
 									<label class="col-sm-3 control-label">Data fim</label>
 									<div class="col-md-4 xdisplay_inputx form-group has-feedback">
@@ -247,7 +248,7 @@
 									</div>
 									
 								</div>
-				
+								 -->
 						
 
 								<div style="clear: both"></div>

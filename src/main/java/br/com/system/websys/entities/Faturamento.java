@@ -43,7 +43,7 @@ public class Faturamento extends EntityBaseRoot {
 	
 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
  			CascadeType.REFRESH }, fetch = FetchType.LAZY)
- 	@JoinTable(name = "faturamento_has_manutencao", joinColumns = {
+ 	@JoinTable(name = "faturamento_has_reserva", joinColumns = {
  			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
  					@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva") })
  	public List<Reserva> getReservas() {

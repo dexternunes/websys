@@ -48,10 +48,7 @@ public class TerceiroController {
 		User user = userBusiness.getCurrent();
 		
 		if(user.getRole().equals(Role.ROLE_COTISTA) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
-			model.addAttribute("terceiro", user.getTerceiro());
-			model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
-			model.addAttribute("readonly", true);
-			return "cadastro/terceiro/formulario_terceiro";
+			return "redirect:/home";
 		}
 		
 		model.addAttribute("terceiros", terceiroBusiness.getAll());
@@ -66,6 +63,11 @@ public class TerceiroController {
 		Terceiro terceiro = new Terceiro();
 		terceiro.getEnderecos().add(new TerceiroEndereco());
 
+		User user = userBusiness.getCurrent();
+		if(user.getRole().equals(Role.ROLE_COTISTA) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
+			model.addAttribute("readonly", true);
+		}
+		
 		model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 		model.addAttribute("terceiro", terceiro);
 		
@@ -83,7 +85,28 @@ public class TerceiroController {
 		if(terceiro.getEnderecos().size() ==0){
 			terceiro.getEnderecos().add(new TerceiroEndereco());
 		}
+		User user = userBusiness.getCurrent();
+		if(user.getRole().equals(Role.ROLE_COTISTA) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
+			model.addAttribute("readonly", true);
+		}
+		model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
+		model.addAttribute("terceiro", terceiro);
 		
+		return "cadastro/terceiro/formulario_terceiro";
+	}
+	
+	@RequestMapping(value = "/perfil/{id}", method = RequestMethod.GET)
+	@Transactional(readOnly = true)
+	public String perfilBase(@PathVariable Long id, Model model)
+			throws Exception {
+
+		Terceiro terceiro = terceiroBusiness.get(id);
+		
+		if(terceiro.getEnderecos().size() ==0){
+			terceiro.getEnderecos().add(new TerceiroEndereco());
+		}
+		
+		model.addAttribute("readonly", true);
 		model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 		model.addAttribute("terceiro", terceiro);
 		
@@ -98,7 +121,10 @@ public class TerceiroController {
 
 			for (ObjectError error : result.getAllErrors())
 				logger.info("Erro: " + error.toString());
-			
+			User user = userBusiness.getCurrent();
+			if(user.getRole().equals(Role.ROLE_COTISTA) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
+				model.addAttribute("readonly", true);
+			}
 			model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 			model.addAttribute("terceiro", terceiro);
 			
@@ -108,7 +134,10 @@ public class TerceiroController {
 		try {
 			terceiroBusiness.salvar(terceiro);
 		} catch (Exception e) {
-			
+			User user = userBusiness.getCurrent();
+			if(user.getRole().equals(Role.ROLE_COTISTA) || user.getRole().equals(Role.ROLE_MARINHEIRO)){
+				model.addAttribute("readonly", true);
+			}
 			model.addAttribute("listaTerceiroTipo", TerceiroTipo.values());
 			model.addAttribute("terceiros", terceiro);
 			model.addAttribute("message", e.getMessage());

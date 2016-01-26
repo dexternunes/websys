@@ -380,21 +380,29 @@ $(document).ready(function() {
 							<div>&nbsp</div>
 							<ul class="nav side-menu">
 								<sec:authorize url="/home">
-									<li><a><i class="fa fa-home"></i> Home <span
+									<li><a><i class="fa fa-home"></i> Reservas <span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/home" />">Home</a></li>
+											<li><a href="<c:url value="/home" />">Calendário</a></li>
 										</ul></li>
 								</sec:authorize>
 								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu" style="display: none">
-										<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
-										<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
-										<li><a href="<c:url value="/produtos/" />">Produtos</a></li>
+										<sec:authorize url="/terceiro/cadastro">
+											<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
+										</sec:authorize>
+										<sec:authorize url="/usuarios/cadastro">
+											<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
+										</sec:authorize>	
+										<sec:authorize url="/produtos">
+											<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>
+										</sec:authorize>
 										<sec:authorize url="/grupo">
 											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
 										</sec:authorize>
-										<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+										<sec:authorize url="/manutencao">
+											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+										</sec:authorize>
 									</ul>
 								</li>
 
@@ -403,10 +411,18 @@ $(document).ready(function() {
 									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/relatorios/manutencao/" />">Relatório Manutenção/Horas</a></li>
+											<li><a href="<c:url value="/faturamento/historico/" />">Relatório Manutenção/Horas</a></li>
 										</ul></li>
 								</sec:authorize>
 								
+								<!-- Faturamento -->
+								<sec:authorize url="/faturamento/">
+									<li><a><i class="fa fa-usd"></i>Faturar<span
+											class="fa fa-chevron-down"></span></a>
+										<ul class="nav child_menu" style="display: none">
+											<li><a href="<c:url value="/faturamento/" />">Faturar</a></li>
+										</ul></li>
+								</sec:authorize>
 							</ul>
 						</div>
 					</div>
@@ -438,9 +454,9 @@ $(document).ready(function() {
 							</a>
 								<ul
 									class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-									<li><a href="javascript:;">Perfil</a></li>
-									<li><a href="<c:url value="/auth/logout" />"><i
-											class="fa fa-sign-out pull-right"></i>Sair</a></li>
+									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Perfil</a></li>
+									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Alterar Senha</a></li>
+									<li><a href="<c:url value="/auth/logout" />"><i class="fa fa-sign-out pull-right"></i>Sair</a></li>
 								</ul></li>
 						</ul>
 					</nav>
