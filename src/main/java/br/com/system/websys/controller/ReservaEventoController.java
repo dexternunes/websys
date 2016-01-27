@@ -17,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.MailBusiness;
+import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
+import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
 
 @Controller
@@ -31,8 +33,8 @@ public class ReservaEventoController{
 	@Autowired
 	private ReservaEventoBusiness reservaEventoBusiness;
 	
-	@Autowired 
-	private MailBusiness mailBusiness;
+	@Autowired
+	private ReservaBusiness reservaBusiness;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String root(Model model, HttpServletRequest request) throws Exception {
@@ -106,6 +108,14 @@ public class ReservaEventoController{
 			model.addAttribute("reservaEvento", reservaEvento);
 			
 			return "reservaEvento";
+		}
+		
+		Reserva reserva = reservaBusiness.getReservaByEventoFim(reservaEventoBD);
+
+		if(reservaEventoBD.equals(reserva.getEventoFim())){
+			reserva.setAtivo(false);
+			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
+			reservaBusiness.salvar(reserva);
 		}
 
 		try {

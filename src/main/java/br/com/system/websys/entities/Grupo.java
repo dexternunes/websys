@@ -33,6 +33,8 @@ public class Grupo extends EntityBaseRoot {
 	
 	private Boolean excluido = false;
 	
+	private String color;
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id_grupo")
@@ -100,6 +102,14 @@ public class Grupo extends EntityBaseRoot {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 }

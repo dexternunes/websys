@@ -1,5 +1,6 @@
 package br.com.system.websys.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +44,17 @@ public class UserController{
 			return "redirect:/home";
 		}
 		
-		model.addAttribute("usersList", userBusiness.getAll());
+		List<Role> roles = new ArrayList<Role>();
+		
+		if(user.getRole().equals(Role.ROLE_ROOT)){
+			roles.add(Role.ROLE_ROOT);
+		}
+		
+		roles.add(Role.ROLE_ADMIN);
+		roles.add(Role.ROLE_COTISTA);
+		roles.add(Role.ROLE_MARINHEIRO);
+		
+		model.addAttribute("usersList", userBusiness.getByRoles(roles));
 		return "cadastro/user/user";
 	}
 
@@ -190,10 +201,20 @@ public class UserController{
 	
 	public void addAtributes(Model model, User usuario){
 		
+		List<Role> roles = new ArrayList<Role>();
+		
+		if(usuario.getRole().equals(Role.ROLE_ROOT)){
+			roles.add(Role.ROLE_ROOT);
+		}
+		
+		roles.add(Role.ROLE_ADMIN);
+		roles.add(Role.ROLE_COTISTA);
+		roles.add(Role.ROLE_MARINHEIRO);
+		
 		User userCurrent = userBusiness.getCurrent();
 		List<Terceiro> terceiroList = terceiroBusiness.getAll();
 		model.addAttribute("usuario", usuario);
-		model.addAttribute("listaUserRole", Role.values());
+		model.addAttribute("listaUserRole", roles);
 		model.addAttribute("listaTerceiros", terceiroList);
 		if(userCurrent.getRole().equals(Role.ROLE_COTISTA) || userCurrent.getRole().equals(Role.ROLE_MARINHEIRO))
 			model.addAttribute("readonly", true);

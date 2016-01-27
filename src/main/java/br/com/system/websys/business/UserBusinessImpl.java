@@ -119,6 +119,11 @@ class UserBusinessImpl implements UserBusiness {
 		}
 		
 		return false;
+	} 
+	
+	@Override
+	public List<User> getByRoles(List<Role> roles){
+		return userRepository.findByRoles(roles);
 	}
 
 }

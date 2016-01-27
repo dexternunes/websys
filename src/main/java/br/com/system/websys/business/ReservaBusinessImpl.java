@@ -24,6 +24,7 @@ import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
 
+
 @Service  
 @Transactional(propagation=Propagation.REQUIRED)
 class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepository> implements ReservaBusiness {
@@ -102,12 +103,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	@Override
-	public Reserva getGetProprietario(Terceiro terceiro) {
+	public List<Reserva> getGetProprietario(Terceiro terceiro) {
 		List<Reserva> reservas = ((ReservaRepository)repository).getGetProprietario(terceiro);
 		if(reservas == null || reservas.size() == 0)
 			return null;
 		
-		return reservas.get(0);
+		return reservas;
 	}
 
 	@Override
@@ -124,14 +125,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			return "true";
 	}
 
+	@Override
+	public Reserva getReservaByEventoFim(ReservaEvento eventoFim) {
+		Reserva reserva = ((ReservaRepository)repository).getReservaByEventoFim(eventoFim);
+		return reserva;
+	}
+
 	public List<Reserva> getByGrupoByStatus(Grupo grupo, FaturamentoStatus faturamentoStatus) {
 		List<Reserva> reservas = ((ReservaRepository)repository).findByReservaByGrupoByStatus(grupo, faturamentoStatus);
 		return reservas;
 	}
-
-
-
-
-
-
 }
