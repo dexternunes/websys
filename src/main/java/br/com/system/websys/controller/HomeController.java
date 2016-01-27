@@ -42,14 +42,14 @@ public class HomeController {
 
 		User user = userBusiness.getCurrent();
 		List<Grupo> grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
-		Reserva proprietarioReserva = reservaBusiness.getGetProprietario(user.getTerceiro());
+		List<Reserva> proprietarioReserva = reservaBusiness.getGetProprietario(user.getTerceiro());
 		
 		model.addAttribute("listaReservaGrupos", grupos);
 		model.addAttribute("listaReservaStatus", ReservaStatus.values());
 		
 		if(user.getRole() == Role.ROLE_COTISTA){
 			if(proprietarioReserva != null)
-				model.addAttribute("proprietarioReserva", proprietarioReserva.getId());
+				model.addAttribute("proprietarioReserva", proprietarioReserva);
 			else
 				model.addAttribute("proprietarioReserva", "");
 		}

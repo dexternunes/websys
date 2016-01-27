@@ -103,12 +103,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	@Override
-	public Reserva getGetProprietario(Terceiro terceiro) {
+	public List<Reserva> getGetProprietario(Terceiro terceiro) {
 		List<Reserva> reservas = ((ReservaRepository)repository).getGetProprietario(terceiro);
 		if(reservas == null || reservas.size() == 0)
 			return null;
 		
-		return reservas.get(0);
+		return reservas;
 	}
 
 	@Override

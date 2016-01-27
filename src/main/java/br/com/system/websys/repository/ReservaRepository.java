@@ -23,7 +23,5 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	Reserva getReservaByEventoFim(@Param("eventoFim") ReservaEvento eventoFim);
 
 	@Query("SELECT r FROM Reserva r  WHERE r.grupo = :grupo and r.faturamentoStatus = :faturamentoStatus")
-	List<Reserva> findByReservaByGrupoByStatus(@Param("grupo") Grupo grupo,
-			@Param("faturamentoStatus") FaturamentoStatus faturamentoStatus);
-
+	List<Reserva> findByReservaByGrupoByStatus(@Param("grupo") Grupo grupo, @Param("faturamentoStatus") FaturamentoStatus faturamentoStatus);
 }
