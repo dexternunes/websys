@@ -16,5 +16,7 @@ public interface GrupoBusiness extends BusinessBaseRoot<Grupo, GrupoRepository> 
 	public List<Grupo> findAllByTerceito(Terceiro terceiro);
 	
 	public List<Grupo> findAllByProduto(Produto produto);
+
+	public List<Grupo> findAllAtivos();
 	
 }

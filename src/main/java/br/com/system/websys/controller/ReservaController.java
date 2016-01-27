@@ -28,7 +28,6 @@ import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.ReservasDTO;
-import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
 
 @Controller
@@ -94,15 +93,9 @@ public class ReservaController{
 	public ReservasDTO getReserva(HttpServletRequest request) throws Exception {
 		
 		ReservasDTO reservas = new ReservasDTO();
-		List<Reserva> listReservas;
 		
 		User userBD = userBusiness.getCurrent();
-		
-		if(userBD.getRole().equals(Role.ROLE_ADMIN) || userBD.getRole().equals(Role.ROLE_MARINHEIRO)){
-			listReservas = reservaBusiness.getAll();
-		}
-		else		
-			listReservas = reservaBusiness.getAllByGrupo(grupoBusiness.findAllByTerceito(userBD.getTerceiro()));
+		List<Reserva> listReservas = reservaBusiness.getReservasParaExibicao(userBD);
 		
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){

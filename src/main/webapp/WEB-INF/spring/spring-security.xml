@@ -6,7 +6,10 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
  
-	<http pattern="/resources/**" security="none" />	
+	<http pattern="/resources/**" security="none" />
+	<http pattern="/usuarios/recuperarsenha" security="none" />	
+	<http pattern="/usuarios/recuperarsenha/" security="none" />	
+	<http pattern="/usuarios/recuperarsenha/**" security="none" />	
 
 	<global-method-security secured-annotations="enabled" />
 	

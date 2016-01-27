@@ -20,7 +20,9 @@ import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.User;
 import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
 
@@ -31,6 +33,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
     
 	@Autowired
 	public UserBusiness userBusiness;
+	
+	@Autowired
+	public GrupoBusiness grupoBusiness;
 	
 	@Autowired
 	public MailBusiness mailBusiness;
@@ -134,5 +139,56 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public List<Reserva> getByGrupoByStatus(Grupo grupo, FaturamentoStatus faturamentoStatus) {
 		List<Reserva> reservas = ((ReservaRepository)repository).findByReservaByGrupoByStatus(grupo, faturamentoStatus);
 		return reservas;
+	}
+	
+	public List<Reserva> getByGruposByStatus(List<Grupo> grupos, List<ReservaStatus> status){
+		List<Reserva> reservas = ((ReservaRepository)repository).getByGruposByStatus(grupos, status);
+		return reservas;
+	}
+	
+	@Override
+	public List<Reserva> getReservasParaExibicao(User user){
+		
+		List<Grupo> grupos;
+		if(user.getRole().equals(Role.ROLE_COTISTA))
+			grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
+		else
+			grupos = grupoBusiness.findAllAtivos();
+		
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+		
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+		status.add(ReservaStatus.EM_USO);
+		
+		return this.getByGruposByStatus(grupos,status);
+		
+	}
+	
+	public Reserva getByEvento(ReservaEvento evento){
+		
+		return ((ReservaRepository)repository).getByEvento(evento);
+
+	}
+	
+	@Override
+	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception{
+		
+		Reserva reserva = this.getByEvento(reservaEvento);
+		
+		if(reserva.getEventoInicio().equals(reservaEvento)){
+			reserva.getEventoInicio().setHora(reservaEvento.getHora());
+			reserva.getEventoInicio().setImagens(reservaEvento.getImagens());
+			reserva.setStatus(ReservaStatus.EM_USO);
+		}
+		if(reserva.getEventoFim().equals(reservaEvento)){
+			reserva.getEventoFim().setHora(reservaEvento.getHora());
+			reserva.getEventoFim().setImagens(reservaEvento.getImagens());
+			reserva.setStatus(ReservaStatus.ENCERRADA);
+			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
+		}
+				
+		return this.salvar(reserva);
+
 	}
 }
