@@ -37,12 +37,6 @@ public class TerceiroController {
 	private UserBusiness userBusiness;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String configHome() {
-		
-		return "redirect:/terceiro/terceiros";
-	}
-	
-	@RequestMapping(value = "/terceiros", method = RequestMethod.GET)
 	public String configBases(Model model) {
 
 		User user = userBusiness.getCurrent();
@@ -145,6 +139,6 @@ public class TerceiroController {
 			return "cadastro/terceiro/formulario_terceiro";
 		}
 
-		return "redirect:/terceiro/terceiros";
+		return "redirect:/terceiro/";
 	}
 }

@@ -32,25 +32,25 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	public Grupo salvar(Grupo grupo) throws Exception{
 		if(grupo.getId() == null){
 			grupoNovo(grupo);
+			return super.salvar(grupo);
 		}
 		else{
 			Grupo grupoBD = this.get(grupo.getId());
-			grupo.setReservas(grupoBD.getReservas());
-		}
-		
-		if(grupo.getColor() == null || grupo.getColor().isEmpty()){
-			StringBuffer sb = new StringBuffer();
-			Random randCol = new Random();  
-			for(int x = 0 ; x < 3 ; x++){
-				for (int i = 0; i < 2; i++) {  
-		            sb.append(Integer.toString(Math.abs(randCol.nextInt()) % 16, 16));  
-		        }
+			grupoBD.setDescricao(grupo.getDescricao());
+			grupoBD.setAtivo(grupo.getAtivo());
+			grupoBD.setTerceiros(grupo.getTerceiros());
+			if(grupoBD.getColor() == null || grupoBD.getColor().isEmpty()){
+				StringBuffer sb = new StringBuffer();
+				Random randCol = new Random();  
+				for(int x = 0 ; x < 3 ; x++){
+					for (int i = 0; i < 2; i++) {  
+			            sb.append(Integer.toString(Math.abs(randCol.nextInt()) % 16, 16));  
+			        }
+				}				
+				grupoBD.setColor("#"+sb.toString());				
 			}
-			
-			grupo.setColor("#"+sb.toString());
-			
+			return super.salvar(grupoBD);
 		}
-		return super.salvar(grupo);
 	}
 	
 	@Override
@@ -59,6 +59,16 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 		for(Produto produto : grupo.getProdutos()){
 			produto.setStatus(ProdutoStatus.DISPONIVEL);
 		}
+		
+		StringBuffer sb = new StringBuffer();
+		Random randCol = new Random();  
+		for(int x = 0 ; x < 3 ; x++){
+			for (int i = 0; i < 2; i++) {  
+	            sb.append(Integer.toString(Math.abs(randCol.nextInt()) % 16, 16));  
+	        }
+		}
+		
+		grupo.setColor("#"+sb.toString());
 
 	}
 
