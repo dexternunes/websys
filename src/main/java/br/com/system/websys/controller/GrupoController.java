@@ -38,12 +38,6 @@ public class GrupoController {
 	private ProdutoBusiness produtoBusiness;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String grupo() {
-		
-		return "redirect:/grupo/list";
-	}
-	
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String grupoList(Model model) {
 
 		model.addAttribute("grupos", grupoBusiness.getAll());
@@ -116,6 +110,6 @@ public class GrupoController {
 			return "cadastro/grupo/form";
 		}
 
-		return "redirect:/grupo/list";
+		return "redirect:/grupo/";
 	}
 }
