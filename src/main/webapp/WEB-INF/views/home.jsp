@@ -57,12 +57,12 @@
 				<div class="x_title">
 					<h3>Calendário</h3>
 					<div class="clearfix"></div>
+					ID reserva: ${proprietarioReserva}
 				</div>
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="display:none !important">
-						Voce possui uma reserva em aberto. Somente poderá cadastrar uma
-						nova reserva após a finalização da atual.</div>
+						<label id="lblPermiteReserva"></label></div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
@@ -87,8 +87,7 @@
 					action="${pageContext.request.contextPath}/reserva/salvar">
 					<form:hidden path="id" id="id" />
 					<input type="hidden" value="${user.nome}" id="nome_terceiro">
-					<input type="hidden" value="${proprietarioReserva}"
-						id="proprietarioReserva" />
+					<input type="hidden" value="${proprietarioReserva}" id="proprietarioReserva" />
 					<input type="hidden" value="${admin}" id="admin" />
 					<input type="hidden" value="${marinheiro}" id="marinheiro" />
 					<div class="modal-body">
@@ -262,7 +261,44 @@
 				//alert("error");
 			}
 		});
-
+		
+		var permiteReservaJSON = [];
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/reserva/validaSolicitanteReserva",
+			dataType:"json",
+			contentType:"application/json; charset=utf-8",
+			type:"GET",
+			async:false,
+			success:function(data){
+				permiteReservaJSON = data.permiteReservaDTO;
+				alert(permiteReservaJSON.length);
+			},
+			error:function(request, status, error){
+				alert(error);
+			}			
+		});
+		
+		var seleciona;
+		var edita;
+		
+		if (permiteReservaJSON.length > 0) {
+			
+			permiteReservaJSON.forEach(function(obj){
+				if(obj.permiteReserva){
+					
+				}
+			});
+			
+			edita = true;
+			seleciona = false;
+			$('#possuiReserva').show();
+		} else {
+			edita = false;
+			seleciona = true;
+			$('#possuiReserva').hide();
+		}
+		
 		$(window).load(function() {
 			
 			$('#dia_inteiro').click(function(){
@@ -278,19 +314,6 @@
 				}
 			});
 			
-			var seleciona;
-			var edita;
-
-			if ($('#proprietarioReserva').val() != '') {
-				edita = true;
-				seleciona = false;
-				$('#possuiReserva').show();
-			} else {
-				edita = false;
-				seleciona = true;
-				$('#possuiReserva').hide();
-			}
-
 			var calendar = $('#calendar').fullCalendar({
 				header : {
 					left : 'prev,next today',
@@ -321,8 +344,7 @@
 				events : reservasJSON
 			});
 		});
-	</script>
-	<script type="text/javascript">
+
 		function ReservaEvento(start, end, calEvent) {
 
 			$('#data_inicio_reserva').val('');

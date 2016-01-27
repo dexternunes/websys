@@ -24,6 +24,7 @@ import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaValidacaoBusiness;
 import br.com.system.websys.business.UserBusiness;
+import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaValidacao;
@@ -126,6 +127,17 @@ public class ReservaController{
 				reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor()));
 		
 		return reservas;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/validaSolicitanteReserva", method = RequestMethod.GET )
+	public PermiteReservasDTO validaSolicitanteReserva() throws Exception {
+
+		User user = userBusiness.getCurrent();
+
+		PermiteReservasDTO permiteReserva = reservaBusiness.validaSolicitanteReserva(user);
+
+		return permiteReserva;
 	}
 	
 	@ResponseBody
