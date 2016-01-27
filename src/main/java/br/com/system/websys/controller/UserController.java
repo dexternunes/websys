@@ -201,9 +201,11 @@ public class UserController{
 	
 	public void addAtributes(Model model, User usuario){
 		
+		User userCurrent = userBusiness.getCurrent();
+		
 		List<Role> roles = new ArrayList<Role>();
 		
-		if(usuario.getRole().equals(Role.ROLE_ROOT)){
+		if(userCurrent.getRole().equals(Role.ROLE_ROOT)){
 			roles.add(Role.ROLE_ROOT);
 		}
 		
@@ -211,7 +213,6 @@ public class UserController{
 		roles.add(Role.ROLE_COTISTA);
 		roles.add(Role.ROLE_MARINHEIRO);
 		
-		User userCurrent = userBusiness.getCurrent();
 		List<Terceiro> terceiroList = terceiroBusiness.getAll();
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("listaUserRole", roles);
