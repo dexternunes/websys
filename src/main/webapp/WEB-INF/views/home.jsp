@@ -65,15 +65,13 @@
 					<br>
 					<div id='calendar'></div>
 					<div class="clearfix"></div>
-					<br>
-					<button type="button" class="btn btn-primary confirma_reserva">Confirmar</button>
 					<div class="clearfix"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div id="CalenderModal" class="modal fade" tabindex="-1" role="dialog"
+	<div id="CalenderModal" class="modal fade" tabindex="-1" role="dialog" 
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -114,6 +112,22 @@
 							</div>
 							<div class="clearfix"></div>
 							<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12" style="float:left !important;">Dia Inteiro</label>
+								<input type="checkbox" id="dia_inteiro" style="margin-left:10px; margin-top:10px; float:left !important;"/>
+								<div class="col-md-6 xdisplay_inputx form-group has-feedback" style="display:none !important"
+									id="div_dia_inteiro">
+									<input type="text" id="reserva_dia_todo" class="form-control has-feedback-left"
+										style="z-index: 9999 !important;" type="text"
+										data-inputmask="'mask' : '9999/99/99'"
+										aria-describedby="inputSuccess2Status4"
+										placeholder="Data/Hora"></input>
+									<span class="fa fa-calendar-o form-control-feedback left"
+										aria-hidden="true"></span> <span id="inputSuccess2Status4"
+										class="sr-only"></span>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+							<div class="form-group" id="divinicioReserva">
 								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
 									<form:input id="data_inicio_reserva" path="inicioReserva"
@@ -128,7 +142,7 @@
 								</div>
 							</div>
 							<div class="clearfix"></div>
-							<div class="form-group">
+							<div class="form-group" id="divfimReserva">
 								<label class="col-sm-3 control-label">Fim(Data/Hora)</label>
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
 									<form:input id="data_fim_reserva" path="fimReserva"
@@ -248,6 +262,20 @@
 		});
 
 		$(window).load(function() {
+			
+			$('#dia_inteiro').click(function(){
+				if($('#dia_inteiro').is(':checked')){
+					$('#div_dia_inteiro').show();
+					$('#divinicioReserva').hide();
+					$('#divfimReserva').hide();
+				}
+				else{
+					$('#div_dia_inteiro').hide();
+					$('#divinicioReserva').show();
+					$('#divfimReserva').show();
+				}
+			});
+			
 			var seleciona;
 			var edita;
 
@@ -285,9 +313,7 @@
 					ReservaEvento(calEvent.start, calEvent.end, calEvent);
 				},
 				eventAfterRender: function (event, element, view) {
-			            element.css('background-color', '#FFB347');
-			            if(event.allDay)
-			            	element.attr('disabled', true);
+			            element.css('background-color', event.color);
 			    },
 				editable : edita,
 				events : reservasJSON
@@ -299,6 +325,10 @@
 
 			$('#data_inicio_reserva').val('');
 			$('#data_fim_reserva').val('');
+			$('#dia_inteiro').attr('checked',false);
+			$('#div_dia_inteiro').hide();
+			$('#divinicioReserva').show();
+			$('#divfimReserva').show();
 			$('.exclui_reserva').hide();
 
 			var data_inicio;
@@ -433,8 +463,16 @@
 
 				$('#myModalLabel').text('Editar Reserva');
 				$('#title').val($('#nome_terceiro').val());
-				data_inicio = moment(start).format("YYYY/MM/DD " + "06:00");
-				data_fim = data_inicio;
+				if($('#dia_inteiro').is(':checked')){
+					allDay = true;
+					data_inicio = moment($('#reserva_dia_todo').val()+' 06:00').format("YYYY/MM/DD HH:mm"); 
+					data_fim = moment($('#reserva_dia_todo').val()+' 20:00').format("YYYY/MM/DD HH:mm");
+				}
+				else{
+					allDay = false;
+					data_inicio = moment(start).format("YYYY/MM/DD" +' 06:00');
+					data_fim = data_inicio;
+				}
 				$('#data_inicio_reserva').val(data_inicio);
 				$('#id').val('');
 				$('#utilizaMarinheiro').prop("checked", false);
@@ -468,7 +506,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Mar�o',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]
@@ -493,7 +531,7 @@
 								cancelLabel : 'Cancelar',
 								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
 										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Mar�o',
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
 										'Abril', 'Maio', 'Junho', 'Julho',
 										'Agosto', 'Setembro', 'Outubro',
 										'Novembro', 'Dezembro' ]
@@ -517,46 +555,16 @@
 							var fim = new Date(moment(end).format(
 									"YYYY/MM/DD HH:mm"));
 
-							var hora_fim = fim.getHours();
-							var hora_inicio = inicio.getHours();
-							var dia_fim = fim.getDate();
-							var dia_inicio = inicio.getDate();
-
-							if (dia_fim > dia_inicio) {
-								allDay = false;
-							} else {
-								if (hora_fim && hora_inicio)
-									allDay = false;
-								else
-									allDay = true;
-							}
-
 							if (calEvent) {
 								$('#calendar').fullCalendar('updateEvent',
 										calEvent);
 							} else {
-								if(allDay){
-									if (moment().diff(start, 'hours') > 24){
-										$('#calendar').fullCalendar('renderEvent', {
-											title : title,
-											start : inicio,
-											end : fim,
-											allDay : allDay
-										}, true);
-									}
-									else{
-										$('#calendar').fullCalendar('unselect');
-										return false;
-									}
-								}
-								else{
 									$('#calendar').fullCalendar('renderEvent', {
 										title : title,
 										start : inicio,
 										end : fim,
 										allDay : allDay
 									}, true);
-								}
 							}
 						}
 
