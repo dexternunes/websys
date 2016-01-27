@@ -71,12 +71,12 @@
 								for="first-name">Cotistas <span class="required">*</span>
 							</label>
 							<div class="col-md-6 col-sm-6 col-xs-12">
-								<c:if test="${!readonly}">
+								<%-- <c:if test="${!readonly}"> --%>
 									<form:select path="terceiros" multiple="true" cssClass="select2_multiple form-control">
 										<form:options items="${listTerceiros}" itemValue="id" itemLabel="nome"></form:options>
 									</form:select>
 									<form:errors cssClass="native-error" path="terceiros"></form:errors>
-								</c:if>
+								<%-- </c:if>
 								<c:if test="${readonly}">
 									<lu>
 										<c:forEach items="${grupo.terceiros}" var="terceiro" varStatus="statusTerc">
@@ -84,7 +84,7 @@
 											<li>${terceiro.nome}</li>
 										</c:forEach>
 									</lu>
-								</c:if>
+								</c:if> --%>
 							</div>
 						</div>
 						
