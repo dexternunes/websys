@@ -22,7 +22,7 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	protected GrupoBusinessImpl(GrupoRepository repository) {
 		super(repository, Grupo.class);
 	}
-
+	
 	@Override
 	protected void validateBeforeSave(Grupo entity) throws Exception {
 		// TODO Auto-generated method stub
@@ -86,6 +86,12 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	@Override
 	public List<Grupo> findAllByProduto(Produto produto) {
 		List<Grupo> grupos = ((GrupoRepository)repository).findByProduto(produto);
+		return grupos;
+	}
+	
+	@Override
+	public List<Grupo> findAllAtivos() {
+		List<Grupo> grupos = ((GrupoRepository)repository).findAllAtivos();
 		return grupos;
 	}
 }

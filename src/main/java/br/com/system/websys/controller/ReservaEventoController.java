@@ -19,7 +19,6 @@ import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
-import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
 
 @Controller
@@ -98,33 +97,14 @@ public class ReservaEventoController{
 	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
 			BindingResult result, Model model) throws Exception {
 
-		ReservaEvento reservaEventoBD = reservaEventoBusiness.get(reservaEvento.getId());
-		
-		reservaEvento.setImagens(reservaEventoBD.getImagens());		
-		
 		if (result.hasErrors()) {
-
-			model.addAttribute("reservaEvento", reservaEvento);
-			
-			return "reservaEvento";
+			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
-		
-		Reserva reserva = reservaBusiness.getReservaByEventoFim(reservaEventoBD);
-
-		if(reservaEventoBD.equals(reserva.getEventoFim())){
-			reserva.setAtivo(false);
-			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
-			reservaBusiness.salvar(reserva);
-		}
-
+	
 		try {
-			reservaEventoBusiness.salvar(reservaEvento);
+			reservaBusiness.adicionaReservaEvento(reservaEvento);
 		} catch (Exception e) {
-			
-			model.addAttribute("reservaEvento", reservaEvento);
-			model.addAttribute("message", e.getMessage());
-			
-			return "reservaEvento";
+			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
 
 		return "redirect:/home";

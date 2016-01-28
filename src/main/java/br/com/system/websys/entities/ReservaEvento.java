@@ -20,10 +20,6 @@ public class ReservaEvento extends EntityBaseRoot {
 	
 	private Long hora;
 	
-	private Long minuto;
-	
-	private Long segundo;
-	
 	@Id
 	@GeneratedValue
 	@Column(name = "id_reserva_evento")
@@ -47,22 +43,6 @@ public class ReservaEvento extends EntityBaseRoot {
 
 	public void setHora(Long hora) {
 		this.hora = hora;
-	}
-
-	public Long getMinuto() {
-		return minuto;
-	}
-
-	public void setMinuto(Long minuto) {
-		this.minuto = minuto;
-	}
-
-	public Long getSegundo() {
-		return segundo;
-	}
-
-	public void setSegundo(Long segundo) {
-		this.segundo = segundo;
 	}
 
 }
