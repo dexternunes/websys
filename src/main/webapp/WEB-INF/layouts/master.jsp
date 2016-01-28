@@ -13,11 +13,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+
+
+
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Prime Share Club</title>
+
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/favicon.png">
+<!--[if IE]><link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico""/><![endif]-->
 
 <!-- Bootstrap core CSS -->
 <link
@@ -151,6 +157,25 @@
         <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
     
 <style>
+.ranges{
+	    width: initial !important;
+	    float: initial !important;
+}
+
+.minuteselect{
+	margin-right: 5px  !important;
+}
+.modal{
+
+    position: absolute;
+
+}
+
+.modal .modal-body {
+    overflow-y: auto;
+}
+
+
 .select2-selection__clear {
 	/* CLEAR DO SELECT */
 	display: none !important;
@@ -363,7 +388,7 @@ $(document).ready(function() {
 					<div class="profile">
 						<div class="profile_pic">
 							<img
-								src="${pageContext.request.contextPath}/resources/images/user.png"
+								src="${user.imagemURL}"
 								alt="..." class="img-circle profile_img">
 						</div>
 						<div class="profile_info">

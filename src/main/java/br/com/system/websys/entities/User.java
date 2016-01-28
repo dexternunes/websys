@@ -40,6 +40,9 @@ public class User extends EntityBaseRoot {
 	private Boolean ativo = true;
 	
 	private Boolean excluido = false;
+
+	private String image;
+	
 	
 	@Id
 	@GeneratedValue
@@ -116,6 +119,14 @@ public class User extends EntityBaseRoot {
 
 	public void setExcluido(Boolean excluido) {
 		this.excluido = excluido;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 			
 }

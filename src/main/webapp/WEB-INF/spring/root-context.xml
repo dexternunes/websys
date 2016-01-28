@@ -43,7 +43,7 @@
 	<!-- Rest Template  
 	<beans:bean id="restTemplate" class="org.springframework.web.client.RestTemplate" /> --> 
 	
-	<!-- Multpart  
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>-->
+	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 	
 </beans:beans>

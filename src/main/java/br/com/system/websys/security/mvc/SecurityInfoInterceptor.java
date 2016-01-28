@@ -39,6 +39,7 @@ public class SecurityInfoInterceptor implements HandlerInterceptor {
 				userDTO.setNome(user.getTerceiro().getNome());
 				userDTO.setIdTerceiro(user.getTerceiro().getId());
 				userDTO.setIdUser(user.getId());
+				userDTO.setImagemURL(user.getImage());
 
 				modelAndView.addObject("user", userDTO);
 		}

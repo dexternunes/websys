@@ -19,7 +19,7 @@
 			<div class="row">
 				<form:form cssClass="form-horizontal"
 									action="${pageContext.request.contextPath}/usuarios/cadastro/salvar"
-									commandName="usuario" method="post">
+									commandName="usuario" method="post" enctype="multipart/form-data">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
 							<div class="x_title">
@@ -108,6 +108,23 @@
 
 								<hidden style="margin-left:10px; margin-top:10px;" path="excluido"/>
 								
+								<div class="form-group">
+									<label class="control-label col-md-3 col-sm-3 col-xs-12"
+										for="ativo">Foto do usuário 
+									</label>
+									
+									
+										<input id="fileupload" type="file" name="fileupload"  >
+									
+									<p><div style="color:red" class="jquery_error"></div></p>
+										
+									<c:if test="${error != null}">
+										<p><div style="color:red" class="controller_error">Error: ${error}</div></p>
+									</c:if>
+									
+									</br>  
+								</div>
+								
 								<div style="clear: both"></div>
 								<br />
 								<br />
@@ -129,6 +146,12 @@
 		$("#ativo").attr("disabled", false);
 		$("#usuario").submit();
 	}
+	
+	
+
+	$(document).ready(function () {		
+	});
+	
 	</script>
 </body>
 </html>

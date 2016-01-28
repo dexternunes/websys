@@ -73,8 +73,7 @@
 									varStatus="status">
 									<tr class="even pointer">
 										<td class="a-center " oName="id" oValue="${reservas.id}">
-											<input type="checkbox" name="hCheckBox" class="tableflat"
-											value="${reservas.id}">
+											
 										</td>
 										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${reservas.solicitante.nome}</td>

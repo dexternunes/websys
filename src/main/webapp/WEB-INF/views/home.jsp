@@ -85,6 +85,10 @@
 				<form:form id="antoform2" class="form-horizontal calender"
 					role="form" commandName="reserva"
 					action="${pageContext.request.contextPath}/reserva/salvar">
+
+					
+					<div class="modal-body">
+
 					<form:hidden path="id" id="id" />
 					<form:hidden path="allDay" id="allDay" />
 					<input type="hidden" value="${user.nome}" id="nome_terceiro" />
@@ -92,8 +96,6 @@
 					<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
 					<input type="hidden" value="${admin}" id="admin" />
 					<input type="hidden" value="${marinheiro}" id="marinheiro" />
-					<div class="modal-body">
-						<div id="testmodal2" style="padding: 5px 20px;">
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Solicitante</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
@@ -137,7 +139,7 @@
 										style="z-index: 9999 !important;" type="text"
 										data-inputmask="'mask' : '9999/99/99 99:99'"
 										aria-describedby="inputSuccess2Status4"
-										placeholder="Data/Hora"></form:input>
+										placeholder="Data/Hora" ></form:input>
 									<span class="fa fa-calendar-o form-control-feedback left"
 										aria-hidden="true"></span> <span id="inputSuccess2Status4"
 										class="sr-only"></span>
@@ -189,7 +191,6 @@
 									Fim</button>
 							</div>
 							<div class="clearfix"></div>
-						</div>
 					</div>
 					<div class="modal-footer">
 						<div class="form-actions">
