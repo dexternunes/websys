@@ -29,6 +29,7 @@ import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.ReservasDTO;
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
 
 @Controller
@@ -101,7 +102,7 @@ public class ReservaController{
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
 
-			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
+			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
 					reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
 					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
 			}
@@ -115,7 +116,7 @@ public class ReservaController{
 		
 		ReservasDTO reservas = new ReservasDTO();
 		Reserva reserva = reservaBusiness.get(id);
-		reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
+		reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
 				reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
 				reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
 		
@@ -131,7 +132,7 @@ public class ReservaController{
 		ReservasDTO reservas = new ReservasDTO();
 		
 		for(Reserva reserva : reservaBusiness.getReservaByTerceiro(user.getTerceiro())){
-			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
+			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
 					reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
 					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
 		}
@@ -144,8 +145,12 @@ public class ReservaController{
 	public List<Grupo> getGruposSolicitante() throws Exception {
 
 		User user = userBusiness.getCurrent();
-
-		List<Grupo> grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
+		List<Grupo> grupos;
+		
+		if(user.getRole().equals(Role.ROLE_COTISTA))
+			grupos = reservaBusiness.getGrupoPermiteReserva(user.getTerceiro());
+		else
+			grupos = grupoBusiness.findAllAtivos();
 		
 		return grupos;
 	}

@@ -223,13 +223,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.EM_USO);
 
 		return this.getByGruposByStatus(grupos, status);
-
 	}
 
 	public Reserva getByEvento(ReservaEvento evento) {
 
 		return ((ReservaRepository) repository).getByEvento(evento);
-
 	}
 
 	@Override
@@ -250,7 +248,5 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		}
 
 		return this.salvar(reserva);
-
 	}
-
 }

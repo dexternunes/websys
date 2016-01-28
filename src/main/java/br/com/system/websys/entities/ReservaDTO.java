@@ -14,6 +14,8 @@ public class ReservaDTO  implements Serializable {
 	
 	private String title;
 	
+	private Long idTerceiro;
+	
 	private Date start;
 	
 	private Date end;
@@ -40,10 +42,11 @@ public class ReservaDTO  implements Serializable {
 		
 	}
 	
-	public ReservaDTO(Long id, String title, Date start, Date end, Boolean allDay, String url, Boolean utilizaMarinheiro, String obs,
+	public ReservaDTO(Long id, String title, Long idTerceiro, Date start, Date end, Boolean allDay, String url, Boolean utilizaMarinheiro, String obs,
 			ReservaStatus status, ReservaEvento eventoInicio, ReservaEvento eventoFim, String color, Grupo grupo){
 		this.id = id;
 		this.title = title;
+		this.idTerceiro = idTerceiro;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
@@ -159,6 +162,14 @@ public class ReservaDTO  implements Serializable {
 
 	public void setGrupo(Grupo grupo) {
 		this.grupo = grupo;
+	}
+
+	public Long getIdTerceiro() {
+		return idTerceiro;
+	}
+
+	public void setIdTerceiro(Long idTerceiro) {
+		this.idTerceiro = idTerceiro;
 	}
 
 }

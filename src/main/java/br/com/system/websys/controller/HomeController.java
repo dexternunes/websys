@@ -58,6 +58,7 @@ public class HomeController {
 		}
 		
 		model.addAttribute("listaReservaGrupos", grupos);
+		
 		model.addAttribute("listaReservaStatus", ReservaStatus.values());
 		
 		if(user.getRole() == Role.ROLE_ADMIN){
