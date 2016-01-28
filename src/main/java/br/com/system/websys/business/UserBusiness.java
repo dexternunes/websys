@@ -5,7 +5,9 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import br.com.system.websys.entities.DefinirNovaSenhaDTO;
+import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.RecuperarSenhaDTO;
+import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
 
@@ -29,4 +31,6 @@ public interface UserBusiness {
 	public Boolean redefinirSenha(DefinirNovaSenhaDTO definirNovaSenhaDTO) throws Exception;
 	
 	public List<User> getByRoles(List<Role> roles);
+
+	public User addImagem(User user, Imagem imagem) throws Exception;
 }

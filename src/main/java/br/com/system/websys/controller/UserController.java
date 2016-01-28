@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.DefinirNovaSenhaDTO;
+import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.RecuperarSenhaDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
@@ -34,6 +38,9 @@ public class UserController{
 	@Autowired
 	private TerceiroBusiness terceiroBusiness;
 
+	@Autowired
+	private ImagemBusiness imagemBusiness;
+	
 	//Quando clicado no menu.
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
@@ -164,9 +171,9 @@ public class UserController{
 		return "cadastro/user/formulario_user";
 	}
 	
-	@RequestMapping(value = "/cadastro/salvar", method = RequestMethod.POST)
-	public String salvarBase(@Valid @ModelAttribute("usuario") User usuario,
-			BindingResult result, Model model) throws Exception {
+	@RequestMapping(value = "/cadastro/salvar",  method = RequestMethod.POST)
+	public String salvarBase(@RequestParam("fileupload") MultipartFile fileupload, @Valid @ModelAttribute("usuario") User usuario, 
+			BindingResult result, Model model, HttpServletRequest request) throws Exception {
 
 		if (result.hasErrors()) {
 			addAtributes(model, usuario);
@@ -186,8 +193,24 @@ public class UserController{
 				
 				return "cadastro/user/formulario_user";
 			}
+			
+			
+			if(!(fileupload.getContentType().equals("image/png")
+				|| fileupload.getContentType().equals("image/bmp")
+				|| fileupload.getContentType().equals("image/gif")
+				|| fileupload.getContentType().equals("image/jpeg")))
+				throw new Exception("Formato invalido");
+			
 
-			userBusiness.salvar(usuario);
+			String server;
+			if(request.getServerPort() == 80)
+				server = request.getServerName();
+			else
+				server = request.getServerName() + ":" + request.getServerPort();
+			
+			Imagem imagem = imagemBusiness.upload(fileupload, server);
+			userBusiness.addImagem(usuario, imagem);
+			
 		} catch (Exception e) {
 
 			addAtributes(model, usuario);

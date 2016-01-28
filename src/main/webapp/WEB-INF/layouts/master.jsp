@@ -388,7 +388,7 @@ $(document).ready(function() {
 					<div class="profile">
 						<div class="profile_pic">
 							<img
-								src="${pageContext.request.contextPath}/resources/images/user.png"
+								src="${user.imagemURL}"
 								alt="..." class="img-circle profile_img">
 						</div>
 						<div class="profile_info">

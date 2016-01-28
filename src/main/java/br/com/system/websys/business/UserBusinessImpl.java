@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.DefinirNovaSenhaDTO;
+import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.RecuperarSenhaDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.User;
@@ -29,6 +30,10 @@ class UserBusinessImpl implements UserBusiness {
 	@Autowired 
 	private MailBusiness mailBusiness;
 
+
+	@Autowired
+	private ImagemBusiness imagemBusiness;
+	
 	@Override
 	@Transactional(readOnly = true)
 	public synchronized User getCurrent() {
@@ -124,6 +129,13 @@ class UserBusinessImpl implements UserBusiness {
 	@Override
 	public List<User> getByRoles(List<Role> roles){
 		return userRepository.findByRoles(roles);
+	}
+	
+	@Override
+	public User addImagem(User user, Imagem imagem) throws Exception{
+		user.setImage(imagem.getUrl());
+		salvar(user);
+		return user;
 	}
 
 }
