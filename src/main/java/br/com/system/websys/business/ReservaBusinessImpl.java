@@ -33,19 +33,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Autowired
 	public UserBusiness userBusiness;
-<<<<<<< HEAD
 
-=======
-	
 	@Autowired
 	public GrupoBusiness grupoBusiness;
 	
->>>>>>> refs/remotes/origin/master
 	@Autowired
 	public MailBusiness mailBusiness;
-
-	@Autowired
-	private GrupoBusiness grupoBusiness;
 
 	@Autowired
 	protected ReservaBusinessImpl(ReservaRepository repository) {
