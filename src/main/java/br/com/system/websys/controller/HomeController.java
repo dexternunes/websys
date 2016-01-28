@@ -74,6 +74,10 @@ public class HomeController {
 		else{
 			model.addAttribute("marinheiro", 0);
 		}
+		
+		if(!request.getHeader("User-Agent").contains("Firefox")){
+			model.addAttribute("css", ".modal{position: absolute;}");
+		}
 		return "home";
 	}
 }

@@ -157,6 +157,8 @@
         <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
     
 <style>
+
+${css}
 .ranges{
  	    width: initial !important;
  	    float: initial !important;
@@ -165,11 +167,7 @@
 .minuteselect{
 	margin-right: 5px  !important;
 }
-.modal{
 
-    position: absolute;
-
-}
 
 .modal .modal-body {
      overflow-y: auto;
