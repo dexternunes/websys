@@ -176,8 +176,11 @@ public class UserController{
 			BindingResult result, Model model, HttpServletRequest request) throws Exception {
 
 		if (result.hasErrors()) {
-			addAtributes(model, usuario);
-			return "cadastro/user/formulario_user";
+			if(!(usuario.getId() != null && result.getAllErrors().size() == 1 && result.getAllErrors().get(0).toString().contains("NotEmpty.senha")))
+			{
+				addAtributes(model, usuario);
+				return "cadastro/user/formulario_user";
+			}
 		}
 
 		try {
@@ -194,22 +197,25 @@ public class UserController{
 				return "cadastro/user/formulario_user";
 			}
 			
-			
-			if(!(fileupload.getContentType().equals("image/png")
-				|| fileupload.getContentType().equals("image/bmp")
-				|| fileupload.getContentType().equals("image/gif")
-				|| fileupload.getContentType().equals("image/jpeg")))
-				throw new Exception("Formato invalido");
+			if(fileupload != null && fileupload.getSize() > 0){
+				if(!(fileupload.getContentType().equals("image/png")
+					|| fileupload.getContentType().equals("image/bmp")
+					|| fileupload.getContentType().equals("image/gif")
+					|| fileupload.getContentType().equals("image/jpeg")))
+					throw new Exception("Formato da imagem invalido");
 			
 
-			String server;
-			if(request.getServerPort() == 80)
-				server = request.getServerName();
-			else
-				server = request.getServerName() + ":" + request.getServerPort();
 			
-			Imagem imagem = imagemBusiness.upload(fileupload, server);
-			userBusiness.addImagem(usuario, imagem);
+				String server;
+				if(request.getServerPort() == 80)
+					server = request.getServerName();
+				else
+					server = request.getServerName() + ":" + request.getServerPort();
+				
+				Imagem imagem = imagemBusiness.upload(fileupload, server);
+				userBusiness.addImagem(usuario, imagem);
+			}
+			userBusiness.salvar(usuario);
 			
 		} catch (Exception e) {
 

@@ -380,7 +380,7 @@ $(document).ready(function() {
 			<div class="col-md-3 left_col">
 				<div class="left_col scroll-view">
 					<div class="navbar nav_title" style="border: 0;">
-						<a href="index.html" class="site_title"><img
+						<a href="<c:url value="/home" />" class="site_title"><img
 							src="${pageContext.request.contextPath}/resources/images/prime_icon.svg" /></a>
 					</div>
 					<div class="clearfix"></div>
@@ -472,13 +472,13 @@ $(document).ready(function() {
 							<li class=""><a href="javascript:;"
 								class="user-profile dropdown-toggle" data-toggle="dropdown"
 								aria-expanded="false"> <img
-									src="${pageContext.request.contextPath}/resources/images/user.png"
+									src="${user.imagemURL}"
 									alt="">${user.nome} <span class=" fa fa-angle-down"></span>
 							</a>
 								<ul
 									class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Perfil</a></li>
-									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Alterar Senha</a></li>
+									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Perfil</a></li>
+									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Cadastro</a></li>
 									<li><a href="<c:url value="/auth/logout" />"><i class="fa fa-sign-out pull-right"></i>Sair</a></li>
 								</ul></li>
 						</ul>
