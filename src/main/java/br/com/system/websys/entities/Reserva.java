@@ -50,7 +50,7 @@ public class Reserva extends EntityBaseRoot {
 
 	private Long horaMotorTotal;
 
-
+	private Boolean allDay = false;
 
 	public Long getHoraMotorTotal() {
 		return horaMotorTotal;
@@ -200,6 +200,14 @@ public class Reserva extends EntityBaseRoot {
 
 	public void setValidacoes(List<ReservaValidacao> validacoes) {
 		this.validacoes = validacoes;
+	}
+
+	public Boolean getAllDay() {
+		return allDay;
+	}
+
+	public void setAllDay(Boolean allDay) {
+		this.allDay = allDay;
 	}
 	
 	

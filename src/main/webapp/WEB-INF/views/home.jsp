@@ -57,12 +57,12 @@
 				<div class="x_title">
 					<h3>Calendário</h3>
 					<div class="clearfix"></div>
-					ID reserva: ${proprietarioReserva}
 				</div>
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="display:none !important">
-						<label id="lblPermiteReserva"></label></div>
+						Voce possui uma reserva em aberto. Somente poderá cadastrar uma
+						nova reserva após a finalização da atual.</div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
@@ -86,8 +86,10 @@
 					role="form" commandName="reserva"
 					action="${pageContext.request.contextPath}/reserva/salvar">
 					<form:hidden path="id" id="id" />
-					<input type="hidden" value="${user.nome}" id="nome_terceiro">
-					<input type="hidden" value="${proprietarioReserva}" id="proprietarioReserva" />
+					<form:hidden path="allDay" id="allDay" />
+					<input type="hidden" value="${user.nome}" id="nome_terceiro" />
+					<input type="hidden" value="${user.idTerceiro}" id="idTerceiro" />
+					<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
 					<input type="hidden" value="${admin}" id="admin" />
 					<input type="hidden" value="${marinheiro}" id="marinheiro" />
 					<div class="modal-body">
@@ -104,17 +106,15 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Grupo</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<form:select path="grupo" multiple="false"
-										cssClass="select2_multiple form-control">
-										<form:options items="${listaReservaGrupos}" itemValue="id"
-											itemLabel="descricao"></form:options>
+									<form:select path="grupo" multiple="false" id="grupo" cssClass="form-control">
+  										<form:options items="${listaReservaGrupos}" itemValue="id" itemLabel="descricao"></form:options>
 									</form:select>
 								</div>
 							</div>
 							<div class="clearfix"></div>
-							<div class="form-group">
+							<div class="form-group" id="divDiaInteiro">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" style="float:left !important;">Dia Inteiro</label>
-								<input type="checkbox" id="dia_inteiro" style="margin-left:10px; margin-top:10px; float:left !important;"/>
+								<form:checkbox style="margin-left:10px; margin-top:10px;" id="diaTodo" path="allDay" />
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback" style="display:none !important"
 									id="div_dia_inteiro">
 									<input type="text" id="reserva_dia_todo" class="form-control has-feedback-left"
@@ -165,12 +165,10 @@
 									id="utilizaMarinheiro" path="utilizaMarinheiro" />
 							</div>
 							<div class="clearfix"></div>
-							<div class="form-group">
+							<div class="form-group" id="div_status" style="display: none !important;">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
-								<form:select path="status" multiple="false" id="status"
-									cssClass="select2_multiple">
-									<form:options items="${listaReservaStatus}" itemValue="code"
-										itemLabel="descricao"></form:options>
+								<form:select path="status" multiple="false" id="status" cssClass="select2_multiple" >
+									<form:options items="${listaReservaStatus}" itemValue="code" itemLabel="descricao"></form:options>
 								</form:select>
 							</div>
 							<div class="clearfix"></div>
@@ -262,58 +260,44 @@
 			}
 		});
 		
-		var permiteReservaJSON = [];
+		var gruposJSON = [];
 		
 		$.ajax({
-			url: "${pageContext.request.contextPath}/reserva/validaSolicitanteReserva",
+			url: "${pageContext.request.contextPath}/reserva/getGruposSolicitante",
 			dataType:"json",
 			contentType:"application/json; charset=utf-8",
 			type:"GET",
 			async:false,
 			success:function(data){
-				permiteReservaJSON = data.permiteReservaDTO;
-				alert(permiteReservaJSON.length);
+				gruposJSON = data;
 			},
 			error:function(request, status, error){
 				alert(error);
-			}			
+			}
 		});
-		
-		var seleciona;
-		var edita;
-		
-		if (permiteReservaJSON.length > 0) {
-			
-			permiteReservaJSON.forEach(function(obj){
-				if(obj.permiteReserva){
-					
-				}
-			});
-			
-			edita = true;
-			seleciona = false;
-			$('#possuiReserva').show();
-		} else {
-			edita = false;
-			seleciona = true;
-			$('#possuiReserva').hide();
-		}
-		
+
 		$(window).load(function() {
+
+			var seleciona;
+			var edita;
 			
-			$('#dia_inteiro').click(function(){
-				if($('#dia_inteiro').is(':checked')){
-					$('#div_dia_inteiro').show();
-					$('#divinicioReserva').hide();
-					$('#divfimReserva').hide();
-				}
-				else{
-					$('#div_dia_inteiro').hide();
-					$('#divinicioReserva').show();
-					$('#divfimReserva').show();
-				}
-			});
 			
+		if ($('#admin').val() == 1) {
+				edita = true;
+				seleciona = true;
+			}
+		else{
+			if ($('#permiteReserva').val() != 1) {
+				edita = true;
+				seleciona = false;
+				$('#possuiReserva').show();
+			} else {
+				edita = false;
+				seleciona = true;
+				$('#possuiReserva').hide();
+			}
+		}
+
 			var calendar = $('#calendar').fullCalendar({
 				header : {
 					left : 'prev,next today',
@@ -328,18 +312,17 @@
 				select : function(start, end, allDay) {
 					if (moment().diff(start, 'days') > 0) {
 						$('#calendar').fullCalendar('unselect');
-		                return false;
-		            }
-					else{
+						return false;
+					} else {
 						ReservaEvento(start, end);
 					}
 				},
 				eventClick : function(calEvent, jsEvent, view) {
-						ReservaEvento(calEvent.start, calEvent.end, calEvent);
+					ReservaEvento(calEvent.start, calEvent.end, calEvent);
 				},
-				eventAfterRender: function (event, element, view) {
-			            element.css('background-color', event.color);
-			    },
+				eventAfterRender : function(event, element, view) {
+					element.css('background-color', event.color);
+				},
 				editable : edita,
 				events : reservasJSON
 			});
@@ -349,7 +332,7 @@
 
 			$('#data_inicio_reserva').val('');
 			$('#data_fim_reserva').val('');
-			$('#dia_inteiro').attr('checked',false);
+			$('#dia_inteiro').attr('checked', false);
 			$('#div_dia_inteiro').hide();
 			$('#divinicioReserva').show();
 			$('#divfimReserva').show();
@@ -358,24 +341,67 @@
 			var data_inicio;
 			var data_fim;
 
+			if ($('#admin').val() == 1) {
+				$('#div_status').show();
+			}
+			
+			$('#diaTodo').click(function(){alert('oi');
+				if($('#allDay').is(':checked')){
+					$('#div_dia_inteiro').show();
+					$('#divinicioReserva').hide();
+					$('#divfimReserva').hide();
+				}
+				else{
+					$('#div_dia_inteiro').hide();
+					$('#divinicioReserva').show();
+					$('#divfimReserva').show();
+				}
+			});
+		
+
 			if (calEvent) {
+
+				if (calEvent.allDay) {
+					$('#divDiaInteiro').show();
+					$('#data_inicio_reserva').hide();
+					$('#data_fim_reserva').hide();
+				} else {
+					$('#divDiaInteiro').hide();
+					$('#data_inicio_reserva').show();
+					$('#data_fim_reserva').show();
+				}
 
 				var reservaJSON = [];
 
-				$.ajax({
-					url : "${pageContext.request.contextPath}/reserva/get/" + calEvent._id,
-					dataType : "json",
-					contentType : "application/json; charset=utf-8",
-					type : 'GET',
-					async : false,
-					success : function(data) {
-						reservaJSON = data.reservas;
-					},
-					error : function(request, status, error) {
-						//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
-						//alert("error" + error);
-					}
+				reservasJSON.forEach(function(obj) {
+					if ((obj.id == calEvent._id) && (obj.idTerceiro == $('#idTerceiro').val() || $('#admin').val() == 1)) {
+							reservaJSON[0] = obj;}
 				});
+				
+				if(reservaJSON[0].id){
+					$('#data_inicio_reserva').attr("disabled", false);
+					$('#data_fim_reserva').attr("disabled", false);
+					$('#id').attr("disabled", false);
+					$('#utilizaMarinheiro').attr("disabled", false);
+					$('#obs').attr("disabled", false);
+					$('#grupo').attr("disabled", true);
+					$('#grupo').html('');
+					$('#grupo').html('<option value="' + reservaJSON[0].grupo.id + '">'+ reservaJSON[0].grupo.descricao+'</option>');
+					$('.exclui_reserva').show();
+					$(".antosubmit").show();
+				}
+				else {
+					$('#data_inicio_reserva').attr("disabled", true);
+					$('#data_fim_reserva').attr("disabled", true);
+					$('#id').attr("disabled", true);
+					$('#utilizaMarinheiro').attr("disabled", true);
+					$('#obs').attr("disabled", true);
+					$('#grupo').attr("disabled", true);
+					$('#grupo').html('');
+					$('#grupo').html('<option value="' + calEvent.grupo.id + '">'+ calEvent.grupo.descricao + '</option>');
+					$('.exclui_reserva').hide();
+					$(".antosubmit").hide();
+				}
 
 				$('#myModalLabel').text('Editar Reserva');
 				$('#title').val(calEvent.title);
@@ -384,77 +410,61 @@
 				$('#data_inicio_reserva').val(data_inicio);
 				$('#data_fim_reserva').val(data_fim);
 				$('#id').val(calEvent.id);
-				$('#utilizaMarinheiro').prop("checked",
-						calEvent.utilizaMarinheiro);
+				$('#utilizaMarinheiro').prop("checked", calEvent.utilizaMarinheiro);
 				$('#obs').val(calEvent.obs);
 				$('#status option[value="' + calEvent.status + '"]').attr({selected : "selected"});
 				$('.exclui_reserva').show();
-				$('.exclui_reserva').click(function() {
-									
-					var permiteExclusao = [];
-
-					$.ajax({
-							url : "${pageContext.request.contextPath}/reserva/validaExclusao/" + reservaJSON[0].id,
-							dataType : "json",
-							contentType : "application/json; charset=utf-8",
-							type : 'GET',
-							async : false,
-							success : function(data) {
-								permiteExclusao = data;
-							},
-							error : function(request,
-									status, error) {
-								//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
-								//alert("error" + error);
-							}
-						});
-
-						if (permiteExclusao) {
-							$.ajax({
-									url : "${pageContext.request.contextPath}/reserva/api/remove",
-									type : "POST",
+				$('.exclui_reserva').click(
+						function() {
+							var permiteExclusao = [];
+							$ajax({
+									url : "${pageContext.request.contextPath}/reserva/validaExclusao/"+ reservaJSON[0].id,
+									dataType : "json",
 									contentType : "application/json; charset=utf-8",
-									data : JSON.stringify(calEvent._id),
+									type : 'GET',
 									async : false,
-									cache : false,
-									processData : false,
-									success : function(resposeJsonObject) {
-										$('#calendar').fullCalendar('removeEvents',calEvent.id);
+									success : function(data) {
+										permiteExclusao = data;
 									},
-									error : function(error) {
-										alert('erro:' + error);
+									error : function(request,
+											status, error) {
+										//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
+										//alert("error" + error);
 									}
 								});
-							document.location.reload();
-						}
+
+					if (permiteExclusao) {
+						$.ajax({
+								url : "${pageContext.request.contextPath}/reserva/api/remove",
+								type : "POST",
+								contentType : "application/json; charset=utf-8",
+								data : JSON.stringify(calEvent._id),
+								async : false,
+								cache : false,
+								processData : false,
+								success : function(resposeJsonObject) {
+									$('#calendar').fullCalendar('removeEvents',	calEvent.id);
+								},
+								error : function(error) {
+									alert('erro:' + error);
+								}
+							});
+						document.location.reload();
+					}
 				});
 
-				if ($('#proprietarioReserva').val() != calEvent._id && $('#admin').val() != 1) {
-					$('#data_inicio_reserva').attr("disabled", true);
-					$('#data_fim_reserva').attr("disabled", true);
-					$('#id').attr("disabled", true);
-					$('#utilizaMarinheiro').attr("disabled", true);
-					$('#obs').attr("disabled", true);
-					$('#status').attr("disabled", true);
-					$('#grupo').attr("disabled", true);
-					$('.exclui_reserva').hide();
-					$(".antosubmit").hide();
-				}
-
 				if ($('#admin').val() == 1 || $('#marinheiro').val() == 1) {
-					if (reservaJSON[0].eventoInicio != null && reservaJSON[0].eventoInicio.hora == null && reservaJSON[0].eventoFim != null	&& reservaJSON[0].eventoFim.hora == null) {
+					if (reservaJSON[0].eventoInicio != null	&& reservaJSON[0].eventoInicio.hora == null && reservaJSON[0].eventoFim != null && reservaJSON[0].eventoFim.hora == null) {
 						$('#btnEventoInicio').click(function() {
-							document.location.href = $('#caminhoEvento').val()+ reservaJSON[0].eventoInicio.id;
-						});
-						
+							document.location.href = $('#caminhoEvento').val() + reservaJSON[0].eventoInicio.id;
+							});
 						$('#btnEventoInicio').show();
 					}
 
 					if (reservaJSON[0].eventoFim != null && reservaJSON[0].eventoFim.hora == null && reservaJSON[0].eventoInicio != null && reservaJSON[0].eventoInicio.hora != null) {
 						$('#btnEventoFim').click(function() {
-							document.location.href = $('#caminhoEvento').val() + reservaJSON[0].eventoFim.id;
-						});
-						
+							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoFim.id;
+							});
 						$('#btnEventoFim').show();
 					}
 				}
@@ -462,17 +472,38 @@
 
 				$('#myModalLabel').text('Editar Reserva');
 				$('#title').val($('#nome_terceiro').val());
+				
+				$('#reserva_dia_todo').daterangepicker(
+						{
+							format : 'YYYY/MM/DD',
+							calender_style : "picker_4",
+							parentEl : '#CalenderModal',
+							startDate : moment(start).format("YYYY/MM/DD"),
+							minDate: moment(start).format("YYYY/MM/DD"),
+							singleDatePicker : true,
+							locale : {
+								applyLabel : 'Ok',
+								cancelLabel : 'Cancelar',
+								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sab' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ]
+							}
+						});
 
-				if($('#dia_inteiro').is(':checked')){
+				if ($('#allDay').is(':checked')) {
 					allDay = true;
-					data_inicio = moment($('#reserva_dia_todo').val()+' 06:00').format("YYYY/MM/DD HH:mm"); 
-					data_fim = moment($('#reserva_dia_todo').val()+' 20:00').format("YYYY/MM/DD HH:mm");
-				}
-				else{
+					data_inicio = moment(start).format("YYYY/MM/DD" + ' 06:00').format("YYYY/MM/DD HH:mm");
+					data_fim = moment(start).format("YYYY/MM/DD" + ' 20:00').format("YYYY/MM/DD HH:mm");
+				} else {
 					allDay = false;
-					data_inicio = moment(start).format("YYYY/MM/DD" +' 06:00');
+					data_inicio = moment(start).format("YYYY/MM/DD" + ' 06:00');
 					data_fim = data_inicio;
 				}
+				
+				$('#divDiaInteiro').show();
 
 				$('#data_inicio_reserva').val(data_inicio);
 				$('#id').val('');
@@ -483,75 +514,84 @@
 				$('#id').attr("disabled", false);
 				$('#utilizaMarinheiro').attr("disabled", false);
 				$('#obs').attr("disabled", false);
-				$('#status').attr("disabled", false);
 				$('#grupo').attr("disabled", false);
+				$('#grupo').html('');
+				var html_grupo = '';
+
+				for (var i = 0; i < gruposJSON.length; i++) {
+					html_grupo += '<option value="' + gruposJSON[i].id + '">' + gruposJSON[i].descricao + '</option>';
+				}
+				$('#grupo').html(html_grupo);
 				$('.exclui_reserva').show();
 				$(".antosubmit").show();
 			}
 
-			if (!$('#proprietarioReserva').val()) {
-				$('#data_inicio_reserva').daterangepicker({
-					timePicker : true,
-					timePickerIncrement : 15,
-					timePicker12Hour : false,
-					format : 'YYYY/MM/DD HH:mm',					
-					timezone : 'local',
-					calender_style : "picker_4",
-					parentEl : '#CalenderModal',
-					startDate : data_inicio,
-					singleDatePicker : true,
-					locale : {
-						applyLabel : 'Ok',
-						cancelLabel : 'Cancelar',
-						daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
-								'Qui', 'Sex', 'Sab' ],
-						monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-								'Abril', 'Maio', 'Junho', 'Julho',
-								'Agosto', 'Setembro', 'Outubro',
-								'Novembro', 'Dezembro' ]
-					}
-				});
-			}
+			if ($('#permiteReserva').val() == 1) {
+				$('#data_inicio_reserva').daterangepicker(
+						{
+							timePicker : true,
+							timePickerIncrement : 15,
+							timePicker12Hour : false,
+							format : 'YYYY/MM/DD HH:mm',
+							timezone : 'local',
+							calender_style : "picker_4",
+							parentEl : '#CalenderModal',
+							startDate : data_inicio,
+							singleDatePicker : true,
+							locale : {
+								applyLabel : 'Ok',
+								cancelLabel : 'Cancelar',
+								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sab' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ]
+							}
+						});
 
-			if (!$('#proprietarioReserva').val()) {
 				$('#data_fim_reserva').daterangepicker({
-					singleDatePicker : true,
-					timePicker : true,
-					timePickerIncrement : 15,
-					timePicker12Hour : false,
-					format : 'YYYY/MM/DD HH:mm',
-					timezone : 'local',
-					calender_style : "picker_4",
-					parentEl : '#CalenderModal',
-					startDate : data_fim,
-					locale : {
-						applyLabel : 'Ok',
-						cancelLabel : 'Cancelar',
-						daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
-								'Qui', 'Sex', 'Sab' ],
-						monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-								'Abril', 'Maio', 'Junho', 'Julho',
-								'Agosto', 'Setembro', 'Outubro',
-								'Novembro', 'Dezembro' ]
-					}
-				});
+							singleDatePicker : true,
+							timePicker : true,
+							timePickerIncrement : 15,
+							timePicker12Hour : false,
+							format : 'YYYY/MM/DD HH:mm',
+							timezone : 'local',
+							calender_style : "picker_4",
+							parentEl : '#CalenderModal',
+							startDate : data_fim,
+							locale : {
+								applyLabel : 'Ok',
+								cancelLabel : 'Cancelar',
+								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sab' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ]
+							}
+						});
 			}
 
 			$('#reserva_evento').click();
 
-			$(".antosubmit").on("click", function(){
+			$(".antosubmit").on("click", function() {
 				var title = $("#title").val();
 
 				categoryClass = $("#event_type").val();
-				
-				if (title){
+
+				if (title) {
 					var inicio = new Date(moment(start).format("YYYY/MM/DD HH:mm"));
 					var fim = new Date(moment(end).format("YYYY/MM/DD HH:mm"));
 					
-					if (calEvent){
-						$('#calendar').fullCalendar('updateEvent',calEvent);
+					if ($('#allDay').is(':checked')) {
+						$('#data_inicio_reserva').val($('#reserva_dia_todo').val() + ' 06:00' );
+						$('#data_fim_reserva').val($('#reserva_dia_todo').val() + ' 20:00' );
 					}
-					else{
+
+					if (calEvent) {
+						$('#calendar').fullCalendar('updateEvent', calEvent);
+					} else {
 						$('#calendar').fullCalendar('renderEvent', {
 							title : title,
 							start : inicio,
@@ -560,7 +600,7 @@
 						}, true);
 					}
 				}
-				
+
 				$('#calendar').fullCalendar('unselect');
 
 				$('.antoclose').click();
