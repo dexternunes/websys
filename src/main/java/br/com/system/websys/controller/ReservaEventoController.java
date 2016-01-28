@@ -98,20 +98,13 @@ public class ReservaEventoController{
 			BindingResult result, Model model) throws Exception {
 
 		if (result.hasErrors()) {
-
-			model.addAttribute("reservaEvento", reservaEvento);
-			
-			return "reservaEvento";
+			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
 	
 		try {
 			reservaBusiness.adicionaReservaEvento(reservaEvento);
 		} catch (Exception e) {
-			
-			model.addAttribute("reservaEvento", reservaEvento);
-			model.addAttribute("message", e.getMessage());
-			
-			return "reservaEvento";
+			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
 
 		return "redirect:/home";
