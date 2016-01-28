@@ -57,7 +57,6 @@
 				<div class="x_title">
 					<h3>Calendário</h3>
 					<div class="clearfix"></div>
-					ID reserva: ${proprietarioReserva}
 				</div>
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
@@ -87,6 +86,7 @@
 					role="form" commandName="reserva"
 					action="${pageContext.request.contextPath}/reserva/salvar">
 					<form:hidden path="id" id="id" />
+					<form:hidden path="allDay" id="allDay" />
 					<input type="hidden" value="${user.nome}" id="nome_terceiro" />
 					<input type="hidden" value="${user.idTerceiro}" id="idTerceiro" />
 					<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
@@ -114,7 +114,7 @@
 							<div class="clearfix"></div>
 							<div class="form-group" id="divDiaInteiro">
 								<label class="control-label col-md-3 col-sm-3 col-xs-12" style="float:left !important;">Dia Inteiro</label>
-								<input type="checkbox" id="dia_inteiro" style="margin-left:10px; margin-top:10px; float:left !important;"/>
+								<form:checkbox style="margin-left:10px; margin-top:10px;" id="diaTodo" path="allDay" />
 								<div class="col-md-6 xdisplay_inputx form-group has-feedback" style="display:none !important"
 									id="div_dia_inteiro">
 									<input type="text" id="reserva_dia_todo" class="form-control has-feedback-left"
@@ -277,19 +277,7 @@
 		});
 
 		$(window).load(function() {
-			$('#dia_inteiro').click(function(){
-				if($('#dia_inteiro').is(':checked')){
-					$('#div_dia_inteiro').show();
-					$('#divinicioReserva').hide();
-					$('#divfimReserva').hide();
-				}
-				else{
-					$('#div_dia_inteiro').hide();
-					$('#divinicioReserva').show();
-					$('#divfimReserva').show();
-				}
-			});
-			
+
 			var seleciona;
 			var edita;
 			
@@ -356,6 +344,20 @@
 			if ($('#admin').val() == 1) {
 				$('#div_status').show();
 			}
+			
+			$('#diaTodo').click(function(){alert('oi');
+				if($('#allDay').is(':checked')){
+					$('#div_dia_inteiro').show();
+					$('#divinicioReserva').hide();
+					$('#divfimReserva').hide();
+				}
+				else{
+					$('#div_dia_inteiro').hide();
+					$('#divinicioReserva').show();
+					$('#divfimReserva').show();
+				}
+			});
+		
 
 			if (calEvent) {
 
@@ -372,34 +374,34 @@
 				var reservaJSON = [];
 
 				reservasJSON.forEach(function(obj) {
-					if (obj.id == calEvent._id) {
-						reservaJSON[0] = obj;
-						if (obj.idTerceiro == $('#idTerceiro').val()
-								|| $('#admin').val() == 1) {
-							$('#data_inicio_reserva').attr("disabled", false);
-							$('#data_fim_reserva').attr("disabled", false);
-							$('#id').attr("disabled", false);
-							$('#utilizaMarinheiro').attr("disabled", false);
-							$('#obs').attr("disabled", false);
-							$('#grupo').attr("disabled", true);
-							$('#grupo').html('');
-							$('#grupo').html('<option value="' + obj.grupo.id + '">'+ obj.grupo.descricao+'</option>');
-							$('.exclui_reserva').show();
-							$(".antosubmit").show();
-						}
-					} else {
-						$('#data_inicio_reserva').attr("disabled", true);
-						$('#data_fim_reserva').attr("disabled", true);
-						$('#id').attr("disabled", true);
-						$('#utilizaMarinheiro').attr("disabled", true);
-						$('#obs').attr("disabled", true);
-						$('#grupo').attr("disabled", true);
-						$('#grupo').html('');
-						$('#grupo').html('<option value="' + obj.grupo.id + '">'+ obj.grupo.descricao + '</option>');
-						$('.exclui_reserva').hide();
-						$(".antosubmit").hide();
-					}
+					if ((obj.id == calEvent._id) && (obj.idTerceiro == $('#idTerceiro').val() || $('#admin').val() == 1)) {
+							reservaJSON[0] = obj;}
 				});
+				
+				if(reservaJSON[0].id){
+					$('#data_inicio_reserva').attr("disabled", false);
+					$('#data_fim_reserva').attr("disabled", false);
+					$('#id').attr("disabled", false);
+					$('#utilizaMarinheiro').attr("disabled", false);
+					$('#obs').attr("disabled", false);
+					$('#grupo').attr("disabled", true);
+					$('#grupo').html('');
+					$('#grupo').html('<option value="' + reservaJSON[0].grupo.id + '">'+ reservaJSON[0].grupo.descricao+'</option>');
+					$('.exclui_reserva').show();
+					$(".antosubmit").show();
+				}
+				else {
+					$('#data_inicio_reserva').attr("disabled", true);
+					$('#data_fim_reserva').attr("disabled", true);
+					$('#id').attr("disabled", true);
+					$('#utilizaMarinheiro').attr("disabled", true);
+					$('#obs').attr("disabled", true);
+					$('#grupo').attr("disabled", true);
+					$('#grupo').html('');
+					$('#grupo').html('<option value="' + calEvent.grupo.id + '">'+ calEvent.grupo.descricao + '</option>');
+					$('.exclui_reserva').hide();
+					$(".antosubmit").hide();
+				}
 
 				$('#myModalLabel').text('Editar Reserva');
 				$('#title').val(calEvent.title);
@@ -470,16 +472,38 @@
 
 				$('#myModalLabel').text('Editar Reserva');
 				$('#title').val($('#nome_terceiro').val());
+				
+				$('#reserva_dia_todo').daterangepicker(
+						{
+							format : 'YYYY/MM/DD',
+							calender_style : "picker_4",
+							parentEl : '#CalenderModal',
+							startDate : moment(start).format("YYYY/MM/DD"),
+							minDate: moment(start).format("YYYY/MM/DD"),
+							singleDatePicker : true,
+							locale : {
+								applyLabel : 'Ok',
+								cancelLabel : 'Cancelar',
+								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sab' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ]
+							}
+						});
 
-				if ($('#dia_inteiro').is(':checked')) {
+				if ($('#allDay').is(':checked')) {
 					allDay = true;
-					data_inicio = moment($('#reserva_dia_todo').val() + ' 06:00').format("YYYY/MM/DD HH:mm");
-					data_fim = moment($('#reserva_dia_todo').val() + ' 20:00').format("YYYY/MM/DD HH:mm");
+					data_inicio = moment(start).format("YYYY/MM/DD" + ' 06:00').format("YYYY/MM/DD HH:mm");
+					data_fim = moment(start).format("YYYY/MM/DD" + ' 20:00').format("YYYY/MM/DD HH:mm");
 				} else {
 					allDay = false;
 					data_inicio = moment(start).format("YYYY/MM/DD" + ' 06:00');
 					data_fim = data_inicio;
 				}
+				
+				$('#divDiaInteiro').show();
 
 				$('#data_inicio_reserva').val(data_inicio);
 				$('#id').val('');
@@ -502,7 +526,7 @@
 				$(".antosubmit").show();
 			}
 
-			if (!$('#proprietarioReserva').val()) {
+			if ($('#permiteReserva').val() == 1) {
 				$('#data_inicio_reserva').daterangepicker(
 						{
 							timePicker : true,
@@ -525,11 +549,8 @@
 										'Novembro', 'Dezembro' ]
 							}
 						});
-			}
 
-			if (!$('#proprietarioReserva').val()) {
-				$('#data_fim_reserva').daterangepicker(
-						{
+				$('#data_fim_reserva').daterangepicker({
 							singleDatePicker : true,
 							timePicker : true,
 							timePickerIncrement : 15,
@@ -560,14 +581,16 @@
 				categoryClass = $("#event_type").val();
 
 				if (title) {
-					var inicio = new Date(moment(start).format(
-							"YYYY/MM/DD HH:mm"));
-					var fim = new Date(moment(end).format(
-							"YYYY/MM/DD HH:mm"));
+					var inicio = new Date(moment(start).format("YYYY/MM/DD HH:mm"));
+					var fim = new Date(moment(end).format("YYYY/MM/DD HH:mm"));
+					
+					if ($('#allDay').is(':checked')) {
+						$('#data_inicio_reserva').val($('#reserva_dia_todo').val() + ' 06:00' );
+						$('#data_fim_reserva').val($('#reserva_dia_todo').val() + ' 20:00' );
+					}
 
 					if (calEvent) {
-						$('#calendar').fullCalendar('updateEvent',
-								calEvent);
+						$('#calendar').fullCalendar('updateEvent', calEvent);
 					} else {
 						$('#calendar').fullCalendar('renderEvent', {
 							title : title,
