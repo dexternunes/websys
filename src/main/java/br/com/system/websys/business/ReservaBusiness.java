@@ -33,4 +33,8 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	
 	public PermiteReservasDTO validaSolicitanteReserva(User user);
 
+	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception;
+
+	public List<Reserva> getReservasParaExibicao(User user);
+
 }

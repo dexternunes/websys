@@ -88,4 +88,10 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 		List<Grupo> grupos = ((GrupoRepository)repository).findByProduto(produto);
 		return grupos;
 	}
+	
+	@Override
+	public List<Grupo> findAllAtivos() {
+		List<Grupo> grupos = ((GrupoRepository)repository).findAllAtivos();
+		return grupos;
+	}
 }

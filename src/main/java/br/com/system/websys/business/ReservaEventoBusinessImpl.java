@@ -49,8 +49,6 @@ class ReservaEventoBusinessImpl extends BusinessBaseRootImpl<ReservaEvento, Rese
 		
 		ReservaEventoDTO dto = new ReservaEventoDTO();
 		dto.setHora(reservaEvento.getHora());
-		dto.setMinuto(reservaEvento.getMinuto());
-		dto.setSegundo(reservaEvento.getSegundo());
 	
 		return dto;
 	}

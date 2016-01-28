@@ -9,6 +9,7 @@ import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
+import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.Terceiro;
 
 public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
@@ -22,6 +23,13 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	@Query("SELECT r FROM Reserva r WHERE r.eventoFim = :eventoFim")
 	Reserva getReservaByEventoFim(@Param("eventoFim") ReservaEvento eventoFim);
 
+	@Query("SELECT r FROM Reserva r WHERE r.eventoFim = :evento OR r.eventoInicio = :evento")
+	Reserva getByEvento(@Param("evento") ReservaEvento evento);
+	
 	@Query("SELECT r FROM Reserva r  WHERE r.grupo = :grupo and r.faturamentoStatus = :faturamentoStatus")
 	List<Reserva> findByReservaByGrupoByStatus(@Param("grupo") Grupo grupo, @Param("faturamentoStatus") FaturamentoStatus faturamentoStatus);
+	
+	@Query("SELECT  r FROM Reserva r WHERE r.grupo IN :grupos AND r.status in :status AND r.excluido = 0 AND r.ativo = 1")
+	List<Reserva> getByGruposByStatus(@Param("grupos") List<Grupo> grupos, @Param("status") List<ReservaStatus> status);
+
 }
