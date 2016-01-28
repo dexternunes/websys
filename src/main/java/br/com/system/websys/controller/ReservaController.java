@@ -27,6 +27,7 @@ import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
+import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
@@ -91,7 +92,7 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/get", method = RequestMethod.GET )
+	@RequestMapping(value = "/api/get", method = RequestMethod.GET )
 	public ReservasDTO getReserva(HttpServletRequest request) throws Exception {
 		
 		ReservasDTO reservas = new ReservasDTO();
@@ -101,8 +102,22 @@ public class ReservaController{
 		
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
+				
+				String tipo_evento = "";
+				
+				if(reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)){
+					tipo_evento = "[S] ";
+				}
+				
+				if(reserva.getStatus().equals(ReservaStatus.APROVADA)){
+					tipo_evento = "[R] ";
+				}
+				
+				if(reserva.getStatus().equals(ReservaStatus.EM_USO)){
+					tipo_evento = "[E] ";
+				}
 
-			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
+			reservas.getReservas().add(new ReservaDTO(reserva.getId(), tipo_evento + reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
 					reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
 					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
 			}
@@ -111,7 +126,7 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET )
+	@RequestMapping(value = "/api/get/{id}", method = RequestMethod.GET )
 	public ReservasDTO getReservaById(@PathVariable Long id, Model model) throws Exception {
 		
 		ReservasDTO reservas = new ReservasDTO();
@@ -124,7 +139,7 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getReservaSolicitante", method = RequestMethod.GET )
+	@RequestMapping(value = "/api/getReservaSolicitante", method = RequestMethod.GET )
 	public ReservasDTO getReservaSolicitante() throws Exception {
 
 		User user = userBusiness.getCurrent();
@@ -141,7 +156,7 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getGruposSolicitante", method = RequestMethod.GET )
+	@RequestMapping(value = "/api/getGruposSolicitante", method = RequestMethod.GET )
 	public List<Grupo> getGruposSolicitante() throws Exception {
 
 		User user = userBusiness.getCurrent();
@@ -156,7 +171,7 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/validaExclusao/{id}", method = RequestMethod.GET )
+	@RequestMapping(value = "/api/validaExclusao/{id}", method = RequestMethod.GET )
 	public String validaExclusao(@PathVariable Long id) throws Exception {
 		Reserva reserva = reservaBusiness.get(id);
 		
