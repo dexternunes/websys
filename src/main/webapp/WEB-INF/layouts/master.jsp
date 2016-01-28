@@ -162,18 +162,18 @@
  	    float: initial !important;
  }
 
-/* .minuteselect{ */
-/* 	margin-right: 5px  !important; */
-/* } */
-/* .modal{ */
+.minuteselect{
+	margin-right: 5px  !important;
+}
+.modal{
 
-/*     position: absolute; */
+    position: absolute;
 
-/* } */
+}
 
-/* .modal .modal-body { */
-/*     overflow-y: auto; */
-/* } */
+.modal .modal-body {
+     overflow-y: auto;
+}
 
 
 .select2-selection__clear {

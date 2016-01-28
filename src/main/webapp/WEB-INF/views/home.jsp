@@ -599,7 +599,7 @@
 				$(".antosubmit").show();
 			}
 
-			if ($('#permiteReserva').val() == 1) {
+			if ($('#permiteReserva').val() == 1 || $('#admin').val() == 1) {
 				$('#data_inicio_reserva').daterangepicker(
 						{
 							timePicker : true,
