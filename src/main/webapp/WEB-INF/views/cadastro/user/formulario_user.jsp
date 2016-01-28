@@ -106,14 +106,15 @@
 									</label><form:checkbox style="margin-left:10px; margin-top:10px;" path="ativo" disabled="${readonly}"/>
 								</div>
 
-								<hidden style="margin-left:10px; margin-top:10px;" path="excluido"/>
+								<form:hidden style="margin-left:10px; margin-top:10px;" path="excluido"/>
 								
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="ativo">Foto do usuário 
 									</label>
 									
-									
+									<form:hidden style="margin-left:10px; margin-top:10px;" path="image"/>
+								
 										<input id="fileupload" type="file" name="fileupload"  >
 									
 									<p><div style="color:red" class="jquery_error"></div></p>
