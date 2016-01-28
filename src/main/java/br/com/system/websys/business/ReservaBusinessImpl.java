@@ -33,19 +33,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Autowired
 	public UserBusiness userBusiness;
-<<<<<<< HEAD
 
-=======
-	
 	@Autowired
 	public GrupoBusiness grupoBusiness;
-	
->>>>>>> refs/remotes/origin/master
-	@Autowired
-	public MailBusiness mailBusiness;
 
 	@Autowired
-	private GrupoBusiness grupoBusiness;
+	public MailBusiness mailBusiness;
 
 	@Autowired
 	protected ReservaBusinessImpl(ReservaRepository repository) {
@@ -112,11 +105,28 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Override
 	public List<Reserva> getReservaByTerceiro(Terceiro terceiro) {
-		List<Reserva> reservas = ((ReservaRepository) repository).getGetProprietario(terceiro);
-		if (reservas == null || reservas.size() == 0)
-			return null;
+
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+		status.add(ReservaStatus.EM_USO);
+
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceiro(terceiro, status);
 
 		return reservas;
+	}
+	
+	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro){
+		List<Grupo> grupo = grupoBusiness.findAllByTerceito(terceiro);
+		
+		for(Reserva r : getReservaByTerceiro(terceiro)){
+			if(grupo.contains(r.getGrupo())){
+				grupo.remove(r.getGrupo());
+			}
+		}
+		
+		return grupo;
 	}
 
 	@Override
@@ -191,54 +201,54 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return permiteReservas;
 	}
-	
-	public List<Reserva> getByGruposByStatus(List<Grupo> grupos, List<ReservaStatus> status){
-		List<Reserva> reservas = ((ReservaRepository)repository).getByGruposByStatus(grupos, status);
+
+	public List<Reserva> getByGruposByStatus(List<Grupo> grupos, List<ReservaStatus> status) {
+		List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatus(grupos, status);
 		return reservas;
 	}
-	
+
 	@Override
-	public List<Reserva> getReservasParaExibicao(User user){
-		
+	public List<Reserva> getReservasParaExibicao(User user) {
+
 		List<Grupo> grupos;
-		if(user.getRole().equals(Role.ROLE_COTISTA))
+		if (user.getRole().equals(Role.ROLE_COTISTA))
 			grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
 		else
 			grupos = grupoBusiness.findAllAtivos();
-		
+
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
-		
+
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
-		
-		return this.getByGruposByStatus(grupos,status);
-		
-	}
-	
-	public Reserva getByEvento(ReservaEvento evento){
-		
-		return ((ReservaRepository)repository).getByEvento(evento);
+
+		return this.getByGruposByStatus(grupos, status);
 
 	}
-	
+
+	public Reserva getByEvento(ReservaEvento evento) {
+
+		return ((ReservaRepository) repository).getByEvento(evento);
+
+	}
+
 	@Override
-	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception{
-		
+	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception {
+
 		Reserva reserva = this.getByEvento(reservaEvento);
-		
-		if(reserva.getEventoInicio().equals(reservaEvento)){
+
+		if (reserva.getEventoInicio().equals(reservaEvento)) {
 			reserva.getEventoInicio().setHora(reservaEvento.getHora());
 			reserva.getEventoInicio().setImagens(reservaEvento.getImagens());
 			reserva.setStatus(ReservaStatus.EM_USO);
 		}
-		if(reserva.getEventoFim().equals(reservaEvento)){
+		if (reserva.getEventoFim().equals(reservaEvento)) {
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
 			reserva.getEventoFim().setImagens(reservaEvento.getImagens());
 			reserva.setStatus(ReservaStatus.ENCERRADA);
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 		}
-				
+
 		return this.salvar(reserva);
 
 	}

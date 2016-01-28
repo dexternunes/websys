@@ -24,7 +24,7 @@ import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaValidacaoBusiness;
 import br.com.system.websys.business.UserBusiness;
-import br.com.system.websys.entities.PermiteReservasDTO;
+import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaValidacao;
@@ -102,8 +102,8 @@ public class ReservaController{
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
 
 			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
-					reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
-					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor()));
+					reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
+					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
 			}
 		}
 		return reservas;
@@ -116,21 +116,38 @@ public class ReservaController{
 		ReservasDTO reservas = new ReservasDTO();
 		Reserva reserva = reservaBusiness.get(id);
 		reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
-				reserva.getFimReserva(), false, "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
-				reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor()));
+				reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
+				reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
 		
 		return reservas;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/validaSolicitanteReserva", method = RequestMethod.GET )
-	public PermiteReservasDTO validaSolicitanteReserva() throws Exception {
+	@RequestMapping(value = "/getReservaSolicitante", method = RequestMethod.GET )
+	public ReservasDTO getReservaSolicitante() throws Exception {
 
 		User user = userBusiness.getCurrent();
 
-		PermiteReservasDTO permiteReserva = reservaBusiness.validaSolicitanteReserva(user);
+		ReservasDTO reservas = new ReservasDTO();
+		
+		for(Reserva reserva : reservaBusiness.getReservaByTerceiro(user.getTerceiro())){
+			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getInicioReserva(), 
+					reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
+					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
+		}
 
-		return permiteReserva;
+		return reservas;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getGruposSolicitante", method = RequestMethod.GET )
+	public List<Grupo> getGruposSolicitante() throws Exception {
+
+		User user = userBusiness.getCurrent();
+
+		List<Grupo> grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
+		
+		return grupos;
 	}
 	
 	@ResponseBody

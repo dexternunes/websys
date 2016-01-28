@@ -62,7 +62,8 @@
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="display:none !important">
-						<label id="lblPermiteReserva"></label></div>
+						Voce possui uma reserva em aberto. Somente poderá cadastrar uma
+						nova reserva após a finalização da atual.</div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
@@ -87,7 +88,7 @@
 					action="${pageContext.request.contextPath}/reserva/salvar">
 					<form:hidden path="id" id="id" />
 					<input type="hidden" value="${user.nome}" id="nome_terceiro">
-					<input type="hidden" value="${proprietarioReserva}" id="proprietarioReserva" />
+					<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
 					<input type="hidden" value="${admin}" id="admin" />
 					<input type="hidden" value="${marinheiro}" id="marinheiro" />
 					<div class="modal-body">
@@ -104,10 +105,10 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Grupo</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<form:select path="grupo" multiple="false"
+									<form:select path="grupo" multiple="false" id="grupo"
 										cssClass="select2_multiple form-control">
-										<form:options items="${listaReservaGrupos}" itemValue="id"
-											itemLabel="descricao"></form:options>
+ 										<form:options items="${listaReservaGrupos}" itemValue="id"
+  											itemLabel="descricao"></form:options>
 									</form:select>
 								</div>
 							</div>
@@ -262,45 +263,39 @@
 			}
 		});
 		
-		var permiteReservaJSON = [];
+		var reservaSolicitanteJSON = [];
 		
 		$.ajax({
-			url: "${pageContext.request.contextPath}/reserva/validaSolicitanteReserva",
+			url: "${pageContext.request.contextPath}/reserva/getReservaSolicitante",
 			dataType:"json",
 			contentType:"application/json; charset=utf-8",
 			type:"GET",
 			async:false,
 			success:function(data){
-				permiteReservaJSON = data.permiteReservaDTO;
-				alert(permiteReservaJSON.length);
+				reservaSolicitanteJSON = data.reservas;
 			},
 			error:function(request, status, error){
 				alert(error);
 			}			
 		});
 		
-		var seleciona;
-		var edita;
+		var gruposSolicitante = [];
 		
-		if (permiteReservaJSON.length > 0) {
-			
-			permiteReservaJSON.forEach(function(obj){
-				if(obj.permiteReserva){
-					
-				}
-			});
-			
-			edita = true;
-			seleciona = false;
-			$('#possuiReserva').show();
-		} else {
-			edita = false;
-			seleciona = true;
-			$('#possuiReserva').hide();
-		}
+		$.ajax({
+			url: "${pageContext.request.contextPath}/reserva/getGruposSolicitante",
+			dataType:"json",
+			contentType:"application/json; charset=utf-8",
+			type:"GET",
+			async:false,
+			success:function(data){
+				gruposSolicitante = data;
+			},
+			error:function(request, status, error){
+				alert(error);
+			}			
+		});
 		
-		$(window).load(function() {
-			
+		$(window).load(function() {			
 			$('#dia_inteiro').click(function(){
 				if($('#dia_inteiro').is(':checked')){
 					$('#div_dia_inteiro').show();
@@ -314,6 +309,19 @@
 				}
 			});
 			
+			var seleciona;
+			var edita;
+			
+			if ($('#permiteReserva').val() != 1) {
+				edita = true;
+				seleciona = false;
+				$('#possuiReserva').show();
+			} else {
+				edita = false;
+				seleciona = true;
+				$('#possuiReserva').hide();
+			}
+
 			var calendar = $('#calendar').fullCalendar({
 				header : {
 					left : 'prev,next today',
@@ -429,16 +437,32 @@
 						}
 				});
 
-				if ($('#proprietarioReserva').val() != calEvent._id && $('#admin').val() != 1) {
-					$('#data_inicio_reserva').attr("disabled", true);
-					$('#data_fim_reserva').attr("disabled", true);
-					$('#id').attr("disabled", true);
-					$('#utilizaMarinheiro').attr("disabled", true);
-					$('#obs').attr("disabled", true);
-					$('#status').attr("disabled", true);
-					$('#grupo').attr("disabled", true);
-					$('.exclui_reserva').hide();
-					$(".antosubmit").hide();
+				if ($('#permiteReserva').val() == 1 && $('#admin').val() != 1){
+					reservaSolicitanteJSON.forEach(function(obj){
+						if(obj.id == calEvent._id){
+							$('#data_inicio_reserva').attr("disabled", false);
+							$('#data_fim_reserva').attr("disabled", false);
+							$('#id').attr("disabled", false);
+							$('#utilizaMarinheiro').attr("disabled", false);
+							$('#obs').attr("disabled", false);
+							$('#status').attr("disabled", true);
+							$('#grupo').attr("disabled", true);
+							$('#grupo option').remove();
+							$('.exclui_reserva').show();
+							$(".antosubmit").show();
+						}
+						else{
+							$('#data_inicio_reserva').attr("disabled", true);
+							$('#data_fim_reserva').attr("disabled", true);
+							$('#id').attr("disabled", true);
+							$('#utilizaMarinheiro').attr("disabled", true);
+							$('#obs').attr("disabled", true);
+							$('#status').attr("disabled", true);
+							$('#grupo').attr("disabled", true);
+							$('.exclui_reserva').hide();
+							$(".antosubmit").hide();
+						}
+					});
 				}
 
 				if ($('#admin').val() == 1 || $('#marinheiro').val() == 1) {

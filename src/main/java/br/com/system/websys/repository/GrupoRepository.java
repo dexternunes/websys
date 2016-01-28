@@ -20,6 +20,5 @@ public interface GrupoRepository extends RepositoryBaseRoot<Grupo> {
 
 	@Query("SELECT g FROM Grupo g JOIN g.produtos p WHERE p = :produto and g.ativo = 1")
 	List<Grupo> findByProduto(@Param("produto") Produto produto);
-	
 }
 

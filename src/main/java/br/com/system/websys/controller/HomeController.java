@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import br.com.system.websys.business.GrupoBusiness;
+import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Reserva;
@@ -28,6 +29,9 @@ public class HomeController {
 	@Autowired
 	private GrupoBusiness grupoBusiness;
 	
+	@Autowired
+	private ReservaBusiness reservaBusiness;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String root() {
 		return "redirect:/home";
@@ -37,8 +41,22 @@ public class HomeController {
 	public String home(HttpServletRequest request, Locale locale, Model model, Reserva reserva) {
 
 		User user = userBusiness.getCurrent();
-		List<Grupo> grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
-
+		List<Grupo> grupos;
+		
+		if(user.getRole().equals(Role.ROLE_COTISTA)){
+			grupos = reservaBusiness.getGrupoPermiteReserva(user.getTerceiro());
+			
+			if(grupos.size() > 0)
+				model.addAttribute("permiteReserva", 1);
+			else{
+				model.addAttribute("permiteReserva", 0);
+			}
+		}
+		else
+		{
+			grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
+		}
+		
 		model.addAttribute("listaReservaGrupos", grupos);
 		model.addAttribute("listaReservaStatus", ReservaStatus.values());
 		
