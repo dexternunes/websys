@@ -158,23 +158,13 @@
     
 <style>
 .ranges{
- 	    width: initial !important;
- 	    float: initial !important;
+    width: initial !important;
+    float: initial !important;
  }
 
 .minuteselect{
 	margin-right: 5px  !important;
 }
-.modal{
-
-    position: absolute;
-
-}
-
-.modal .modal-body {
-     overflow-y: auto;
-}
-
 
 .select2-selection__clear {
 	/* CLEAR DO SELECT */
