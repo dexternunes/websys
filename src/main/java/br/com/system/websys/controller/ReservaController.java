@@ -80,6 +80,7 @@ public class ReservaController{
 				reserva.setEventoInicio(reservaBD.getEventoInicio());
 				reserva.setEventoFim(reservaBD.getEventoFim());
 				reserva.setSolicitante(reservaBD.getSolicitante());
+				reserva.setGrupo(reservaBD.getGrupo());
 			}
 			reserva = reservaBusiness.salvar(reserva);
 			reservaBusiness.sendEmailValidacao(reserva, server);
