@@ -1,7 +1,5 @@
 package br.com.system.websys.entities;
 
-import java.beans.Transient;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Transient;
 
 @Entity 
 @Table(name="user")
@@ -41,6 +40,9 @@ public class User extends EntityBaseRoot {
 	private Boolean ativo = true;
 	
 	private Boolean excluido = false;
+
+	private String image;
+	
 	
 	@Id
 	@GeneratedValue
@@ -117,6 +119,14 @@ public class User extends EntityBaseRoot {
 
 	public void setExcluido(Boolean excluido) {
 		this.excluido = excluido;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 			
 }

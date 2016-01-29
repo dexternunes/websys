@@ -7,6 +7,8 @@ public class UserDTO {
 	private Long idTerceiro;
 	
 	private Long idUser;
+	
+	private String imagemURL;
 
 	public String getNome() {
 		return nome;
@@ -30,6 +32,14 @@ public class UserDTO {
 
 	public void setIdUser(Long idUser) {
 		this.idUser = idUser;
+	}
+
+	public String getImagemURL() {
+		return imagemURL;
+	}
+
+	public void setImagemURL(String imagemURL) {
+		this.imagemURL = imagemURL;
 	}
 
 	

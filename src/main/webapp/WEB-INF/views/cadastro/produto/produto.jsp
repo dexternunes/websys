@@ -9,7 +9,7 @@
 
 <html>
 <head>
-<title>Produtos Cadastrados</title>
+<title>Embarcações Cadastradas</title>
 </head>
 <body>
 	<div class="row">
@@ -19,14 +19,14 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<div class="x_panel">
 					<div class="x_title">
-						<h2>Produtos Cadastrados</h2>
+						<h2>Embarcações Cadastradas</h2>
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
 						<div class="control-group">
 							<a type="button" class="btn btn-primary"
 								href="${pageContext.request.contextPath}/produtos/cadastro">Cadastrar
-								Produtos</a>
+								Embarcação</a>
 						</div>
 						<div class="control-group">
 							<table id="entities"

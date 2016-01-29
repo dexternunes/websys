@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.system.websys.business.ImagemBusiness;
-import br.com.system.websys.business.MailBusiness;
+import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.ReservaEvento;
@@ -31,17 +31,8 @@ public class ReservaEventoController{
 	@Autowired
 	private ReservaEventoBusiness reservaEventoBusiness;
 	
-	@Autowired 
-	private MailBusiness mailBusiness;
-	
-	
-	@RequestMapping(value = "/testeEmail", method = RequestMethod.GET)
-	public String testeEmail(Model model, HttpServletRequest request) throws Exception {
-		
-		mailBusiness.sendMail("e2a.system@gmail.com", new String[]{"dex.luiz@gmail.com", "ailtongjunior@hotmail.com", "erickmob@gmail.com"}, "E-mail Teste", "Este é um e-mail teste do Prime Share System");
-		
-		return "reservaEvento";
-	}
+	@Autowired
+	private ReservaBusiness reservaBusiness;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String root(Model model, HttpServletRequest request) throws Exception {
@@ -106,28 +97,17 @@ public class ReservaEventoController{
 	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
 			BindingResult result, Model model) throws Exception {
 
-		ReservaEvento reservaEventoBD = reservaEventoBusiness.get(reservaEvento.getId());
-		
-		reservaEvento.setImagens(reservaEventoBD.getImagens());		
-		
 		if (result.hasErrors()) {
-
-			model.addAttribute("reservaEvento", reservaEvento);
-			
-			return "reservaEvento";
+			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
-
+	
 		try {
-			reservaEventoBusiness.salvar(reservaEvento);
+			reservaBusiness.adicionaReservaEvento(reservaEvento);
 		} catch (Exception e) {
-			
-			model.addAttribute("reservaEvento", reservaEvento);
-			model.addAttribute("message", e.getMessage());
-			
-			return "reservaEvento";
+			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
 
-		return "reservaEvento";
+		return "redirect:/home";
 	}
 		
 }

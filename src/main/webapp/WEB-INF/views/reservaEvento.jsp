@@ -34,19 +34,13 @@
 							<div class="col-md-2 col-sm-2">
 								<form:input path="hora" cssClass="form-control col-md-2"/>horas
 							</div>
-							<div class="col-md-2 col-sm-2">
-								<form:input path="minuto" cssClass="form-control col-md-2"/>minutos
-							</div>
-							<div class="col-md-2 col-sm-2">
-								<form:input path="segundo" cssClass="form-control col-md-2"/>segundos
-							</div>
 						</div>
 						
 						
 					</form:form>
 			    
 		        	<form name="form-product-id" id="main-form">
-						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg;image/gif;image/bmp;image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=1&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
+						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg;image/gif;image/bmp;image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=${reservaEvento.id}&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
 					</form>	
 				
 					<p><div style="color:red" class="jquery_error"></div></p>
@@ -130,10 +124,10 @@
 			var upload = $('#fileupload').fileupload({
 				dropZone : $('#dropbox'),
 				pasteZone : $(document),
-				acceptFileTypes : /(\.|\/)(gif|jpe?g|png)$/i ,
+				acceptFileTypes : /(\.|\/)(gif|jpg|jpeg|png)$/i ,
 				done : function(e, data) {
 					$("div.active:not(.progress)").html(data.result);
-					$("#reservaEvento").submit();
+					window.location = "${pageContext.request.contextPath}/reservaEvento/${reservaEvento.id}";
 				},
 				change : function(e, data) {
 

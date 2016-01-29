@@ -1,5 +1,6 @@
 package br.com.system.websys.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.DefinirNovaSenhaDTO;
+import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.RecuperarSenhaDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
@@ -33,6 +38,9 @@ public class UserController{
 	@Autowired
 	private TerceiroBusiness terceiroBusiness;
 
+	@Autowired
+	private ImagemBusiness imagemBusiness;
+	
 	//Quando clicado no menu.
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
@@ -43,7 +51,17 @@ public class UserController{
 			return "redirect:/home";
 		}
 		
-		model.addAttribute("usersList", userBusiness.getAll());
+		List<Role> roles = new ArrayList<Role>();
+		
+		if(user.getRole().equals(Role.ROLE_ROOT)){
+			roles.add(Role.ROLE_ROOT);
+		}
+		
+		roles.add(Role.ROLE_ADMIN);
+		roles.add(Role.ROLE_COTISTA);
+		roles.add(Role.ROLE_MARINHEIRO);
+		
+		model.addAttribute("usersList", userBusiness.getByRoles(roles));
 		return "cadastro/user/user";
 	}
 
@@ -153,13 +171,16 @@ public class UserController{
 		return "cadastro/user/formulario_user";
 	}
 	
-	@RequestMapping(value = "/cadastro/salvar", method = RequestMethod.POST)
-	public String salvarBase(@Valid @ModelAttribute("usuario") User usuario,
-			BindingResult result, Model model) throws Exception {
+	@RequestMapping(value = "/cadastro/salvar",  method = RequestMethod.POST)
+	public String salvarBase(@RequestParam("fileupload") MultipartFile fileupload, @Valid @ModelAttribute("usuario") User usuario, 
+			BindingResult result, Model model, HttpServletRequest request) throws Exception {
 
 		if (result.hasErrors()) {
-			addAtributes(model, usuario);
-			return "cadastro/user/formulario_user";
+			if(!(usuario.getId() != null && result.getAllErrors().size() == 1 && result.getAllErrors().get(0).toString().contains("NotEmpty.senha")))
+			{
+				addAtributes(model, usuario);
+				return "cadastro/user/formulario_user";
+			}
 		}
 
 		try {
@@ -175,8 +196,27 @@ public class UserController{
 				
 				return "cadastro/user/formulario_user";
 			}
+			
+			if(fileupload != null && fileupload.getSize() > 0){
+				if(!(fileupload.getContentType().equals("image/png")
+					|| fileupload.getContentType().equals("image/bmp")
+					|| fileupload.getContentType().equals("image/gif")
+					|| fileupload.getContentType().equals("image/jpeg")))
+					throw new Exception("Formato da imagem invalido");
+			
 
+			
+				String server;
+				if(request.getServerPort() == 80)
+					server = request.getServerName();
+				else
+					server = request.getServerName() + ":" + request.getServerPort();
+				
+				Imagem imagem = imagemBusiness.upload(fileupload, server);
+				userBusiness.addImagem(usuario, imagem);
+			}
 			userBusiness.salvar(usuario);
+			
 		} catch (Exception e) {
 
 			addAtributes(model, usuario);
@@ -191,9 +231,20 @@ public class UserController{
 	public void addAtributes(Model model, User usuario){
 		
 		User userCurrent = userBusiness.getCurrent();
+		
+		List<Role> roles = new ArrayList<Role>();
+		
+		if(userCurrent.getRole().equals(Role.ROLE_ROOT)){
+			roles.add(Role.ROLE_ROOT);
+		}
+		
+		roles.add(Role.ROLE_ADMIN);
+		roles.add(Role.ROLE_COTISTA);
+		roles.add(Role.ROLE_MARINHEIRO);
+		
 		List<Terceiro> terceiroList = terceiroBusiness.getAll();
 		model.addAttribute("usuario", usuario);
-		model.addAttribute("listaUserRole", Role.values());
+		model.addAttribute("listaUserRole", roles);
 		model.addAttribute("listaTerceiros", terceiroList);
 		if(userCurrent.getRole().equals(Role.ROLE_COTISTA) || userCurrent.getRole().equals(Role.ROLE_MARINHEIRO))
 			model.addAttribute("readonly", true);

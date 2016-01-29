@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
 	prefix="decorator"%>
@@ -14,11 +13,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+
+
+
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Prime Share Club</title>
+
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/resources/images/favicon.png">
+<!--[if IE]><link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/favicon.ico""/><![endif]-->
 
 <!-- Bootstrap core CSS -->
 <link
@@ -152,6 +157,25 @@
         <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
     
 <style>
+.ranges{
+ 	    width: initial !important;
+ 	    float: initial !important;
+ }
+
+.minuteselect{
+	margin-right: 5px  !important;
+}
+.modal{
+
+    position: absolute;
+
+}
+
+.modal .modal-body {
+     overflow-y: auto;
+}
+
+
 .select2-selection__clear {
 	/* CLEAR DO SELECT */
 	display: none !important;
@@ -344,7 +368,6 @@ $(document).ready(function() {
     });
     $(".select2_group").select2({});
     $(".select2_multiple").select2({
-        maximumSelectionLength: 4,
         placeholder: "With Max Selection limit 4",
         allowClear: true
     });
@@ -357,7 +380,7 @@ $(document).ready(function() {
 			<div class="col-md-3 left_col">
 				<div class="left_col scroll-view">
 					<div class="navbar nav_title" style="border: 0;">
-						<a href="index.html" class="site_title"><img
+						<a href="<c:url value="/home" />" class="site_title"><img
 							src="${pageContext.request.contextPath}/resources/images/prime_icon.svg" /></a>
 					</div>
 					<div class="clearfix"></div>
@@ -365,7 +388,7 @@ $(document).ready(function() {
 					<div class="profile">
 						<div class="profile_pic">
 							<img
-								src="${pageContext.request.contextPath}/resources/images/user.png"
+								src="${user.imagemURL}"
 								alt="..." class="img-circle profile_img">
 						</div>
 						<div class="profile_info">
@@ -380,28 +403,28 @@ $(document).ready(function() {
 							<div>&nbsp</div>
 							<ul class="nav side-menu">
 								<sec:authorize url="/home">
-									<li><a><i class="fa fa-home"></i> Home <span
+									<li><a><i class="fa fa-home"></i> Reservas <span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/home" />">Home</a></li>
+											<li><a href="<c:url value="/home" />">Calend√°rio</a></li>
 										</ul></li>
 								</sec:authorize>
 								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu" style="display: none">
 										<sec:authorize url="/terceiro/cadastro">
-											<li><a href="<c:url value="/terceiro/" />">Terceiro</a></li>
+											<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
 										</sec:authorize>
 										<sec:authorize url="/usuarios/cadastro">
-											<li><a href="<c:url value="/usuarios/" />">Usuarios</a></li>
+											<li><a href="<c:url value="/usuarios/" />">Usu√°rios</a></li>
 										</sec:authorize>	
 										<sec:authorize url="/produtos">
-											<li><a href="<c:url value="/produtos/" />">Produtos</a></li>
+											<li><a href="<c:url value="/produtos/" />">Embarca√ß√µes</a></li>
 										</sec:authorize>
 										<sec:authorize url="/grupo">
 											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
 										</sec:authorize>
 										<sec:authorize url="/manutencao">
-											<li><a href="<c:url value="/manutencao/" />">ManutenÁ„o</a></li>
+											<li><a href="<c:url value="/manutencao/" />">Manuten√ß√£o</a></li>
 										</sec:authorize>
 									</ul>
 								</li>
@@ -411,7 +434,7 @@ $(document).ready(function() {
 									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
 											class="fa fa-chevron-down"></span></a>
 										<ul class="nav child_menu" style="display: none">
-											<li><a href="<c:url value="/faturamento/historico/" />">RelatÛrio ManutenÁ„o/Horas</a></li>
+											<li><a href="<c:url value="/faturamento/historico/" />">Relat√≥rio Manuten√ß√£o/Horas</a></li>
 										</ul></li>
 								</sec:authorize>
 								
@@ -449,13 +472,13 @@ $(document).ready(function() {
 							<li class=""><a href="javascript:;"
 								class="user-profile dropdown-toggle" data-toggle="dropdown"
 								aria-expanded="false"> <img
-									src="${pageContext.request.contextPath}/resources/images/user.png"
+									src="${user.imagemURL}"
 									alt="">${user.nome} <span class=" fa fa-angle-down"></span>
 							</a>
 								<ul
 									class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Perfil</a></li>
-									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Alterar Senha</a></li>
+									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Perfil</a></li>
+									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Cadastro</a></li>
 									<li><a href="<c:url value="/auth/logout" />"><i class="fa fa-sign-out pull-right"></i>Sair</a></li>
 								</ul></li>
 						</ul>
