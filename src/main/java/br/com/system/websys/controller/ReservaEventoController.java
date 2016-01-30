@@ -1,6 +1,7 @@
 package br.com.system.websys.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.StyledEditorKit.BoldAction;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,10 +94,15 @@ public class ReservaEventoController{
 		return "reservaEvento";
 	}
 	
-	@RequestMapping(value = "/salvar", method = RequestMethod.POST)
-	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
+	@RequestMapping(value = "/salvar/{finaliza}", method = RequestMethod.POST)
+	public String salvarBase(@PathVariable("finaliza") Boolean finaliza, @Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
 			BindingResult result, Model model) throws Exception {
 
+		if(!finaliza){
+			//reservaEventoBusiness.salvar(reservaEvento);
+			return "redirect:/reservaEvento/"+reservaEvento.getId();
+		}
+		
 		if (result.hasErrors()) {
 			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
