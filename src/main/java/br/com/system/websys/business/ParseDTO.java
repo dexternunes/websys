@@ -3,6 +3,7 @@ package br.com.system.websys.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.system.websys.entities.Grupo;
@@ -17,6 +18,18 @@ import br.com.system.websys.entities.TerceiroDTO;
 @Component
 public class ParseDTO{
 
+	@Autowired
+	private ReservaBusiness reservaBusiness;
+	
+	@Autowired
+	private ReservaEventoBusiness reservaEventoBusiness;
+	
+	@Autowired
+	private GrupoBusiness grupoBusiness;
+	
+	@Autowired
+	private TerceiroBusiness terceiroBusiness;
+	
 	public List<ReservaDTO> parseReserva2ReservaDTO(List<Reserva> reservas){
 		List<ReservaDTO> reservasDTO = new ArrayList<ReservaDTO>();
 		for(Reserva reserva : reservas){
@@ -41,6 +54,43 @@ public class ParseDTO{
 				parseReservaEnvento2ReservaEnventoDTO(reserva.getEventoFim()), 
 				new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()));
 		
+	}
+	
+	public Reserva parseReservaDTO2Reserva(ReservaDTO reservaDTO) throws Exception{
+		
+		Reserva reserva = null; 		
+		
+		if(reservaDTO.getId() != null)
+			reserva = reservaBusiness.get(reservaDTO.getId());
+
+		if(reserva == null)
+			reserva = new Reserva();
+		
+		reserva.setId(reservaDTO.getId());
+		reserva.setAllDay(reservaDTO.getAllDay());
+		reserva.setFimReserva(reservaDTO.getEnd());
+		reserva.setInicioReserva(reservaDTO.getStart());
+		reserva.setObs(reservaDTO.getObs());
+		reserva.setStatus(reservaDTO.getStatus());
+		reserva.setUtilizaMarinheiro(reservaDTO.getUtilizaMarinheiro());
+		
+		if(reservaDTO.getEventoInicio() != null)
+			reserva.setEventoInicio(reservaEventoBusiness.get(reservaDTO.getEventoInicio().getId()));
+		if(reserva.getEventoInicio() == null)
+			reserva.setEventoInicio(new ReservaEvento());
+		
+		if(reservaDTO.getEventoFim() != null)
+			reserva.setEventoFim(reservaEventoBusiness.get(reservaDTO.getEventoFim().getId()));
+		if(reserva.getEventoFim() == null)
+			reserva.setEventoFim(new ReservaEvento());
+
+		if(reservaDTO.getGrupo() != null)
+			reserva.setGrupo(grupoBusiness.get(reservaDTO.getGrupo().getId()));
+		
+		if(reservaDTO.getTerceiro() != null)
+			reserva.setSolicitante(terceiroBusiness.get(reservaDTO.getTerceiro().getId()));
+				
+		return reserva;
 	}
 	
 	public List<TerceiroDTO> parseTerceiro2TerceiroDTO(List<Terceiro> terceiros){
@@ -80,5 +130,7 @@ public class ParseDTO{
 	}
 
 	
+	
 
+	
 }
