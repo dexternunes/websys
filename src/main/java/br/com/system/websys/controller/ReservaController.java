@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +97,7 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/api/salvar", method = RequestMethod.POST)
+	@RequestMapping(value="/api/salvar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
 	public String salvar(HttpServletRequest request, @ModelAttribute("reserva") ReservaDTO reserva,
 			BindingResult result, RedirectAttributes attr) throws Exception {
 

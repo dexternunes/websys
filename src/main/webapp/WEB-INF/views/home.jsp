@@ -397,6 +397,7 @@
 			retorna do ajax
 // 			var dataAllDay = new Date(moment().format("YYYY/MM/DD")).addDays(2);
 
+			esse fica aqui
 			if ($('#admin').val() == 1) {
 				$('#div_status').show();
 			}
@@ -439,7 +440,7 @@
 				var reservaJSON = [];
 
 				reservasJSON.forEach(function(obj) {
-					if ((obj.id == calEvent._id) && (obj.idTerceiro == $('#idTerceiro').val() || $('#admin').val() == 1)) {
+					if ((obj.id == calEvent._id) && (obj.terceiro.id == $('#idTerceiro').val() || $('#admin').val() == 1)) {
 						reservaJSON[0] = obj;
 					}
 				});
