@@ -67,7 +67,13 @@
 					<br>
 					<div id='calendar'></div>
 					<div class="clearfix"></div>
-					<div class="clearfix"></div>
+					<div>
+						<label>[S] -> Solicitação.</label>
+						<br>
+						<label>[R] -> Reserva.</label>
+						<br>
+						<label>[E] -> Em uso.</label>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -108,7 +114,7 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Grupo</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<select id="grupoExibicao" Class="select2 form-control">
+									<select id="grupoExibicao" class="select2 form-control">
 									</select>
 								</div>
 							</div>
@@ -345,9 +351,6 @@
 				},
 				editable : edita,
 				events : reservasJSON,
-				eventRender: function(event, element) {
-			        event.tip = 'Opa';
-			    }
 			});
 		});
 
@@ -369,17 +372,30 @@
 			var minDateReserva;
 			
 			if(calEvent){
-				data_inicio = moment(calEvent.start).format("YYYY/MM/DD HH:mm");
-				data_fim = moment(calEvent.end).format("YYYY/MM/DD HH:mm");
-				minDateReserva = new Date(moment(calEvent.start).format("YYYY/MM/DD"));
+				CarregaReserva(calEvent._id);
+				retorna do ajax
+// 				data_inicio = moment(calEvent.start).format("YYYY/MM/DD HH:mm");
+// 				data_fim = moment(calEvent.end).format("YYYY/MM/DD HH:mm");
+// 				minDateReserva = new Date(moment(calEvent.start).format("YYYY/MM/DD HH:mm"));
 			}
 			else{
-				data_inicio = moment(start).format("YYYY/MM/DD 06:00");
-				data_fim = data_inicio;
-				minDateReserva = new Date(moment(start).format("YYYY/MM/DD"));
+				CarregaReserva(0);
+				
+				retorna do ajax que
+// 				var calculoDifHoraInicio = (new Date().getMinutes() % 15);
+				
+// 				if(calculoDifHoraInicio == 0)
+// 					data_inicio = new Date(moment().format("YYYY/MM/DD HH:mm")).addMinutes(120);
+// 				else
+// 					data_inicio = new Date(moment().format("YYYY/MM/DD HH:mm")).addMinutes((15 - calculoDifHoraInicio) + 120);
+				
+// 				data_fim = data_inicio;
+				
+// 				minDateReserva = data_inicio;
 			}
 			
-			var dataAllDay = new Date(moment().format("YYYY/MM/DD")).addDays(2);
+			retorna do ajax
+// 			var dataAllDay = new Date(moment().format("YYYY/MM/DD")).addDays(2);
 
 			if ($('#admin').val() == 1) {
 				$('#div_status').show();
@@ -450,7 +466,7 @@
 								calender_style : "picker_4",
 								parentEl : '#CalenderModal',
 								startDate : data_inicio,
-								minDate:minDateReserva,
+								minDate: minDateReserva,
 								singleDatePicker : true,
 								locale : {
 									applyLabel : 'Ok',
@@ -487,6 +503,15 @@
 										'Novembro', 'Dezembro' ]
 							}
 						});
+						$('#data_fim_reserva').on('apply.daterangepicker', function(ev, picker){
+							var inicio = moment(new Date(moment($('#data_inicio_reserva').val()).format("YYYY/MM/DD")));
+							var hoje = moment(new Date(moment().format("YYYY/MM/DD")));
+							
+							if((moment(inicio).diff(hoje, 'days')) < 7){
+								alert('Reservas com mais de um dia, deverão ser feitas com 7 dias de antecedência!');
+								return false;
+							}
+						});						
 					});
 				}
 				else {
@@ -502,8 +527,8 @@
 
 				$('#myModalLabel').text('Editar Reserva');
 				$('#title').val(calEvent.title);
-				$('#data_inicio_reserva').val(data_inicio);
-				$('#data_fim_reserva').val(data_fim);
+// 				$('#data_inicio_reserva').val(data_inicio);
+// 				$('#data_fim_reserva').val(data_fim);
 				$('#id').val(calEvent.id);
 				$('#utilizaMarinheiro').prop("checked", calEvent.utilizaMarinheiro);
 				$('#obs').val(calEvent.obs);
@@ -512,7 +537,6 @@
 
 				$('.exclui_reserva').click(
 						function() {
-							var permiteExclusao = [];
 							$.ajax({
 									url : "${pageContext.request.contextPath}/reserva/validaExclusao/"+ reservaJSON[0].id,
 									dataType : "json",
@@ -520,7 +544,22 @@
 									type : 'GET',
 									async : false,
 									success : function(data) {
-										permiteExclusao = data;
+										$.ajax({
+											url : "${pageContext.request.contextPath}/reserva/api/remove",
+											type : "POST",
+											contentType : "application/json; charset=utf-8",
+											data : JSON.stringify(calEvent._id),
+											async : false,
+											cache : false,
+											processData : false,
+											success : function(resposeJsonObject) {
+												$('#calendar').fullCalendar('removeEvents',	calEvent.id);
+												document.location.reload();
+											},
+											error : function(error) {
+												alert('erro:' + error);
+											}
+										});
 									},
 									error : function(request,
 											status, error) {
@@ -528,25 +567,6 @@
 										//alert("error" + error);
 									}
 								});
-
-					if (permiteExclusao) {
-						$.ajax({
-								url : "${pageContext.request.contextPath}/reserva/api/remove",
-								type : "POST",
-								contentType : "application/json; charset=utf-8",
-								data : JSON.stringify(calEvent._id),
-								async : false,
-								cache : false,
-								processData : false,
-								success : function(resposeJsonObject) {
-									$('#calendar').fullCalendar('removeEvents',	calEvent.id);
-								},
-								error : function(error) {
-									alert('erro:' + error);
-								}
-							});
-						document.location.reload();
-					}
 				});
 
 				if ($('#admin').val() == 1 || $('#marinheiro').val() == 1) {
@@ -597,7 +617,7 @@
 				
 				$('#divDiaInteiro').show();
 
-				$('#data_inicio_reserva').val(data_inicio);
+// 				$('#data_inicio_reserva').val(data_inicio);
 				$('#id').val('');
 				$('#utilizaMarinheiro').prop("checked", false);
 				$('#obs').val('');
@@ -618,9 +638,34 @@
 				$(".antosubmit").show();
 			}
 
-			if ($('#permiteReserva').val() == 1 || $('#admin').val() == 1) {				
+			if ($('#permiteReserva').val() == 1 || $('#admin').val() == 1) {
+				$('#data_inicio_reserva').daterangepicker(
+						{
+							timePicker : true,
+							timePickerIncrement : 15,
+							timePicker12Hour : false,
+							format : 'YYYY/MM/DD HH:mm',
+							timezone : 'local',
+							calender_style : "picker_4",
+							parentEl : '#CalenderModal',
+							startDate : data_inicio,
+							minDate: minDateReserva,
+							singleDatePicker : true,
+							locale : {
+								applyLabel : 'Ok',
+								cancelLabel : 'Cancelar',
+								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sab' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ]
+							}
+						});
 				$('#data_inicio_reserva').on('apply.daterangepicker', function(ev, picker) {
-					minDateReserva = picker.startDate.format('YYYY-MM-DD');
+					
+					minDateReserva = new Date(moment($('#data_inicio_reserva').val()).format('YYYY/MM/DD HH:mm')).addHours(1);
+
 					$('#data_fim_reserva').daterangepicker({
 						singleDatePicker : true,
 						timePicker : true,
@@ -643,33 +688,23 @@
 									'Novembro', 'Dezembro' ]
 						}
 					});
-				});
-				$('#data_inicio_reserva').daterangepicker(
-						{
-							timePicker : true,
-							timePickerIncrement : 15,
-							timePicker12Hour : false,
-							format : 'YYYY/MM/DD HH:mm',
-							timezone : 'local',
-							calender_style : "picker_4",
-							parentEl : '#CalenderModal',
-							startDate : data_inicio,
-							onSelect: function(date) {
-						        alert(date);
-						     },
-							minDate: minDateReserva,
-							singleDatePicker : true,
-							locale : {
-								applyLabel : 'Ok',
-								cancelLabel : 'Cancelar',
-								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
-										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-										'Abril', 'Maio', 'Junho', 'Julho',
-										'Agosto', 'Setembro', 'Outubro',
-										'Novembro', 'Dezembro' ]
+					
+// 					var selectHoraFim = $(".hourselect ,#data_fim_reserva")[1];
+// 					selectHoraFim.options.each(function(){alert($(this));});
+					
+					$('#data_fim_reserva').on('apply.daterangepicker', function(ev, picker){
+						var inicio = new Date(moment($('#data_inicio_reserva').val()).format("YYYY/MM/DD HH:mm"));
+						var fim = new Date(moment($('#data_fim_reserva').val()).format("YYYY/MM/DD HH:mm"));
+						var hoje = new Date(moment().format("YYYY/MM/DD"));
+						
+						if(fim.getDate() != inicio.getDate()){
+							if((moment(inicio).format("YYYY/MM/DD").diff(hoje, 'days')) < 7){
+								alert('Reservas com mais de um dia, deverão ser feitas com 7 dias de antecedência!');
+								return false;
 							}
-						});
+						}
+					});
+				});
 				}
 
 			$('#reserva_evento').click();
@@ -680,16 +715,6 @@
 				categoryClass = $("#event_type").val();
 				
 				if (title) {
-					var inicio = moment(new Date(moment($('#data_inicio_reserva').val()).format("YYYY/MM/DD")));
-					var fim = moment(new Date(moment($('#data_fim_reserva').val()).format("YYYY/MM/DD")));
-					var hoje = moment(new Date(moment().format("YYYY/MM/DD")));
-					
-					if((moment(inicio).diff(hoje, 'days')) < 7){
-						alert('Para reservas com mais de um dia, é necessário solicitar com no mínimo 7 dias de antecedencia!');
-						return false;
-					}
-					
-					
 					if ($('#diaTodo').is(':checked')) {
 						$('#data_inicio_reserva').val($('#reserva_dia_todo').val() + ' 06:00' );
 						$('#data_fim_reserva').val($('#reserva_dia_todo').val() + ' 20:00' );
