@@ -249,4 +249,22 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return this.salvar(reserva);
 	}
+
+	@Override
+	public List<Reserva> getByStatus(List<ReservaStatus> status) {
+		return ((ReservaRepository) repository).getByStatus(status);
+	}
+	
+	public Boolean validaReserva(Reserva reserva){
+		return null;
+	}
+	
+	public Boolean validaReservaDiaUnico(Reserva reserva){
+		return null;
+	}
+	
+	public Boolean validaReservaDiasConsecutivos(Reserva reserva){
+		return null;
+	}
+	
 }

@@ -9,6 +9,7 @@ import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
+import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.repository.ReservaRepository;
@@ -39,5 +40,6 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	
 	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro);
 
+	public List<Reserva> getByStatus(List<ReservaStatus> status);
 
 }

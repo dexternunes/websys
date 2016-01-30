@@ -5,58 +5,48 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class ReservaDTO  implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ReservaDTO implements Serializable {
 
 	private static final long serialVersionUID = 8631801890193962830L;
-	
-	private Long id;
-	
-	private String title;
-	
-	private Long idTerceiro;
-	
-	private Date start;
-	
-	private Date end;
-	
-	private Boolean allDay;
-	
-	private String url;
-	
-	private Boolean utilizaMarinheiro = false;
-	
-	private String obs;
-	
-	private ReservaStatus status;
-	
-	private ReservaEvento eventoInicio;
-	
-	private ReservaEvento eventoFim;
 
-	private String color;
-	
-	private Grupo grupo;
-	
-	public ReservaDTO(){
-		
-	}
-	
-	public ReservaDTO(Long id, String title, Long idTerceiro, Date start, Date end, Boolean allDay, String url, Boolean utilizaMarinheiro, String obs,
-			ReservaStatus status, ReservaEvento eventoInicio, ReservaEvento eventoFim, String color, Grupo grupo){
+	private Long id;
+
+	private String title;
+
+	private TerceiroDTO terceiro;
+
+	private Date start;
+
+	private Date end;
+
+	private Boolean allDay;
+
+	private Boolean utilizaMarinheiro = false;
+
+	private String obs;
+
+	private ReservaStatus status;
+
+	private ReservaEventoDTO eventoInicio;
+
+	private ReservaEventoDTO eventoFim;
+
+		private GrupoDTO grupo;
+
+	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean allDay, Boolean utilizaMarinheiro,
+			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo) {
 		this.id = id;
 		this.title = title;
-		this.idTerceiro = idTerceiro;
+		this.terceiro = terceiro;
 		this.start = start;
 		this.end = end;
 		this.allDay = allDay;
-		this.url = url;
 		this.utilizaMarinheiro = utilizaMarinheiro;
 		this.obs = obs;
 		this.status = status;
 		this.eventoInicio = eventoInicio;
 		this.eventoFim = eventoFim;
-		this.color = color;
 		this.grupo = grupo;
 	}
 
@@ -100,14 +90,6 @@ public class ReservaDTO  implements Serializable {
 		this.allDay = allDay;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	public Boolean getUtilizaMarinheiro() {
 		return utilizaMarinheiro;
 	}
@@ -123,7 +105,7 @@ public class ReservaDTO  implements Serializable {
 	public void setObs(String obs) {
 		this.obs = obs;
 	}
-	
+
 	public ReservaStatus getStatus() {
 		return status;
 	}
@@ -132,44 +114,36 @@ public class ReservaDTO  implements Serializable {
 		this.status = status;
 	}
 
-	public ReservaEvento getEventoInicio() {
+	public ReservaEventoDTO getEventoInicio() {
 		return eventoInicio;
 	}
 
-	public void setEventoInicio(ReservaEvento eventoInicio) {
+	public void setEventoInicio(ReservaEventoDTO eventoInicio) {
 		this.eventoInicio = eventoInicio;
 	}
 
-	public ReservaEvento getEventoFim() {
+	public ReservaEventoDTO getEventoFim() {
 		return eventoFim;
 	}
 
-	public void setEventoFim(ReservaEvento eventoFim) {
+	public void setEventoFim(ReservaEventoDTO eventoFim) {
 		this.eventoFim = eventoFim;
 	}
 
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	public Grupo getGrupo() {
+	public GrupoDTO getGrupo() {
 		return grupo;
 	}
 
-	public void setGrupo(Grupo grupo) {
+	public void setGrupo(GrupoDTO grupo) {
 		this.grupo = grupo;
 	}
 
-	public Long getIdTerceiro() {
-		return idTerceiro;
+	public TerceiroDTO getTerceiro() {
+		return terceiro;
 	}
 
-	public void setIdTerceiro(Long idTerceiro) {
-		this.idTerceiro = idTerceiro;
+	public void setTerceiro(TerceiroDTO terceiro) {
+		this.terceiro = terceiro;
 	}
 
 }

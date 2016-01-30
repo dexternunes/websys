@@ -25,12 +25,15 @@ import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaValidacaoBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Grupo;
+import br.com.system.websys.entities.GrupoDTO;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
+import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
+import br.com.system.websys.entities.TerceiroDTO;
 import br.com.system.websys.entities.User;
 
 @Controller
@@ -93,6 +96,23 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
+	@RequestMapping(value="/api/salvar", method = RequestMethod.POST)
+	public String salvar(HttpServletRequest request, @ModelAttribute("reserva") ReservaDTO reserva,
+			BindingResult result, RedirectAttributes attr) throws Exception {
+
+		if (result.hasErrors()) {
+
+			for (ObjectError error : result.getAllErrors())
+				logger.info("Erro: " + error.toString());
+			
+			return "redirect:/home";
+		}
+		
+		attr.addFlashAttribute("reserva", reserva);
+		return "redirect:/home";
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/api/get", method = RequestMethod.GET )
 	public ReservasDTO getReserva(HttpServletRequest request) throws Exception {
 		
@@ -118,9 +138,19 @@ public class ReservaController{
 					tipo_evento = "[E] ";
 				}
 
-			reservas.getReservas().add(new ReservaDTO(reserva.getId(), tipo_evento + reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
-					reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
-					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
+			reservas.getReservas().add(new ReservaDTO(
+					reserva.getId(), 
+					reserva.getSolicitante().getNome(), 
+					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
+					reserva.getInicioReserva(),
+					reserva.getFimReserva(), 
+					reserva.getAllDay(), 
+					reserva.getUtilizaMarinheiro(), 
+					reserva.getObs(), 
+					reserva.getStatus(),
+					new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
+					new ReservaEventoDTO(reserva.getEventoFim().getId()), 
+					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
 			}
 		}
 		return reservas;
@@ -132,9 +162,20 @@ public class ReservaController{
 		
 		ReservasDTO reservas = new ReservasDTO();
 		Reserva reserva = reservaBusiness.get(id);
-		reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
-				reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
-				reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
+		reservas.getReservas().add(
+				new ReservaDTO(
+						reserva.getId(), 
+						reserva.getSolicitante().getNome(), 
+						new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
+						reserva.getInicioReserva(),
+						reserva.getFimReserva(), 
+						reserva.getAllDay(), 
+						reserva.getUtilizaMarinheiro(), 
+						reserva.getObs(), 
+						reserva.getStatus(),
+						new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
+						new ReservaEventoDTO(reserva.getEventoFim().getId()), 
+						new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
 		
 		return reservas;
 	}
@@ -148,9 +189,19 @@ public class ReservaController{
 		ReservasDTO reservas = new ReservasDTO();
 		
 		for(Reserva reserva : reservaBusiness.getReservaByTerceiro(user.getTerceiro())){
-			reservas.getReservas().add(new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(), reserva.getSolicitante().getId(), reserva.getInicioReserva(), 
-					reserva.getFimReserva(), reserva.getAllDay(), "", reserva.getUtilizaMarinheiro(), reserva.getObs(), reserva.getStatus(),
-					reserva.getEventoInicio(), reserva.getEventoFim(), reserva.getGrupo().getColor(), reserva.getGrupo()));
+			reservas.getReservas().add(new ReservaDTO(
+					reserva.getId(), 
+					reserva.getSolicitante().getNome(), 
+					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
+					reserva.getInicioReserva(),
+					reserva.getFimReserva(), 
+					reserva.getAllDay(), 
+					reserva.getUtilizaMarinheiro(), 
+					reserva.getObs(), 
+					reserva.getStatus(),
+					new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
+					new ReservaEventoDTO(reserva.getEventoFim().getId()), 
+					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
 		}
 
 		return reservas;
