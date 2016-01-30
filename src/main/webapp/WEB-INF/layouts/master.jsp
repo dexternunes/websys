@@ -157,6 +157,8 @@
         <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
     
 <style>
+
+${css}
 .ranges{
     width: initial !important;
     float: initial !important;

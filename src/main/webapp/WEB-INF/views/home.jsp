@@ -745,6 +745,29 @@
 
 			});
 		}
+		
+		$(document).ready(function() {
+
+			/*
+			if (navigator.userAgent.search("MSIE") >= 0) {
+			   ///alert("IE");
+			}
+			else if (navigator.userAgent.search("Chrome") >= 0) {
+				//alert("Chrome");
+			}
+			else if (navigator.userAgent.search("Firefox") >= 0) {
+				//$(".modal").css("position","");
+				//alert("sada");
+			}
+			else if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+				$(".modal").css( "position", "static" );
+				alert("safari");
+			}
+			else if (navigator.userAgent.search("Opera") >= 0) {
+				//alert("ota fumiga");
+			}
+			*/
+		});
 	</script>
 </body>
 </html>

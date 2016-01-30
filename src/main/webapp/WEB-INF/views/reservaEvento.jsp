@@ -24,7 +24,7 @@
 			    <div class="x_content">
 			    
 			    	<form:form cssClass="form-horizontal"
-						action="${pageContext.request.contextPath}/reservaEvento/salvar"
+						action="${pageContext.request.contextPath}/reservaEvento/salvar/true"
 						commandName="reservaEvento" method="post">
 						
 						
@@ -87,6 +87,7 @@
 	<script type="text/javascript">
 	
 		function submit(){
+			$("#reservaEvento").attr("action", "${pageContext.request.contextPath}/reservaEvento/salvar/true");
 			$("#reservaEvento").submit();
 		}
 	
@@ -101,8 +102,32 @@
 			$("body").mask("Aguarde ...");
 			$('.progress.active .bar').css('width', '0%');
 			
+			
+			
+			///////////////
+												
+													$
+															.ajax({
+																async : true,
+																url : url,
+																type : 'GET',
+																success : function(
+																		data) {
+																				alert("foi");
+
+																},
+																error : function(
+																		request,
+																		status,
+																		error) {
+																    alert( "Erro ao remover a imagem" );
+																}
+															});
+			
+			/*
 			$.get(url,function(data) {
 			}).done(function() {
+				$("#reservaEvento").attr("action", "${pageContext.request.contextPath}/reservaEvento/salvar/false");
 				$("#reservaEvento").submit();
 			  })
 			  .fail(function() {
@@ -112,6 +137,7 @@
 				$('.progress.active .bar').css('width', '0%');
 				$('.progress').hide();
 			  });
+			*/
 		}
 		
 		function prepareUpload() {
@@ -127,7 +153,8 @@
 				acceptFileTypes : /(\.|\/)(gif|jpg|jpeg|png)$/i ,
 				done : function(e, data) {
 					$("div.active:not(.progress)").html(data.result);
-					window.location = "${pageContext.request.contextPath}/reservaEvento/${reservaEvento.id}";
+					$("#reservaEvento").attr("action", "${pageContext.request.contextPath}/reservaEvento/salvar/false");
+					$("#reservaEvento").submit();
 				},
 				change : function(e, data) {
 
