@@ -9,14 +9,13 @@ import br.com.system.websys.business.ReservaBusiness;
 class ReservaJobImpl implements ReservaJob {
 
 	@Autowired
-	public ReservaBusiness reservaBusiness;
+	private ReservaBusiness reservaBusiness;
 	
 	@Override
 	public void validaReservas() {
 
 		
-		
-		
+		reservaBusiness.validaAPoraToda();		
 		
 		System.out.println("SCHEDULE RODANDO RODANDO RODANDO....");
 		

@@ -1,5 +1,6 @@
 package br.com.system.websys.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,9 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 
 	@Query("SELECT r FROM Reserva r WHERE r.solicitante = :terceiro AND r.excluido = 0 AND r.ativo = 1 AND r.status in :status")
 	List<Reserva> getReservaByTerceiro(@Param("terceiro") Terceiro terceiro, @Param("status") List<ReservaStatus> status);
+	
+	@Query("SELECT r FROM Reserva r WHERE r.solicitante in :terceiros AND r.excluido = 0 AND r.ativo = 1 AND r.status = :status order by r.fimReserva")
+	List<Reserva> getReservaByTerceirosByStatus(@Param("terceiros") List<Terceiro> terceiros, @Param("status") ReservaStatus status);
 
 	@Query("SELECT r FROM Reserva r WHERE r.eventoFim = :eventoFim")
 	Reserva getReservaByEventoFim(@Param("eventoFim") ReservaEvento eventoFim);
@@ -32,7 +36,7 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	@Query("SELECT  r FROM Reserva r WHERE r.grupo IN :grupos AND r.status in :status AND r.excluido = 0 AND r.ativo = 1")
 	List<Reserva> getByGruposByStatus(@Param("grupos") List<Grupo> grupos, @Param("status") List<ReservaStatus> status);
 	
-	@Query("SELECT  r FROM Reserva r WHERE r.status in :status AND r.excluido = 0 AND r.ativo = 1")
-	List<Reserva> getByStatus(@Param("status") List<ReservaStatus> status);
+	@Query("SELECT  r FROM Reserva r WHERE r.grupo = :grupo AND r.status = :status AND r.excluido = 0 AND r.ativo = 1 and r.created <= :data")
+	List<Reserva> getByGruposByStatusByDateCreated(@Param("grupo") Grupo grupo, @Param("status") ReservaStatus status, @Param("data") Date data);
 
 }

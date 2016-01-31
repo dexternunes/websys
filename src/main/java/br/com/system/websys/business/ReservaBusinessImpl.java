@@ -253,6 +253,39 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return this.salvar(reserva);
 	}
+	
+	@Autowired
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void validaAPoraToda(){
+		vareSolicitacoesPorGrupo();
+	}
+	
+	private void vareSolicitacoesPorGrupo(){
+		
+		List<Grupo> grupos = grupoBusiness.getAll();
+		
+		for(Grupo grupo :grupos){
+			
+			Calendar date = Calendar.getInstance();
+			date.add(Calendar.DATE, -1);
+			
+			/*Criteria criteria = this.createCriteria("r");
+			criteria.add(Restrictions.eq("r.ativo", true));
+			criteria.add(Restrictions.eq("r.cancelado", false));
+			criteria.add(Restrictions.eq("r.status", ReservaStatus.AGUARDANDO_APROVACAO));
+			criteria.add(Restrictions.le("r.created", date.getTime()));
+			criteria.add(Restrictions.le("r.grupo", grupo));*/
+			try{
+				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatusByDateCreated(grupo, ReservaStatus.AGUARDANDO_APROVACAO, date.getTime()); 
+				if(reservas == null)
+					continue;
+				
+				validaSolicitacoesPorGrupo(reservas);
+			}catch(Exception e){
+				return;
+			}
+		}
+	}
 
 	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception{
 		
@@ -316,18 +349,106 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return horaInicioReservaCal.getTime();
 	}
 
-	@Override
-	public List<Reserva> getByStatus(List<ReservaStatus> status) {
-		return ((ReservaRepository) repository).getByStatus(status);
-	}
-
 	public Boolean validaReserva(Reserva reserva) {
 		return null;
+	}
+	
+	private Boolean validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception{
+		
+		List<Reserva> reservasReprovadas = new ArrayList<Reserva>();
+		
+		for(Reserva reserva : reservas){
+			if(!verificaValidacoesEmail(reserva)){
+				reservasReprovadas.add(reserva);
+				reprovaReserva(reserva);
+			}
+		}
+		
+		if(reservasReprovadas.size() > 0)
+			reservas.removeAll(reservasReprovadas);
+		
+		List<Reserva> reservasUnicas = validaReservasConcomitantes(reservas);
+		
+		for(Reserva reserva : reservasUnicas){
+			
+			if(!isReservaDiaUnico(reserva)){
+				Calendar date = Calendar.getInstance();
+				date.add(Calendar.HOUR, -48);
+				if(reserva.getCreated().getTime() >= date.getTime().getTime()){
+					continue;
+				}
+			}
+			
+			if(verificaValidacoesEmail(reserva)){
+				reserva.setStatus(ReservaStatus.APROVADA);
+				dispararEmailAprovacaoReserva(reserva);
+			}			
+			
+		}
+		
+		return true;
+
 	}
 
 	public Boolean validaReservaDiaUnico(Reserva reserva) {
 		return null;
 	}
+	
+	private List<Reserva> validaReservasConcomitantes(List<Reserva> reservas) throws Exception{
+		
+		List<Reserva> reservasUnicas = new ArrayList<Reserva>();
+		
+		Boolean continua = false;
+		
+		do{
+			
+			if(reservasUnicas.size() > 0){
+				reservas.clear();
+				reservas.addAll(reservasUnicas);
+				
+				reservasUnicas.clear();
+			}
+			
+			continua = false;
+			
+			if(reservas == null || reservas.size() == 1)
+				return reservas;
+			
+			for(Reserva reservaDaVez : reservas){
+				for(Reserva reservaVerificacao : reservas){
+					
+					if(reservaDaVez.equals(reservaVerificacao))
+						continue;
+					
+					Calendar inicioReserva = Calendar.getInstance();
+					Calendar fimReserva = Calendar.getInstance();
+					Calendar inicioR = Calendar.getInstance();
+					Calendar fimR = Calendar.getInstance();
+					
+					inicioReserva.setTime(reservaDaVez.getFimReserva());
+					inicioReserva.add(Calendar.HOUR, -2);
+					fimReserva.setTime(reservaDaVez.getFimReserva());
+					fimReserva.add(Calendar.HOUR, 2);
+					inicioR.setTime(reservaVerificacao.getFimReserva());
+					fimR.setTime(reservaVerificacao.getFimReserva());
+					
+					if((inicioReserva.before(inicioR) && fimReserva.before(inicioR))
+							|| (inicioReserva.before(inicioR) && fimReserva.before(inicioR))){
+						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
+						continua = true;
+					}
+					else
+						reservasUnicas.add(reservaDaVez);
+					
+				}
+			}
+		}while(continua);
+		
+		return reservasUnicas;
+		
+
+	}
+
 
 	public Boolean validaReservaDiasConsecutivos(Reserva reserva) {
 //			$('#data_fim_reserva').on('apply.daterangepicker', function(ev, picker){
@@ -340,6 +461,94 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 //			}
 //		});	
 		return null;
+	}
+	
+	private Reserva elegeReserva(Reserva reserva1, Reserva reserva2) throws Exception{
+		
+		List<Terceiro> terceiros = new ArrayList<Terceiro>();
+		terceiros.add(reserva1.getSolicitante());
+		terceiros.add(reserva2.getSolicitante());
+		
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByStatus(terceiros, ReservaStatus.ENCERRADA);
+		
+		if(reservas == null){
+			if(reserva1.getCreated().before(reserva2.getCreated()))
+				return reserva1;
+			else
+				return reserva2;
+		}
+		
+		Reserva ultimaReserva = reservas.get(0);
+		
+		if(ultimaReserva.getSolicitante().equals(reserva1.getSolicitante())){
+			reprovaReserva(reserva1);
+			return reserva2;
+		}
+		else{
+			reprovaReserva(reserva2);
+			return reserva1;
+		}
+		
+	}
+	
+	private void reprovaReserva(Reserva reserva) throws Exception{
+		reserva.setStatus(ReservaStatus.ENCERRADA);
+		this.salvar(reserva);
+		dispararEmailReprovacaoReserva(reserva);
+	}
+	
+	private void dispararEmailAprovacaoReserva(Reserva reserva) throws MessagingException{
+		String[] destinatario = new String[]{reserva.getSolicitante().getEmails()};
+		String title = "Prime Share Club - Reserva Aprovada";
+		String texto = "Sua solicitação de reserva foi aprovada <br />" + "<br />Embarcação: "
+				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
+				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
+				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
+				+ Formatters.formatDate(reserva.getFimReserva())
+				+ "<br /><br /><br />Att" 
+				+ "<br />Equipe Prime Share Club";
+		
+		mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+				
+	}
+	
+	private void dispararEmailReprovacaoReserva(Reserva reserva) throws MessagingException{
+		String[] destinatario = new String[]{reserva.getSolicitante().getEmails()};
+		String title = "Prime Share Club - Reserva Reprovada";
+		String texto = "Sua solicitação de reserva foi reprovada <br />" + "<br />Embarcação: "
+				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
+				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
+				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
+				+ Formatters.formatDate(reserva.getFimReserva())
+				+ "<br /><br /><br />Att" 
+				+ "<br />Equipe Prime Share Club";
+		
+		mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+				
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Boolean isReservaDiaUnico(Reserva reserva){
+		if(reserva.getInicioReserva().getDay() != reserva.getFimReserva().getDay())
+			return false;
+		if(reserva.getInicioReserva().getMonth() != reserva.getFimReserva().getMonth())
+			return false;
+		if(reserva.getInicioReserva().getYear() != reserva.getFimReserva().getYear())
+			return false;
+		
+		return true;
+	}
+	
+	private Boolean verificaValidacoesEmail(Reserva reserva){
+		
+		for(ReservaValidacao validacao : reserva.getValidacoes()){
+			if(validacao.getValidado() && !validacao.getAprovado()){
+				return false;
+			}
+		}
+		
+		return true;
+
 	}
 
 }
