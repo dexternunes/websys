@@ -44,7 +44,7 @@ public class ReservaEventoController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/imagem/delete/{idImagem}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/imagem/delete/{idImagem}", method = RequestMethod.GET)
 	public String deleteImagem(@PathVariable("idImagem") Long idImagem, Model model, HttpServletRequest request) throws Exception {
 		
 		Imagem imagem = imagemBusiness.get(idImagem);

@@ -32,7 +32,7 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">Tempo do motor<span class="required">*</span></label>
 							<form:hidden path="id"/>
 							<div class="col-md-2 col-sm-2">
-								<form:input path="hora" cssClass="form-control col-md-2"/>horas
+								<form:input path="hora" id="hora" name="hora" cssClass="form-control col-md-2"/>horas
 							</div>
 						</div>
 						
@@ -40,7 +40,7 @@
 					</form:form>
 			    
 		        	<form name="form-product-id" id="main-form">
-						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg;image/gif;image/bmp;image/png"  data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=${reservaEvento.id}&isInicio=true" multiple style="opacity: 0; filter:alpha(opacity: 0);">
+						<input id="fileupload" type="file" name="fileupload" accept="image/jpeg;image/gif;image/bmp;image/png"   multiple style="opacity: 0; filter:alpha(opacity: 0);">
 					</form>	
 				
 					<p><div style="color:red" class="jquery_error"></div></p>
@@ -66,7 +66,7 @@
 										<img src="${photo.url}" style="width: 100%; display: block;"/>
 										<div class="mask">
                                             <div class="tools tools-bottom">
-                                                <a onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}" />')"><i class="fa fa-times"></i></a>
+                                                <a onclick="deleteImage('<c:url value="/reservaEvento/api/imagem/delete/${photo.id}" />')"><i class="fa fa-times"></i></a>
                                             </div>
                                         </div>
 									</div>
@@ -99,30 +99,30 @@
 		
 		function deleteImage(url){
 
-			$("body").mask("Aguarde ...");
-			$('.progress.active .bar').css('width', '0%');
 			
 			
 			
 			///////////////
 												
-													$
-															.ajax({
-																async : true,
-																url : url,
-																type : 'GET',
-																success : function(
-																		data) {
-																				alert("foi");
+		$
+		.ajax({
+			async : true,
+			url : url,
+			type : 'GET',
+			success : function(
+					data) {
+							$('.progress.active .bar').css('width', '0%');
+							$('.progress').hide();
+							$("#reservaEvento").submit();
 
-																},
-																error : function(
-																		request,
-																		status,
-																		error) {
-																    alert( "Erro ao remover a imagem" );
-																}
-															});
+			},
+			error : function(
+					request,
+					status,
+					error) {
+			    alert( "Erro ao remover a imagem" );
+			}
+		});
 			
 			/*
 			$.get(url,function(data) {
@@ -177,6 +177,17 @@
 
 		$(document).ready(function () {
 			prepareUpload();			
+			
+			$( "#hora" ).change(function() {
+				
+				$("#fileupload").attr( "data-url", "${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=${reservaEvento.id}&isInicio=true" );
+
+				  //data-url="${pageContext.request.contextPath}/reservaEvento/upload?reservaEventoId=${reservaEvento.id}&isInicio=true"
+						  
+				});
+			
+			
+			
 		});
 		
 		$('#hora').inputmask('99999',{placeholder:'0', numericInput:true});
