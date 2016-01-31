@@ -4,6 +4,7 @@ public enum ReservaStatus{
 
 	AGUARDANDO_APROVACAO("AGUARDANDO_APROVACAO","Aguardando aprovação"),
 	APROVADA("APROVADA","Aprovada"),
+	REPROVADA("REPROVADA","Reprovada"),
 	EM_USO("EM_USO","Em uso"),
 	ENCERRADA("ENCERRADA","Encerrada");
 	
