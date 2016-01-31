@@ -96,13 +96,25 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		for (ReservaValidacao validacao : reserva.getValidacoes()) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { validacao.getTerceiro().getEmails() },
 					"Prime Share Club - Reserva Solicitada",
-					"Uma nova reserva foi solicitada <br />" + "<br />Embarcação: "
-							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
-							+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
-							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Clique <a href='" + link
-							+ validacao.getUid() + "'>aqui</a> para validar/questionar a reserva"
-							+ "<br /><br /><br />Att" + "<br />Equipe Prime Share Club");
+					"<div align='center' style='background-color:rgb(28,60,106)'>"
+							+"<div align='center' style='background-color:rgb(28,60,106)'>"
+							+"	<img width='98' height='130' alt='Logo' src='https://uploaddeimagens.com.br/images/000/562/068/original/prime_login.png?1454257447'  />"
+							+"</div>"
+					+"</br></br></br> </br></br></br></br></br></br></br></br></br><font color='white'>"
+					+"	<h3>Uma nova reserva foi solicitada </h3> "
+					+"	<br />"
+					+"	<br />"
+					+"	Embarcação: "+reserva.getGrupo().getProdutos().get(0).getDescricao() +"<br />"
+					+"	Solicitante: "+reserva.getSolicitante().getNome()+"<br />"
+					+"	Data inicio da reserva: "+Formatters.formatDate(reserva.getInicioReserva())+"<br />"
+					+"	Data fim da reserva: "+Formatters.formatDate(reserva.getFimReserva())+"<br /> <br />"
+					+"	Clique <a href='" + link+ validacao.getUid() + "'>aqui</a> para validar/questionar a reserva <br /><br /><br />Att,<br /> "
+					+"	</font>"
+					+"	<div>"
+					+"		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
+					+"		<p><font color='white'>©2015 All Rights Reserved.</font></p>"
+					+"	</div> "
+					+"</div>");
 		}
 		return false;
 	}
