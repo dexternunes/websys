@@ -1,5 +1,7 @@
 package br.com.system.websys.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -141,11 +144,10 @@ public class ReservaController{
 
 			reservas.getReservas().add(new ReservaDTO(
 					reserva.getId(), 
-					reserva.getSolicitante().getNome(), 
+					tipo_evento + reserva.getSolicitante().getNome(), 
 					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
 					reserva.getInicioReserva(),
 					reserva.getFimReserva(), 
-					reserva.getAllDay(), 
 					reserva.getUtilizaMarinheiro(), 
 					reserva.getObs(), 
 					reserva.getStatus(),
@@ -159,24 +161,13 @@ public class ReservaController{
 	
 	@ResponseBody
 	@RequestMapping(value = "/api/get/{id}", method = RequestMethod.GET )
-	public ReservasDTO getReservaById(@PathVariable Long id, Model model) throws Exception {
+	public ReservaDTO getReservaById(@PathVariable Long id, Model model, @RequestParam("dataReserva") String dataReserva) throws Exception {
 		
-		ReservasDTO reservas = new ReservasDTO();
-		Reserva reserva = reservaBusiness.get(id);
-		reservas.getReservas().add(
-				new ReservaDTO(
-						reserva.getId(), 
-						reserva.getSolicitante().getNome(), 
-						new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
-						reserva.getInicioReserva(),
-						reserva.getFimReserva(), 
-						reserva.getAllDay(), 
-						reserva.getUtilizaMarinheiro(), 
-						reserva.getObs(), 
-						reserva.getStatus(),
-						new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
-						new ReservaEventoDTO(reserva.getEventoFim().getId()), 
-						new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Date data = format.parse(dataReserva);				
+		
+		ReservaDTO reservas = reservaBusiness.getReservaDTOById(id, userBusiness.getCurrent().getTerceiro(), data);
 		
 		return reservas;
 	}
@@ -196,7 +187,6 @@ public class ReservaController{
 					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
 					reserva.getInicioReserva(),
 					reserva.getFimReserva(), 
-					reserva.getAllDay(), 
 					reserva.getUtilizaMarinheiro(), 
 					reserva.getObs(), 
 					reserva.getStatus(),

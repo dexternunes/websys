@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Formatters {
 	
-	private static SimpleDateFormat patternDate = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	private static SimpleDateFormat patternDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
 	private static DecimalFormat currencyPattern = new DecimalFormat("#,##0.00");
 	

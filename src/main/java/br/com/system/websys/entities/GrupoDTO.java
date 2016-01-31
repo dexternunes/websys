@@ -1,6 +1,13 @@
 package br.com.system.websys.entities;
 
-public class GrupoDTO {
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class GrupoDTO implements Serializable{
+	
+	private static final long serialVersionUID = 8631801890193963540L;
 
 	private Long id;
 	

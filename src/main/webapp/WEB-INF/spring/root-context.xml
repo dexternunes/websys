@@ -45,9 +45,9 @@
 
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
 
-	<beans:bean class="br.com.system.websys.job.ReservaJobImpl" id="reservaJobImpl" />
-	<task:scheduled-tasks>
-	    <task:scheduled ref="reservaJobImpl" method="validaReservas"  cron="*/30 * * * * *"  ></task:scheduled>
-	</task:scheduled-tasks> 
+ 	<beans:bean class="br.com.system.websys.job.ReservaJobImpl" id="reservaJobImpl" />
+ 	<task:scheduled-tasks>
+ 	    <task:scheduled ref="reservaJobImpl" method="validaReservas"  cron="*/30 * * * * *"  ></task:scheduled>
+ 	</task:scheduled-tasks>
 	
 </beans:beans>

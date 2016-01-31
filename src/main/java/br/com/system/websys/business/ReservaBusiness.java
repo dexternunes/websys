@@ -1,5 +1,6 @@
 package br.com.system.websys.business;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -8,6 +9,7 @@ import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
+import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.Terceiro;
@@ -41,5 +43,7 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro);
 
 	public List<Reserva> getByStatus(List<ReservaStatus> status);
-
+	
+	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception;
+	
 }

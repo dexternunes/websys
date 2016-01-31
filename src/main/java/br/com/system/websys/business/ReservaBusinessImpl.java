@@ -15,14 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
+import br.com.system.websys.entities.GrupoDTO;
 import br.com.system.websys.entities.PermiteReservaDTO;
 import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
+import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
+import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.TerceiroDTO;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
@@ -116,16 +120,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return reservas;
 	}
-	
-	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro){
+
+	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro) {
 		List<Grupo> grupo = grupoBusiness.findAllByTerceito(terceiro);
-		
-		for(Reserva r : getReservaByTerceiro(terceiro)){
-			if(grupo.contains(r.getGrupo())){
+
+		for (Reserva r : getReservaByTerceiro(terceiro)) {
+			if (grupo.contains(r.getGrupo())) {
 				grupo.remove(r.getGrupo());
 			}
 		}
-		
+
 		return grupo;
 	}
 
@@ -250,21 +254,92 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return this.salvar(reserva);
 	}
 
+	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception{
+		
+		ReservaDTO reservaDTO;
+		Reserva reserva = this.get(id);
+		
+		if(reserva != null){
+			 reservaDTO = new ReservaDTO(reserva.getId(), 
+						reserva.getSolicitante().getNome(), 
+						new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
+						reserva.getInicioReserva(),
+						reserva.getFimReserva(), 
+						reserva.getUtilizaMarinheiro(), 
+						reserva.getObs(), 
+						reserva.getStatus(),
+						new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
+						new ReservaEventoDTO(reserva.getEventoFim().getId()), 
+						new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()));
+		}
+		else{
+			reservaDTO = new ReservaDTO(null,
+					terceiro.getNome(),
+					new TerceiroDTO(terceiro.getId(), terceiro.getNome()),
+					calculaDataInicioReserva(dataReserva),
+					null,
+					null,
+					null, 
+					ReservaStatus.AGUARDANDO_APROVACAO,
+					null, 
+					null, 
+					null
+					);
+			
+		}
+		return reservaDTO;
+	}
+
+	@SuppressWarnings("deprecation")
+	private Date calculaDataInicioReserva(Date dataReserva) {
+		Calendar horaInicioReservaCal = Calendar.getInstance();
+		
+		if(!(horaInicioReservaCal.get(Calendar.DAY_OF_MONTH) == dataReserva.getDate() && horaInicioReservaCal.get(Calendar.MONTH) == dataReserva.getMonth() && horaInicioReservaCal.get(Calendar.YEAR) == dataReserva.getYear()+1900)){
+			horaInicioReservaCal.setTime(dataReserva);
+			horaInicioReservaCal.set(Calendar.HOUR, 6);
+			return horaInicioReservaCal.getTime();
+		}
+				
+		int calculoDifHoraInicio = (horaInicioReservaCal.get(Calendar.MINUTE) % 15);
+
+		if (calculoDifHoraInicio == 0)
+			horaInicioReservaCal.add(Calendar.MINUTE, 120);
+		else
+			horaInicioReservaCal.add(Calendar.MINUTE, (15 - calculoDifHoraInicio) + 120);
+		
+		if(horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) > 18){
+			horaInicioReservaCal.add(Calendar.DAY_OF_MONTH, 1);
+			horaInicioReservaCal.set(Calendar.HOUR_OF_DAY, 6);
+			horaInicioReservaCal.set(Calendar.MINUTE, 0);
+		}
+
+		return horaInicioReservaCal.getTime();
+	}
+
 	@Override
 	public List<Reserva> getByStatus(List<ReservaStatus> status) {
 		return ((ReservaRepository) repository).getByStatus(status);
 	}
-	
-	public Boolean validaReserva(Reserva reserva){
+
+	public Boolean validaReserva(Reserva reserva) {
 		return null;
 	}
-	
-	public Boolean validaReservaDiaUnico(Reserva reserva){
+
+	public Boolean validaReservaDiaUnico(Reserva reserva) {
 		return null;
 	}
-	
-	public Boolean validaReservaDiasConsecutivos(Reserva reserva){
+
+	public Boolean validaReservaDiasConsecutivos(Reserva reserva) {
+//			$('#data_fim_reserva').on('apply.daterangepicker', function(ev, picker){
+//			var inicio = moment(new Date(moment($('#data_inicio_reserva').val()).format("YYYY/MM/DD")));
+//			var hoje = moment(new Date(moment().format("YYYY/MM/DD")));
+		
+//			if((moment(inicio).diff(hoje, 'days')) < 7){
+//				alert('Reservas com mais de um dia, deverão ser feitas com 7 dias de antecedência!');
+//				return false;
+//			}
+//		});	
 		return null;
 	}
-	
+
 }

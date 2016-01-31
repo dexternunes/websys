@@ -5,6 +5,8 @@ import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import br.com.system.websys.formatter.Formatters;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReservaDTO implements Serializable {
 
@@ -17,10 +19,12 @@ public class ReservaDTO implements Serializable {
 	private TerceiroDTO terceiro;
 
 	private Date start;
+	
+	private String startStr;
+	
+	private String endStr;
 
 	private Date end;
-
-	private Boolean allDay;
 
 	private Boolean utilizaMarinheiro = false;
 
@@ -32,16 +36,15 @@ public class ReservaDTO implements Serializable {
 
 	private ReservaEventoDTO eventoFim;
 
-		private GrupoDTO grupo;
+	private GrupoDTO grupo;
 
-	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean allDay, Boolean utilizaMarinheiro,
+	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean utilizaMarinheiro,
 			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo) {
 		this.id = id;
 		this.title = title;
 		this.terceiro = terceiro;
-		this.start = start;
-		this.end = end;
-		this.allDay = allDay;
+		setStart(start);
+		setEnd(end);
 		this.utilizaMarinheiro = utilizaMarinheiro;
 		this.obs = obs;
 		this.status = status;
@@ -72,6 +75,7 @@ public class ReservaDTO implements Serializable {
 
 	public void setStart(Date start) {
 		this.start = start;
+		this.startStr = Formatters.formatDate(start);				
 	}
 
 	public Date getEnd() {
@@ -80,14 +84,7 @@ public class ReservaDTO implements Serializable {
 
 	public void setEnd(Date end) {
 		this.end = end;
-	}
-
-	public Boolean getAllDay() {
-		return allDay;
-	}
-
-	public void setAllDay(Boolean allDay) {
-		this.allDay = allDay;
+		this.endStr = Formatters.formatDate(end);
 	}
 
 	public Boolean getUtilizaMarinheiro() {
@@ -144,6 +141,22 @@ public class ReservaDTO implements Serializable {
 
 	public void setTerceiro(TerceiroDTO terceiro) {
 		this.terceiro = terceiro;
+	}
+
+	public String getStartStr() {
+		return Formatters.formatDate(start);
+	}
+
+	public void setStartStr(String startStr) {
+		this.startStr = startStr;
+	}
+
+	public String getEndStr() {
+		return Formatters.formatDate(end);
+	}
+
+	public void setEndStr(String endStr) {
+		this.endStr = endStr;
 	}
 
 }
