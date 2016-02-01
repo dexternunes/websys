@@ -108,6 +108,7 @@ public class ReservaController{
 	@RequestMapping(value="/api/salvar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
 	public ReservaValidacaoStatus salvar(HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws Exception {
 
+
 		Reserva reserva = parseReserva.parseReservaDTO2Reserva(reservaDTO);
 		
 		ReservaValidacaoStatus statusReserva = reservaBusiness.validaReserva(reserva);

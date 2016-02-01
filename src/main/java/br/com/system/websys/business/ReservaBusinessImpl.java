@@ -98,13 +98,25 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		for (ReservaValidacao validacao : reserva.getValidacoes()) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { validacao.getTerceiro().getEmails() },
 					"Prime Share Club - Reserva Solicitada",
-					"Uma nova reserva foi solicitada <br />" + "<br />Embarcação: "
-							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
-							+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
-							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Clique <a href='" + link
-							+ validacao.getUid() + "'>aqui</a> para validar/questionar a reserva"
-							+ "<br /><br /><br />Att" + "<br />Equipe Prime Share Club");
+					"<div align='center' style='background-color:rgb(28,60,106)'>"
+							+"<div align='center' style='background-color:rgb(28,60,106)'>"
+							+"	<img width='98' height='130' alt='Logo' src='https://uploaddeimagens.com.br/images/000/562/068/original/prime_login.png?1454257447'  />"
+							+"</div>"
+					+"</br></br></br> </br></br></br></br></br></br></br></br></br><font color='white'>"
+					+"	<h3>Uma nova reserva foi solicitada </h3> "
+					+"	<br />"
+					+"	<br />"
+					+"	Embarcação: "+reserva.getGrupo().getProdutos().get(0).getDescricao() +"<br />"
+					+"	Solicitante: "+reserva.getSolicitante().getNome()+"<br />"
+					+"	Data inicio da reserva: "+Formatters.formatDate(reserva.getInicioReserva())+"<br />"
+					+"	Data fim da reserva: "+Formatters.formatDate(reserva.getFimReserva())+"<br /> <br />"
+					+"	Clique <a href='" + link+ validacao.getUid() + "'>aqui</a> para validar/questionar a reserva <br /><br /><br />Att,<br /> "
+					+"	</font>"
+					+"	<div>"
+					+"		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
+					+"		<p><font color='white'>©2015 All Rights Reserved.</font></p>"
+					+"	</div> "
+					+"</div>");
 		}
 		return false;
 	}
@@ -436,16 +448,17 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					Calendar inicioR = Calendar.getInstance();
 					Calendar fimR = Calendar.getInstance();
 					
-					inicioReserva.setTime(reservaDaVez.getFimReserva());
+					inicioReserva.setTime(reservaDaVez.getInicioReserva());
 					inicioReserva.add(Calendar.HOUR, -2);
 					fimReserva.setTime(reservaDaVez.getFimReserva());
 					fimReserva.add(Calendar.HOUR, 2);
-					inicioR.setTime(reservaVerificacao.getFimReserva());
+					inicioR.setTime(reservaVerificacao.getInicioReserva());
 					fimR.setTime(reservaVerificacao.getFimReserva());
 					
-					if((inicioReserva.before(inicioR) && fimReserva.before(inicioR))
-							|| (inicioReserva.before(inicioR) && fimReserva.before(inicioR))){
-						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
+					if((inicioReserva.before(inicioR) && fimReserva.after(inicioR))
+							|| (inicioReserva.before(fimR) && fimReserva.after(fimR))){
+						if(!reservasUnicas.contains(reservaDaVez) && !reservasUnicas.contains(reservaVerificacao))
+							reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
 						continua = true;
 					}
 					else
@@ -479,9 +492,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		terceiros.add(reserva1.getSolicitante());
 		terceiros.add(reserva2.getSolicitante());
 		
-		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByStatus(terceiros, ReservaStatus.ENCERRADA);
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros, reserva1.getGrupo(), ReservaStatus.ENCERRADA);
 		
-		if(reservas == null){
+		if(reservas == null || reservas.size() == 0){
 			if(reserva1.getCreated().before(reserva2.getCreated()))
 				return reserva1;
 			else
@@ -502,12 +515,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 	
 	private void reprovaReserva(Reserva reserva) throws Exception{
-		reserva.setStatus(ReservaStatus.ENCERRADA);
+		reserva.setStatus(ReservaStatus.REPROVADA);
 		this.salvar(reserva);
 		dispararEmailReprovacaoReserva(reserva);
 	}
 	
 	private void dispararEmailAprovacaoReserva(Reserva reserva) throws MessagingException{
+		
+		if(reserva.getSolicitante().getEmails() == null)
+			return;
+		
 		String[] destinatario = new String[]{reserva.getSolicitante().getEmails()};
 		String title = "Prime Share Club - Reserva Aprovada";
 		String texto = "Sua solicitação de reserva foi aprovada <br />" + "<br />Embarcação: "
@@ -518,11 +535,21 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ "<br /><br /><br />Att" 
 				+ "<br />Equipe Prime Share Club";
 		
-		mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+		try{
+			mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+		}
+		catch(Exception e){
+			System.out.println("ERRO AO ENVIAR EMAIL!");
+		}
+		
 				
 	}
 	
 	private void dispararEmailReprovacaoReserva(Reserva reserva) throws MessagingException{
+		
+		if(reserva.getSolicitante().getEmails() == null)
+			return;
+		
 		String[] destinatario = new String[]{reserva.getSolicitante().getEmails()};
 		String title = "Prime Share Club - Reserva Reprovada";
 		String texto = "Sua solicitação de reserva foi reprovada <br />" + "<br />Embarcação: "
@@ -532,8 +559,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ Formatters.formatDate(reserva.getFimReserva())
 				+ "<br /><br /><br />Att" 
 				+ "<br />Equipe Prime Share Club";
-		
-		mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+		try{
+			mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+		}
+		catch(Exception e){
+			System.out.println("ERRO AO ENVIAR EMAIL!");
+		}
 				
 	}
 	

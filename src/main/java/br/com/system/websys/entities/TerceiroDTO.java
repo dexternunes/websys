@@ -9,6 +9,7 @@ public class TerceiroDTO implements Serializable {
 	
 	private static final long serialVersionUID = 8631801890193946598L;
 
+
 	private Long id;
 	
 	private String nome;
