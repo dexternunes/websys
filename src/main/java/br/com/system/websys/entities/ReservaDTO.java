@@ -20,8 +20,10 @@ public class ReservaDTO implements Serializable {
 
 	private Date start;
 	
+	@SuppressWarnings("unused")
 	private String startStr;
 	
+	@SuppressWarnings("unused")
 	private String endStr;
 
 	private Date end;
@@ -51,6 +53,10 @@ public class ReservaDTO implements Serializable {
 		this.eventoInicio = eventoInicio;
 		this.eventoFim = eventoFim;
 		this.grupo = grupo;
+	}
+	
+	public ReservaDTO(){
+		
 	}
 
 	public Long getId() {

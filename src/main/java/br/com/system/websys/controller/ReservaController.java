@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.system.websys.business.GrupoBusiness;
+import br.com.system.websys.business.ParseDTO;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaValidacaoBusiness;
 import br.com.system.websys.business.UserBusiness;
@@ -35,6 +36,7 @@ import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
+import br.com.system.websys.entities.ReservaValidacaoStatus;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.TerceiroDTO;
@@ -58,6 +60,9 @@ public class ReservaController{
 	
 	@Autowired
 	private GrupoBusiness grupoBusiness;
+	
+	@Autowired
+	private ParseDTO parseReserva;
 	
 	@RequestMapping(value="/salvar", method = RequestMethod.POST)
 	public String salvarBase(HttpServletRequest request, @Valid @ModelAttribute("reserva") Reserva reserva,
@@ -101,19 +106,34 @@ public class ReservaController{
 	
 	@ResponseBody
 	@RequestMapping(value="/api/salvar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-	public String salvar(HttpServletRequest request, @ModelAttribute("reserva") ReservaDTO reserva,
-			BindingResult result, RedirectAttributes attr) throws Exception {
+	public ReservaValidacaoStatus salvar(HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws Exception {
 
-		if (result.hasErrors()) {
-
-			for (ObjectError error : result.getAllErrors())
-				logger.info("Erro: " + error.toString());
+		Reserva reserva = parseReserva.parseReservaDTO2Reserva(reservaDTO);
+		
+		ReservaValidacaoStatus statusReserva = reservaBusiness.validaReserva(reserva);
+		
+		try {
 			
-			return "redirect:/home";
+			String server;
+			if(request.getServerPort() == 80)
+				server = "http://" + request.getServerName();
+			else
+				server = "http://" + request.getServerName() + ":" + request.getServerPort();
+			
+			if(statusReserva.equals(ReservaValidacaoStatus.OK)){
+				if(reservaDTO.getId() != null){
+					reserva = reservaBusiness.salvar(reserva);
+					reservaBusiness.sendEmailValidacao(reserva, server);					
+				}
+				else
+					reserva = reservaBusiness.salvar(reserva);				
+			}
+			
+		} catch (Exception e) {
+			throw new Exception("Erro ao salvar a solicitação");
 		}
 		
-		attr.addFlashAttribute("reserva", reserva);
-		return "redirect:/home";
+		return statusReserva;
 	}
 	
 	@ResponseBody

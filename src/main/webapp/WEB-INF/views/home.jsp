@@ -68,11 +68,7 @@
 					<div id='calendar'></div>
 					<div class="clearfix"></div>
 					<div>
-						<label>[S] -> Solicitação.</label>
-						<br>
-						<label>[R] -> Reserva.</label>
-						<br>
-						<label>[E] -> Em uso.</label>
+						<label>[S] -> Solicitação. [R] -> Reserva. [E] -> Em uso.</label>
 					</div>
 				</div>
 			</div>
@@ -515,7 +511,7 @@
 				$(".antosubmit").show();
 			}
 			
-			if ($('#permiteReserva').val() == 1 || reservaJSON.admin) {
+			if ($('#permiteReserva').val() == 1 || $('#admin').val()) {
 				$('#data_inicio_reserva').daterangepicker(
 						{
 							timePicker : true,
@@ -541,9 +537,10 @@
 						});
 				$('#data_inicio_reserva').on('apply.daterangepicker', function(ev, picker) {
 					
-					var minDateReserva = new Date();
-					minDateReserva.setTime(Date.parse($('#data_inicio_reserva').val()));
-					minDateReserva.addHours(1);
+// 					var minDateReserva = new Date($('#data_inicio_reserva').val()).toLocaleString();
+// 					alert(Date.parse($('#data_inicio_reserva').val(), "DD/MM/YYYY HH:mm"));
+//  					minDateReserva.setTime(Date.parse($('#data_inicio_reserva').val()));
+// 					minDateReserva.addHours(1);
 					
 					$('#data_fim_reserva').daterangepicker({
 						singleDatePicker : true,
@@ -554,8 +551,8 @@
 						timezone : 'local',
 						calender_style : "picker_4",
 						parentEl : '#CalenderModal',
-						startDate : minDateReserva,
-						minDate: minDateReserva,
+						startDate : $('#data_inicio_reserva').val(),
+						minDate: $('#data_inicio_reserva').val(),
 						locale : {
 							applyLabel : 'Ok',
 							cancelLabel : 'Cancelar',
@@ -575,17 +572,19 @@
 			$(".antosubmit").on("click", function() {
 				var title = $("#title").val();
 				
+				alert($('#utilizaMarinheiro').val());
+				
 				var reservaDTO = {
 					id : null,
 					title : null,
-					terceiro : {id : null, nome : null},
+					terceiro : {id : null},
 					start : null,
 					end : null,
 					utilizaMarinheiro : null,
 					obs : null,
 					status : null,
-					eventoInicio : null,
-					eventoFim : null,
+					eventoInicio : {id : null},
+					eventoFim : {id : null},
 					grupo : {id : null}
 				};
 
@@ -601,8 +600,8 @@
 						reservaDTO.utilizaMarinheiro = calEvent._utilizaMarinheiro;
 						reservaDTO.obs = calEvent._obs;
 						reservaDTO.status = calEvent._status;
-						reservaDTO.eventoInicio = calEvent._eventoInicio;
-						reservaDTO.eventoFim = calEvent._eventoFim;
+						reservaDTO.eventoInicio.id = calEvent._eventoInicio.id;
+						reservaDTO.eventoFim.id = calEvent._eventoFim.id;
 						reservaDTO.grupo.id = calEvent._grupo;
 						
 						$.ajax({
@@ -640,14 +639,14 @@
 						reservaDTO.id = null;
 						reservaDTO.title = $('#title').val();
 						reservaDTO.terceiro.id = parseInt($('#idTerceiro').val());
-						reservaDTO.start = $('#data_inicio_reserva').val();
-						reservaDTO.end = $('#data_fim_reserva').val();
-						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').val();
-						reservaDTO.obs = $('#obs').val();;
+						reservaDTO.start = Date.parse($('#data_inicio_reserva').val());
+						reservaDTO.end = Date.parse($('#data_fim_reserva').val());
+						reservaDTO.utilizaMarinheiro = false;
+						reservaDTO.obs = $('#obs').val();
 						reservaDTO.status = null;
 						reservaDTO.eventoInicio = null;
 						reservaDTO.eventoFim = null;
-						reservaDTO.grupo.id = $('#grupo').val();
+						reservaDTO.grupo.id = parseInt($('#grupo').val());
 						
 						$.ajax({
 							async : true,
@@ -658,11 +657,9 @@
 							data : JSON.stringify(reservaDTO),
 							success : function(data) {
 								retorno = data;
-								
-								alert(data);
 
 								$("#my-modal").modal('hide');
-								
+
 								if(retorno == "Faturado com sucesso."){
 									$('#info span font').text(retorno);
 									$('#messageModalInfo').modal('show');								
@@ -672,7 +669,6 @@
 								}
 							},
 							error : function(request, status, error) {
-								alert(error);
 								$("#my-modal").modal('hide');
 								$('#errors span').text('Ocorreu um erro. Favor reportar com o codigo de erro:88');
 								$('#messageModal').modal('show');

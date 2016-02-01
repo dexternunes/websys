@@ -1,5 +1,6 @@
 package br.com.system.websys.business;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +25,7 @@ import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
+import br.com.system.websys.entities.ReservaValidacaoStatus;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroDTO;
@@ -349,8 +351,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return horaInicioReservaCal.getTime();
 	}
 
-	public Boolean validaReserva(Reserva reserva) {
-		return null;
+	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException {
+		if(isReservaDiaUnico(reserva)){
+			return validaReservaDiaUnico(reserva);
+		}
+		
+		return validaReservaDiasConsecutivos(reserva);
 	}
 	
 	private Boolean validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception{
@@ -384,14 +390,19 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				dispararEmailAprovacaoReserva(reserva);
 			}			
 			
-		}
-		
+		}		
 		return true;
-
 	}
 
-	public Boolean validaReservaDiaUnico(Reserva reserva) {
-		return null;
+	public ReservaValidacaoStatus validaReservaDiaUnico(Reserva reserva) throws ParseException {
+		
+		Date dataAtual = new Date();
+		
+		if(((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) % 24  < 24){
+			return ReservaValidacaoStatus.DIA_UNICO;
+		}
+		
+		return ReservaValidacaoStatus.OK;
 	}
 	
 	private List<Reserva> validaReservasConcomitantes(List<Reserva> reservas) throws Exception{
@@ -449,18 +460,17 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	}
 
-
-	public Boolean validaReservaDiasConsecutivos(Reserva reserva) {
-//			$('#data_fim_reserva').on('apply.daterangepicker', function(ev, picker){
-//			var inicio = moment(new Date(moment($('#data_inicio_reserva').val()).format("YYYY/MM/DD")));
-//			var hoje = moment(new Date(moment().format("YYYY/MM/DD")));
+	@SuppressWarnings("deprecation")
+	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) {
 		
-//			if((moment(inicio).diff(hoje, 'days')) < 7){
-//				alert('Reservas com mais de um dia, deverão ser feitas com 7 dias de antecedência!');
-//				return false;
-//			}
-//		});	
-		return null;
+		if((reserva.getInicioReserva().getMonth() == reserva.getFimReserva().getMonth()) && reserva.getInicioReserva().getDate() == reserva.getFimReserva().getDate()){
+			Date dataAtual = new Date();
+			
+			if((reserva.getInicioReserva().getDate() - dataAtual.getDate()) < 7){
+				return ReservaValidacaoStatus.DIAS_CONSECUTIVOS;
+			}
+		}		
+		return ReservaValidacaoStatus.OK;
 	}
 	
 	private Reserva elegeReserva(Reserva reserva1, Reserva reserva2) throws Exception{

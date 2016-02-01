@@ -1,5 +1,6 @@
 package br.com.system.websys.business;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
+import br.com.system.websys.entities.ReservaValidacaoStatus;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.repository.ReservaRepository;
@@ -44,5 +46,7 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception;
 
 	public void validaAPoraToda();
+	
+	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException;
 
 }
