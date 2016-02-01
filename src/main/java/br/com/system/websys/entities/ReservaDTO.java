@@ -52,6 +52,10 @@ public class ReservaDTO implements Serializable {
 		this.eventoFim = eventoFim;
 		this.grupo = grupo;
 	}
+	
+	public ReservaDTO(){
+		
+	}
 
 	public Long getId() {
 		return id;

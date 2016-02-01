@@ -1,6 +1,13 @@
 package br.com.system.websys.entities;
 
-public class TerceiroDTO extends EntityBaseRoot {
+import java.io.Serializable;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class TerceiroDTO implements Serializable {
+
+	private static final long serialVersionUID = 8646464654646014654L;
 
 	private Long id;
 	
