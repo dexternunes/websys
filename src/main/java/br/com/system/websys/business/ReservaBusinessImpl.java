@@ -446,7 +446,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					
 					if((inicioReserva.before(inicioR) && fimReserva.after(inicioR))
 							|| (inicioReserva.before(fimR) && fimReserva.after(fimR))){
-						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
+						if(!reservasUnicas.contains(reservaDaVez) && !reservasUnicas.contains(reservaVerificacao))
+							reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
 						continua = true;
 					}
 					else
@@ -481,7 +482,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		terceiros.add(reserva1.getSolicitante());
 		terceiros.add(reserva2.getSolicitante());
 		
-		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByStatus(terceiros, ReservaStatus.ENCERRADA);
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros, reserva1.getGrupo(), ReservaStatus.ENCERRADA);
 		
 		if(reservas == null || reservas.size() == 0){
 			if(reserva1.getCreated().before(reserva2.getCreated()))

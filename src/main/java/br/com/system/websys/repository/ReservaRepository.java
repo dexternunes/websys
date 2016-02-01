@@ -21,8 +21,8 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	@Query("SELECT r FROM Reserva r WHERE r.solicitante = :terceiro AND r.excluido = 0 AND r.ativo = 1 AND r.status in :status")
 	List<Reserva> getReservaByTerceiro(@Param("terceiro") Terceiro terceiro, @Param("status") List<ReservaStatus> status);
 	
-	@Query("SELECT r FROM Reserva r WHERE r.solicitante in :terceiros AND r.excluido = 0 AND r.ativo = 1 AND r.status = :status order by r.fimReserva")
-	List<Reserva> getReservaByTerceirosByStatus(@Param("terceiros") List<Terceiro> terceiros, @Param("status") ReservaStatus status);
+	@Query("SELECT r FROM Reserva r WHERE r.solicitante in :terceiros AND r.excluido = 0 AND r.ativo = 1 AND r.grupo = :grupo AND r.status = :status order by r.fimReserva")
+	List<Reserva> getReservaByTerceirosByGrupoByStatus(@Param("terceiros") List<Terceiro> terceiros, @Param("grupo") Grupo grupo, @Param("status") ReservaStatus status);
 
 	@Query("SELECT r FROM Reserva r WHERE r.eventoFim = :eventoFim")
 	Reserva getReservaByEventoFim(@Param("eventoFim") ReservaEvento eventoFim);
