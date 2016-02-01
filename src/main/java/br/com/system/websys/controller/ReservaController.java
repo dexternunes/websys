@@ -101,10 +101,9 @@ public class ReservaController{
 	
 	@ResponseBody
 	@RequestMapping(value="/api/salvar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-	public String salvar(HttpServletRequest request, @ModelAttribute("reserva") ReservaDTO reserva,
-			BindingResult result, RedirectAttributes attr) throws Exception {
+	public String salvar(HttpServletRequest request, @RequestBody ReservaDTO reserva) throws Exception {
 
-		if (result.hasErrors()) {
+		/*if (result.hasErrors()) {
 
 			for (ObjectError error : result.getAllErrors())
 				logger.info("Erro: " + error.toString());
@@ -112,7 +111,7 @@ public class ReservaController{
 			return "redirect:/home";
 		}
 		
-		attr.addFlashAttribute("reserva", reserva);
+		attr.addFlashAttribute("reserva", reserva);*/
 		return "redirect:/home";
 	}
 	
