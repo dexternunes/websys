@@ -44,7 +44,7 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 				Random randCol = new Random();  
 				for(int x = 0 ; x < 3 ; x++){
 					for (int i = 0; i < 2; i++) {  
-			            sb.append(Integer.toString(Math.abs(randCol.nextInt()) % 16, 16));  
+			            sb.append(Integer.toString((Math.abs(randCol.nextInt()) % 8) + 8, 16));  
 			        }
 				}				
 				grupoBD.setColor("#"+sb.toString());				

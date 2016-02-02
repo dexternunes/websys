@@ -448,15 +448,19 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Terceiro> terceiros = new ArrayList<Terceiro>();
 		terceiros.add(reserva1.getSolicitante());
 		terceiros.add(reserva2.getSolicitante());
+		
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros, reserva1.getGrupo(), ReservaStatus.ENCERRADA);
+		
+		if(reservas == null || reservas.size() == 0){
+			if(reserva1.getCreated().before(reserva2.getCreated())){
+				reprovaReserva(reserva2);
 
-		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros,
-				reserva1.getGrupo(), ReservaStatus.ENCERRADA);
-
-		if (reservas == null || reservas.size() == 0) {
-			if (reserva1.getCreated().before(reserva2.getCreated()))
 				return reserva1;
-			else
+			}
+			else{
+				reprovaReserva(reserva1);
 				return reserva2;
+			}
 		}
 
 		Reserva ultimaReserva = reservas.get(0);
