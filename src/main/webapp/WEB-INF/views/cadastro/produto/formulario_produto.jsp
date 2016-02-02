@@ -151,6 +151,11 @@
 									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
 
+								
+								<div class="control-group">
+									<a type="button" class="btn btn-primary"
+										href="${pageContext.request.contextPath}/produtos/">Voltar</a>
+								</div>
 
 							</form:form>
 						</div>
