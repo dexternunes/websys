@@ -47,77 +47,6 @@
 
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-	
-<style>
-.loader {
-  font-size: 90px;
-  text-indent: -9999em;
-  overflow: hidden;
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-  margin: 72px auto;
-  position: relative;
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-animation: load6 1.7s infinite ease;
-  animation: load6 1.7s infinite ease;
-}
-@-webkit-keyframes load6 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
-  }
-  5%,
-  95% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
-  }
-  10%,
-  59% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.087em -0.825em 0 -0.42em #ffffff, -0.173em -0.812em 0 -0.44em #ffffff, -0.256em -0.789em 0 -0.46em #ffffff, -0.297em -0.775em 0 -0.477em #ffffff;
-  }
-  20% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.338em -0.758em 0 -0.42em #ffffff, -0.555em -0.617em 0 -0.44em #ffffff, -0.671em -0.488em 0 -0.46em #ffffff, -0.749em -0.34em 0 -0.477em #ffffff;
-  }
-  38% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.377em -0.74em 0 -0.42em #ffffff, -0.645em -0.522em 0 -0.44em #ffffff, -0.775em -0.297em 0 -0.46em #ffffff, -0.82em -0.09em 0 -0.477em #ffffff;
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
-  }
-}
-@keyframes load6 {
-  0% {
-    -webkit-transform: rotate(0deg);
-    transform: rotate(0deg);
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
-  }
-  5%,
-  95% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
-  }
-  10%,
-  59% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.087em -0.825em 0 -0.42em #ffffff, -0.173em -0.812em 0 -0.44em #ffffff, -0.256em -0.789em 0 -0.46em #ffffff, -0.297em -0.775em 0 -0.477em #ffffff;
-  }
-  20% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.338em -0.758em 0 -0.42em #ffffff, -0.555em -0.617em 0 -0.44em #ffffff, -0.671em -0.488em 0 -0.46em #ffffff, -0.749em -0.34em 0 -0.477em #ffffff;
-  }
-  38% {
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.377em -0.74em 0 -0.42em #ffffff, -0.645em -0.522em 0 -0.44em #ffffff, -0.775em -0.297em 0 -0.46em #ffffff, -0.82em -0.09em 0 -0.477em #ffffff;
-  }
-  100% {
-    -webkit-transform: rotate(360deg);
-    transform: rotate(360deg);
-    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
-  }
-}
-</style>	
-
 </head>
 <body>
 	<div class="row">
@@ -306,7 +235,11 @@
 		</div>
 	</div>
 		
-	<div class="loader">Loading...</div>
+	<div class="modal" id="loading" style="display: none;">
+	    <div class="loading_visivel">
+	        <div class="circulo"></div>
+	    </div>
+    </div>
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
@@ -319,112 +252,112 @@
 		src="${pageContext.request.contextPath}/resources/js/datepicker/daterangepicker.js"></script>
 
 	<script>
-		var reservasJSON = [];
+	
+	$(document).ajaxStart(function () {
+        $('#loading').show();
+    });
+	
+	$(document).ajaxStop(function(){
+		$('#loading').hide();
+	});	
+	
+	var reservasJSON = [];
 
-		$.ajax({
-			url : "${pageContext.request.contextPath}/reserva/api/get",
-			dataType : "json",
-			contentType : "application/json; charset=utf-8",
-			type : 'GET',
-			async : false,
-			success : function(data) {
-				reservasJSON = data.reservas;
-			},
-			error : function(request, status, error) {
-				//esse alert estourava toda vez que eu logava no sistema. Por isso comentei.
-				alert(error);
-			}
-		});
-		
-		var gruposJSON = [];
-		
-		$.ajax({
-			url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante",
-			dataType:"json",
-			contentType:"application/json; charset=utf-8",
-			type:"GET",
-			async:false,
-			success:function(data){
-				gruposJSON = data;
-			},
-			error:function(request, status, error){
-				alert(error);
-			}
-		});
-		
-		$(document).ready(function(){
-			$('.input-hora').mouseover(function(){
-				$('.input-hora').css('cursor', 'pointer');
-			}) ;
-		});
-		
-		$(document).ajaxStart(function() {
-			  $(".loader").show();
-			});
-
-		$(window).load(function() {
-			
-		$('#diaTodo').click(function(){
-			if($('#diaTodo').is(':checked')){
-				$('#div_dia_inteiro').show();
-				$('#divinicioReserva').hide();
-				$('#divfimReserva').hide();
-			}
-			else{
-				$('#div_dia_inteiro').hide();
-				$('#divinicioReserva').show();
-				$('#divfimReserva').show();
-			}
-		});
-		
-		var seleciona;
-		var edita;			
-			
-		if ($('#admin').val() == 1) {
-				edita = true;
-				seleciona = true;
-			}
-		else{
-			if ($('#permiteReserva').val() != 1) {
-				edita = true;
-				seleciona = false;
-				$('#possuiReserva').show();
-			} else {
-				edita = false;
-				seleciona = true;
-				$('#possuiReserva').hide();
-			}
+	$.ajax({
+		url : "${pageContext.request.contextPath}/reserva/api/get",
+		dataType : "json",
+		contentType : "application/json; charset=utf-8",
+		type : 'GET',
+		async : false,
+		success : function(data) {
+			reservasJSON = data.reservas;
+		},
+		error : function(request, status, error) {
+			alert(error);
 		}
+	});
+		
+	var gruposJSON = [];
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante",
+		dataType:"json",
+		contentType:"application/json; charset=utf-8",
+		type:"GET",
+		async:false,
+		success:function(data){
+			gruposJSON = data;
+		},
+		error:function(request, status, error){
+			alert(error);
+		}
+	});
+		
+	$(document).ready(function(){
+		$('.input-hora').mouseover(function(){
+			$('.input-hora').css('cursor', 'pointer');
+		}) ;
+	});
+	
+	$(window).load(function() {
+		
+	$('#diaTodo').click(function(){
+		if($('#diaTodo').is(':checked')){
+			$('#div_dia_inteiro').show();
+			$('#divinicioReserva').hide();
+			$('#divfimReserva').hide();
+		}
+		else{
+			$('#div_dia_inteiro').hide();
+			$('#divinicioReserva').show();
+			$('#divfimReserva').show();
+		}
+	});
+		
+	var seleciona;
 
-			var calendar = $('#calendar').fullCalendar({
-				header : {
-					left : 'prev,next today',
-					center : 'title',
-					right : 'month,agendaWeek,agendaDay'
-				},
-				selectable : seleciona,
-				selectHelper : true,
-				eventLimit : true,
-				timezone : 'local',
-				lang : 'pt-br',
-				select : function(start, end, allDay) {
-					if (moment().diff(start, 'days') > 0) {
-						$('#calendar').fullCalendar('unselect');
-						return false;
-					} else {
-						ReservaEvento(start, end);
-					}
-				},
-				eventClick : function(calEvent, jsEvent, view) {
-					ReservaEvento(calEvent.start, calEvent.end, calEvent);
-				},
-				eventAfterRender : function(event, element, view) {
-					element.css('background-color', event.grupo.color);
-				},
-				editable : false,
-				events : reservasJSON,
-			});
+	if ($('#admin').val() == 1) {
+			seleciona = true;
+		}
+	else{
+		if ($('#permiteReserva').val() != 1) {
+			seleciona = false;
+			$('#possuiReserva').show();
+		} else {
+			seleciona = true;
+			$('#possuiReserva').hide();
+		}
+	}
+
+	var calendar = $('#calendar').fullCalendar({
+		header : {
+			left : 'prev,next today',
+			center : 'title',
+			right : 'month,agendaWeek,agendaDay'
+		},
+		selectable : seleciona,
+		selectHelper : true,
+		eventLimit : true,
+		timezone : 'local',
+		lang : 'pt-br',
+		select : function(start, end, allDay) {
+			if (moment().diff(start, 'days') > 0) {
+				$('#calendar').fullCalendar('unselect');
+				return false;
+			} else {
+				ReservaEvento(start, end);
+			}
+		},
+		eventClick : function(calEvent, jsEvent, view) {
+			ReservaEvento(calEvent.start, calEvent.end, calEvent);
+		},
+		eventAfterRender : function(event, element, view) {
+			element.css('background-color', event.grupo.color);
+		},
+		editable : false,
+		events : reservasJSON,
 		});
+	});
 
 		function ReservaEvento(start, end, calEvent) {
 
@@ -448,9 +381,9 @@
 			}
 			
 			var reservaJSON = '';
-
+			
 			$.ajax({
-				url : "${pageContext.request.contextPath}/reserva/api/get/"+idReserva+'?dataReserva='+start.format('DD/MM/YYYY'),
+				url : "${pageContext.request.contextPath}/reserva/api/get/"+idReserva+'?dataReserva=' + getStringFromDate(start._d),
 				dataType : "json",
 				contentType : "application/json; charset=utf-8",
 				type : 'GET',
@@ -534,20 +467,20 @@
 				$('#grupoExibicao').html('');
 				$('#grupoExibicao').html('<option value="' + calEvent.grupo.id + '">'+ calEvent.grupo.descricao + '</option>');
 
-				if ($('#admin').val() == 1 || $('#marinheiro').val() == 1) {
-					if (reservaJSON.eventoInicio != null	&& reservaJSON.eventoInicio.hora == null && reservaJSON.eventoFim != null && reservaJSON.eventoFim.hora == null) {
+				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ') {
+					
 						$('#btnEventoInicio').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoInicio.id;
 							});
 						$('#btnEventoInicio').show();
-					}
+				}
+				
+				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] '){
 
-					if (reservaJSON.eventoFim != null && reservaJSON.eventoFim.hora == null && reservaJSON.eventoInicio != null && reservaJSON.eventoInicio.hora != null) {
 						$('#btnEventoFim').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoFim.id;
 							});
 						$('#btnEventoFim').show();
-					}
 				}
 			}
 			else{
@@ -581,8 +514,8 @@
 							timezone : 'local',
 							calender_style : "picker_4",
 							parentEl : '#CalenderModal',
-							startDate : reservaJSON.startStr,
-							minDate: reservaJSON.startStr,
+							startDate : getDateFromString(reservaJSON.startStr),
+							minDate: getDateFromString(reservaJSON.startStr),
 							singleDatePicker : true,
 							locale : {
 								applyLabel : 'Ok',
@@ -606,8 +539,8 @@
 						timezone : 'local',
 						calender_style : "picker_4",
 						parentEl : '#CalenderModal',
-						startDate : getDate($('#data_inicio_reserva').val()).addHours(1),
-						minDate: getDate($('#data_inicio_reserva').val()).addHours(1),
+						startDate : getDateFromString($('#data_inicio_reserva').val()).addHours(1),
+						minDate: getDateFromString($('#data_inicio_reserva').val()).addHours(1),
 						locale : {
 							applyLabel : 'Ok',
 							cancelLabel : 'Cancelar',
@@ -648,8 +581,8 @@
 						reservaDTO.id = calEvent._id;
 						reservaDTO.title = calEvent._title;
 						reservaDTO.terceiro.id = calEvent._idTerceiro;
-						reservaDTO.start = getDate(calEvent.start);
-						reservaDTO.end = getDate(calEvent.end);
+						reservaDTO.start = getDateFromString(calEvent.start);
+						reservaDTO.end = getDateFromString(calEvent.end);
 						reservaDTO.utilizaMarinheiro = calEvent._utilizaMarinheiro;
 						reservaDTO.obs = calEvent._obs;
 						reservaDTO.status = calEvent._status;
@@ -658,7 +591,7 @@
 						reservaDTO.grupo.id = calEvent._grupo;
 						
 						$.ajax({
-							async : true,
+							async : false,
 							url : '${pageContext.request.contextPath}/reserva/api/salvar',
 							dataType : "json",
 							contentType : "application/json; charset=utf-8",
@@ -704,8 +637,8 @@
 						reservaDTO.id = null;
 						reservaDTO.title = $('#title').val();
 						reservaDTO.terceiro.id = parseInt($('#idTerceiro').val());
-						reservaDTO.start = getDate($('#data_inicio_reserva').val());
-						reservaDTO.end = getDate($('#data_fim_reserva').val());
+						reservaDTO.start = getDateFromString($('#data_inicio_reserva').val());
+						reservaDTO.end = getDateFromString($('#data_fim_reserva').val());
 						reservaDTO.utilizaMarinheiro = false;
 						reservaDTO.obs = $('#obs').val();
 						reservaDTO.status = null;
@@ -730,7 +663,7 @@
 									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
 									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
-// 									$('#fechaModal').click('');
+ 									$('#fechaModal').click('');
 								}
 								
 								if(retorno.id == 3){
@@ -739,7 +672,7 @@
 									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
 									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
-// 									$('#fechaModal').click('');
+ 									$('#fechaModal').click('');
 								}
 								
 								if(retorno.id == 0){
@@ -759,22 +692,37 @@
 								$('#errors span').text('Ocorreu um erro. Favor reportar com o codigo de erro:88');
 								$('#messageModal').modal('show');
 							}
-						});						
+						});
 					}
 				}
-				
+
 				$('#calendar').fullCalendar('unselect');
 
 				$('.antoclose').click();
 
 			});
 		}
-		
-		function getDate(strdata) {
+
+		function getDateFromString(strdata) {
 			return new Date(strdata.substring(3, 5) + "/"
 					+ strdata.substring(0, 2) + "/"
 					+ strdata.substring(6, 10)
 					+ strdata.substring(10, 16));
+		}
+
+		function getStringFromDate(date){
+			var dia = date.getUTCDay();
+			var mes = date.getUTCMonth() + 1;
+			
+			if(dia < 10){
+				dia = '0' + dia;
+			}
+
+			if(mes < 10){
+				mes = '0' + mes;
+			}
+
+			return dia + '/' + mes + '/' + date.getUTCFullYear();
 		}
 	</script>
 </body>

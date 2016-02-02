@@ -52,7 +52,8 @@ public class ParseDTO{
 				reserva.getStatus(),
 				parseReservaEnvento2ReservaEnventoDTO(reserva.getEventoInicio()), 
 				parseReservaEnvento2ReservaEnventoDTO(reserva.getEventoFim()), 
-				new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()));
+				new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+				null);
 		
 	}
 	

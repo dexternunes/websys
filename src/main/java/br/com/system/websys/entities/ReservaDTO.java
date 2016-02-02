@@ -39,9 +39,11 @@ public class ReservaDTO implements Serializable {
 	private ReservaEventoDTO eventoFim;
 
 	private GrupoDTO grupo;
+	
+	private String tipoEvento;
 
 	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean utilizaMarinheiro,
-			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo) {
+			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo, String tipoEvento) {
 		this.id = id;
 		this.title = title;
 		this.terceiro = terceiro;
@@ -53,6 +55,7 @@ public class ReservaDTO implements Serializable {
 		this.eventoInicio = eventoInicio;
 		this.eventoFim = eventoFim;
 		this.grupo = grupo;
+		this.tipoEvento = tipoEvento;
 	}
 	
 	public ReservaDTO(){
@@ -163,6 +166,14 @@ public class ReservaDTO implements Serializable {
 
 	public void setEndStr(String endStr) {
 		this.endStr = endStr;
+	}
+
+	public String getTipoEvento() {
+		return tipoEvento;
+	}
+
+	public void setTipoEvento(String tipoEvento) {
+		this.tipoEvento = tipoEvento;
 	}
 
 }

@@ -44,5 +44,6 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	public void validaAPoraToda();
 	
 	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws Exception;
-
+	
+	public Reserva getReservaByDate(Reserva reserva);
 }

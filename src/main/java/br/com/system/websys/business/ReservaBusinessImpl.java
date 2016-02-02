@@ -257,18 +257,32 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		ReservaDTO reservaDTO;
 		Reserva reserva = this.get(id);
-
+		
 		if (reserva != null) {
+			String tipoEvento = "";
+			
+			if(reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)){
+				tipoEvento = "[S] ";
+			}
+			
+			if(reserva.getStatus().equals(ReservaStatus.APROVADA)){
+				tipoEvento = "[R] ";
+			}
+			
+			if(reserva.getStatus().equals(ReservaStatus.EM_USO)){
+				tipoEvento = "[E] ";
+			}
+			
 			reservaDTO = new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(),
 					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
 					reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getUtilizaMarinheiro(),
 					reserva.getObs(), reserva.getStatus(), new ReservaEventoDTO(reserva.getEventoInicio().getId()),
 					new ReservaEventoDTO(reserva.getEventoFim().getId()), new GrupoDTO(reserva.getGrupo().getId(),
-							reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()));
+							reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()), tipoEvento);
 		} else {
 			reservaDTO = new ReservaDTO(null, terceiro.getNome(), new TerceiroDTO(terceiro.getId(), terceiro.getNome()),
 					calculaDataInicioReserva(dataReserva), null, null, null, ReservaStatus.AGUARDANDO_APROVACAO, null,
-					null, null);
+					null, null, null);
 
 		}
 		return reservaDTO;
@@ -348,9 +362,17 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public ReservaValidacaoStatus validaReservaDiaUnico(Reserva reserva) throws ParseException {
 
 		Date dataAtual = new Date();
-
-		if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 24) {
-			return ReservaValidacaoStatus.DIA_UNICO;
+		
+		if(getReservaByDate(reserva) != null){
+		
+			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 24) {
+				return ReservaValidacaoStatus.DIA_UNICO;
+			}
+		}
+		else{
+			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 2) {
+				return ReservaValidacaoStatus.DIA_UNICO;
+			}
 		}
 
 		return ReservaValidacaoStatus.OK;
@@ -520,6 +542,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return true;
 
+	}
+
+	@Override
+	public Reserva getReservaByDate(Reserva reserva) {
+		return ((ReservaRepository) repository).getReservaByDate(reserva);
 	}
 
 }

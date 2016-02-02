@@ -155,23 +155,23 @@ public class ReservaController{
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
 				
-				String tipo_evento = "";
+				String tipoEvento = "";
 				
 				if(reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)){
-					tipo_evento = "[S] ";
+					tipoEvento = "[S] ";
 				}
 				
 				if(reserva.getStatus().equals(ReservaStatus.APROVADA)){
-					tipo_evento = "[R] ";
+					tipoEvento = "[R] ";
 				}
 				
 				if(reserva.getStatus().equals(ReservaStatus.EM_USO)){
-					tipo_evento = "[E] ";
+					tipoEvento = "[E] ";
 				}
 
 			reservas.getReservas().add(new ReservaDTO(
 					reserva.getId(), 
-					tipo_evento + reserva.getSolicitante().getNome(), 
+					tipoEvento + reserva.getSolicitante().getNome(), 
 					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
 					reserva.getInicioReserva(),
 					reserva.getFimReserva(), 
@@ -180,7 +180,8 @@ public class ReservaController{
 					reserva.getStatus(),
 					new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
 					new ReservaEventoDTO(reserva.getEventoFim().getId()), 
-					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
+					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+					tipoEvento));
 			}
 		}
 		return reservas;
@@ -192,7 +193,7 @@ public class ReservaController{
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		
-		Date data = format.parse(dataReserva);				
+		Date data = format.parse(dataReserva);
 		
 		ReservaDTO reservas = reservaBusiness.getReservaDTOById(id, userBusiness.getCurrent().getTerceiro(), data);
 		
@@ -219,7 +220,8 @@ public class ReservaController{
 					reserva.getStatus(),
 					new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
 					new ReservaEventoDTO(reserva.getEventoFim().getId()), 
-					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
+					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+					null));
 		}
 
 		return reservas;

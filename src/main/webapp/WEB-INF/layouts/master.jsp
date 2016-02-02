@@ -222,79 +222,98 @@ progress:after {
 </script>
  -->
 <style type="text/css">
-/*
-.speech-bubble {
-	margin-left: 10px;
-	background-color: #FF6F6F;
-	border: 1px solid #FF6F6F;
-	border-radius: 10px;
-	width: 35% !important;
-	height: 38px !important;
-	text-align: center;
-	padding: 8px;
-	position: absolute;
-	left: 100%;
+.loading_visivel {
+    font-family: Arial;
+    font-size: 10pt;
+    text-align: center;
+    /*color:black;*/
+    /*opacity: inherit;*/
+    width: 200px;
+    height: 100px;
+    /*display: none;*/
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.speech-bubble .arrow {
-	border-top: 8px solid transparent;
-	border-bottom: 8px solid transparent;
-	border-right: 8px solid #FF6F6F;
-	border-style: solid;
-	position: absolute;
-	text-align:center;
+.circulo {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);
+    opacity: .9;
+    border-top: 5px solid rgba(0,0,0,0);
+    border-left: 5px solid rgba(0,0,0,0);
+    border-radius: 50px;
+    box-shadow: 0 0 35px #2187e7;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    -moz-animation: spin .5s infinite linear;
+    -webkit-animation: spin .5s infinite linear;
+    animation: spin .5s infinite linear;
 }
 
-.bottom {
-	border-color: #FF6F6F transparent transparent transparent;
-	border-width: 8px 8px 8px 8px;
-	bottom: 30%;
-	right: 100%;
-	text-align:center;
+/*circulo*/
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.bottom:after {
-	border-color: #FF6F6F transparent transparent transparent;
-	border-style: solid;
-	border-width: 7px 7px 0px 7px;
-	position: absolute;
-	text-align:center;
-}
-*/
-/*.daterangepicker {
-	position: absolute !important;
-	z-index: 9998 !important;
-}*/
+@keyframes spinoff {
+    0% {
+        transform: rotate(0deg);
+    }
 
-/*.timepicker {
-	position: absolute !important;
-	z-index: 9998 !important;
-}*/
-/*
-.hourselect {
-	z-index: 9999 !important;
+    100% {
+        transform: rotate(-360deg);
+    }
 }
 
-.ui-timepicker-container {
-	position: absolute;
-	overflow: hidden;
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
-.ui-timepicker {
-	display: block;
-	height: 200px;
-	text-align: center;
-	overflow: auto;
-	overflow-x: hidden;
-	margin: 0;
-	padding: 0 0 0 1px;
-	position: absolute !important;
-	z-index: 9999 !important;
-	color: white !important;
-	border-color: white !important;
-	background-color:white !important;
+@-webkit-keyframes spinoff {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(-360deg);
+    }
 }
-*/
+
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes spinoff {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(-360deg);
+    }
+}
+/*--*/
 
 .calendar-time{
 	float:left !important;
