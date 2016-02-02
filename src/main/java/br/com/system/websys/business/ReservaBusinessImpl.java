@@ -570,6 +570,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Override
 	public Reserva getReservaByDate(Reserva reserva) {
-		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), grupoBusiness.findAllByTerceito(reserva.getSolicitante()));
+		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), reserva.getGrupo());
 	}
 }
