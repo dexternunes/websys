@@ -43,7 +43,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Autowired
 	public MailBusiness mailBusiness;
-
+	
 	@Autowired
 	protected ReservaBusinessImpl(ReservaRepository repository) {
 		super(repository, Reserva.class);
@@ -257,28 +257,29 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		ReservaDTO reservaDTO;
 		Reserva reserva = this.get(id);
-		
+
 		if (reserva != null) {
 			String tipoEvento = "";
-			
-			if(reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)){
+
+			if (reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)) {
 				tipoEvento = "[S] ";
 			}
-			
-			if(reserva.getStatus().equals(ReservaStatus.APROVADA)){
+
+			if (reserva.getStatus().equals(ReservaStatus.APROVADA)) {
 				tipoEvento = "[R] ";
 			}
-			
-			if(reserva.getStatus().equals(ReservaStatus.EM_USO)){
+
+			if (reserva.getStatus().equals(ReservaStatus.EM_USO)) {
 				tipoEvento = "[E] ";
 			}
-			
+
 			reservaDTO = new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(),
 					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
 					reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getUtilizaMarinheiro(),
 					reserva.getObs(), reserva.getStatus(), new ReservaEventoDTO(reserva.getEventoInicio().getId()),
 					new ReservaEventoDTO(reserva.getEventoFim().getId()), new GrupoDTO(reserva.getGrupo().getId(),
-							reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()), tipoEvento);
+							reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+					tipoEvento);
 		} else {
 			reservaDTO = new ReservaDTO(null, terceiro.getNome(), new TerceiroDTO(terceiro.getId(), terceiro.getNome()),
 					calculaDataInicioReserva(dataReserva), null, null, null, ReservaStatus.AGUARDANDO_APROVACAO, null,
@@ -317,11 +318,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException {
-		if (isReservaDiaUnico(reserva)) {
-			return validaReservaDiaUnico(reserva);
-		}
 
-		return validaReservaDiasConsecutivos(reserva);
+		if (reserva.getId() == null) {
+			if (isReservaDiaUnico(reserva)) {
+				return validaReservaDiaUnico(reserva);
+			}
+			return validaReservaDiasConsecutivos(reserva);
+		}		
+		return ReservaValidacaoStatus.OK;
 	}
 
 	private Boolean validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception {
@@ -362,19 +366,19 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public ReservaValidacaoStatus validaReservaDiaUnico(Reserva reserva) throws ParseException {
 
 		Date dataAtual = new Date();
-		
-		if(getReservaByDate(reserva) != null){
-		
+
+		if (getReservaByDate(reserva) != null) {
 			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 24) {
 				return ReservaValidacaoStatus.DIA_UNICO;
 			}
 		}
-		else{
+		else {
 			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 2) {
-				return ReservaValidacaoStatus.DIA_UNICO;
+				return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
 			}
+			else
+				return ReservaValidacaoStatus.OK_RESERVA;
 		}
-
 		return ReservaValidacaoStatus.OK;
 	}
 
@@ -448,16 +452,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Terceiro> terceiros = new ArrayList<Terceiro>();
 		terceiros.add(reserva1.getSolicitante());
 		terceiros.add(reserva2.getSolicitante());
-		
-		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros, reserva1.getGrupo(), ReservaStatus.ENCERRADA);
-		
-		if(reservas == null || reservas.size() == 0){
-			if(reserva1.getCreated().before(reserva2.getCreated())){
+
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros,
+				reserva1.getGrupo(), ReservaStatus.ENCERRADA);
+
+		if (reservas == null || reservas.size() == 0) {
+			if (reserva1.getCreated().before(reserva2.getCreated())) {
 				reprovaReserva(reserva2);
 
 				return reserva1;
-			}
-			else{
+			} else {
 				reprovaReserva(reserva1);
 				return reserva2;
 			}
@@ -488,7 +492,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Aprovada";
-		String texto = "Sua solicitaÃ§Ã£o de reserva foi aprovada <br />" + "<br />EmbarcaÃ§Ã£o: "
+		String texto = "Sua solicitação de reserva foi aprovada <br />" + "<br />Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
@@ -510,7 +514,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Reprovada";
-		String texto = "Sua solicitaÃ§Ã£o de reserva foi reprovada <br />" + "<br />EmbarcaÃ§Ã£o: "
+		String texto = "Sua solicitação de reserva foi reprovada <br />" + "<br />Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
@@ -545,12 +549,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		}
 
 		return true;
-
 	}
 
 	@Override
 	public Reserva getReservaByDate(Reserva reserva) {
-		return ((ReservaRepository) repository).getReservaByDate(reserva);
+		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), grupoBusiness.findAllByTerceito(reserva.getSolicitante()));
 	}
-
 }

@@ -134,7 +134,10 @@ public class ReservaController{
 				else
 					reserva = reservaBusiness.salvar(reserva);				
 			}
-			
+			if(statusReserva.equals(ReservaValidacaoStatus.OK_RESERVA)){
+				reserva.setStatus(ReservaStatus.APROVADA);
+				reserva = reservaBusiness.salvar(reserva);
+			}			
 		} catch (Exception e) {
 			statusReservaDTO.setId(3);
 			statusReservaDTO.setMensagem(e.getMessage());

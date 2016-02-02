@@ -657,23 +657,6 @@
 								retorno = data;
 
 								$("#my-modal").modal('hide');
-
-								if(retorno.id == 1 || retorno.id == 2){
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
- 									$('#fechaModal').click('');
-								}
-								
-								if(retorno.id == 3){
-									$("#my-modal").modal('hide');
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
- 									$('#fechaModal').click('');
-								}
 								
 								if(retorno.id == 0){
 									$('#exibeMensagem').removeClass();
@@ -683,7 +666,25 @@
 									$('#fechaModal').click(function(){
 										document.location.reload();
 									});
-								}								
+								}		
+
+								if(retorno.id == 1 || retorno.id == 2 || retorno.id == 3){
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
+									$('#messageModal').modal('show');
+ 									$('#fechaModal').click('');
+								}
+								
+								if(retorno.id == 4){
+									$("#my-modal").modal('hide');
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
+									$('#messageModal').modal('show');
+ 									$('#fechaModal').click('');
+								}
+								
 							},
 							error : function(request, status, error) {
 								$("#my-modal").modal('hide');
