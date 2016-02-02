@@ -602,24 +602,24 @@
 								
 								$("#my-modal").modal('hide');
 								
-								if(retorno.reservaValidacaoStatus.id == 1 || retorno.reservaValidacaoStatus.id == 2){
+								if(retorno.id == 0 || retorno.id == 1){
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
+									$('#messageModal').modal('show');
+								}
+								
+								if(retorno.id == 2 || retorno.id == 3 || retorno.id == 4){
 									$('#exibeMensagem').removeClass();
 									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
 									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
 								}
 								
-								if(retorno.reservaValidacaoStatus.id == 3){
+								if(retorno.id == 5){
 									$("#my-modal").modal('hide');
 									$('#exibeMensagem').removeClass();
 									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
-								}
-								
-								if(retorno.reservaValidacaoStatus.id == 0){
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
 									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
 								}
@@ -629,7 +629,7 @@
 							error : function(request, status, error) {
 								alert(error);
 								$("#my-modal").modal('hide');
-								$('#errors span').text('Ocorreu um erro. Favor reportar com o codigo de erro:88');
+								$('#errors span').text('Ocorreu um erro ao gravar a solicitação!');
 								$('#messageModal').modal('show');
 							}
 						});
@@ -658,7 +658,7 @@
 
 								$("#my-modal").modal('hide');
 								
-								if(retorno.id == 0){
+								if(retorno.id == 0 || retorno.id == 1){
 									$('#exibeMensagem').removeClass();
 									$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
 									$('#errors span').text(retorno.mensagem);
@@ -666,25 +666,24 @@
 									$('#fechaModal').click(function(){
 										document.location.reload();
 									});
-								}		
-
-								if(retorno.id == 1 || retorno.id == 2 || retorno.id == 3){
+								}
+								
+								if(retorno.id == 2 || retorno.id == 3 || retorno.id == 4){
 									$('#exibeMensagem').removeClass();
 									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
 									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
- 									$('#fechaModal').click('');
+									$('#fechaModal').click('');
 								}
 								
-								if(retorno.id == 4){
+								if(retorno.id == 5){
 									$("#my-modal").modal('hide');
 									$('#exibeMensagem').removeClass();
 									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
 									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
- 									$('#fechaModal').click('');
+									$('#fechaModal').click('');
 								}
-								
 							},
 							error : function(request, status, error) {
 								$("#my-modal").modal('hide');
@@ -712,8 +711,8 @@
 		}
 
 		function getStringFromDate(date){
-			var dia = date.getUTCDay();
-			var mes = date.getUTCMonth() + 1;
+			var dia = date.getDate()+1;
+			var mes = date.getMonth() + 1;
 			
 			if(dia < 10){
 				dia = '0' + dia;
@@ -723,7 +722,7 @@
 				mes = '0' + mes;
 			}
 
-			return dia + '/' + mes + '/' + date.getUTCFullYear();
+			return dia + '/' + mes + '/' + date.getFullYear();
 		}
 	</script>
 </body>

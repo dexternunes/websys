@@ -2,11 +2,11 @@ package br.com.system.websys.entities;
 
 public enum ReservaValidacaoStatus{
 
-	OK(0, "Solicitação registrada com sucesso!"),
-	OK_RESERVA(1,"Solicitação registrada com sucesso!"),
-	DIAS_CONSECUTIVOS(2, "Esse tipo de solicitação deve ser feita com 7 dias de antecedência!"),
-	DIA_UNICO(3, "Esse tipo de solicitação deve ser feita com 24 horas de antecedência!"),
-	DIA_UNICO_RESERVA(4,"Esse tipo de solicitação dever ser feita com 2 horas de antecedência!"),
+	OK(0, "SolicitaÃ§Ã£o registrada com sucesso!"),
+	OK_RESERVA(1,"SolicitaÃ§Ã£o registrada com sucesso!"),
+	DIAS_CONSECUTIVOS(2, "Esse tipo de solicitaÃ§Ã£o deve ser feita com 7 dias de antecedÃªncia!"),
+	DIA_UNICO(3, "Esse tipo de solicitaÃ§Ã£o deve ser feita com 24 horas de antecedÃªncia!"),
+	DIA_UNICO_RESERVA(4,"Esse tipo de solicitaÃ§Ã£o dever ser feita com 2 horas de antecedÃªncia!"),
 	ERRO(5, "Ocorreu um erro. Favor reportar com o codigo de erro:88");
 
 	private String descricao;

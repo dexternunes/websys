@@ -320,12 +320,38 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException {
 
 		if (reserva.getId() == null) {
+			
+			if(isReservaMesmoDia(reserva)){
+				if(isReservaMesmoDia(reserva)){
+					return validaReservaMesmoDia(reserva);
+				}
+			}
+
 			if (isReservaDiaUnico(reserva)) {
 				return validaReservaDiaUnico(reserva);
-			}
+			}			
+			
 			return validaReservaDiasConsecutivos(reserva);
 		}		
 		return ReservaValidacaoStatus.OK;
+	}
+	
+	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) {
+		Date dataAtual = new Date();
+		if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 2) {
+			return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
+		}
+		return ReservaValidacaoStatus.OK_RESERVA;
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Boolean isReservaMesmoDia(Reserva reserva){
+		Date dataAtual = new Date();
+		
+		if(dataAtual.getDate() == reserva.getFimReserva().getDate() && reserva.getFimReserva().getHours() <= 20){
+			return true;
+		}
+		return false;
 	}
 
 	private Boolean validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception {
@@ -367,18 +393,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		Date dataAtual = new Date();
 
-		if (getReservaByDate(reserva) != null) {
 			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 24) {
 				return ReservaValidacaoStatus.DIA_UNICO;
 			}
-		}
-		else {
-			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 2) {
-				return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
-			}
-			else
-				return ReservaValidacaoStatus.OK_RESERVA;
-		}
 		return ReservaValidacaoStatus.OK;
 	}
 
@@ -492,7 +509,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Aprovada";
-		String texto = "Sua solicitação de reserva foi aprovada <br />" + "<br />Embarcação: "
+		String texto = "Sua solicitaï¿½ï¿½o de reserva foi aprovada <br />" + "<br />Embarcaï¿½ï¿½o: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
@@ -514,7 +531,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Reprovada";
-		String texto = "Sua solicitação de reserva foi reprovada <br />" + "<br />Embarcação: "
+		String texto = "Sua solicitaï¿½ï¿½o de reserva foi reprovada <br />" + "<br />Embarcaï¿½ï¿½o: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "

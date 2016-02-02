@@ -191,7 +191,7 @@ public class ReservaController{
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/api/get/{id}", method = RequestMethod.GET )
+	@RequestMapping(value = "/api/get/{id}", method = RequestMethod.GET)
 	public ReservaDTO getReservaById(@PathVariable Long id, Model model, @RequestParam("dataReserva") String dataReserva) throws Exception {
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
