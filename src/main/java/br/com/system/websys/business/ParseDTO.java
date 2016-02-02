@@ -12,6 +12,7 @@ import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaEventoDTO;
+import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroDTO;
 
@@ -69,7 +70,12 @@ public class ParseDTO{
 		reserva.setFimReserva(reservaDTO.getEnd());
 		reserva.setInicioReserva(reservaDTO.getStart());
 		reserva.setObs(reservaDTO.getObs());
-		reserva.setStatus(reservaDTO.getStatus());
+		
+		if(reservaDTO.getStatus() == null){
+			reserva.setStatus(ReservaStatus.AGUARDANDO_APROVACAO);
+		}
+		else
+			reserva.setStatus(reservaDTO.getStatus());
 		reserva.setUtilizaMarinheiro(reservaDTO.getUtilizaMarinheiro());
 		
 		if(reservaDTO.getEventoInicio() != null)

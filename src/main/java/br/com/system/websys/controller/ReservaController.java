@@ -37,6 +37,7 @@ import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
 import br.com.system.websys.entities.ReservaValidacaoStatus;
+import br.com.system.websys.entities.ReservaValidacaoStatusDTO;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.TerceiroDTO;
@@ -106,12 +107,16 @@ public class ReservaController{
 	
 	@ResponseBody
 	@RequestMapping(value="/api/salvar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-	public ReservaValidacaoStatus salvar(HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws Exception {
+	public ReservaValidacaoStatusDTO salvar(HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws Exception {
 
 
 		Reserva reserva = parseReserva.parseReservaDTO2Reserva(reservaDTO);
 		
 		ReservaValidacaoStatus statusReserva = reservaBusiness.validaReserva(reserva);
+		
+		ReservaValidacaoStatusDTO statusReservaDTO = new ReservaValidacaoStatusDTO();
+		statusReservaDTO.setId(statusReserva.getCode());
+		statusReservaDTO.setMensagem(statusReserva.getDescricao());
 		
 		try {
 			
@@ -131,10 +136,11 @@ public class ReservaController{
 			}
 			
 		} catch (Exception e) {
-			throw new Exception("Erro ao salvar a solicitação");
+			statusReservaDTO.setId(3);
+			statusReservaDTO.setMensagem(e.getMessage());
 		}
 		
-		return statusReserva;
+		return statusReservaDTO;
 	}
 	
 	@ResponseBody

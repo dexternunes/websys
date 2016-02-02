@@ -1,6 +1,5 @@
 package br.com.system.websys.business;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +7,6 @@ import javax.mail.MessagingException;
 
 import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
-import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
@@ -35,8 +33,6 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	
 	public Reserva getReservaByEventoFim(ReservaEvento eventoFim);
 	
-	public PermiteReservasDTO validaSolicitanteReserva(User user);
-
 	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception;
 
 	public List<Reserva> getReservasParaExibicao(User user);
@@ -47,6 +43,6 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 
 	public void validaAPoraToda();
 	
-	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException;
+	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws Exception;
 
 }

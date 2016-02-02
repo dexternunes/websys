@@ -16,7 +16,6 @@
 <title>Prime Share Club</title>
 
 <!-- Bootstrap core CSS -->
-
 <link
 	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -48,6 +47,76 @@
 
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+	
+<style>
+.loader {
+  font-size: 90px;
+  text-indent: -9999em;
+  overflow: hidden;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  margin: 72px auto;
+  position: relative;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load6 1.7s infinite ease;
+  animation: load6 1.7s infinite ease;
+}
+@-webkit-keyframes load6 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
+  }
+  5%,
+  95% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
+  }
+  10%,
+  59% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.087em -0.825em 0 -0.42em #ffffff, -0.173em -0.812em 0 -0.44em #ffffff, -0.256em -0.789em 0 -0.46em #ffffff, -0.297em -0.775em 0 -0.477em #ffffff;
+  }
+  20% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.338em -0.758em 0 -0.42em #ffffff, -0.555em -0.617em 0 -0.44em #ffffff, -0.671em -0.488em 0 -0.46em #ffffff, -0.749em -0.34em 0 -0.477em #ffffff;
+  }
+  38% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.377em -0.74em 0 -0.42em #ffffff, -0.645em -0.522em 0 -0.44em #ffffff, -0.775em -0.297em 0 -0.46em #ffffff, -0.82em -0.09em 0 -0.477em #ffffff;
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
+  }
+}
+@keyframes load6 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
+  }
+  5%,
+  95% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
+  }
+  10%,
+  59% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.087em -0.825em 0 -0.42em #ffffff, -0.173em -0.812em 0 -0.44em #ffffff, -0.256em -0.789em 0 -0.46em #ffffff, -0.297em -0.775em 0 -0.477em #ffffff;
+  }
+  20% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.338em -0.758em 0 -0.42em #ffffff, -0.555em -0.617em 0 -0.44em #ffffff, -0.671em -0.488em 0 -0.46em #ffffff, -0.749em -0.34em 0 -0.477em #ffffff;
+  }
+  38% {
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, -0.377em -0.74em 0 -0.42em #ffffff, -0.645em -0.522em 0 -0.44em #ffffff, -0.775em -0.297em 0 -0.46em #ffffff, -0.82em -0.09em 0 -0.477em #ffffff;
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    box-shadow: 0 -0.83em 0 -0.4em #ffffff, 0 -0.83em 0 -0.42em #ffffff, 0 -0.83em 0 -0.44em #ffffff, 0 -0.83em 0 -0.46em #ffffff, 0 -0.83em 0 -0.477em #ffffff;
+  }
+}
+</style>	
 
 </head>
 <body>
@@ -206,50 +275,38 @@
 	<div class="modal fade" id="messageModal">
 		<div class="modal-dialog">
 			<div
-				class="modal-content alert ui-pnotify-container alert-warning ui-pnotify-shadow">
-				<button type="button" class="close" data-dismiss="modal"
+				 id="exibeMensagem">
+				<button type="button" class="close" data-dismiss="modal" id="fechaModal"
 					aria-hidden="true">x</button>
 				<div class="clearfix"></div>
 				<div class="modal-body">
 					<!-- The messages container -->
-					<div id="errors"></div>
+					<div id="errors">
+						<span></span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<!-- Alert Modal -->
-		<div class="modal fade" id="messageModal">
-			<div class="modal-dialog">
-				<div class="modal-content alert-warning">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">x</button>
-					<div class="clearfix"></div>
-					<div class="modal-body">
-						<!-- The messages container -->
-						<div id="errors">
-							<span></span>
-						</div>
+	<!-- Info Modal -->
+	<div class="modal fade" id="messageModalInfo">
+		<div class="modal-dialog" >
+			<div class="modal-content info-warning" style="background-color: rgba(52, 152, 219, 0.88)">
+				<button type="button" class="close" data-dismiss="modal" 
+					aria-hidden="true">x</button>
+				<div class="clearfix"></div>
+				<div class="modal-body">
+					<!-- The messages container -->
+					<div id="info">
+						<span><font color="#E9EDEF"></font></span>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Info Modal -->
-		<div class="modal fade" id="messageModalInfo">
-			<div class="modal-dialog" >
-				<div class="modal-content info-warning" style="background-color: rgba(52, 152, 219, 0.88)">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">x</button>
-					<div class="clearfix"></div>
-					<div class="modal-body">
-						<!-- The messages container -->
-						<div id="info">
-							<span><font color="#E9EDEF"></font></span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+	</div>
+		
+	<div class="loader">Loading...</div>
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
@@ -300,6 +357,10 @@
 				$('.input-hora').css('cursor', 'pointer');
 			}) ;
 		});
+		
+		$(document).ajaxStart(function() {
+			  $(".loader").show();
+			});
 
 		$(window).load(function() {
 			
@@ -360,7 +421,7 @@
 				eventAfterRender : function(event, element, view) {
 					element.css('background-color', event.grupo.color);
 				},
-				editable : edita,
+				editable : false,
 				events : reservasJSON,
 			});
 		});
@@ -406,8 +467,6 @@
 				$('#div_status').show();
 			}
 			
-			$('#data_inicio_reserva').val(reservaJSON.startStr);
-			$('#data_fim_reserva').val(reservaJSON.endStr);
 			$('#title').val(reservaJSON.title);
 			$('#id').val(reservaJSON.id);
 			$('#utilizaMarinheiro').prop("checked", reservaJSON.utilizaMarinheiro);
@@ -416,6 +475,8 @@
 
 			if(calEvent){
 				$('#myModalLabel').text('Editar Reserva');
+				$('#data_inicio_reserva').val(reservaJSON.startStr);
+				$('#data_fim_reserva').val(reservaJSON.endStr);
 				if(reservaJSON.terceiro.id == $('#idTerceiro').val()){
 					$('#data_inicio_reserva').attr("disabled", true);
 					$('#data_fim_reserva').attr("disabled", true);
@@ -445,7 +506,6 @@
 												cache : false,
 												processData : false,
 												success : function(resposeJsonObject) {
-													$('#calendar').fullCalendar('removeEvents',	calEvent.id);
 													document.location.reload();
 												},
 												error : function(error) {
@@ -537,11 +597,6 @@
 						});
 				$('#data_inicio_reserva').on('apply.daterangepicker', function(ev, picker) {
 					
-// 					var minDateReserva = new Date($('#data_inicio_reserva').val()).toLocaleString();
-// 					alert(Date.parse($('#data_inicio_reserva').val(), "DD/MM/YYYY HH:mm"));
-//  					minDateReserva.setTime(Date.parse($('#data_inicio_reserva').val()));
-// 					minDateReserva.addHours(1);
-					
 					$('#data_fim_reserva').daterangepicker({
 						singleDatePicker : true,
 						timePicker : true,
@@ -551,8 +606,8 @@
 						timezone : 'local',
 						calender_style : "picker_4",
 						parentEl : '#CalenderModal',
-						startDate : $('#data_inicio_reserva').val(),
-						minDate: $('#data_inicio_reserva').val(),
+						startDate : getDate($('#data_inicio_reserva').val()).addHours(1),
+						minDate: getDate($('#data_inicio_reserva').val()).addHours(1),
 						locale : {
 							applyLabel : 'Ok',
 							cancelLabel : 'Cancelar',
@@ -571,8 +626,6 @@
 
 			$(".antosubmit").on("click", function() {
 				var title = $("#title").val();
-				
-				alert($('#utilizaMarinheiro').val());
 				
 				var reservaDTO = {
 					id : null,
@@ -595,8 +648,8 @@
 						reservaDTO.id = calEvent._id;
 						reservaDTO.title = calEvent._title;
 						reservaDTO.terceiro.id = calEvent._idTerceiro;
-						reservaDTO.start = calEvent._start;
-						reservaDTO.end = calEvent._end;
+						reservaDTO.start = getDate(calEvent.start);
+						reservaDTO.end = getDate(calEvent.end);
 						reservaDTO.utilizaMarinheiro = calEvent._utilizaMarinheiro;
 						reservaDTO.obs = calEvent._obs;
 						reservaDTO.status = calEvent._status;
@@ -614,17 +667,31 @@
 							success : function(data) {
 								retorno = data;
 								
-								alert(data);
-
 								$("#my-modal").modal('hide');
 								
-								if(retorno == "Faturado com sucesso."){
-									$('#info span font').text(retorno);
-									$('#messageModalInfo').modal('show');								
-								}else{
-									$('#errors span').text(retorno);
+								if(retorno.reservaValidacaoStatus.id == 1 || retorno.reservaValidacaoStatus.id == 2){
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
 								}
+								
+								if(retorno.reservaValidacaoStatus.id == 3){
+									$("#my-modal").modal('hide');
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
+									$('#messageModal').modal('show');
+								}
+								
+								if(retorno.reservaValidacaoStatus.id == 0){
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
+									$('#messageModal').modal('show');
+								}
+								
+								$('#calendar').fullCalendar('updateEvent', calEvent);
 							},
 							error : function(request, status, error) {
 								alert(error);
@@ -633,14 +700,12 @@
 								$('#messageModal').modal('show');
 							}
 						});
-						
-						$('#calendar').fullCalendar('updateEvent', calEvent);
 					} else {
 						reservaDTO.id = null;
 						reservaDTO.title = $('#title').val();
 						reservaDTO.terceiro.id = parseInt($('#idTerceiro').val());
-						reservaDTO.start = Date.parse($('#data_inicio_reserva').val());
-						reservaDTO.end = Date.parse($('#data_fim_reserva').val());
+						reservaDTO.start = getDate($('#data_inicio_reserva').val());
+						reservaDTO.end = getDate($('#data_fim_reserva').val());
 						reservaDTO.utilizaMarinheiro = false;
 						reservaDTO.obs = $('#obs').val();
 						reservaDTO.status = null;
@@ -660,26 +725,41 @@
 
 								$("#my-modal").modal('hide');
 
-								if(retorno == "Faturado com sucesso."){
-									$('#info span font').text(retorno);
-									$('#messageModalInfo').modal('show');								
-								}else{
-									$('#errors span').text(retorno);
+								if(retorno.id == 1 || retorno.id == 2){
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
 									$('#messageModal').modal('show');
+// 									$('#fechaModal').click('');
 								}
+								
+								if(retorno.id == 3){
+									$("#my-modal").modal('hide');
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
+									$('#messageModal').modal('show');
+// 									$('#fechaModal').click('');
+								}
+								
+								if(retorno.id == 0){
+									$('#exibeMensagem').removeClass();
+									$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
+									$('#errors span').text(retorno.mensagem);
+									$('#messageModal').modal('show');
+									$('#fechaModal').click(function(){
+										document.location.reload();
+									});
+								}								
 							},
 							error : function(request, status, error) {
 								$("#my-modal").modal('hide');
+								$('#exibeMensagem').removeClass();
+								$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
 								$('#errors span').text('Ocorreu um erro. Favor reportar com o codigo de erro:88');
 								$('#messageModal').modal('show');
 							}
-						});
-						
-						$('#calendar').fullCalendar('renderEvent', {
-							title : title,
-							start : inicio,
-							end : fim,
-						}, true);
+						});						
 					}
 				}
 				
@@ -688,6 +768,13 @@
 				$('.antoclose').click();
 
 			});
+		}
+		
+		function getDate(strdata) {
+			return new Date(strdata.substring(3, 5) + "/"
+					+ strdata.substring(0, 2) + "/"
+					+ strdata.substring(6, 10)
+					+ strdata.substring(10, 16));
 		}
 	</script>
 </body>
