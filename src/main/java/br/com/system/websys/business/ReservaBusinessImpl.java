@@ -115,6 +115,37 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		}
 		return false;
 	}
+	
+	public Boolean sendEmailInterno(Reserva reserva) throws MessagingException {
+
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(Role.ROLE_ADMIN);
+		roles.add(Role.ROLE_MARINHEIRO);
+		
+		List<User> users = userBusiness.getByRoles(roles);
+		
+		for (User user : users) {
+			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
+					"Prime Share Club - Reserva Solicitada",
+					"<div align='center' style='background-color:rgb(28,60,106)'>"
+							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
+							+ "	<img width='98' height='130' alt='Logo' src='https://uploaddeimagens.com.br/images/000/562/068/original/prime_login.png?1454257447'  />"
+							+ "</div>"
+							+ "</br></br></br> </br></br></br></br></br></br></br></br></br><font color='white'>"
+							+ "	<h3>Uma nova reserva foi solicitada </h3> " + "	<br />" + "	<br />" + "	EmbarcaÃ§Ã£o: "
+							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
+							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
+							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
+							+ Formatters.formatDate(reserva.getFimReserva()) 
+							+ "<br /><br /><br />Att,<br /> " 
+							+ "	</font>"
+							+ "	<div>"
+							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
+							+ "		<p><font color='white'>Â©2015 All Rights Reserved.</font></p>" + "	</div> "
+							+ "</div>");
+		}
+		return false;
+	}
 
 	@Override
 	public List<Reserva> getReservaByTerceiro(Terceiro terceiro) {
@@ -492,7 +523,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Aprovada";
-		String texto = "Sua solicitação de reserva foi aprovada <br />" + "<br />Embarcação: "
+		String texto = "Sua solicitaï¿½ï¿½o de reserva foi aprovada <br />" + "<br />Embarcaï¿½ï¿½o: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
@@ -514,7 +545,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Reprovada";
-		String texto = "Sua solicitação de reserva foi reprovada <br />" + "<br />Embarcação: "
+		String texto = "Sua solicitaï¿½ï¿½o de reserva foi reprovada <br />" + "<br />Embarcaï¿½ï¿½o: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
