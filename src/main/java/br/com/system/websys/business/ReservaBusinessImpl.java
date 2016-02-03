@@ -540,7 +540,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Aprovada";
-		String texto = "Sua solicita��o de reserva foi aprovada <br />" + "<br />Embarca��o: "
+		String texto = "Sua solicitação de reserva foi aprovada <br />" + "<br />Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
@@ -562,7 +562,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Reprovada";
-		String texto = "Sua solicita��o de reserva foi reprovada <br />" + "<br />Embarca��o: "
+		String texto = "Sua solicitação de reserva foi reprovada <br />" + "<br />Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "

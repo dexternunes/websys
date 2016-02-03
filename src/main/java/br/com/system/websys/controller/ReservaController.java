@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -127,7 +129,7 @@ public class ReservaController{
 				server = "http://" + request.getServerName() + ":" + request.getServerPort();
 			
 			if(statusReserva.equals(ReservaValidacaoStatus.OK)){
-				if(reservaDTO.getId() != null){
+				if(reservaDTO.getId() == null){
 					reserva = reservaBusiness.salvar(reserva);
 					reservaBusiness.sendEmailValidacao(reserva, server);					
 				}
@@ -137,6 +139,7 @@ public class ReservaController{
 			if(statusReserva.equals(ReservaValidacaoStatus.OK_RESERVA)){
 				reserva.setStatus(ReservaStatus.APROVADA);
 				reserva = reservaBusiness.salvar(reserva);
+				reservaBusiness.sendEmailInterno(reserva);
 			}			
 		} catch (Exception e) {
 			statusReservaDTO.setId(3);
@@ -276,7 +279,7 @@ public class ReservaController{
 		
 		reservaValidacaoBusiness.salvar(reservaValidacaoDB);
 		
-		model.addAttribute("message", "Obrigado validar a locação!");
+		model.addAttribute("message", "Obrigado por validar a locação!");
 		
 		return "reserva/validarReserva";
 	}
