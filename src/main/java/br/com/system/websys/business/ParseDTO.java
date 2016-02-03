@@ -12,7 +12,6 @@ import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaEventoDTO;
-import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroDTO;
 
@@ -63,34 +62,34 @@ public class ParseDTO{
 		
 		if(reservaDTO.getId() != null)
 			reserva = reservaBusiness.get(reservaDTO.getId());
-
-		if(reserva == null)
+		
+		if(reserva == null){
 			reserva = new Reserva();
-		
-		reserva.setId(reservaDTO.getId());
-		reserva.setFimReserva(reservaDTO.getEnd());
-		reserva.setInicioReserva(reservaDTO.getStart());
-		reserva.setObs(reservaDTO.getObs());
-		
-		if(reservaDTO.getStatus() == null){
-			reserva.setStatus(ReservaStatus.AGUARDANDO_APROVACAO);
+			if(reservaDTO.getGrupo() != null)
+				reserva.setGrupo(grupoBusiness.get(reservaDTO.getGrupo().getId()));
+			reserva = reservaBusiness.createReserva(reserva);
 		}
-		else
+		
+		if(reservaDTO.getEnd() != null)
+			reserva.setFimReserva(reservaDTO.getEnd());
+		
+		if(reservaDTO.getStart() != null)
+			reserva.setInicioReserva(reservaDTO.getStart());
+		
+		if(reservaDTO.getObs() != null)
+			reserva.setObs(reservaDTO.getObs());
+		
+		if(reservaDTO.getStatus() != null)
 			reserva.setStatus(reservaDTO.getStatus());
-		reserva.setUtilizaMarinheiro(reservaDTO.getUtilizaMarinheiro());
+		
+		if(reservaDTO.getUtilizaMarinheiro() != null)
+			reserva.setUtilizaMarinheiro(reservaDTO.getUtilizaMarinheiro());
 		
 		if(reservaDTO.getEventoInicio() != null)
 			reserva.setEventoInicio(reservaEventoBusiness.get(reservaDTO.getEventoInicio().getId()));
-		if(reserva.getEventoInicio() == null)
-			reserva.setEventoInicio(new ReservaEvento());
 		
 		if(reservaDTO.getEventoFim() != null)
 			reserva.setEventoFim(reservaEventoBusiness.get(reservaDTO.getEventoFim().getId()));
-		if(reserva.getEventoFim() == null)
-			reserva.setEventoFim(new ReservaEvento());
-
-		if(reservaDTO.getGrupo() != null)
-			reserva.setGrupo(grupoBusiness.get(reservaDTO.getGrupo().getId()));
 		
 		if(reservaDTO.getTerceiro() != null)
 			reserva.setSolicitante(terceiroBusiness.get(reservaDTO.getTerceiro().getId()));
