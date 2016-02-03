@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -176,6 +174,10 @@ public class ReservaController{
 				if(reserva.getStatus().equals(ReservaStatus.EM_USO)){
 					tipoEvento = "[E] ";
 				}
+				
+				if(reserva.getStatus().equals(ReservaStatus.CANCELADA)){
+					tipoEvento = "[C] ";
+				}
 
 			reservas.getReservas().add(new ReservaDTO(
 					reserva.getId(), 
@@ -255,9 +257,16 @@ public class ReservaController{
 	public String validaExclusao(@PathVariable Long id) throws Exception {
 		Reserva reserva = reservaBusiness.get(id);
 		
-		String retorno = reservaBusiness.validaExclusao(reserva);
+		return reservaBusiness.validaExclusao(reserva);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/api/validaCancela/{id}", method = RequestMethod.GET)
+	public String validaCancela(@PathVariable Long id) throws Exception{
 		
-		return retorno;
+		Reserva reserva = reservaBusiness.get(id);
+		
+		return reservaBusiness.validaCancela(reserva);
 	}
 	
 	@RequestMapping(value = "/validar/{uid}", method = RequestMethod.GET )
@@ -288,7 +297,7 @@ public class ReservaController{
 	
 	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public String postReserva(@RequestBody Long id_reserva) throws Exception {
+	public void excluiReserva(@RequestBody Long id_reserva) throws Exception {
 		
 		Reserva reserva = reservaBusiness.get(id_reserva);
 		reserva.setExcluido(true);
@@ -296,9 +305,21 @@ public class ReservaController{
 		try {
 			reservaBusiness.salvar(reserva);
 		} catch (Exception e) {
-			return "redirect:/home";
+			logger.info("Erro: " + e.toString());
 		}
+	}
+	
+	@RequestMapping(value= "/api/cancela", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public void cancelaReserva(@RequestBody Long id_reserva) throws Exception {
 		
-		return "redirect:/home";
+		Reserva reserva = reservaBusiness.get(id_reserva);
+		reserva.setStatus(ReservaStatus.CANCELADA);
+
+		try {
+			reservaBusiness.salvar(reserva);
+		} catch (Exception e) {
+			logger.info("Erro: " + e.toString());
+		}
 	}
 }

@@ -6,7 +6,8 @@ public enum ReservaStatus{
 	APROVADA("APROVADA","Aprovada"),
 	REPROVADA("REPROVADA","Reprovada"),
 	EM_USO("EM_USO","Em uso"),
-	ENCERRADA("ENCERRADA","Encerrada");
+	ENCERRADA("ENCERRADA","Encerrada"),
+	CANCELADA("CANCELADA", "Cancelada");
 	
 	private String descricao;
 	private String code;

@@ -31,6 +31,8 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	
 	public String validaExclusao(Reserva reserva);
 	
+	public String validaCancela(Reserva reserva);
+	
 	public Reserva getReservaByEventoFim(ReservaEvento eventoFim);
 	
 	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception;

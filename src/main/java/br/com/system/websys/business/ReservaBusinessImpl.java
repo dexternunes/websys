@@ -161,6 +161,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
+		status.add(ReservaStatus.CANCELADA);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceiro(terceiro, status);
 
@@ -179,18 +180,26 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return grupo;
 	}
 
-	@Override
 	public String validaExclusao(Reserva reserva) {
 		Date horaInicioReserva = reserva.getInicioReserva();
 		Calendar horaInicioReservaCal = Calendar.getInstance();
 		horaInicioReservaCal.setTime(horaInicioReserva);
 
-		long dif = (horaInicioReservaCal.getTimeInMillis() - System.currentTimeMillis()) / (60 * 60 * 1000);
-
-		if (dif < 2)
+		if ((horaInicioReservaCal.getTimeInMillis() - System.currentTimeMillis()) / (60 * 60 * 1000) < 2)
 			return "false";
 		else
 			return "true";
+	}
+	
+	public String validaCancela(Reserva reserva){
+		Date horaInicioReserva = reserva.getInicioReserva();
+		Calendar horaInicioReservaCal = Calendar.getInstance();
+		horaInicioReservaCal.setTime(horaInicioReserva);
+
+		if ((horaInicioReservaCal.getTimeInMillis() - System.currentTimeMillis()) / (60 * 60 * 1000) < 2)
+			return "false";
+		else
+			return "true";		
 	}
 
 	@Override
@@ -224,6 +233,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
+		status.add(ReservaStatus.CANCELADA);
 
 		return this.getByGruposByStatus(grupos, status);
 	}
@@ -308,6 +318,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 			if (reserva.getStatus().equals(ReservaStatus.EM_USO)) {
 				tipoEvento = "[E] ";
+			}
+			
+			if(reserva.getStatus().equals(ReservaStatus.CANCELADA)){
+				tipoEvento = "[C] ";
 			}
 
 			reservaDTO = new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(),

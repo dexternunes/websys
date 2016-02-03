@@ -66,7 +66,7 @@
 					<div id='calendar'></div>
 					<div class="clearfix"></div>
 					<div>
-						<label>[S] -> Solicitação. [R] -> Reserva. [E] -> Em uso.</label>
+						<label>[S] -> Solicitação. [R] -> Reserva. [E] -> Em uso. [C] -> Cancelada.</label>
 					</div>
 				</div>
 			</div>
@@ -178,6 +178,8 @@
 						<div class="form-actions">
 							<button type="button" class="btn btn-default exclui_reserva"
 								data-dismiss="modal" style="display: none !important">Excluir</button>
+							<button type="button" class="btn btn-default cancela_reserva"
+								data-dismiss="modal" style="display: none !important">Cancelar</button>
 							<button type="button" class="btn btn-default finaliza_reserva"
 								data-dismiss="modal" style="display: none !important">Finalizar</button>
 							<button type="button" class="btn btn-default antoclose"
@@ -366,6 +368,7 @@
 			$('#divinicioReserva').show();
 			$('#divfimReserva').show();
 			$('.exclui_reserva').hide();
+			$('cancela_reserva').hide();
 			$('#utilizaMarinheiro').attr("disabled", true);
 			$('#obs').attr("disabled", true);
 			
@@ -447,7 +450,7 @@
 													async : false,
 													cache : false,
 													processData : false,
-													success : function(resposeJsonObject) {
+													success : function() {
 														document.location.reload();
 													},
 													error : function(error) {
@@ -460,6 +463,40 @@
 											}
 							});
 						});
+				}
+				
+				if(reservaJSON.terceiro.id == $('#idTerceiro').val() && reservaJSON.tipoEvento == '[R] '){
+					$('.cancela_reserva').show();
+					$('.cancela_reserva').click(
+							function() {
+								$.ajax({
+										url : "${pageContext.request.contextPath}/reserva/api/validaCancela/"+ reservaJSON.id,
+										dataType : "json",
+										contentType : "application/json; charset=utf-8",
+										type : 'GET',
+										async : false,
+										success : function(data) {
+											$.ajax({
+												url : "${pageContext.request.contextPath}/reserva/api/cancela",
+												type : "POST",
+												contentType : "application/json; charset=utf-8",
+												data : JSON.stringify(calEvent._id),
+												async : false,
+												cache : false,
+												processData : false,
+												success : function() {
+													document.location.reload();
+												},
+												error : function(error) {
+													alert('erro:' + error);
+												}
+											});
+										},
+										error : function(request, status, error) {
+											alert("error" + error);
+										}
+						});
+					});
 				}
 
 				var dataAtual = new Date();
