@@ -125,11 +125,13 @@ public class ReservaController{
 				server = "http://" + request.getServerName();
 			else
 				server = "http://" + request.getServerName() + ":" + request.getServerPort();
-			
+			if(statusReserva.equals(ReservaValidacaoStatus.OK_DUPLICADO)){
+				return statusReservaDTO;
+			}
 			if(statusReserva.equals(ReservaValidacaoStatus.OK)){
-				if(reservaDTO.getId() != null){
-					reserva = reservaBusiness.salvar(reserva);
-					reservaBusiness.sendEmailValidacao(reserva, server);					
+				if(reservaDTO.getId() == null){
+					reservaBusiness.salvar(reserva);
+					reservaBusiness.sendEmailValidacao(reserva, server);				
 				}
 				else
 					reserva = reservaBusiness.salvar(reserva);				
@@ -139,7 +141,7 @@ public class ReservaController{
 				reserva = reservaBusiness.salvar(reserva);
 			}			
 		} catch (Exception e) {
-			statusReservaDTO.setId(3);
+			statusReservaDTO.setId(2);
 			statusReservaDTO.setMensagem(e.getMessage());
 		}
 		

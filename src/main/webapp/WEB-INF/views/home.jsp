@@ -363,13 +363,22 @@
 
 			$('#data_inicio_reserva').val('');
 			$('#data_fim_reserva').val('');
-			$('#diaTodo').attr('checked', false);
-			$('#reserva_dia_todo').val('');
-			$('#div_dia_inteiro').hide();
-			$('#reserva_dia_todo').attr("disabled", false);
 			$('#divinicioReserva').show();
 			$('#divfimReserva').show();
 			$('.exclui_reserva').hide();
+			$('#utilizaMarinheiro').attr("disabled", true);
+			$('#obs').attr("disabled", true);
+			
+			var locale = {
+					applyLabel : 'Ok',
+					cancelLabel : 'Cancelar',
+					daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+							'Qui', 'Sex', 'Sab' ],
+					monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+							'Abril', 'Maio', 'Junho', 'Julho',
+							'Agosto', 'Setembro', 'Outubro',
+							'Novembro', 'Dezembro' ]
+				};
 
 			var idReserva;
 
@@ -396,78 +405,66 @@
 				}
 			});
 			
-			if ($('#admin').val() == 1) {
-				$('#div_status').show();
-			}
-			
 			$('#title').val(reservaJSON.title);
 			$('#id').val(reservaJSON.id);
 			$('#utilizaMarinheiro').prop("checked", reservaJSON.utilizaMarinheiro);
 			$('#obs').val(reservaJSON.obs);
-			$('#title').val($('#nome_terceiro').val());
 
 			if(calEvent){
 				$('#myModalLabel').text('Editar Reserva');
 				$('#data_inicio_reserva').val(reservaJSON.startStr);
 				$('#data_fim_reserva').val(reservaJSON.endStr);
-				if(reservaJSON.terceiro.id == $('#idTerceiro').val()){
-					$('#data_inicio_reserva').attr("disabled", true);
-					$('#data_fim_reserva').attr("disabled", true);
-					$('#id').attr("disabled", false);
-					$('#utilizaMarinheiro').attr("disabled", false);
-					$('#obs').attr("disabled", false);
-					$('#grupo').attr("disabled", true);
-					$('#grupo').html('');
-					$('#grupo').html('<option value="' + reservaJSON.grupo.id + '">'+ reservaJSON.grupo.descricao+'</option>');
-					$('.exclui_reserva').show();
-					$(".antosubmit").show();
-					$('.exclui_reserva').click(
-							function() {
-								$.ajax({
-										url : "${pageContext.request.contextPath}/reserva/api/validaExclusao/"+ reservaJSON.id,
-										dataType : "json",
-										contentType : "application/json; charset=utf-8",
-										type : 'GET',
-										async : false,
-										success : function(data) {
-											$.ajax({
-												url : "${pageContext.request.contextPath}/reserva/api/remove",
-												type : "POST",
-												contentType : "application/json; charset=utf-8",
-												data : JSON.stringify(calEvent._id),
-												async : false,
-												cache : false,
-												processData : false,
-												success : function(resposeJsonObject) {
-													document.location.reload();
-												},
-												error : function(error) {
-													alert('erro:' + error);
-												}
-											});
-										},
-										error : function(request, status, error) {
-											alert("error" + error);
-										}
+				$('#data_inicio_reserva').attr("disabled", true);
+				$('#data_fim_reserva').attr("disabled", true);
+				$('#id').attr("disabled", true);
+				$('#utilizaMarinheiro').attr("disabled", true);
+				$('#obs').attr("disabled", true);
+				$('#grupo').attr("disabled", true);
+				$('#grupo').html('');
+				$('#grupo').html('<option value="' + reservaJSON.grupo.id + '">'+ reservaJSON.grupo.descricao+'</option>');
+				$('.exclui_reserva').hide();
+				$(".antosubmit").hide();
+
+				if(reservaJSON.terceiro.id == $('#idTerceiro').val() && reservaJSON.tipoEvento == '[S] '){
+						$('#utilizaMarinheiro').attr("disabled", false);
+						$('#obs').attr("disabled", false);
+						$('.exclui_reserva').show();
+						$(".antosubmit").show();
+						$('.exclui_reserva').click(
+								function() {
+									$.ajax({
+											url : "${pageContext.request.contextPath}/reserva/api/validaExclusao/"+ reservaJSON.id,
+											dataType : "json",
+											contentType : "application/json; charset=utf-8",
+											type : 'GET',
+											async : false,
+											success : function(data) {
+												$.ajax({
+													url : "${pageContext.request.contextPath}/reserva/api/remove",
+													type : "POST",
+													contentType : "application/json; charset=utf-8",
+													data : JSON.stringify(calEvent._id),
+													async : false,
+													cache : false,
+													processData : false,
+													success : function(resposeJsonObject) {
+														document.location.reload();
+													},
+													error : function(error) {
+														alert('erro:' + error);
+													}
+												});
+											},
+											error : function(request, status, error) {
+												alert("error" + error);
+											}
+							});
 						});
-					});
-				}
-				else {
-					$('#data_inicio_reserva').attr("disabled", true);
-					$('#data_fim_reserva').attr("disabled", true);
-					$('#id').attr("disabled", true);
-					$('#utilizaMarinheiro').attr("disabled", true);
-					$('#obs').attr("disabled", true);
-					$('#grupo').attr("disabled", true);
-					$('.exclui_reserva').hide();
-					$(".antosubmit").hide();
 				}
 
-				$('#myModalLabel').text('Editar Reserva');
-				$('#grupoExibicao').html('');
-				$('#grupoExibicao').html('<option value="' + calEvent.grupo.id + '">'+ calEvent.grupo.descricao + '</option>');
-
-				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ') {
+				var dataAtual = new Date();
+				
+				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ' && getDateFromString(reservaJSON.startStr).getDate() == dataAtual.getDate()) {
 					
 						$('#btnEventoInicio').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoInicio.id;
@@ -475,7 +472,7 @@
 						$('#btnEventoInicio').show();
 				}
 				
-				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] '){
+				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] ' && getDateFromString(reservaJSON.endtStr).getDate() == dataAtual.getDate()){
 
 						$('#btnEventoFim').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoFim.id;
@@ -484,6 +481,7 @@
 				}
 			}
 			else{
+				$(".antosubmit").show();
 				$('#id').val('');
 				$('#utilizaMarinheiro').prop("checked", false);
 				$('#obs').val('');
@@ -499,14 +497,28 @@
 				for (var i = 0; i < gruposJSON.length; i++) {
 					html_grupo += '<option value="' + gruposJSON[i].id + '">' + gruposJSON[i].descricao + '</option>';
 				}
-				$('#grupo').html(html_grupo);
-				$('.exclui_reserva').show();
-				$(".antosubmit").show();
-			}
-			
-			if ($('#permiteReserva').val() == 1 || $('#admin').val()) {
-				$('#data_inicio_reserva').daterangepicker(
-						{
+				
+				$('#grupo').html(html_grupo);				
+				
+				if ($('#permiteReserva').val() == 1 || $('#admin').val()) {
+					$('#data_inicio_reserva').daterangepicker(
+							{
+								timePicker : true,
+								timePickerIncrement : 15,
+								timePicker12Hour : false,
+								format : 'DD/MM/YYYY HH:mm',
+								timezone : 'local',
+								calender_style : "picker_4",
+								parentEl : '#CalenderModal',
+								startDate : getDateFromString(reservaJSON.startStr),
+								minDate: getDateFromString(reservaJSON.startStr),
+								singleDatePicker : true,
+								locale : locale
+							});
+					$('#data_inicio_reserva').on('apply.daterangepicker', function(ev, picker) {
+						
+						$('#data_fim_reserva').daterangepicker({
+							singleDatePicker : true,
 							timePicker : true,
 							timePickerIncrement : 15,
 							timePicker12Hour : false,
@@ -514,45 +526,12 @@
 							timezone : 'local',
 							calender_style : "picker_4",
 							parentEl : '#CalenderModal',
-							startDate : getDateFromString(reservaJSON.startStr),
-							minDate: getDateFromString(reservaJSON.startStr),
-							singleDatePicker : true,
-							locale : {
-								applyLabel : 'Ok',
-								cancelLabel : 'Cancelar',
-								daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
-										'Qui', 'Sex', 'Sab' ],
-								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-										'Abril', 'Maio', 'Junho', 'Julho',
-										'Agosto', 'Setembro', 'Outubro',
-										'Novembro', 'Dezembro' ]
-							}
+							startDate : getDateFromString($('#data_inicio_reserva').val()).addHours(1),
+							minDate: getDateFromString($('#data_inicio_reserva').val()).addHours(1),
+							locale : locale
 						});
-				$('#data_inicio_reserva').on('apply.daterangepicker', function(ev, picker) {
-					
-					$('#data_fim_reserva').daterangepicker({
-						singleDatePicker : true,
-						timePicker : true,
-						timePickerIncrement : 15,
-						timePicker12Hour : false,
-						format : 'DD/MM/YYYY HH:mm',
-						timezone : 'local',
-						calender_style : "picker_4",
-						parentEl : '#CalenderModal',
-						startDate : getDateFromString($('#data_inicio_reserva').val()).addHours(1),
-						minDate: getDateFromString($('#data_inicio_reserva').val()).addHours(1),
-						locale : {
-							applyLabel : 'Ok',
-							cancelLabel : 'Cancelar',
-							daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
-									'Qui', 'Sex', 'Sab' ],
-							monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
-									'Abril', 'Maio', 'Junho', 'Julho',
-									'Agosto', 'Setembro', 'Outubro',
-									'Novembro', 'Dezembro' ]
-						}
 					});
-				});
+				}
 			}
 
 			$('#reserva_evento').click();
@@ -560,79 +539,35 @@
 			$(".antosubmit").on("click", function() {
 				var title = $("#title").val();
 				
-				var reservaDTO = {
-					id : null,
-					title : null,
-					terceiro : {id : null},
-					start : null,
-					end : null,
-					utilizaMarinheiro : null,
-					obs : null,
-					status : null,
-					eventoInicio : {id : null},
-					eventoFim : {id : null},
-					grupo : {id : null}
-				};
-
 				categoryClass = $("#event_type").val();
 				
 				if (title) {
+					var reservaDTO = {
+							id : null,
+							title : null,
+							terceiro : {id : null},
+							start : null,
+							end : null,
+							utilizaMarinheiro : null,
+							obs : null,
+							status : null,
+							eventoInicio : {id : null},
+							eventoFim : {id : null},
+							grupo : {id : null}
+					};
+					
 					if (calEvent) {
 						reservaDTO.id = calEvent._id;
 						reservaDTO.title = calEvent._title;
 						reservaDTO.terceiro.id = calEvent._idTerceiro;
-						reservaDTO.start = getDateFromString(calEvent.start);
-						reservaDTO.end = getDateFromString(calEvent.end);
+						reservaDTO.start = calEvent.start;
+						reservaDTO.end = calEvent.end;
 						reservaDTO.utilizaMarinheiro = calEvent._utilizaMarinheiro;
 						reservaDTO.obs = calEvent._obs;
 						reservaDTO.status = calEvent._status;
 						reservaDTO.eventoInicio.id = calEvent._eventoInicio.id;
 						reservaDTO.eventoFim.id = calEvent._eventoFim.id;
 						reservaDTO.grupo.id = calEvent._grupo;
-						
-						$.ajax({
-							async : false,
-							url : '${pageContext.request.contextPath}/reserva/api/salvar',
-							dataType : "json",
-							contentType : "application/json; charset=utf-8",
-							type : 'POST',
-							data : JSON.stringify(reservaDTO),
-							success : function(data) {
-								retorno = data;
-								
-								$("#my-modal").modal('hide');
-								
-								if(retorno.id == 0 || retorno.id == 1){
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
-								}
-								
-								if(retorno.id == 2 || retorno.id == 3 || retorno.id == 4){
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
-								}
-								
-								if(retorno.id == 5){
-									$("#my-modal").modal('hide');
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
-								}
-								
-								$('#calendar').fullCalendar('updateEvent', calEvent);
-							},
-							error : function(request, status, error) {
-								alert(error);
-								$("#my-modal").modal('hide');
-								$('#errors span').text('Ocorreu um erro ao gravar a solicitação!');
-								$('#messageModal').modal('show');
-							}
-						});
 					} else {
 						reservaDTO.id = null;
 						reservaDTO.title = $('#title').val();
@@ -645,61 +580,14 @@
 						reservaDTO.eventoInicio = null;
 						reservaDTO.eventoFim = null;
 						reservaDTO.grupo.id = parseInt($('#grupo').val());
-						
-						$.ajax({
-							async : true,
-							url : '${pageContext.request.contextPath}/reserva/api/salvar',
-							dataType : "json",
-							contentType : "application/json; charset=utf-8",
-							type : 'POST',
-							data : JSON.stringify(reservaDTO),
-							success : function(data) {
-								retorno = data;
-
-								$("#my-modal").modal('hide');
-								
-								if(retorno.id == 0 || retorno.id == 1){
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
-									$('#fechaModal').click(function(){
-										document.location.reload();
-									});
-								}
-								
-								if(retorno.id == 2 || retorno.id == 3 || retorno.id == 4){
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
-									$('#fechaModal').click('');
-								}
-								
-								if(retorno.id == 5){
-									$("#my-modal").modal('hide');
-									$('#exibeMensagem').removeClass();
-									$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
-									$('#errors span').text(retorno.mensagem);
-									$('#messageModal').modal('show');
-									$('#fechaModal').click('');
-								}
-							},
-							error : function(request, status, error) {
-								$("#my-modal").modal('hide');
-								$('#exibeMensagem').removeClass();
-								$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
-								$('#errors span').text('Ocorreu um erro. Favor reportar com o codigo de erro:88');
-								$('#messageModal').modal('show');
-							}
-						});
 					}
+					
+					SalvarReserva(reservaDTO);					
 				}
-
+				
 				$('#calendar').fullCalendar('unselect');
 
 				$('.antoclose').click();
-
 			});
 		}
 
@@ -723,6 +611,50 @@
 			}
 
 			return dia + '/' + mes + '/' + date.getFullYear();
+		}
+		
+		function SalvarReserva(reservaDTO){
+				$.ajax({
+					async : true,
+					url : '${pageContext.request.contextPath}/reserva/api/salvar',
+					dataType : "json",
+					contentType : "application/json; charset=utf-8",
+					type : 'POST',
+					data : JSON.stringify(reservaDTO),
+					success : function(data) {
+						retorno = data;
+
+						$("#my-modal").modal('hide');
+						$('#exibeMensagem').removeClass();
+						$('#errors span').text(retorno.mensagem);
+						$('#messageModal').modal('show');
+						
+						if(retorno.id == 0){							
+							$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
+							$('#messageModal').find("#fechaModal").hide();
+							
+							function reload(){
+								document.location.reload();
+							}
+							setTimeout(reload, 2000);
+						}
+						
+						if(retorno.id == 1){
+							$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
+						}
+						
+						if(retorno.id == 2){
+							$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
+						}
+					},
+					error : function(request, status, error) {
+						$("#my-modal").modal('hide');
+						$('#exibeMensagem').removeClass();
+						$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
+						$('#errors span').text('Ocorreu um erro!');
+						$('#messageModal').modal('show');
+					}
+				});				
 		}
 	</script>
 </body>

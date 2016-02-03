@@ -48,6 +48,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	protected ReservaBusinessImpl(ReservaRepository repository) {
 		super(repository, Reserva.class);
 	}
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Override
+	public Reserva salvar(Reserva reserva) throws Exception{
+		return super.salvar(reserva);
+	}
 
 	@Override
 	protected void validateBeforeSave(Reserva entity) throws Exception {
@@ -329,6 +335,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				&& horaInicioReservaCal.get(Calendar.YEAR) == dataReserva.getYear() + 1900)) {
 			horaInicioReservaCal.setTime(dataReserva);
 			horaInicioReservaCal.set(Calendar.HOUR, 6);
+			horaInicioReservaCal.set(Calendar.MINUTE, 0);
 			return horaInicioReservaCal.getTime();
 		}
 
@@ -344,6 +351,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			horaInicioReservaCal.set(Calendar.HOUR_OF_DAY, 6);
 			horaInicioReservaCal.set(Calendar.MINUTE, 0);
 		}
+		
+		if(horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) < 6){
+			horaInicioReservaCal.set(Calendar.HOUR_OF_DAY, 6);
+			horaInicioReservaCal.set(Calendar.MINUTE, 0);
+		}
 
 		return horaInicioReservaCal.getTime();
 	}
@@ -351,6 +363,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException {
 
 		if (reserva.getId() == null) {
+			
+			if(existeReserva(reserva) != null){
+				return ReservaValidacaoStatus.OK_DUPLICADO;
+			}
 			
 			if(isReservaMesmoDia(reserva)){
 				if(isReservaMesmoDia(reserva)){
@@ -369,10 +385,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	
 	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) {
 		Date dataAtual = new Date();
-		if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 2) {
-			return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
+		
+		if(getReservaByDate(reserva) == null){
+			if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 2) {
+				return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
+			}
+			return ReservaValidacaoStatus.OK_RESERVA;
 		}
-		return ReservaValidacaoStatus.OK_RESERVA;
+		return ReservaValidacaoStatus.EXISTE_RESERVA;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -602,5 +622,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@Override
 	public Reserva getReservaByDate(Reserva reserva) {
 		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), reserva.getGrupo());
+	}
+	
+	public Reserva existeReserva(Reserva reserva){
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+		
+		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getSolicitante(), reserva.getGrupo(), status);
 	}
 }
