@@ -205,8 +205,7 @@
 
 	<div class="modal fade" id="messageModal">
 		<div class="modal-dialog">
-			<div
-				 id="exibeMensagem">
+			<div id="exibeMensagem">
 				<button type="button" class="close" data-dismiss="modal" id="fechaModal"
 					aria-hidden="true">x</button>
 				<div class="clearfix"></div>
@@ -219,24 +218,21 @@
 			</div>
 		</div>
 	</div>
-	
-	<!-- Info Modal -->
-	<div class="modal fade" id="messageModalInfo">
-		<div class="modal-dialog" >
-			<div class="modal-content info-warning" style="background-color: rgba(52, 152, 219, 0.88)">
-				<button type="button" class="close" data-dismiss="modal" 
-					aria-hidden="true">x</button>
+
+	<div id="confirm" class="modal fade">
+		<div class="modal-dialog">
+			<div class="alert alert-warning alert-dismissible fade in">
+				<div class="modal-body" id="mesagemCancelaExclui"><span>Esta operação está sujeita a cobrança. Deseja prosseguir?</span></div>
 				<div class="clearfix"></div>
-				<div class="modal-body">
-					<!-- The messages container -->
-					<div id="info">
-						<span><font color="#E9EDEF"></font></span>
-					</div>
+				<div class="modal-footer">
+					<button type="button" data-dismiss="modal" class="btn btn-primary"
+						id="cancela_exclui"></button>
+					<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
 				</div>
 			</div>
 		</div>
 	</div>
-		
+
 	<div class="modal" id="loading" style="display: none;">
 	    <div class="loading_visivel">
 	        <div class="circulo"></div>
@@ -256,11 +252,11 @@
 	<script>
 	
 	$(document).ajaxStart(function () {
-        $('#loading').show();
+        $('#loading').modal('show');
     });
 	
 	$(document).ajaxStop(function(){
-		$('#loading').hide();
+		$('#loading').modal('hide');
 	});	
 	
 	var reservasJSON = [];
@@ -303,19 +299,9 @@
 	
 	$(window).load(function() {
 		
-	$('#diaTodo').click(function(){
-		if($('#diaTodo').is(':checked')){
-			$('#div_dia_inteiro').show();
-			$('#divinicioReserva').hide();
-			$('#divfimReserva').hide();
-		}
-		else{
-			$('#div_dia_inteiro').hide();
-			$('#divinicioReserva').show();
-			$('#divfimReserva').show();
-		}
-	});
-		
+		$('#confirm').modal('hide');
+		$('#cancela_exclui').click('');
+
 	var seleciona;
 
 	if ($('#admin').val() == 1) {
@@ -442,21 +428,44 @@
 											type : 'GET',
 											async : false,
 											success : function(data) {
-												$.ajax({
-													url : "${pageContext.request.contextPath}/reserva/api/remove",
-													type : "POST",
-													contentType : "application/json; charset=utf-8",
-													data : JSON.stringify(calEvent._id),
-													async : false,
-													cache : false,
-													processData : false,
-													success : function() {
-														document.location.reload();
-													},
-													error : function(error) {
-														alert('erro:' + error);
-													}
-												});
+												if(data == 'true'){
+													$.ajax({
+														url : "${pageContext.request.contextPath}/reserva/api/remove",
+														type : "POST",
+														contentType : "application/json; charset=utf-8",
+														data : JSON.stringify(calEvent._id),
+														async : false,
+														cache : false,
+														processData : false,
+														success : function() {
+															document.location.reload();
+														},
+														error : function(error) {
+															alert('erro:' + error);
+														}
+													});
+												}
+												else{
+													$('#cancela_exclui').text('Excluir');
+													$('#confirm').modal('show');
+													$('#cancela_exclui').click(function(){
+														$.ajax({
+															url : "${pageContext.request.contextPath}/reserva/api/remove",
+															type : "POST",
+															contentType : "application/json; charset=utf-8",
+															data : JSON.stringify(calEvent._id),
+															async : false,
+															cache : false,
+															processData : false,
+															success : function() {
+																document.location.reload();
+															},
+															error : function(error) {
+																alert('erro:' + error);
+															}
+														});
+													});
+												}												
 											},
 											error : function(request, status, error) {
 												alert("error" + error);
@@ -476,21 +485,44 @@
 										type : 'GET',
 										async : false,
 										success : function(data) {
-											$.ajax({
-												url : "${pageContext.request.contextPath}/reserva/api/cancela",
-												type : "POST",
-												contentType : "application/json; charset=utf-8",
-												data : JSON.stringify(calEvent._id),
-												async : false,
-												cache : false,
-												processData : false,
-												success : function() {
-													document.location.reload();
-												},
-												error : function(error) {
-													alert('erro:' + error);
-												}
-											});
+											if(data == 'true'){
+												$.ajax({
+													url : "${pageContext.request.contextPath}/reserva/api/cancela",
+													type : "POST",
+													contentType : "application/json; charset=utf-8",
+													data : JSON.stringify(calEvent._id),
+													async : false,
+													cache : false,
+													processData : false,
+													success : function() {
+														document.location.reload();
+													},
+													error : function(error) {
+														alert('erro:' + error);
+													}
+												});												
+											}
+											else{
+												$('#cancela_exclui').text('Cancelar');
+												$('#confirm').modal('show');
+												$('#cancela_exclui').click(function(){
+													$.ajax({
+														url : "${pageContext.request.contextPath}/reserva/api/cancela",
+														type : "POST",
+														contentType : "application/json; charset=utf-8",
+														data : JSON.stringify(calEvent._id),
+														async : false,
+														cache : false,
+														processData : false,
+														success : function() {
+															document.location.reload();
+														},
+														error : function(error) {
+															alert('erro:' + error);
+														}
+													});			
+												});
+											}											
 										},
 										error : function(request, status, error) {
 											alert("error" + error);
@@ -652,7 +684,7 @@
 		
 		function SalvarReserva(reservaDTO){
 				$.ajax({
-					async : true,
+					async : false,
 					url : '${pageContext.request.contextPath}/reserva/api/salvar',
 					dataType : "json",
 					contentType : "application/json; charset=utf-8",

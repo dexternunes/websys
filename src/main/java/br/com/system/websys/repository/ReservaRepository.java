@@ -20,8 +20,8 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 
 	@Query("SELECT r FROM Reserva r WHERE r.solicitante = :terceiro AND r.excluido = 0 AND r.ativo = 1 AND r.status in :status")
 	List<Reserva> getReservaByTerceiro(@Param("terceiro") Terceiro terceiro, @Param("status") List<ReservaStatus> status);
-	
-	@Query("SELECT r FROM Reserva r WHERE r.solicitante in :terceiros AND r.excluido = 0 AND r.ativo = 1 AND r.grupo = :grupo AND r.status = :status order by r.fimReserva")
+
+	@Query("SELECT r FROM Reserva r WHERE r.solicitante in (:terceiros) AND r.excluido = 0 AND r.ativo = 1 AND r.grupo = :grupo AND r.status = :status order by r.fimReserva")
 	List<Reserva> getReservaByTerceirosByGrupoByStatus(@Param("terceiros") List<Terceiro> terceiros, @Param("grupo") Grupo grupo, @Param("status") ReservaStatus status);
 
 	@Query("SELECT r FROM Reserva r WHERE r.eventoFim = :eventoFim")
@@ -29,21 +29,20 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 
 	@Query("SELECT r FROM Reserva r WHERE r.eventoFim = :evento OR r.eventoInicio = :evento")
 	Reserva getByEvento(@Param("evento") ReservaEvento evento);
-	
+
 	@Query("SELECT r FROM Reserva r  WHERE r.grupo = :grupo and r.faturamentoStatus = :faturamentoStatus")
 	List<Reserva> findByReservaByGrupoByStatus(@Param("grupo") Grupo grupo, @Param("faturamentoStatus") FaturamentoStatus faturamentoStatus);
-	
-	@Query("SELECT  r FROM Reserva r WHERE r.grupo IN :grupos AND r.status in :status AND r.excluido = 0 AND r.ativo = 1")
+
+	@Query("SELECT  r FROM Reserva r WHERE r.grupo IN (:grupos) AND r.status in (:status) AND r.excluido = 0 AND r.ativo = 1")
 	List<Reserva> getByGruposByStatus(@Param("grupos") List<Grupo> grupos, @Param("status") List<ReservaStatus> status);
-	
+
 	@Query("SELECT  r FROM Reserva r WHERE r.grupo = :grupo AND r.status = :status AND r.excluido = 0 AND r.ativo = 1 and r.created <= :data")
 	List<Reserva> getByGruposByStatusByDateCreated(@Param("grupo") Grupo grupo, @Param("status") ReservaStatus status, @Param("data") Date data);
-	
-	@Query("SELECT r FROM Reserva r WHERE r.inicioReserva = :inicioReserva AND r.excluido = 0 AND r.ativo = 1 AND r.grupo = :grupo")
-	Reserva getReservaByDate(@Param("inicioReserva") Date inicioReserva, @Param("grupo")Grupo grupo);
-	
-	@Query("SELECT r FROM Reserva r WHERE r.inicioReserva = :inicioReserva AND fimReserva = :fimReserva AND r.solicitante = :terceiro AND r.grupo = :grupo AND r.excluido = 0 AND r.ativo = 1 "
-			+ "AND r.status IN :status")
+
+	@Query("SELECT r FROM Reserva r WHERE r.inicioReserva = :inicioReserva AND r.excluido = 0 AND r.ativo = 1 AND r.grupo = :grupo AND r.status IN :status")
+	Reserva getReservaByDate(@Param("inicioReserva") Date inicioReserva, @Param("grupo")Grupo grupo, @Param("status") List<ReservaStatus> status);
+
+	@Query("SELECT r FROM Reserva r WHERE r.inicioReserva = :inicioReserva AND fimReserva = :fimReserva AND r.solicitante = :terceiro AND r.grupo = :grupo AND r.excluido = 0 AND r.ativo = 1 AND r.status in :status")
 	Reserva existeReserva(@Param("inicioReserva") Date inicioReserva, @Param("fimReserva") Date fimReserva, @Param("terceiro") Terceiro terceiro, @Param("grupo") Grupo grupo,
 			@Param("status") List<ReservaStatus> status);
 }

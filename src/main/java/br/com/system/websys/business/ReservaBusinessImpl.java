@@ -172,7 +172,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Grupo> grupo = grupoBusiness.findAllByTerceito(terceiro);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
-			if (grupo.contains(r.getGrupo())) {
+			if (grupo.contains(r.getGrupo()) && !r.getStatus().equals(ReservaStatus.CANCELADA)) {
 				grupo.remove(r.getGrupo());
 			}
 		}
@@ -383,9 +383,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			}
 			
 			if(isReservaMesmoDia(reserva)){
-				if(isReservaMesmoDia(reserva)){
 					return validaReservaMesmoDia(reserva);
-				}
 			}
 
 			if (isReservaDiaUnico(reserva)) {
@@ -635,7 +633,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Override
 	public Reserva getReservaByDate(Reserva reserva) {
-		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), reserva.getGrupo());
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+
+		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), reserva.getGrupo(), status);
 	}
 	
 	public Reserva existeReserva(Reserva reserva){
