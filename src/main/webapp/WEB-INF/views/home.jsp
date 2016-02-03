@@ -226,8 +226,8 @@
 				<div class="clearfix"></div>
 				<div class="modal-footer">
 					<button type="button" data-dismiss="modal" class="btn btn-primary"
-						id="cancela_exclui"></button>
-					<button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+						id="cancela_exclui">Sim</button>
+					<button type="button" data-dismiss="modal" class="btn btn-primary">Não</button>
 				</div>
 			</div>
 		</div>
@@ -446,7 +446,6 @@
 													});
 												}
 												else{
-													$('#cancela_exclui').text('Excluir');
 													$('#confirm').modal('show');
 													$('#cancela_exclui').click(function(){
 														$.ajax({
@@ -503,7 +502,6 @@
 												});												
 											}
 											else{
-												$('#cancela_exclui').text('Cancelar');
 												$('#confirm').modal('show');
 												$('#cancela_exclui').click(function(){
 													$.ajax({
