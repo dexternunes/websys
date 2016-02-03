@@ -557,24 +557,24 @@
 					};
 					
 					if (calEvent) {
-						reservaDTO.id = calEvent._id;
-						reservaDTO.title = calEvent._title;
-						reservaDTO.terceiro.id = calEvent._idTerceiro;
+						reservaDTO.id = calEvent.id;
+						reservaDTO.title = calEvent.title;
+						reservaDTO.terceiro.id = calEvent.terceiro.id;
 						reservaDTO.start = calEvent.start;
 						reservaDTO.end = calEvent.end;
-						reservaDTO.utilizaMarinheiro = calEvent._utilizaMarinheiro;
-						reservaDTO.obs = calEvent._obs;
-						reservaDTO.status = calEvent._status;
-						reservaDTO.eventoInicio.id = calEvent._eventoInicio.id;
-						reservaDTO.eventoFim.id = calEvent._eventoFim.id;
-						reservaDTO.grupo.id = calEvent._grupo;
+						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').prop('checked');
+						reservaDTO.obs = $('#obs').val();;
+						reservaDTO.status = calEvent.status;
+						reservaDTO.eventoInicio.id = calEvent.eventoInicio.id;
+						reservaDTO.eventoFim.id = calEvent.eventoFim.id;
+						reservaDTO.grupo.id = calEvent.grupo.id;
 					} else {
 						reservaDTO.id = null;
 						reservaDTO.title = $('#title').val();
 						reservaDTO.terceiro.id = parseInt($('#idTerceiro').val());
 						reservaDTO.start = getDateFromString($('#data_inicio_reserva').val());
 						reservaDTO.end = getDateFromString($('#data_fim_reserva').val());
-						reservaDTO.utilizaMarinheiro = false;
+						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').prop('checked');
 						reservaDTO.obs = $('#obs').val();
 						reservaDTO.status = null;
 						reservaDTO.eventoInicio = null;
