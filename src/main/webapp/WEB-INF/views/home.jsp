@@ -357,6 +357,8 @@
 			$('cancela_reserva').hide();
 			$('#utilizaMarinheiro').attr("disabled", true);
 			$('#obs').attr("disabled", true);
+			$('#btnEventoInicio').hide();
+			$('#btnEventoFim').hide();
 			
 			var locale = {
 					applyLabel : 'Ok',
@@ -707,15 +709,18 @@
 						}
 						
 						if(retorno.id == 1){
+							$('#messageModal').find("#fechaModal").show();
 							$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
 						}
 						
 						if(retorno.id == 2){
+							$('#messageModal').find("#fechaModal").show();
 							$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
 						}
 					},
 					error : function(request, status, error) {
 						$("#my-modal").modal('hide');
+						$('#messageModal').find("#fechaModal").show();
 						$('#exibeMensagem').removeClass();
 						$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
 						$('#errors span').text('Ocorreu um erro!');
