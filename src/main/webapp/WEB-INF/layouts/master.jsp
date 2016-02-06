@@ -420,26 +420,27 @@ $(document).ready(function() {
 											<li><a href="<c:url value="/home" />">Calendário</a></li>
 										</ul></li>
 								</sec:authorize>
-								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu" style="display: none">
-										<sec:authorize url="/terceiro/cadastro">
-											<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
-										</sec:authorize>
-										<sec:authorize url="/usuarios/cadastro">
-											<li><a href="<c:url value="/usuarios/" />">Usuários</a></li>
-										</sec:authorize>	
-										<sec:authorize url="/produtos">
-											<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>
-										</sec:authorize>
-										<sec:authorize url="/grupo">
-											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
-										</sec:authorize>
-										<sec:authorize url="/manutencao">
-											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
-										</sec:authorize>
-									</ul>
-								</li>
-
+								<c:if test="${user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+									<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
+										<ul class="nav child_menu" style="display: none">
+											<sec:authorize url="/terceiro/cadastro">
+												<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
+											</sec:authorize>
+											<sec:authorize url="/usuarios/cadastro">
+												<li><a href="<c:url value="/usuarios/" />">Usuários</a></li>
+											</sec:authorize>	
+											<sec:authorize url="/produtos">
+												<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>
+											</sec:authorize>
+											<sec:authorize url="/grupo">
+												<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
+											</sec:authorize>
+											<sec:authorize url="/manutencao">
+												<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+											</sec:authorize>
+										</ul>
+									</li>
+								</c:if>
 								<!-- Relatorios -->
 								<sec:authorize url="/relatorios/">
 									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
@@ -459,17 +460,6 @@ $(document).ready(function() {
 								</sec:authorize>
 							</ul>
 						</div>
-					</div>
-					<div class="sidebar-footer hidden-small">
-						<a data-toggle="tooltip" data-placement="top" title="Settings">
-							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-						</a> <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-							<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-						</a> <a data-toggle="tooltip" data-placement="top" title="Lock"> <span
-							class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-						</a> <a data-toggle="tooltip" data-placement="top" title="Logout">
-							<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-						</a>
 					</div>
 				</div>
 			</div>
