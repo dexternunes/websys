@@ -556,7 +556,7 @@
 						$('#btnEventoInicio').show();
 				}
 				
-				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] ' && getDateFromString(reservaJSON.endtStr).getDate() == dataAtual.getDate()){
+				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] ' && getDateFromString(reservaJSON.endStr).getDate() == dataAtual.getDate()){
 
 						$('#btnEventoFim').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoFim.id;

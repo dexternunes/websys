@@ -9,6 +9,8 @@ public class UserDTO {
 	private Long idUser;
 	
 	private String imagemURL;
+	
+	private String role;
 
 	public String getNome() {
 		return nome;
@@ -42,5 +44,12 @@ public class UserDTO {
 		this.imagemURL = imagemURL;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 	
 } 

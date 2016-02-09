@@ -258,6 +258,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
 			reserva.getEventoFim().setImagens(reservaEvento.getImagens());
 			reserva.setStatus(ReservaStatus.ENCERRADA);
+			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 		}
 
