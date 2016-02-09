@@ -37,7 +37,7 @@
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Descrição <span class="required">*</span>
+										for="first-name">Nome <span class="required">*</span>
 									</label>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<form:input path="descricao"
@@ -73,7 +73,7 @@
 									</div>
 								</div>
 
-
+<!-- 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Altura <span class="required">*</span>
@@ -114,7 +114,7 @@
 										<form:errors cssClass="native-error" path="comprimento"></form:errors>
 									</div>
 								</div>
-
+ -->
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Tipo <span class="required">*</span>
@@ -151,6 +151,11 @@
 									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
 
+								
+								<div class="control-group">
+									<a type="button" class="btn btn-primary"
+										href="${pageContext.request.contextPath}/produtos/">Voltar</a>
+								</div>
 
 							</form:form>
 						</div>

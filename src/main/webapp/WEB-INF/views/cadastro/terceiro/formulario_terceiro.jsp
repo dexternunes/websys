@@ -250,6 +250,12 @@
 								<button type="button" class="btn btn-primary" id="excluirTerceiro">Excluir</button>
 							</c:if>
 						</div>
+						
+								
+						<div class="control-group">
+							<a type="button" class="btn btn-primary"
+								href="${pageContext.request.contextPath}/terceiro/">Voltar</a>
+						</div>
 					</div>
 				</div>
 			</div>

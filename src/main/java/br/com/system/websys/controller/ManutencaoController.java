@@ -97,10 +97,11 @@ public class ManutencaoController {
 
 		if (result.hasErrors()) { 
 			
+			
 			List<Produto> produtosList = new ArrayList<Produto>(); 
 			produtosList = produtoBusiness.getAll();
 			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-			status.add(ProdutoStatus.A_VENDA);
+			status.add(ProdutoStatus.DISPONIVEL);
 
 			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 			model.addAttribute("manutencao", manutencao);
