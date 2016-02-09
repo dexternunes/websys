@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroContato;
 import br.com.system.websys.entities.TerceiroEndereco;
+import br.com.system.websys.entities.TerceiroExclusaoStatus;
 import br.com.system.websys.entities.TerceiroTipo;
 import br.com.system.websys.repository.TerceiroRepository;
 
@@ -21,6 +22,12 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 	protected TerceiroBusinessImpl(TerceiroRepository repository) {
 		super(repository, Terceiro.class);
 	}
+	
+	@Autowired
+	private UserBusiness userBusiness;
+	
+	@Autowired
+	private GrupoBusiness grupoBusiness;
 
 	@Override
 	protected void validateBeforeSave(Terceiro entity) throws Exception {
@@ -36,21 +43,43 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 	public List<Terceiro> getAll() {
 		return ((TerceiroRepository)repository).findAll();
 	}
-	
+
 	@Override
 	public List<Terceiro> getAllByTipo(TerceiroTipo tipo) {
-		
+
 		List<Terceiro> terceiros = ((TerceiroRepository)repository).findAllByTipo(tipo);
-		
+
 		if(terceiros == null || terceiros.size() == 0)
 			return ((TerceiroRepository)repository).findAll();
 		else
 			return terceiros; 
 	}
-	
-	public String validaExclusao(Terceiro terceiro){
-		
-		return null;
+
+	public TerceiroExclusaoStatus validaExclusao(Terceiro terceiro){
+
+		if(terceiroHasUser(terceiro)){
+			return TerceiroExclusaoStatus.TERCEIRO_USUARIO;
+		}
+
+		if(terceiroHasGrupo(terceiro)){
+			return TerceiroExclusaoStatus.TERCEIRO_GRUPO;
+		}
+		return TerceiroExclusaoStatus.OK;
 	}
 
+	private Boolean terceiroHasUser(Terceiro terceiro){
+
+		if(userBusiness.getUserByTerceiro(terceiro) != null)
+			return true;
+
+		return false;
+	}
+
+	private Boolean terceiroHasGrupo(Terceiro terceiro){
+		
+		if(grupoBusiness.findAllByTerceito(terceiro) != null)
+			return true;
+
+		return false;
+	}
 }

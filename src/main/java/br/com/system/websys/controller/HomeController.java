@@ -45,7 +45,7 @@ public class HomeController {
 		
 		if(user.getRole().equals(Role.ROLE_COTISTA)){
 			grupos = reservaBusiness.getGrupoPermiteReserva(user.getTerceiro());
-			
+
 			if(grupos.size() > 0)
 				model.addAttribute("permiteReserva", 1);
 			else{

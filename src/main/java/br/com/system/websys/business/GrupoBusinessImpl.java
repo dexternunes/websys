@@ -94,4 +94,9 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 		List<Grupo> grupos = ((GrupoRepository)repository).findAllAtivos();
 		return grupos;
 	}
+
+	@Override
+	public List<Grupo> getByTerceiro(Terceiro terceiro) {
+		return ((GrupoRepository)repository).getByTerceiro(terceiro);
+	}
 }

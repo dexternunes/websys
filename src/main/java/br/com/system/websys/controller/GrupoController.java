@@ -53,7 +53,7 @@ public class GrupoController {
 		Grupo grupo = new Grupo();
 		
 		List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-		status.add(ProdutoStatus.A_VENDA);
+		status.add(ProdutoStatus.DISPONIVEL);
 		
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
@@ -70,7 +70,7 @@ public class GrupoController {
 		Grupo grupo = grupoBusiness.get(id);
 		
 		List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-		status.add(ProdutoStatus.A_VENDA);
+		status.add(ProdutoStatus.DISPONIVEL);
 		
 		model.addAttribute("readonly", true);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
@@ -86,7 +86,7 @@ public class GrupoController {
 		if (result.hasErrors()) {
 
 			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-			status.add(ProdutoStatus.A_VENDA);
+			status.add(ProdutoStatus.DISPONIVEL);
 			
 			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
 			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
@@ -100,7 +100,7 @@ public class GrupoController {
 		} catch (Exception e) {
 
 			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-			status.add(ProdutoStatus.A_VENDA);
+			status.add(ProdutoStatus.DISPONIVEL);
 			
 			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
 			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));

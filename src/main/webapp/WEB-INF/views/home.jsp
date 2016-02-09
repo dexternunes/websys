@@ -59,8 +59,8 @@
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="display:none !important">
-						Voce possui uma reserva em aberto. Somente poderá cadastrar uma
-						nova reserva após a finalização da atual.</div>
+						Não é possível solicitar uma reserva.<br> Você possui reservas em aberto, ou a embarcação está em manutenção.
+					</div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>

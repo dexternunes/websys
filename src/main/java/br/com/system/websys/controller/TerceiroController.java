@@ -1,6 +1,7 @@
 package br.com.system.websys.controller;
 
 import javax.validation.Valid;
+import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +13,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
-import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroEndereco;
+import br.com.system.websys.entities.TerceiroExclusaoStatus;
+import br.com.system.websys.entities.TerceiroExclusaoStatusDTO;
 import br.com.system.websys.entities.TerceiroTipo;
 import br.com.system.websys.entities.User;
 
@@ -145,10 +148,21 @@ public class TerceiroController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/api/validaExclusao/{id}", method = RequestMethod.GET )
-	public String validaExclusao(@PathVariable Long id) throws Exception {
+	@RequestMapping(value = "/api/validaExclusao", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
+	public TerceiroExclusaoStatusDTO validaExclusao(@RequestBody Long id) throws Exception {
 		Terceiro terceiro = terceiroBusiness.get(id);
 		
-		return terceiroBusiness.validaExclusao(terceiro);
+		TerceiroExclusaoStatus terceiroExclusao = terceiroBusiness.validaExclusao(terceiro);
+		
+		TerceiroExclusaoStatusDTO statusExclusaoDTO = new TerceiroExclusaoStatusDTO();
+		statusExclusaoDTO.setId(terceiroExclusao.getCode());
+		statusExclusaoDTO.setMensagem(terceiroExclusao.getDescricao());
+		
+		if(terceiroExclusao.equals(TerceiroExclusaoStatus.OK)){
+			terceiro.setExcluido(true);
+			terceiro = terceiroBusiness.salvar(terceiro);
+		}
+		
+		return statusExclusaoDTO;
 	}
 }

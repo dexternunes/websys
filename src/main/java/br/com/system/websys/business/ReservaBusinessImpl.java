@@ -169,7 +169,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro) {
-		List<Grupo> grupo = grupoBusiness.findAllByTerceito(terceiro);
+		List<Grupo> grupo = grupoBusiness.getByTerceiro(terceiro);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
 			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA) && !r.getStatus().equals(ReservaStatus.ENCERRADA))) {

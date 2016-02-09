@@ -14,6 +14,7 @@ import br.com.system.websys.entities.DefinirNovaSenhaDTO;
 import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.RecuperarSenhaDTO;
 import br.com.system.websys.entities.Role;
+import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.repository.UserRepository;
 
@@ -138,4 +139,8 @@ class UserBusinessImpl implements UserBusiness {
 		return user;
 	}
 
+	@Override
+	public User getUserByTerceiro(Terceiro terceiro) {
+		return ((UserRepository)userRepository).getUserByTerceiro(terceiro);
+	}
 }
