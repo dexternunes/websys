@@ -66,13 +66,16 @@ public class ProdutoController{
 	public String salvarBase(@Valid @ModelAttribute("produto") Produto produto,
 			BindingResult result, Model model) throws Exception {
 
+		produto.setAltura(0D);
+		produto.setComprimento(0D);
+		produto.setLargura(0D);
 		if (result.hasErrors()) {
 
 			model.addAttribute("produto", produto);
 			
 			return "cadastro/produto/formulario_produto";
 		}
-
+		
 		try {
 			ProdutoBusiness.salvar(produto);
 		} catch (Exception e) {

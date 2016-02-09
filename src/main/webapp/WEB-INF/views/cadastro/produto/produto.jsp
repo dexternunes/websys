@@ -34,7 +34,7 @@
 								<thead>
 									<tr>
 										<th>Tipo Produto</th>
-										<th>Descrição</th>
+										<th>Nome</th>
 										<th>Marca</th>
 										<th>Modelo</th>
 									</tr>

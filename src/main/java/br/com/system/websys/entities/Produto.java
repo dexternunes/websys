@@ -30,16 +30,12 @@ public class Produto extends EntityBaseRoot {
 	private String modelo;
 	
 
-	@NotNull(message="Campo obrigatório!")
 	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double comprimento;
 
-	@NotNull(message="Campo obrigatório!")
 	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double largura;
 
-
-	@NotNull(message="Campo obrigatório!")
 	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double altura;
 	
