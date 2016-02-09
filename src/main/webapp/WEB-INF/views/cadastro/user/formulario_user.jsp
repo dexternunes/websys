@@ -132,6 +132,12 @@
 								<div class="form-actions">
 									<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
 								</div>
+								
+								
+								<div class="control-group">
+									<a type="button" class="btn btn-primary"
+										href="${pageContext.request.contextPath}/usuarios/">Voltar</a>
+								</div>
 							</div>
 						</div>
 					</div>
