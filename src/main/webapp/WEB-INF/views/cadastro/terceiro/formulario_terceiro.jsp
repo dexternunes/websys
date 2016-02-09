@@ -246,6 +246,9 @@
 						<br /> <br />
 						<div class="form-actions">
 							<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
+							<c:if test="${user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+								<button type="button" class="btn btn-primary" id="excluirTerceiro">Excluir</button>
+							</c:if>
 						</div>
 					</div>
 				</div>
@@ -253,6 +256,22 @@
 		</form:form>
 	</div>
 	<script type='text/javascript'>
+	
+	$('#excluirTerceiro').click(function(){
+		$.ajax({
+			url : "${pageContext.request.contextPath}/reserva/api/get",
+			dataType : "json",
+			contentType : "application/json; charset=utf-8",
+			type : 'GET',
+			async : false,
+			success : function(data) {
+				reservasJSON = data.reservas;
+			},
+			error : function(request, status, error) {
+				alert(error);
+			}
+		});
+	});
 		function AddEndereco() {
 			var cont = parseInt($('#nEnderecos').val());
 

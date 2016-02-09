@@ -47,5 +47,10 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 		else
 			return terceiros; 
 	}
+	
+	public String validaExclusao(Terceiro terceiro){
+		
+		return null;
+	}
 
 }

@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.business.UserBusiness;
+import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroEndereco;
@@ -140,5 +142,13 @@ public class TerceiroController {
 		}
 
 		return "redirect:/terceiro/";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/validaExclusao/{id}", method = RequestMethod.GET )
+	public String validaExclusao(@PathVariable Long id) throws Exception {
+		Terceiro terceiro = terceiroBusiness.get(id);
+		
+		return terceiroBusiness.validaExclusao(terceiro);
 	}
 }
