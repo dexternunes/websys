@@ -540,9 +540,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Terceiro> terceiros = new ArrayList<Terceiro>();
 		terceiros.add(reserva1.getSolicitante());
 		terceiros.add(reserva2.getSolicitante());
+		
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+		status.add(ReservaStatus.ENCERRADA);
+		status.add(ReservaStatus.CANCELADA);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros,
-				reserva1.getGrupo(), ReservaStatus.ENCERRADA);
+				reserva1.getGrupo(), status);
 
 		if (reservas == null || reservas.size() == 0) {
 			if (reserva1.getCreated().before(reserva2.getCreated())) {
