@@ -178,6 +178,10 @@ public class ReservaController{
 				if(reserva.getStatus().equals(ReservaStatus.CANCELADA)){
 					tipoEvento = "[C] ";
 				}
+				
+				if(reserva.getStatus().equals(ReservaStatus.ENCERRADA)){
+					tipoEvento = "[F] ";
+				}
 
 			reservas.getReservas().add(new ReservaDTO(
 					reserva.getId(), 

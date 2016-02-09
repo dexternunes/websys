@@ -91,7 +91,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		reserva.setValidacoes(validacoes);
 
 		return reserva;
-
 	}
 
 	@Override
@@ -162,6 +161,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
 		status.add(ReservaStatus.CANCELADA);
+		status.add(ReservaStatus.ENCERRADA);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceiro(terceiro, status);
 
@@ -172,7 +172,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Grupo> grupo = grupoBusiness.findAllByTerceito(terceiro);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
-			if (grupo.contains(r.getGrupo()) && !r.getStatus().equals(ReservaStatus.CANCELADA)) {
+			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA) && !r.getStatus().equals(ReservaStatus.ENCERRADA))) {
 				grupo.remove(r.getGrupo());
 			}
 		}
@@ -234,6 +234,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
 		status.add(ReservaStatus.CANCELADA);
+		status.add(ReservaStatus.ENCERRADA);
 
 		return this.getByGruposByStatus(grupos, status);
 	}
@@ -323,6 +324,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			if(reserva.getStatus().equals(ReservaStatus.CANCELADA)){
 				tipoEvento = "[C] ";
 			}
+			
+			if(reserva.getStatus().equals(ReservaStatus.ENCERRADA)){
+				tipoEvento = "[F] ";
+			}
 
 			reservaDTO = new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(),
 					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
@@ -383,7 +388,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			}
 			
 			if(isReservaMesmoDia(reserva)){
-					return validaReservaMesmoDia(reserva);
+				return validaReservaMesmoDia(reserva);
 			}
 
 			if (isReservaDiaUnico(reserva)) {
@@ -456,10 +461,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		Date dataAtual = new Date();
 
-			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 24) {
-				return ReservaValidacaoStatus.DIA_UNICO;
+			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) <= 24) {
+				if(existeReserva(reserva) != null){
+					return ReservaValidacaoStatus.OK_RESERVA;
+				}
 			}
-		return ReservaValidacaoStatus.OK;
+			return ReservaValidacaoStatus.OK;
 	}
 
 	private List<Reserva> validaReservasConcomitantes(List<Reserva> reservas) throws Exception {

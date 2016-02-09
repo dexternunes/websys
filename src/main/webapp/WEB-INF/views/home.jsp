@@ -66,7 +66,7 @@
 					<div id='calendar'></div>
 					<div class="clearfix"></div>
 					<div>
-						<label>[S] -> Solicitação. [R] -> Reserva. [E] -> Em uso. [C] -> Cancelada.</label>
+						<label>[S] -> Solicitação. [R] -> Reserva. [E] -> Em uso. [C] -> Cancelada. [F] -> Finalizada.</label>
 					</div>
 				</div>
 			</div>
@@ -424,54 +424,69 @@
 						$('.exclui_reserva').click(
 								function() {
 									$.ajax({
-											url : "${pageContext.request.contextPath}/reserva/api/validaExclusao/"+ reservaJSON.id,
-											dataType : "json",
-											contentType : "application/json; charset=utf-8",
-											type : 'GET',
-											async : false,
-											success : function(data) {
-												if(data == 'true'){
-													$.ajax({
-														url : "${pageContext.request.contextPath}/reserva/api/remove",
-														type : "POST",
-														contentType : "application/json; charset=utf-8",
-														data : JSON.stringify(calEvent._id),
-														async : false,
-														cache : false,
-														processData : false,
-														success : function() {
-															document.location.reload();
-														},
-														error : function(error) {
-															alert('erro:' + error);
-														}
-													});
-												}
-												else{
-													$('#confirm').modal('show');
-													$('#cancela_exclui').click(function(){
-														$.ajax({
-															url : "${pageContext.request.contextPath}/reserva/api/remove",
-															type : "POST",
-															contentType : "application/json; charset=utf-8",
-															data : JSON.stringify(calEvent._id),
-															async : false,
-															cache : false,
-															processData : false,
-															success : function() {
-																document.location.reload();
-															},
-															error : function(error) {
-																alert('erro:' + error);
-															}
-														});
-													});
-												}												
-											},
-											error : function(request, status, error) {
-												alert("error" + error);
-											}
-							});
+										url : "${pageContext.request.contextPath}/reserva/api/remove",
+										type : "POST",
+										contentType : "application/json; charset=utf-8",
+										data : JSON.stringify(calEvent._id),
+										async : false,
+										cache : false,
+										processData : false,
+										success : function() {
+											document.location.reload();
+										},
+										error : function(error) {
+											alert('erro:' + error);
+										}
+									});
+// 									$.ajax({
+// 											url : "${pageContext.request.contextPath}/reserva/api/validaExclusao/"+ reservaJSON.id,
+// 											dataType : "json",
+// 											contentType : "application/json; charset=utf-8",
+// 											type : 'GET',
+// 											async : false,
+// 											success : function(data) {
+// 												if(data == 'true'){
+// 													$.ajax({
+// 														url : "${pageContext.request.contextPath}/reserva/api/remove",
+// 														type : "POST",
+// 														contentType : "application/json; charset=utf-8",
+// 														data : JSON.stringify(calEvent._id),
+// 														async : false,
+// 														cache : false,
+// 														processData : false,
+// 														success : function() {
+// 															document.location.reload();
+// 														},
+// 														error : function(error) {
+// 															alert('erro:' + error);
+// 														}
+// 													});
+// 												}
+// 												else{
+// 													$('#confirm').modal('show');
+// 													$('#cancela_exclui').click(function(){
+// 														$.ajax({
+// 															url : "${pageContext.request.contextPath}/reserva/api/remove",
+// 															type : "POST",
+// 															contentType : "application/json; charset=utf-8",
+// 															data : JSON.stringify(calEvent._id),
+// 															async : false,
+// 															cache : false,
+// 															processData : false,
+// 															success : function() {
+// 																document.location.reload();
+// 															},
+// 															error : function(error) {
+// 																alert('erro:' + error);
+// 															}
+// 														});
+// 													});
+// 												}												
+// 											},
+// 											error : function(request, status, error) {
+// 												alert("error" + error);
+// 											}
+// 							});
 						});
 				}
 				
