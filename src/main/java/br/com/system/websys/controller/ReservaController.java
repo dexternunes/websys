@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.system.websys.business.GrupoBusiness;
+import br.com.system.websys.business.ParseDTO;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaValidacaoBusiness;
 import br.com.system.websys.business.UserBusiness;
@@ -35,6 +36,8 @@ import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
+import br.com.system.websys.entities.ReservaValidacaoStatus;
+import br.com.system.websys.entities.ReservaValidacaoStatusDTO;
 import br.com.system.websys.entities.ReservasDTO;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.TerceiroDTO;
@@ -58,6 +61,9 @@ public class ReservaController{
 	
 	@Autowired
 	private GrupoBusiness grupoBusiness;
+	
+	@Autowired
+	private ParseDTO parseReserva;
 	
 	@RequestMapping(value="/salvar", method = RequestMethod.POST)
 	public String salvarBase(HttpServletRequest request, @Valid @ModelAttribute("reserva") Reserva reserva,
@@ -101,18 +107,46 @@ public class ReservaController{
 	
 	@ResponseBody
 	@RequestMapping(value="/api/salvar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON)
-	public String salvar(HttpServletRequest request, @RequestBody ReservaDTO reserva) throws Exception {
+	public ReservaValidacaoStatusDTO salvar(HttpServletRequest request, @RequestBody ReservaDTO reservaDTO) throws Exception {
 
-		/*if (result.hasErrors()) {
 
-			for (ObjectError error : result.getAllErrors())
-				logger.info("Erro: " + error.toString());
+		Reserva reserva = parseReserva.parseReservaDTO2Reserva(reservaDTO);
+		
+		ReservaValidacaoStatus statusReserva = reservaBusiness.validaReserva(reserva);
+		
+		ReservaValidacaoStatusDTO statusReservaDTO = new ReservaValidacaoStatusDTO();
+		statusReservaDTO.setId(statusReserva.getCode());
+		statusReservaDTO.setMensagem(statusReserva.getDescricao());
+		
+		try {
 			
-			return "redirect:/home";
+			String server;
+			if(request.getServerPort() == 80)
+				server = "http://" + request.getServerName();
+			else
+				server = "http://" + request.getServerName() + ":" + request.getServerPort();
+			if(statusReserva.equals(ReservaValidacaoStatus.OK_DUPLICADO)){
+				return statusReservaDTO;
+			}
+			if(statusReserva.equals(ReservaValidacaoStatus.OK)){
+				if(reservaDTO.getId() == null){
+					reserva = reservaBusiness.salvar(reserva);
+					reservaBusiness.sendEmailValidacao(reserva, server);					
+				}
+				else
+					reserva = reservaBusiness.salvar(reserva);				
+			}
+			if(statusReserva.equals(ReservaValidacaoStatus.OK_RESERVA)){
+				reserva.setStatus(ReservaStatus.APROVADA);
+				reserva = reservaBusiness.salvar(reserva);
+				reservaBusiness.sendEmailInterno(reserva);
+			}			
+		} catch (Exception e) {
+			statusReservaDTO.setId(2);
+			statusReservaDTO.setMensagem(e.getMessage());
 		}
 		
-		attr.addFlashAttribute("reserva", reserva);*/
-		return "redirect:/home";
+		return statusReservaDTO;
 	}
 	
 	@ResponseBody
@@ -127,23 +161,27 @@ public class ReservaController{
 		for(Reserva reserva: listReservas){
 			if(reserva.getInicioReserva() != null && reserva.getFimReserva() != null && reserva.getSolicitante().getNome() != null){
 				
-				String tipo_evento = "";
+				String tipoEvento = "";
 				
 				if(reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)){
-					tipo_evento = "[S] ";
+					tipoEvento = "[S] ";
 				}
 				
 				if(reserva.getStatus().equals(ReservaStatus.APROVADA)){
-					tipo_evento = "[R] ";
+					tipoEvento = "[R] ";
 				}
 				
 				if(reserva.getStatus().equals(ReservaStatus.EM_USO)){
-					tipo_evento = "[E] ";
+					tipoEvento = "[E] ";
+				}
+				
+				if(reserva.getStatus().equals(ReservaStatus.CANCELADA)){
+					tipoEvento = "[C] ";
 				}
 
 			reservas.getReservas().add(new ReservaDTO(
 					reserva.getId(), 
-					tipo_evento + reserva.getSolicitante().getNome(), 
+					tipoEvento + reserva.getSolicitante().getNome(), 
 					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
 					reserva.getInicioReserva(),
 					reserva.getFimReserva(), 
@@ -152,19 +190,20 @@ public class ReservaController{
 					reserva.getStatus(),
 					new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
 					new ReservaEventoDTO(reserva.getEventoFim().getId()), 
-					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
+					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+					tipoEvento));
 			}
 		}
 		return reservas;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/api/get/{id}", method = RequestMethod.GET )
+	@RequestMapping(value = "/api/get/{id}", method = RequestMethod.GET)
 	public ReservaDTO getReservaById(@PathVariable Long id, Model model, @RequestParam("dataReserva") String dataReserva) throws Exception {
 		
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		
-		Date data = format.parse(dataReserva);				
+		Date data = format.parse(dataReserva);
 		
 		ReservaDTO reservas = reservaBusiness.getReservaDTOById(id, userBusiness.getCurrent().getTerceiro(), data);
 		
@@ -191,7 +230,8 @@ public class ReservaController{
 					reserva.getStatus(),
 					new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
 					new ReservaEventoDTO(reserva.getEventoFim().getId()), 
-					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor())));
+					new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+					null));
 		}
 
 		return reservas;
@@ -217,9 +257,16 @@ public class ReservaController{
 	public String validaExclusao(@PathVariable Long id) throws Exception {
 		Reserva reserva = reservaBusiness.get(id);
 		
-		String retorno = reservaBusiness.validaExclusao(reserva);
+		return reservaBusiness.validaExclusao(reserva);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/api/validaCancela/{id}", method = RequestMethod.GET)
+	public String validaCancela(@PathVariable Long id) throws Exception{
 		
-		return retorno;
+		Reserva reserva = reservaBusiness.get(id);
+		
+		return reservaBusiness.validaCancela(reserva);
 	}
 	
 	@RequestMapping(value = "/validar/{uid}", method = RequestMethod.GET )
@@ -243,14 +290,14 @@ public class ReservaController{
 		
 		reservaValidacaoBusiness.salvar(reservaValidacaoDB);
 		
-		model.addAttribute("message", "Obrigado validar a locação!");
+		model.addAttribute("message", "Obrigado por validar a locação!");
 		
 		return "reserva/validarReserva";
 	}
 	
 	@RequestMapping(value= "/api/remove", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public String postReserva(@RequestBody Long id_reserva) throws Exception {
+	public void excluiReserva(@RequestBody Long id_reserva) throws Exception {
 		
 		Reserva reserva = reservaBusiness.get(id_reserva);
 		reserva.setExcluido(true);
@@ -258,9 +305,21 @@ public class ReservaController{
 		try {
 			reservaBusiness.salvar(reserva);
 		} catch (Exception e) {
-			return "redirect:/home";
+			logger.info("Erro: " + e.toString());
 		}
+	}
+	
+	@RequestMapping(value= "/api/cancela", method = RequestMethod.POST, headers="Accept=application/json", produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public void cancelaReserva(@RequestBody Long id_reserva) throws Exception {
 		
-		return "redirect:/home";
+		Reserva reserva = reservaBusiness.get(id_reserva);
+		reserva.setStatus(ReservaStatus.CANCELADA);
+
+		try {
+			reservaBusiness.salvar(reserva);
+		} catch (Exception e) {
+			logger.info("Erro: " + e.toString());
+		}
 	}
 }

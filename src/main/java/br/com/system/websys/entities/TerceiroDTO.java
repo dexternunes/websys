@@ -6,8 +6,9 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TerceiroDTO implements Serializable {
+	
+	private static final long serialVersionUID = 8631801890193946598L;
 
-	private static final long serialVersionUID = 8646464654646014654L;
 
 	private Long id;
 	

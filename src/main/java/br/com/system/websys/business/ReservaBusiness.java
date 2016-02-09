@@ -7,10 +7,10 @@ import javax.mail.MessagingException;
 
 import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
-import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
+import br.com.system.websys.entities.ReservaValidacaoStatus;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.repository.ReservaRepository;
@@ -31,10 +31,10 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	
 	public String validaExclusao(Reserva reserva);
 	
+	public String validaCancela(Reserva reserva);
+	
 	public Reserva getReservaByEventoFim(ReservaEvento eventoFim);
 	
-	public PermiteReservasDTO validaSolicitanteReserva(User user);
-
 	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception;
 
 	public List<Reserva> getReservasParaExibicao(User user);
@@ -44,5 +44,10 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception;
 
 	public void validaAPoraToda();
-
+	
+	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws Exception;
+	
+	public Reserva getReservaByDate(Reserva reserva);
+	
+	public Boolean sendEmailInterno(Reserva reserva) throws MessagingException;
 }

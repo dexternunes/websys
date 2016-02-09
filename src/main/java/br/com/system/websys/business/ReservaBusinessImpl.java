@@ -1,5 +1,6 @@
 package br.com.system.websys.business;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,14 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.GrupoDTO;
-import br.com.system.websys.entities.PermiteReservaDTO;
-import br.com.system.websys.entities.PermiteReservasDTO;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.ReservaValidacao;
+import br.com.system.websys.entities.ReservaValidacaoStatus;
 import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroDTO;
@@ -43,10 +43,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Autowired
 	public MailBusiness mailBusiness;
-
+	
 	@Autowired
 	protected ReservaBusinessImpl(ReservaRepository repository) {
 		super(repository, Reserva.class);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Override
+	public Reserva salvar(Reserva reserva) throws Exception{
+		return super.salvar(reserva);
 	}
 
 	@Override
@@ -97,24 +103,52 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { validacao.getTerceiro().getEmails() },
 					"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(28,60,106)'>"
-							+"<div align='center' style='background-color:rgb(28,60,106)'>"
-							+"	<img width='98' height='130' alt='Logo' src='https://uploaddeimagens.com.br/images/000/562/068/original/prime_login.png?1454257447'  />"
-							+"</div>"
-					+"</br></br></br> </br></br></br></br></br></br></br></br></br><font color='white'>"
-					+"	<h3>Uma nova reserva foi solicitada </h3> "
-					+"	<br />"
-					+"	<br />"
-					+"	Embarcação: "+reserva.getGrupo().getProdutos().get(0).getDescricao() +"<br />"
-					+"	Solicitante: "+reserva.getSolicitante().getNome()+"<br />"
-					+"	Data inicio da reserva: "+Formatters.formatDate(reserva.getInicioReserva())+"<br />"
-					+"	Data fim da reserva: "+Formatters.formatDate(reserva.getFimReserva())+"<br /> <br />"
-					+"	Clique <a href='" + link+ validacao.getUid() + "'>aqui</a> para validar/questionar a reserva <br /><br /><br />Att,<br /> "
-					+"	</font>"
-					+"	<div>"
-					+"		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-					+"		<p><font color='white'>©2015 All Rights Reserved.</font></p>"
-					+"	</div> "
-					+"</div>");
+							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
+							+ "	<img width='98' height='130' alt='Logo' src='https://uploaddeimagens.com.br/images/000/562/068/original/prime_login.png?1454257447'  />"
+							+ "</div>"
+							+ "</br></br></br> </br></br></br></br></br></br></br></br></br><font color='white'>"
+							+ "	<h3>Uma nova reserva foi solicitada </h3> " + "	<br />" + "	<br />" + "	Embarcação: "
+							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
+							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
+							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /> <br />" + "	Clique <a href='"
+							+ link + validacao.getUid()
+							+ "'>aqui</a> para validar/questionar a reserva <br /><br /><br />Att,<br /> " + "	</font>"
+							+ "	<div>"
+							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
+							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+							+ "</div>");
+		}
+		return false;
+	}
+	
+	public Boolean sendEmailInterno(Reserva reserva) throws MessagingException {
+
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(Role.ROLE_ADMIN);
+		roles.add(Role.ROLE_MARINHEIRO);
+		
+		List<User> users = userBusiness.getByRoles(roles);
+		
+		for (User user : users) {
+			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
+					"Prime Share Club - Reserva Solicitada",
+					"<div align='center' style='background-color:rgb(28,60,106)'>"
+							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
+							+ "	<img width='98' height='130' alt='Logo' src='https://uploaddeimagens.com.br/images/000/562/068/original/prime_login.png?1454257447'  />"
+							+ "</div>"
+							+ "</br></br></br> </br></br></br></br></br></br></br></br></br><font color='white'>"
+							+ "	<h3>Uma nova reserva foi solicitada </h3> " + "	<br />" + "	<br />" + "	Embarcação: "
+							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
+							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
+							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
+							+ Formatters.formatDate(reserva.getFimReserva()) 
+							+ "<br /><br /><br />Att,<br /> " 
+							+ "	</font>"
+							+ "	<div>"
+							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
+							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+							+ "</div>");
 		}
 		return false;
 	}
@@ -127,6 +161,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
+		status.add(ReservaStatus.CANCELADA);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceiro(terceiro, status);
 
@@ -137,7 +172,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Grupo> grupo = grupoBusiness.findAllByTerceito(terceiro);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
-			if (grupo.contains(r.getGrupo())) {
+			if (grupo.contains(r.getGrupo()) && !r.getStatus().equals(ReservaStatus.CANCELADA)) {
 				grupo.remove(r.getGrupo());
 			}
 		}
@@ -145,18 +180,26 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return grupo;
 	}
 
-	@Override
 	public String validaExclusao(Reserva reserva) {
 		Date horaInicioReserva = reserva.getInicioReserva();
 		Calendar horaInicioReservaCal = Calendar.getInstance();
 		horaInicioReservaCal.setTime(horaInicioReserva);
 
-		long dif = (horaInicioReservaCal.getTimeInMillis() - System.currentTimeMillis()) / (60 * 60 * 1000);
-
-		if (dif < 2)
+		if ((horaInicioReservaCal.getTimeInMillis() - System.currentTimeMillis()) / (60 * 60 * 1000) < 2)
 			return "false";
 		else
 			return "true";
+	}
+	
+	public String validaCancela(Reserva reserva){
+		Date horaInicioReserva = reserva.getInicioReserva();
+		Calendar horaInicioReservaCal = Calendar.getInstance();
+		horaInicioReservaCal.setTime(horaInicioReserva);
+
+		if ((horaInicioReservaCal.getTimeInMillis() - System.currentTimeMillis()) / (60 * 60 * 1000) < 2)
+			return "false";
+		else
+			return "true";		
 	}
 
 	@Override
@@ -169,53 +212,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Reserva> reservas = ((ReservaRepository) repository).findByReservaByGrupoByStatus(grupo,
 				faturamentoStatus);
 		return reservas;
-	}
-
-	public PermiteReservasDTO validaSolicitanteReserva(User user) {
-
-		Terceiro terceiro = user.getTerceiro();
-
-		PermiteReservasDTO permiteReservas = new PermiteReservasDTO();
-
-		if (user.getRole().equals(Role.ROLE_COTISTA)) {
-			List<Grupo> gruposTerceiro = grupoBusiness.findAllByTerceito(terceiro);
-
-			if (gruposTerceiro.size() > 1) {
-
-				for (Grupo g : gruposTerceiro) {
-					for (Reserva r : g.getReservas()) {
-						if (r.getSolicitante().equals(terceiro)) {
-							if (!permiteReservas.getPermiteReservaDTO().contains(g)) {
-								permiteReservas.getPermiteReservaDTO().add(new PermiteReservaDTO(g.getId(),
-										g.getDescricao(), r.getId(), terceiro.getId(), false));
-							}
-						} else {
-							if (!permiteReservas.getPermiteReservaDTO().contains(g)) {
-								permiteReservas.getPermiteReservaDTO().add(
-										new PermiteReservaDTO(g.getId(), g.getDescricao(), 0L, terceiro.getId(), true));
-							}
-						}
-					}
-				}
-			} else {
-				Grupo g = gruposTerceiro.get(0);
-				for (Reserva r : g.getReservas()) {
-					if (r.getSolicitante().equals(terceiro)) {
-						if (!permiteReservas.getPermiteReservaDTO().contains(g)) {
-							permiteReservas.getPermiteReservaDTO().add(new PermiteReservaDTO(g.getId(),
-									g.getDescricao(), r.getId(), terceiro.getId(), false));
-						}
-					} else {
-						if (!permiteReservas.getPermiteReservaDTO().contains(g)) {
-							permiteReservas.getPermiteReservaDTO().add(
-									new PermiteReservaDTO(g.getId(), g.getDescricao(), 0L, terceiro.getId(), true));
-						}
-					}
-				}
-			}
-		}
-
-		return permiteReservas;
 	}
 
 	public List<Reserva> getByGruposByStatus(List<Grupo> grupos, List<ReservaStatus> status) {
@@ -237,6 +233,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
+		status.add(ReservaStatus.CANCELADA);
 
 		return this.getByGruposByStatus(grupos, status);
 	}
@@ -260,77 +257,86 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
 			reserva.getEventoFim().setImagens(reservaEvento.getImagens());
 			reserva.setStatus(ReservaStatus.ENCERRADA);
+			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 		}
 
 		return this.salvar(reserva);
 	}
-	
+
 	@Autowired
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void validaAPoraToda(){
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void validaAPoraToda() {
 		vareSolicitacoesPorGrupo();
 	}
-	
-	private void vareSolicitacoesPorGrupo(){
-		
+
+	private void vareSolicitacoesPorGrupo() {
+
 		List<Grupo> grupos = grupoBusiness.getAll();
-		
-		for(Grupo grupo :grupos){
-			
+
+		for (Grupo grupo : grupos) {
+
 			Calendar date = Calendar.getInstance();
 			date.add(Calendar.DATE, -1);
-			
-			/*Criteria criteria = this.createCriteria("r");
-			criteria.add(Restrictions.eq("r.ativo", true));
-			criteria.add(Restrictions.eq("r.cancelado", false));
-			criteria.add(Restrictions.eq("r.status", ReservaStatus.AGUARDANDO_APROVACAO));
-			criteria.add(Restrictions.le("r.created", date.getTime()));
-			criteria.add(Restrictions.le("r.grupo", grupo));*/
-			try{
-				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatusByDateCreated(grupo, ReservaStatus.AGUARDANDO_APROVACAO, date.getTime()); 
-				if(reservas == null)
+
+			/*
+			 * Criteria criteria = this.createCriteria("r");
+			 * criteria.add(Restrictions.eq("r.ativo", true));
+			 * criteria.add(Restrictions.eq("r.cancelado", false));
+			 * criteria.add(Restrictions.eq("r.status",
+			 * ReservaStatus.AGUARDANDO_APROVACAO));
+			 * criteria.add(Restrictions.le("r.created", date.getTime()));
+			 * criteria.add(Restrictions.le("r.grupo", grupo));
+			 */
+			try {
+				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatusByDateCreated(grupo,
+						ReservaStatus.AGUARDANDO_APROVACAO, date.getTime());
+				if (reservas == null)
 					continue;
-				
+
 				validaSolicitacoesPorGrupo(reservas);
-			}catch(Exception e){
+			} catch (Exception e) {
 				return;
 			}
 		}
 	}
 
-	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception{
-		
+	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception {
+
 		ReservaDTO reservaDTO;
 		Reserva reserva = this.get(id);
-		
-		if(reserva != null){
-			 reservaDTO = new ReservaDTO(reserva.getId(), 
-						reserva.getSolicitante().getNome(), 
-						new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
-						reserva.getInicioReserva(),
-						reserva.getFimReserva(), 
-						reserva.getUtilizaMarinheiro(), 
-						reserva.getObs(), 
-						reserva.getStatus(),
-						new ReservaEventoDTO(reserva.getEventoInicio().getId()), 
-						new ReservaEventoDTO(reserva.getEventoFim().getId()), 
-						new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()));
-		}
-		else{
-			reservaDTO = new ReservaDTO(null,
-					terceiro.getNome(),
-					new TerceiroDTO(terceiro.getId(), terceiro.getNome()),
-					calculaDataInicioReserva(dataReserva),
-					null,
-					null,
-					null, 
-					ReservaStatus.AGUARDANDO_APROVACAO,
-					null, 
-					null, 
-					null
-					);
+
+		if (reserva != null) {
+			String tipoEvento = "";
+
+			if (reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)) {
+				tipoEvento = "[S] ";
+			}
+
+			if (reserva.getStatus().equals(ReservaStatus.APROVADA)) {
+				tipoEvento = "[R] ";
+			}
+
+			if (reserva.getStatus().equals(ReservaStatus.EM_USO)) {
+				tipoEvento = "[E] ";
+			}
 			
+			if(reserva.getStatus().equals(ReservaStatus.CANCELADA)){
+				tipoEvento = "[C] ";
+			}
+
+			reservaDTO = new ReservaDTO(reserva.getId(), reserva.getSolicitante().getNome(),
+					new TerceiroDTO(reserva.getSolicitante().getId(), reserva.getSolicitante().getNome()),
+					reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getUtilizaMarinheiro(),
+					reserva.getObs(), reserva.getStatus(), new ReservaEventoDTO(reserva.getEventoInicio().getId()),
+					new ReservaEventoDTO(reserva.getEventoFim().getId()), new GrupoDTO(reserva.getGrupo().getId(),
+							reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+					tipoEvento);
+		} else {
+			reservaDTO = new ReservaDTO(null, terceiro.getNome(), new TerceiroDTO(terceiro.getId(), terceiro.getNome()),
+					calculaDataInicioReserva(dataReserva), null, null, null, ReservaStatus.AGUARDANDO_APROVACAO, null,
+					null, null, null);
+
 		}
 		return reservaDTO;
 	}
@@ -338,22 +344,30 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@SuppressWarnings("deprecation")
 	private Date calculaDataInicioReserva(Date dataReserva) {
 		Calendar horaInicioReservaCal = Calendar.getInstance();
-		
-		if(!(horaInicioReservaCal.get(Calendar.DAY_OF_MONTH) == dataReserva.getDate() && horaInicioReservaCal.get(Calendar.MONTH) == dataReserva.getMonth() && horaInicioReservaCal.get(Calendar.YEAR) == dataReserva.getYear()+1900)){
+
+		if (!(horaInicioReservaCal.get(Calendar.DAY_OF_MONTH) == dataReserva.getDate()
+				&& horaInicioReservaCal.get(Calendar.MONTH) == dataReserva.getMonth()
+				&& horaInicioReservaCal.get(Calendar.YEAR) == dataReserva.getYear() + 1900)) {
 			horaInicioReservaCal.setTime(dataReserva);
 			horaInicioReservaCal.set(Calendar.HOUR, 6);
+			horaInicioReservaCal.set(Calendar.MINUTE, 0);
 			return horaInicioReservaCal.getTime();
 		}
-				
+
 		int calculoDifHoraInicio = (horaInicioReservaCal.get(Calendar.MINUTE) % 15);
 
 		if (calculoDifHoraInicio == 0)
 			horaInicioReservaCal.add(Calendar.MINUTE, 120);
 		else
 			horaInicioReservaCal.add(Calendar.MINUTE, (15 - calculoDifHoraInicio) + 120);
-		
-		if(horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) > 18){
+
+		if (horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) > 18) {
 			horaInicioReservaCal.add(Calendar.DAY_OF_MONTH, 1);
+			horaInicioReservaCal.set(Calendar.HOUR_OF_DAY, 6);
+			horaInicioReservaCal.set(Calendar.MINUTE, 0);
+		}
+		
+		if(horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) < 6){
 			horaInicioReservaCal.set(Calendar.HOUR_OF_DAY, 6);
 			horaInicioReservaCal.set(Calendar.MINUTE, 0);
 		}
@@ -361,224 +375,279 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return horaInicioReservaCal.getTime();
 	}
 
-	public Boolean validaReserva(Reserva reserva) {
-		return null;
+	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException {
+
+		if (reserva.getId() == null) {
+			
+			if(existeReserva(reserva) != null){
+				return ReservaValidacaoStatus.OK_DUPLICADO;
+			}
+			
+			if(isReservaMesmoDia(reserva)){
+					return validaReservaMesmoDia(reserva);
+			}
+
+			if (isReservaDiaUnico(reserva)) {
+				return validaReservaDiaUnico(reserva);
+			}			
+			
+			return validaReservaDiasConsecutivos(reserva);
+		}		
+		return ReservaValidacaoStatus.OK;
 	}
 	
-	private Boolean validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception{
+	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) {
+		Date dataAtual = new Date();
 		
+		if(getReservaByDate(reserva) == null){
+			if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 2) {
+				return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
+			}
+			return ReservaValidacaoStatus.OK_RESERVA;
+		}
+		return ReservaValidacaoStatus.EXISTE_RESERVA;
+	}
+	
+	@SuppressWarnings("deprecation")
+	private Boolean isReservaMesmoDia(Reserva reserva){
+		Date dataAtual = new Date();
+		
+		if(dataAtual.getDate() == reserva.getFimReserva().getDate() && reserva.getFimReserva().getHours() <= 20){
+			return true;
+		}
+		return false;
+	}
+
+	private Boolean validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception {
+
 		List<Reserva> reservasReprovadas = new ArrayList<Reserva>();
-		
-		for(Reserva reserva : reservas){
-			if(!verificaValidacoesEmail(reserva)){
+
+		for (Reserva reserva : reservas) {
+			if (!verificaValidacoesEmail(reserva)) {
 				reservasReprovadas.add(reserva);
 				reprovaReserva(reserva);
 			}
 		}
-		
-		if(reservasReprovadas.size() > 0)
+
+		if (reservasReprovadas.size() > 0)
 			reservas.removeAll(reservasReprovadas);
-		
+
 		List<Reserva> reservasUnicas = validaReservasConcomitantes(reservas);
-		
-		for(Reserva reserva : reservasUnicas){
-			
-			if(!isReservaDiaUnico(reserva)){
+
+		for (Reserva reserva : reservasUnicas) {
+
+			if (!isReservaDiaUnico(reserva)) {
 				Calendar date = Calendar.getInstance();
 				date.add(Calendar.HOUR, -48);
-				if(reserva.getCreated().getTime() >= date.getTime().getTime()){
+				if (reserva.getCreated().getTime() >= date.getTime().getTime()) {
 					continue;
 				}
 			}
-			
-			if(verificaValidacoesEmail(reserva)){
+
+			if (verificaValidacoesEmail(reserva)) {
 				reserva.setStatus(ReservaStatus.APROVADA);
 				dispararEmailAprovacaoReserva(reserva);
-			}			
-			
+			}
+
 		}
-		
 		return true;
-
 	}
 
-	public Boolean validaReservaDiaUnico(Reserva reserva) {
-		return null;
+	public ReservaValidacaoStatus validaReservaDiaUnico(Reserva reserva) throws ParseException {
+
+		Date dataAtual = new Date();
+
+			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) < 24) {
+				return ReservaValidacaoStatus.DIA_UNICO;
+			}
+		return ReservaValidacaoStatus.OK;
 	}
-	
-	private List<Reserva> validaReservasConcomitantes(List<Reserva> reservas) throws Exception{
-		
+
+	private List<Reserva> validaReservasConcomitantes(List<Reserva> reservas) throws Exception {
+
 		List<Reserva> reservasUnicas = new ArrayList<Reserva>();
-		
+
 		Boolean continua = false;
-		
-		do{
-			
-			if(reservasUnicas.size() > 0){
+
+		do {
+
+			if (reservasUnicas.size() > 0) {
 				reservas.clear();
 				reservas.addAll(reservasUnicas);
-				
+
 				reservasUnicas.clear();
 			}
-			
+
 			continua = false;
-			
-			if(reservas == null || reservas.size() == 1)
+
+			if (reservas == null || reservas.size() == 1)
 				return reservas;
-			
-			for(Reserva reservaDaVez : reservas){
-				for(Reserva reservaVerificacao : reservas){
-					
-					if(reservaDaVez.equals(reservaVerificacao))
+
+			for (Reserva reservaDaVez : reservas) {
+				for (Reserva reservaVerificacao : reservas) {
+
+					if (reservaDaVez.equals(reservaVerificacao))
 						continue;
-					
+
 					Calendar inicioReserva = Calendar.getInstance();
 					Calendar fimReserva = Calendar.getInstance();
 					Calendar inicioR = Calendar.getInstance();
 					Calendar fimR = Calendar.getInstance();
-					
+
 					inicioReserva.setTime(reservaDaVez.getInicioReserva());
 					inicioReserva.add(Calendar.HOUR, -2);
 					fimReserva.setTime(reservaDaVez.getFimReserva());
 					fimReserva.add(Calendar.HOUR, 2);
 					inicioR.setTime(reservaVerificacao.getInicioReserva());
 					fimR.setTime(reservaVerificacao.getFimReserva());
-					
-					if((inicioReserva.before(inicioR) && fimReserva.after(inicioR))
-							|| (inicioReserva.before(fimR) && fimReserva.after(fimR))){
-						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
+
+					if ((inicioReserva.before(inicioR) && fimReserva.after(inicioR))
+							|| (inicioReserva.before(fimR) && fimReserva.after(fimR))) {
+						if (!reservasUnicas.contains(reservaDaVez) && !reservasUnicas.contains(reservaVerificacao))
+							reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
 						continua = true;
-					}
-					else
+					} else
 						reservasUnicas.add(reservaDaVez);
-					
+
 				}
 			}
-		}while(continua);
-		
+		} while (continua);
+
 		return reservasUnicas;
-		
 
 	}
 
+	@SuppressWarnings("deprecation")
+	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) {
+		Date dataAtual = new Date();
 
-	public Boolean validaReservaDiasConsecutivos(Reserva reserva) {
-//			$('#data_fim_reserva').on('apply.daterangepicker', function(ev, picker){
-//			var inicio = moment(new Date(moment($('#data_inicio_reserva').val()).format("YYYY/MM/DD")));
-//			var hoje = moment(new Date(moment().format("YYYY/MM/DD")));
-		
-//			if((moment(inicio).diff(hoje, 'days')) < 7){
-//				alert('Reservas com mais de um dia, deverão ser feitas com 7 dias de antecedência!');
-//				return false;
-//			}
-//		});	
-		return null;
+		if ((reserva.getInicioReserva().getDate() - dataAtual.getDate()) < 7) {
+			return ReservaValidacaoStatus.DIAS_CONSECUTIVOS;
+		}
+
+		return ReservaValidacaoStatus.OK;
 	}
-	
-	private Reserva elegeReserva(Reserva reserva1, Reserva reserva2) throws Exception{
-		
+
+	private Reserva elegeReserva(Reserva reserva1, Reserva reserva2) throws Exception {
+
 		List<Terceiro> terceiros = new ArrayList<Terceiro>();
 		terceiros.add(reserva1.getSolicitante());
 		terceiros.add(reserva2.getSolicitante());
-		
-		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByStatus(terceiros, ReservaStatus.ENCERRADA);
-		
-		if(reservas == null || reservas.size() == 0){
-			if(reserva1.getCreated().before(reserva2.getCreated()))
+
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros,
+				reserva1.getGrupo(), ReservaStatus.ENCERRADA);
+
+		if (reservas == null || reservas.size() == 0) {
+			if (reserva1.getCreated().before(reserva2.getCreated())) {
+				reprovaReserva(reserva2);
+
 				return reserva1;
-			else
+			} else {
+				reprovaReserva(reserva1);
 				return reserva2;
+			}
 		}
-		
+
 		Reserva ultimaReserva = reservas.get(0);
-		
-		if(ultimaReserva.getSolicitante().equals(reserva1.getSolicitante())){
+
+		if (ultimaReserva.getSolicitante().equals(reserva1.getSolicitante())) {
 			reprovaReserva(reserva1);
 			return reserva2;
-		}
-		else{
+		} else {
 			reprovaReserva(reserva2);
 			return reserva1;
 		}
-		
+
 	}
-	
-	private void reprovaReserva(Reserva reserva) throws Exception{
+
+	private void reprovaReserva(Reserva reserva) throws Exception {
 		reserva.setStatus(ReservaStatus.REPROVADA);
 		this.salvar(reserva);
 		dispararEmailReprovacaoReserva(reserva);
 	}
-	
-	private void dispararEmailAprovacaoReserva(Reserva reserva) throws MessagingException{
-		
-		if(reserva.getSolicitante().getEmails() == null)
+
+	private void dispararEmailAprovacaoReserva(Reserva reserva) throws MessagingException {
+
+		if (reserva.getSolicitante().getEmails() == null)
 			return;
-		
-		String[] destinatario = new String[]{reserva.getSolicitante().getEmails()};
+
+		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Aprovada";
 		String texto = "Sua solicitação de reserva foi aprovada <br />" + "<br />Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
-				+ Formatters.formatDate(reserva.getFimReserva())
-				+ "<br /><br /><br />Att" 
+				+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br /><br />Att"
 				+ "<br />Equipe Prime Share Club";
-		
-		try{
+
+		try {
 			mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			System.out.println("ERRO AO ENVIAR EMAIL!");
 		}
-		
-				
+
 	}
-	
-	private void dispararEmailReprovacaoReserva(Reserva reserva) throws MessagingException{
-		
-		if(reserva.getSolicitante().getEmails() == null)
+
+	private void dispararEmailReprovacaoReserva(Reserva reserva) throws MessagingException {
+
+		if (reserva.getSolicitante().getEmails() == null)
 			return;
-		
-		String[] destinatario = new String[]{reserva.getSolicitante().getEmails()};
+
+		String[] destinatario = new String[] { reserva.getSolicitante().getEmails() };
 		String title = "Prime Share Club - Reserva Reprovada";
 		String texto = "Sua solicitação de reserva foi reprovada <br />" + "<br />Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />Data fim da reserva: "
-				+ Formatters.formatDate(reserva.getFimReserva())
-				+ "<br /><br /><br />Att" 
+				+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br /><br />Att"
 				+ "<br />Equipe Prime Share Club";
-		try{
+		try {
 			mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			System.out.println("ERRO AO ENVIAR EMAIL!");
 		}
-				
+
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	private Boolean isReservaDiaUnico(Reserva reserva){
-		if(reserva.getInicioReserva().getDay() != reserva.getFimReserva().getDay())
+	private Boolean isReservaDiaUnico(Reserva reserva) {
+		if (reserva.getInicioReserva().getDay() != reserva.getFimReserva().getDay())
 			return false;
-		if(reserva.getInicioReserva().getMonth() != reserva.getFimReserva().getMonth())
+		if (reserva.getInicioReserva().getMonth() != reserva.getFimReserva().getMonth())
 			return false;
-		if(reserva.getInicioReserva().getYear() != reserva.getFimReserva().getYear())
+		if (reserva.getInicioReserva().getYear() != reserva.getFimReserva().getYear())
 			return false;
-		
+
 		return true;
 	}
-	
-	private Boolean verificaValidacoesEmail(Reserva reserva){
-		
-		for(ReservaValidacao validacao : reserva.getValidacoes()){
-			if(validacao.getValidado() && !validacao.getAprovado()){
+
+	private Boolean verificaValidacoesEmail(Reserva reserva) {
+
+		for (ReservaValidacao validacao : reserva.getValidacoes()) {
+			if (validacao.getValidado() && !validacao.getAprovado()) {
 				return false;
 			}
 		}
-		
-		return true;
 
+		return true;
 	}
 
+	@Override
+	public Reserva getReservaByDate(Reserva reserva) {
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+
+		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), reserva.getGrupo(), status);
+	}
+	
+	public Reserva existeReserva(Reserva reserva){
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+		
+		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getSolicitante(), reserva.getGrupo(), status);
+	}
 }

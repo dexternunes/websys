@@ -51,7 +51,8 @@ public class ParseDTO{
 				reserva.getStatus(),
 				parseReservaEnvento2ReservaEnventoDTO(reserva.getEventoInicio()), 
 				parseReservaEnvento2ReservaEnventoDTO(reserva.getEventoFim()), 
-				new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()));
+				new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+				null);
 		
 	}
 	
@@ -61,29 +62,34 @@ public class ParseDTO{
 		
 		if(reservaDTO.getId() != null)
 			reserva = reservaBusiness.get(reservaDTO.getId());
-
-		if(reserva == null)
-			reserva = new Reserva();
 		
-		reserva.setId(reservaDTO.getId());
-		reserva.setFimReserva(reservaDTO.getEnd());
-		reserva.setInicioReserva(reservaDTO.getStart());
-		reserva.setObs(reservaDTO.getObs());
-		reserva.setStatus(reservaDTO.getStatus());
-		reserva.setUtilizaMarinheiro(reservaDTO.getUtilizaMarinheiro());
+		if(reserva == null){
+			reserva = new Reserva();
+			if(reservaDTO.getGrupo() != null)
+				reserva.setGrupo(grupoBusiness.get(reservaDTO.getGrupo().getId()));
+			reserva = reservaBusiness.createReserva(reserva);
+		}
+		
+		if(reservaDTO.getEnd() != null)
+			reserva.setFimReserva(reservaDTO.getEnd());
+		
+		if(reservaDTO.getStart() != null)
+			reserva.setInicioReserva(reservaDTO.getStart());
+		
+		if(reservaDTO.getObs() != null)
+			reserva.setObs(reservaDTO.getObs());
+		
+		if(reservaDTO.getStatus() != null)
+			reserva.setStatus(reservaDTO.getStatus());
+		
+		if(reservaDTO.getUtilizaMarinheiro() != null)
+			reserva.setUtilizaMarinheiro(reservaDTO.getUtilizaMarinheiro());
 		
 		if(reservaDTO.getEventoInicio() != null)
 			reserva.setEventoInicio(reservaEventoBusiness.get(reservaDTO.getEventoInicio().getId()));
-		if(reserva.getEventoInicio() == null)
-			reserva.setEventoInicio(new ReservaEvento());
 		
 		if(reservaDTO.getEventoFim() != null)
 			reserva.setEventoFim(reservaEventoBusiness.get(reservaDTO.getEventoFim().getId()));
-		if(reserva.getEventoFim() == null)
-			reserva.setEventoFim(new ReservaEvento());
-
-		if(reservaDTO.getGrupo() != null)
-			reserva.setGrupo(grupoBusiness.get(reservaDTO.getGrupo().getId()));
 		
 		if(reservaDTO.getTerceiro() != null)
 			reserva.setSolicitante(terceiroBusiness.get(reservaDTO.getTerceiro().getId()));
