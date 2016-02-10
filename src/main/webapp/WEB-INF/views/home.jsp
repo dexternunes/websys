@@ -365,7 +365,7 @@
 	
 	$('#title').on('change', function(){
 		$.ajax({
-			url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante/"+$('#title').val(),
+			url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante/"+$('#title option:selected').attr('id'),
 			dataType:"json",
 			contentType:"application/json; charset=utf-8",
 			type:"GET",
@@ -444,13 +444,14 @@
 				var html_title = '<option value=0>  </option>';
 
 				for (var i = 0; i < solicitantesGrupoJSON.length; i++) {
-					html_title += '<option value="' + solicitantesGrupoJSON[i].id + '">' + solicitantesGrupoJSON[i].nome + '</option>';
+					html_title += '<option id="' + solicitantesGrupoJSON[i].id + '">' + solicitantesGrupoJSON[i].nome + '</option>';
 				}
 				
 				$('#title').html(html_title);
 				$('#title').attr('disabled', false);
-			}else{
-				$('#title').html('<option value="' + reservaJSON.title + '">'+ reservaJSON.title+'</option>');
+			}
+			else{
+				$('#title').html('<option id="' + reservaJSON.terceiro.id + '">'+ reservaJSON.title+'</option>');
 				$('#title').attr('disabled', true);
 			}
 				
@@ -459,6 +460,8 @@
 			$('#obs').val(reservaJSON.obs);
 
 			if(calEvent){
+				$('#title').html('<option id="' + reservaJSON.terceiro.id + '">'+ reservaJSON.title+'</option>');
+				$('#title').attr('disabled', true);
 				$('#myModalLabel').text('Editar Reserva');
 				$('#data_inicio_reserva').val(reservaJSON.startStr);
 				$('#data_fim_reserva').val(reservaJSON.endStr);
@@ -628,8 +631,8 @@
 						reservaDTO.grupo.id = calEvent.grupo.id;
 					} else {
 						reservaDTO.id = null;
-						reservaDTO.title = $('#title').val();
-						reservaDTO.terceiro.id = $('#title').val();
+						reservaDTO.title = $('#title').text();
+						reservaDTO.terceiro.id = $('#title option:selected').attr('id');
 						reservaDTO.start = getDateFromString($('#data_inicio_reserva').val());
 						reservaDTO.end = getDateFromString($('#data_fim_reserva').val());
 						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').prop('checked');
