@@ -291,6 +291,22 @@
 		}
 	});
 	
+	var solicitantesGrupoJSON = [];
+	
+	$.ajax({
+		url: "${pageContext.request.contextPath}/reserva/api/getSolicitanteGrupo",
+		dataType:"json",
+		contentType:"application/json; charset=utf-8",
+		type:"GET",
+		async:false,
+		success:function(data){
+			solicitantesGrupoJSON = data;
+		},
+		error:function(request, status, error){
+			alert(error);
+		}
+	});
+	
 	$(document).ready(function(){
 		$('.input-hora').mouseover(function(){
 			$('.input-hora').css('cursor', 'pointer');
@@ -306,7 +322,6 @@
 
 	if ($('#admin').val() == 1) {
 			seleciona = true;
-			$('#title')
 		}
 	else{
 		if ($('#permiteReserva').val() != 1) {
@@ -347,6 +362,32 @@
 		events : reservasJSON,
 		});
 	});
+	
+	$('#title').on('change', function(){
+		$.ajax({
+			url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante/"+$('#title').val(),
+			dataType:"json",
+			contentType:"application/json; charset=utf-8",
+			type:"GET",
+			async:false,
+			success:function(data){
+				gruposJSON = data;
+				
+				$('#grupo').html('');
+					var html_grupo = '';
+				
+					for (var i = 0; i < gruposJSON.length; i++) {
+						html_grupo += '<option value="' + gruposJSON[i].id + '">' + gruposJSON[i].descricao + '</option>';
+					}
+				
+					$('#grupo').html(html_grupo);	
+
+			},
+			error:function(request, status, error){
+				alert(error);
+			}
+			});
+		});
 
 		function ReservaEvento(start, end, calEvent) {
 
@@ -398,24 +439,9 @@
 			});
 			
 			if($('#admin').val() == 1){
-				var solicitantesGrupoJSON = [];
-				
-				$.ajax({
-					url: "${pageContext.request.contextPath}/reserva/api/getSolicitanteGrupo",
-					dataType:"json",
-					contentType:"application/json; charset=utf-8",
-					type:"GET",
-					async:false,
-					success:function(data){
-						solicitantesGrupoJSON = data;
-					},
-					error:function(request, status, error){
-						alert(error);
-					}
-				});
 
 				$('#title').html('');
-				var html_title = '';
+				var html_title = '<option value=0>  </option>';
 
 				for (var i = 0; i < solicitantesGrupoJSON.length; i++) {
 					html_title += '<option value="' + solicitantesGrupoJSON[i].id + '">' + solicitantesGrupoJSON[i].nome + '</option>';
@@ -423,22 +449,6 @@
 				
 				$('#title').html(html_title);
 				$('#title').attr('disabled', false);
-				
-				$('#title').on('change', function(){
-					$.ajax({
-						url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante/"+$('#idTerceiro').val(),
-						dataType:"json",
-						contentType:"application/json; charset=utf-8",
-						type:"GET",
-						async:false,
-						success:function(data){
-							gruposJSON = data;
-						},
-						error:function(request, status, error){
-							alert(error);
-						}
-						});
-					});
 			}else{
 				$('#title').html('<option value="' + reservaJSON.title + '">'+ reservaJSON.title+'</option>');
 				$('#title').attr('disabled', true);

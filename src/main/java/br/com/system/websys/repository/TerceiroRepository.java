@@ -14,7 +14,7 @@ public interface TerceiroRepository  extends RepositoryBaseRoot<Terceiro> {
 	@Query("select t from Terceiro t where :tipo MEMBER OF t.tipos")
 	List<Terceiro> findAllByTipo(@Param("tipo") TerceiroTipo tipo);
 	
-	@Query("SELECT t FROM Terceiro t, User u JOIN u.terceiro te WHERE te.id = t.id AND u.role = :role")
+	@Query("SELECT t FROM Terceiro t, User u, Reserva r JOIN u.terceiro te WHERE te.id = t.id AND u.role = :role AND r.status")
 	List<Terceiro> getAllByRole(@Param("role") Role role);
 	
 }
