@@ -134,10 +134,10 @@
 								</div>
 								
 								
-								<div class="control-group">
+								<%-- <div class="control-group">
 									<a type="button" class="btn btn-primary"
 										href="${pageContext.request.contextPath}/usuarios/">Voltar</a>
-								</div>
+								</div> --%>
 							</div>
 						</div>
 					</div>

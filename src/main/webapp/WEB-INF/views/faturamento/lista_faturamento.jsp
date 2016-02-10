@@ -89,8 +89,8 @@
 
 					<div class="control-group">
 
-						<a type="button" class="btn btn-primary"
-							href="${pageContext.request.contextPath}/faturamento/">Voltar</a>
+						<%-- <a type="button" class="btn btn-primary"
+							href="${pageContext.request.contextPath}/faturamento/">Voltar</a> --%>
 						<div id="fc_edit" data-toggle="modal">
 							<a type="button" id="faturar" class="btn btn-primary">Faturar</a>
 						</div>

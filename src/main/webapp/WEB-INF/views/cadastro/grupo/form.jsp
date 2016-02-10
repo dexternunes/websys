@@ -28,6 +28,12 @@
 				</div>
 				<div class="wizar_content">
 					<br />
+					
+					<c:if test="${message != '' && message != null}">
+							<div>
+								<div class="alert alert-error">${message}</div>
+							</div>
+						</c:if>
 
 					<form:form cssClass="form-horizontal"
 						action="${pageContext.request.contextPath}/grupo/cadastro/salvar"
@@ -102,18 +108,27 @@
 						<br />
 						<div class="form-actions">
 							<button type="submit" class="btn btn-primary">Confirmar</button>
+							<c:if test="${grupo.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+								<button type="button" class="btn btn-primary" id="excluirGrupo">Excluir</button>
+							</c:if>
 						</div>
 
 								
-						<div class="control-group">
+						<%-- <div class="control-group">
 							<a type="button" class="btn btn-primary"
 								href="${pageContext.request.contextPath}/grupo/">Voltar</a>
-						</div>
+						</div> --%>
 					</form:form>
 				</div>
 			</div>
 		</div>
 	</div>
+
+<script type="text/javascript">
+	$('#excluirGrupo').click(function(){
+		window.location = "${pageContext.request.contextPath}/grupo/cadastro/excluir/${grupo.id}";				
+	});
+</script>
 
 </body>
 </html>

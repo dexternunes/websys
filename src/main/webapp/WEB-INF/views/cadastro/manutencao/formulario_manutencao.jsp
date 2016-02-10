@@ -258,10 +258,10 @@
 									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 								</div>
 								
-								<div class="control-group">
+								<%-- <div class="control-group">
 									<a type="button" class="btn btn-primary"
 										href="${pageContext.request.contextPath}/manutencao/">Voltar</a>
-								</div>
+								</div> --%>
 
 							</form:form>
 						</div>

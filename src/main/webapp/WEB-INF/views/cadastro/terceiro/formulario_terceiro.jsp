@@ -246,16 +246,16 @@
 						<br /> <br />
 						<div class="form-actions">
 							<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
-							<c:if test="${user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+							<c:if test="${terceiro.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
 								<button type="button" class="btn btn-primary" id="excluirTerceiro">Excluir</button>
 							</c:if>
 						</div>
 						
 								
-						<div class="control-group">
+						<%-- <div class="control-group">
 							<a type="button" class="btn btn-primary"
 								href="${pageContext.request.contextPath}/terceiro/">Voltar</a>
-						</div>
+						</div> --%>
 					</div>
 				</div>
 			</div>

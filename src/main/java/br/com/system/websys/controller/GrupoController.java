@@ -112,4 +112,27 @@ public class GrupoController {
 
 		return "redirect:/grupo/";
 	}
+	
+	@RequestMapping(value = "/cadastro/excluir/{id}", method = RequestMethod.GET)
+	public String grupoexcluir(@PathVariable Long id, Model model) throws Exception {
+
+		Grupo grupo = grupoBusiness.get(id);
+		
+		try {
+			grupoBusiness.delete(grupo);
+		} catch (Exception e) {
+
+			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
+			status.add(ProdutoStatus.DISPONIVEL);
+			
+			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
+			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
+			model.addAttribute("grupo", grupo);
+			model.addAttribute("message", e.getMessage());
+			
+			return "cadastro/grupo/form";
+		}
+
+		return "redirect:/grupo/";
+	}
 }

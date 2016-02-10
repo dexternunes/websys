@@ -20,4 +20,6 @@ public interface GrupoBusiness extends BusinessBaseRoot<Grupo, GrupoRepository> 
 	public List<Grupo> findAllAtivos();	
 	
 	public List<Grupo> getByTerceiro(Terceiro terceiro);
+
+	public Grupo delete(Grupo grupo) throws Exception;
 }
