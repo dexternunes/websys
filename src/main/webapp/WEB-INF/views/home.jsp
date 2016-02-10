@@ -603,7 +603,7 @@
 					var reservaDTO = {
 							id : null,
 							title : null,
-							terceiro : {id : null},
+							terceiro : {nome : null},
 							start : null,
 							end : null,
 							utilizaMarinheiro : null,
@@ -617,7 +617,7 @@
 					if (calEvent) {
 						reservaDTO.id = calEvent.id;
 						reservaDTO.title = calEvent.title;
-						reservaDTO.terceiro.id = calEvent.terceiro.id;
+						reservaDTO.terceiro.nome = calEvent.terceiro.nome;
 						reservaDTO.start = calEvent.start;
 						reservaDTO.end = calEvent.end;
 						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').prop('checked');
@@ -629,7 +629,7 @@
 					} else {
 						reservaDTO.id = null;
 						reservaDTO.title = $('#title').val();
-						reservaDTO.terceiro.id = parseInt($('#idTerceiro').val());
+						reservaDTO.terceiro.nome = $('#title').val();
 						reservaDTO.start = getDateFromString($('#data_inicio_reserva').val());
 						reservaDTO.end = getDateFromString($('#data_fim_reserva').val());
 						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').prop('checked');
