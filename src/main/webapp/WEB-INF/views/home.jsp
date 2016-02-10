@@ -629,7 +629,7 @@
 					} else {
 						reservaDTO.id = null;
 						reservaDTO.title = $('#title').val();
-						reservaDTO.terceiro.nome = $('#title').val();
+						reservaDTO.terceiro.id = $('#title').val();
 						reservaDTO.start = getDateFromString($('#data_inicio_reserva').val());
 						reservaDTO.end = getDateFromString($('#data_fim_reserva').val());
 						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').prop('checked');
