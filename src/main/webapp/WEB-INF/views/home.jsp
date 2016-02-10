@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <html lang="en">
 
@@ -99,9 +100,8 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Solicitante</label>
 								<div class="col-md-6 col-sm-6 col-xs-12">
-									<form:hidden path="solicitante" />
-									<input type="text" value="${user.nome}" id="title"
-										readonly="true" class="form-control col-md-7 col-xs-12" />
+									<select id="title" name="title" class="select2 form-control">
+									</select>
 								</div>
 							</div>
 							<div class="clearfix"></div>
@@ -278,7 +278,7 @@
 	var gruposJSON = [];
 	
 	$.ajax({
-		url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante",
+		url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante/0",
 		dataType:"json",
 		contentType:"application/json; charset=utf-8",
 		type:"GET",
@@ -287,10 +287,10 @@
 			gruposJSON = data;
 		},
 		error:function(request, status, error){
-			alert(error);
+			alert('1:' + error);
 		}
 	});
-		
+	
 	$(document).ready(function(){
 		$('.input-hora').mouseover(function(){
 			$('.input-hora').css('cursor', 'pointer');
@@ -302,10 +302,11 @@
 		$('#confirm').modal('hide');
 		$('#cancela_exclui').click('');
 
-	var seleciona;
+	var seleciona;	
 
 	if ($('#admin').val() == 1) {
 			seleciona = true;
+			$('#title')
 		}
 	else{
 		if ($('#permiteReserva').val() != 1) {
@@ -396,7 +397,53 @@
 				}
 			});
 			
-			$('#title').val(reservaJSON.title);
+			if($('#admin').val() == 1){
+				var solicitantesGrupoJSON = [];
+				
+				$.ajax({
+					url: "${pageContext.request.contextPath}/reserva/api/getSolicitanteGrupo",
+					dataType:"json",
+					contentType:"application/json; charset=utf-8",
+					type:"GET",
+					async:false,
+					success:function(data){
+						solicitantesGrupoJSON = data;
+					},
+					error:function(request, status, error){
+						alert(error);
+					}
+				});
+
+				$('#title').html('');
+				var html_title = '';
+
+				for (var i = 0; i < solicitantesGrupoJSON.length; i++) {
+					html_title += '<option value="' + solicitantesGrupoJSON[i].id + '">' + solicitantesGrupoJSON[i].nome + '</option>';
+				}
+				
+				$('#title').html(html_title);
+				$('#title').attr('disabled', false);
+				
+				$('#title').on('change', function(){
+					$.ajax({
+						url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante/"+$('#idTerceiro').val(),
+						dataType:"json",
+						contentType:"application/json; charset=utf-8",
+						type:"GET",
+						async:false,
+						success:function(data){
+							gruposJSON = data;
+						},
+						error:function(request, status, error){
+							alert(error);
+						}
+						});
+					});
+			}else{
+				$('#title').html('<option value="' + reservaJSON.title + '">'+ reservaJSON.title+'</option>');
+				$('#title').attr('disabled', true);
+			}
+				
 			$('#id').val(reservaJSON.id);
 			$('#utilizaMarinheiro').prop("checked", reservaJSON.utilizaMarinheiro);
 			$('#obs').val(reservaJSON.obs);
@@ -416,7 +463,7 @@
 				$('.exclui_reserva').hide();
 				$(".antosubmit").hide();
 
-				if(reservaJSON.terceiro.id == $('#idTerceiro').val() && reservaJSON.tipoEvento == '[S] '){
+				if((reservaJSON.terceiro.id == $('#idTerceiro').val() || $('#admin').val() == 1) && reservaJSON.tipoEvento == '[S] '){
 						$('#utilizaMarinheiro').attr("disabled", false);
 						$('#obs').attr("disabled", false);
 						$('.exclui_reserva').show();
@@ -441,59 +488,25 @@
 						});
 				}
 				
-				if(reservaJSON.terceiro.id == $('#idTerceiro').val() && reservaJSON.tipoEvento == '[R] '){
+				if((reservaJSON.terceiro.id == $('#idTerceiro').val() || $('#admin').val() == 1) && reservaJSON.tipoEvento == '[R] '){
 					$('.cancela_reserva').show();
 					$('.cancela_reserva').click(
 							function() {
 								$.ajax({
-										url : "${pageContext.request.contextPath}/reserva/api/validaCancela/"+ reservaJSON.id,
-										dataType : "json",
-										contentType : "application/json; charset=utf-8",
-										type : 'GET',
-										async : false,
-										success : function(data) {
-											if(data == 'true'){
-												$.ajax({
-													url : "${pageContext.request.contextPath}/reserva/api/cancela",
-													type : "POST",
-													contentType : "application/json; charset=utf-8",
-													data : JSON.stringify(calEvent._id),
-													async : false,
-													cache : false,
-													processData : false,
-													success : function() {
-														document.location.reload();
-													},
-													error : function(error) {
-														alert('erro:' + error);
-													}
-												});												
-											}
-											else{
-												$('#confirm').modal('show');
-												$('#cancela_exclui').click(function(){
-													$.ajax({
-														url : "${pageContext.request.contextPath}/reserva/api/cancela",
-														type : "POST",
-														contentType : "application/json; charset=utf-8",
-														data : JSON.stringify(calEvent._id),
-														async : false,
-														cache : false,
-														processData : false,
-														success : function() {
-															document.location.reload();
-														},
-														error : function(error) {
-															alert('erro:' + error);
-														}
-													});			
-												});
-											}											
-										},
-										error : function(request, status, error) {
-											alert("error" + error);
-										}
-						});
+									url : "${pageContext.request.contextPath}/reserva/api/cancela",
+									type : "POST",
+									contentType : "application/json; charset=utf-8",
+									data : JSON.stringify(calEvent._id),
+									async : false,
+									cache : false,
+									processData : false,
+									success : function() {
+										document.location.reload();
+									},
+									error : function(error) {
+										alert('erro:' + error);
+									}
+								});												
 					});
 				}
 

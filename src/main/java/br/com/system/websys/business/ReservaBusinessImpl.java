@@ -162,6 +162,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.EM_USO);
 		status.add(ReservaStatus.CANCELADA);
 		status.add(ReservaStatus.ENCERRADA);
+		status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceiro(terceiro, status);
 
@@ -172,7 +173,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Grupo> grupo = grupoBusiness.getByTerceiro(terceiro);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
-			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA) && !r.getStatus().equals(ReservaStatus.ENCERRADA))) {
+			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA) && !r.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)
+					&& !r.getStatus().equals(ReservaStatus.ENCERRADA))) {
 				grupo.remove(r.getGrupo());
 			}
 		}
@@ -234,6 +236,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
 		status.add(ReservaStatus.CANCELADA);
+		status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
 		status.add(ReservaStatus.ENCERRADA);
 
 		return this.getByGruposByStatus(grupos, status);
@@ -322,7 +325,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				tipoEvento = "[E] ";
 			}
 			
-			if(reserva.getStatus().equals(ReservaStatus.CANCELADA)){
+			if(reserva.getStatus().equals(ReservaStatus.CANCELADA) || reserva.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)){
 				tipoEvento = "[C] ";
 			}
 			
@@ -464,8 +467,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) <= 24) {
 				if(existeReserva(reserva) != null){
-					return ReservaValidacaoStatus.OK_RESERVA;
+					return ReservaValidacaoStatus.OK;
 				}
+				else
+					return ReservaValidacaoStatus.OK_RESERVA;
 			}
 			return ReservaValidacaoStatus.OK;
 	}
@@ -543,7 +548,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 		status.add(ReservaStatus.ENCERRADA);
-		status.add(ReservaStatus.CANCELADA);
+		status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros,
 				reserva1.getGrupo(), status);

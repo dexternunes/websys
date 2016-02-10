@@ -2,6 +2,7 @@ package br.com.system.websys.business;
 
 import java.util.List;
 
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroExclusaoStatus;
 import br.com.system.websys.entities.TerceiroTipo;
@@ -15,4 +16,5 @@ public interface TerceiroBusiness extends BusinessBaseRoot<Terceiro, TerceiroRep
 	
 	public TerceiroExclusaoStatus validaExclusao(Terceiro terceiro);
 	
+	public List<Terceiro> getAllByRole(Role role);	
 }

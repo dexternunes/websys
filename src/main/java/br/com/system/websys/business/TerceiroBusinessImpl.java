@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroContato;
 import br.com.system.websys.entities.TerceiroEndereco;
@@ -81,5 +82,10 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 			return true;
 
 		return false;
+	}
+
+	@Override
+	public List<Terceiro> getAllByRole(Role role) {
+		return ((TerceiroRepository)repository).getAllByRole(role);
 	}
 }
