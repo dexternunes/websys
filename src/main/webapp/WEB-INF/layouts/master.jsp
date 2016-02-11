@@ -476,10 +476,10 @@ $(document).ready(function() {
 							<li class="">
 								<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 									<c:if test="${user.imagemURL == null || user.imagemURL == ''}"> 
-										<img src="${pageContext.request.contextPath}/resources/images/user.png" />
+										<img src="${pageContext.request.contextPath}/resources/images/user.png" alt=""/>${user.nome} <span class=" fa fa-angle-down"></span>
 									</c:if>
 									<c:if test="${user.imagemURL != null && user.imagemURL != ''}"> 
-										<img src="${user.imagemURL}" alt="">${user.nome} <span class=" fa fa-angle-down"></span>
+										<img src="${user.imagemURL}" alt=""/>${user.nome} <span class=" fa fa-angle-down"></span>
 									</c:if>
 								</a>
 								<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">

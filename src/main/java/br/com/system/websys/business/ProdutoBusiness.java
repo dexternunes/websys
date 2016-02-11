@@ -15,4 +15,6 @@ public interface ProdutoBusiness extends BusinessBaseRoot<Produto, ProdutoReposi
 
 	void deleteProduto(Produto produto) throws Exception;
 	
+	public List<Produto> getProdutosSemGrupo(List<ProdutoStatus> status);
+	
 }

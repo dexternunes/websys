@@ -13,6 +13,7 @@ import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.ProdutoTipo;
 import br.com.system.websys.repository.ProdutoRepository;
 
+
 @Service  
 @Transactional(propagation=Propagation.REQUIRED)
 class ProdutoBusinessImpl extends BusinessBaseRootImpl<Produto, ProdutoRepository> implements ProdutoBusiness {
@@ -54,5 +55,9 @@ class ProdutoBusinessImpl extends BusinessBaseRootImpl<Produto, ProdutoRepositor
 		
 		
 	}
-	
+
+	@Override
+	public List<Produto> getProdutosSemGrupo(List<ProdutoStatus> status) {
+		return ((ProdutoRepository)repository).getProdutosSemGrupo(status);		
+	}	
 }

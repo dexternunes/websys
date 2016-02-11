@@ -57,7 +57,7 @@ public class GrupoController {
 		
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-		model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
+		model.addAttribute("listProdutos", produtoBusiness.getProdutosSemGrupo(status));
 		
 		return "cadastro/grupo/form";
 	}
