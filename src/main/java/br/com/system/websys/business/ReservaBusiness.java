@@ -50,4 +50,6 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	public Reserva getReservaByDate(Reserva reserva);
 	
 	public Boolean sendEmailInterno(Reserva reserva) throws MessagingException;
+	
+	public Boolean sendEmailCancelamento(Reserva reserva) throws MessagingException;
 }
