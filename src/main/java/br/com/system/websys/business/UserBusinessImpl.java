@@ -31,10 +31,6 @@ class UserBusinessImpl implements UserBusiness {
 	@Autowired 
 	private MailBusiness mailBusiness;
 
-
-	@Autowired
-	private ImagemBusiness imagemBusiness;
-	
 	@Override
 	@Transactional(readOnly = true)
 	public synchronized User getCurrent() {
@@ -53,9 +49,35 @@ class UserBusinessImpl implements UserBusiness {
 		
 		return getByLogin(springUser.getUsername());
 	}
+	
+	
+	private void validateBeforeSave(User entity) throws Exception{
+		User userDB = userRepository.findByLogin(entity.getLogin());  
+		
+		if(userDB == null)
+			return;
+		
+		throw new Exception("Login já existe!");
+		
+	}
+	
+	@Override
+	public void excluirUser(User user) throws Exception{
+		
+		User currentUser = this.getCurrent();
+		
+		if(currentUser.equals(user))
+			throw new Exception("Não é possível excluir o usuário logado.");
+		
+		user.setExcluido(true);
+		this.salvar(user);		
+	}
 
 	@Override
 	public void salvar(User user) throws Exception {
+		
+		if(user.getId() == null)
+			validateBeforeSave(user);
 		
 		if(user.getRole() == null)
 			user.setRole(Role.valueOf(primaryRole));
@@ -77,12 +99,12 @@ class UserBusinessImpl implements UserBusiness {
 	@Override
 	@Transactional(readOnly = true)
 	public User getByLogin(String login) {
-		return userRepository.findByLogin(login);  
+		return userRepository.findByLoginAtivo(login);  
 	}
 
 	@Override
 	public List<User> getAll() {
-		return ((UserRepository)userRepository).findAll();
+		return ((UserRepository)userRepository).getAll();
 	}
 	
 	@Override

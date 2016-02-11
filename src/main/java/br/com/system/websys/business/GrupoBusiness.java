@@ -13,13 +13,15 @@ public interface GrupoBusiness extends BusinessBaseRoot<Grupo, GrupoRepository> 
 
 	public void grupoNovo(Grupo grupo);
 	
-	public List<Grupo> findAllByTerceito(Terceiro terceiro);
+	public List<Grupo> findAtivosByTerceito(Terceiro terceiro);
 	
-	public List<Grupo> findAllByProduto(Produto produto);
+	public List<Grupo> findAtivosByProduto(Produto produto);
 
 	public List<Grupo> findAllAtivos();	
 	
 	public List<Grupo> getByTerceiro(Terceiro terceiro);
 
 	public Grupo delete(Grupo grupo) throws Exception;
+
+	public List<Grupo> findAllByProduto(Produto produto);
 }

@@ -29,6 +29,12 @@
 						<div class="wizar_content">
 							<br />
 
+							<c:if test="${message != '' && message != null}">
+								<div>
+									<div class="alert alert-error">${message}</div>
+								</div>
+							</c:if>
+
 							<form:form cssClass="form-horizontal" id="target"
 								action="${pageContext.request.contextPath}/produtos/cadastro/salvar"
 								commandName="produto" method="post">
@@ -73,48 +79,6 @@
 									</div>
 								</div>
 
-<!-- 
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Altura <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="altura"
-											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
-											placeholder="Preencha a altura do produto."
-											id="altura" />
-										<form:errors cssClass="native-error" path="altura"></form:errors>
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Largura <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="largura"
-											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
-											id="largura"
-											placeholder="Preencha a largura do produto." />
-										<form:errors cssClass="native-error" path="largura"></form:errors>
-									</div>
-								</div>
-
-
-								<div class="form-group">
-									<label class="control-label col-md-3 col-sm-3 col-xs-12"
-										for="first-name">Comprimento <span class="required">*</span>
-									</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<form:input path="comprimento"
-											cssClass="form-control col-md-7 col-xs-12 onlyNumbers"
-											id="comprimento"
-											placeholder="Preencha o comprimento do produto." />
-										<form:errors cssClass="native-error" path="comprimento"></form:errors>
-									</div>
-								</div>
- -->
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
 										for="first-name">Tipo <span class="required">*</span>
@@ -149,13 +113,10 @@
 								<br />
 								<div class="form-actions">
 									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
+									<c:if test="${produto.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+										<button type="button" class="btn btn-primary" id="excluirProduto">Excluir</button>
+									</c:if>
 								</div>
-
-								
-								<%-- <div class="control-group">
-									<a type="button" class="btn btn-primary"
-										href="${pageContext.request.contextPath}/produtos/">Voltar</a>
-								</div> --%>
 
 							</form:form>
 						</div>
@@ -171,6 +132,11 @@
 	</script>
 	
 	<script type="text/javascript">
+	
+		$('#excluirProduto').click(function(){
+			window.location = "${pageContext.request.contextPath}/produtos/cadastro/excluir/${produto.id}";				
+		});
+	
 		$(document).ready(function() {
 
 			$("#altura").val(decimal($("#altura").val()));

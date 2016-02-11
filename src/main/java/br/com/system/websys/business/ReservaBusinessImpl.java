@@ -226,7 +226,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Grupo> grupos;
 		if (user.getRole().equals(Role.ROLE_COTISTA))
-			grupos = grupoBusiness.findAllByTerceito(user.getTerceiro());
+			grupos = grupoBusiness.findAtivosByTerceito(user.getTerceiro());
 		else
 			grupos = grupoBusiness.findAllAtivos();
 

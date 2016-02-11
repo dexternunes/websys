@@ -30,10 +30,10 @@
 					<br />
 					
 					<c:if test="${message != '' && message != null}">
-							<div>
-								<div class="alert alert-error">${message}</div>
-							</div>
-						</c:if>
+						<div>
+							<div class="alert alert-error">${message}</div>
+						</div>
+					</c:if>
 
 					<form:form cssClass="form-horizontal"
 						action="${pageContext.request.contextPath}/grupo/cadastro/salvar"
@@ -82,15 +82,6 @@
 										<form:options items="${listTerceiros}" itemValue="id" itemLabel="nome"></form:options>
 									</form:select>
 									<form:errors cssClass="native-error" path="terceiros"></form:errors>
-								<%-- </c:if>
-								<c:if test="${readonly}">
-									<lu>
-										<c:forEach items="${grupo.terceiros}" var="terceiro" varStatus="statusTerc">
-											<form:hidden path="terceiros[${statusTerc.index}].id"/>
-											<li>${terceiro.nome}</li>
-										</c:forEach>
-									</lu>
-								</c:if> --%>
 							</div>
 						</div>
 						
@@ -113,11 +104,6 @@
 							</c:if>
 						</div>
 
-								
-						<%-- <div class="control-group">
-							<a type="button" class="btn btn-primary"
-								href="${pageContext.request.contextPath}/grupo/">Voltar</a>
-						</div> --%>
 					</form:form>
 				</div>
 			</div>

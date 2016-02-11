@@ -89,5 +89,22 @@ public class ProdutoController{
 		return "redirect:/produtos/";
 	}
 
+	@RequestMapping(value = "/cadastro/excluir/{id}", method = RequestMethod.GET)
+	public String excluirProduto(@PathVariable Long id, Model model)
+			throws Exception {
+
+		Produto produto = ProdutoBusiness.get(id);
+		
+		try{
+			ProdutoBusiness.deleteProduto(produto);
+		}
+		catch(Exception e){
+			model.addAttribute("produto", produto);
+			model.addAttribute("message", e.getMessage());
+			return "cadastro/produto/formulario_produto";
+		}
+
+		return "redirect:/produtos/";
+	}
 	
 }

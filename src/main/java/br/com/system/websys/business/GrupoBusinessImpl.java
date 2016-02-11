@@ -44,13 +44,12 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	@Override
 	public Grupo salvar(Grupo grupo) throws Exception{
 		
-		validaEdicao(grupo);
-		
 		if(grupo.getId() == null){
 			grupoNovo(grupo);
 			return super.salvar(grupo);
 		}
 		else{
+			validaEdicao(grupo);
 			Grupo grupoBD = this.get(grupo.getId());
 			grupoBD.setDescricao(grupo.getDescricao());
 			grupoBD.setAtivo(grupo.getAtivo());
@@ -94,14 +93,20 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	}
 
 	@Override
-	public List<Grupo> findAllByTerceito(Terceiro terceiro) {
+	public List<Grupo> findAtivosByTerceito(Terceiro terceiro) {
 		List<Grupo> grupos = ((GrupoRepository)repository).findByTerceiro(terceiro);
 		return grupos;
 	}
 
 	@Override
-	public List<Grupo> findAllByProduto(Produto produto) {
+	public List<Grupo> findAtivosByProduto(Produto produto) {
 		List<Grupo> grupos = ((GrupoRepository)repository).findByProduto(produto);
+		return grupos;
+	}
+	
+	@Override
+	public List<Grupo> findAllByProduto(Produto produto) {
+		List<Grupo> grupos = ((GrupoRepository)repository).findAllByProduto(produto);
 		return grupos;
 	}
 	

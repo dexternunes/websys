@@ -35,4 +35,6 @@ public interface UserBusiness {
 	public User addImagem(User user, Imagem imagem) throws Exception;
 	
 	public User getUserByTerceiro(Terceiro terceiro);
+
+	public void excluirUser(User user) throws Exception;
 }

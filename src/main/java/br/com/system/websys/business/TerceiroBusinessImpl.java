@@ -42,7 +42,7 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 
 	@Override
 	public List<Terceiro> getAll() {
-		return ((TerceiroRepository)repository).findAll();
+		return ((TerceiroRepository)repository).getAll();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 		List<Terceiro> terceiros = ((TerceiroRepository)repository).findAllByTipo(tipo);
 
 		if(terceiros == null || terceiros.size() == 0)
-			return ((TerceiroRepository)repository).findAll();
+			return ((TerceiroRepository)repository).getAll();
 		else
 			return terceiros; 
 	}
@@ -78,7 +78,7 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 
 	private Boolean terceiroHasGrupo(Terceiro terceiro){
 		
-		if(grupoBusiness.findAllByTerceito(terceiro) != null)
+		if(grupoBusiness.findAtivosByTerceito(terceiro) != null)
 			return true;
 
 		return false;

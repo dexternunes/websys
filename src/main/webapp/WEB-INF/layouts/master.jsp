@@ -398,9 +398,12 @@ $(document).ready(function() {
 					<!-- menu prile quick info -->
 					<div class="profile">
 						<div class="profile_pic">
-							<img
-								src="${user.imagemURL}"
-								alt="..." class="img-circle profile_img">
+							<c:if test="${user.imagemURL == null || user.imagemURL == ''}"> 
+								<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="..." class="img-circle profile_img">
+							</c:if>
+							<c:if test="${user.imagemURL != null && user.imagemURL != ''}"> 
+								<img src="${user.imagemURL}" alt="..." class="img-circle profile_img">
+							</c:if>
 						</div>
 						<div class="profile_info">
 							<span>Bem vindo,</span>
@@ -470,18 +473,21 @@ $(document).ready(function() {
 							<a id="menu_toggle"><i class="fa fa-bars"></i></a>
 						</div>
 						<ul class="nav navbar-nav navbar-right">
-							<li class=""><a href="javascript:;"
-								class="user-profile dropdown-toggle" data-toggle="dropdown"
-								aria-expanded="false"> <img
-									src="${user.imagemURL}"
-									alt="">${user.nome} <span class=" fa fa-angle-down"></span>
-							</a>
-								<ul
-									class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+							<li class="">
+								<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<c:if test="${user.imagemURL == null || user.imagemURL == ''}"> 
+										<img src="${pageContext.request.contextPath}/resources/images/user.png" />
+									</c:if>
+									<c:if test="${user.imagemURL != null && user.imagemURL != ''}"> 
+										<img src="${user.imagemURL}" alt="">${user.nome} <span class=" fa fa-angle-down"></span>
+									</c:if>
+								</a>
+								<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
 									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Perfil</a></li>
 									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Cadastro</a></li>
 									<li><a href="<c:url value="/auth/logout" />"><i class="fa fa-sign-out pull-right"></i>Sair</a></li>
-								</ul></li>
+								</ul>
+							</li>
 						</ul>
 					</nav>
 				</div>

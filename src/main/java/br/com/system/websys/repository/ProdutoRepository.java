@@ -11,12 +11,11 @@ import br.com.system.websys.entities.ProdutoTipo;
 
 public interface ProdutoRepository extends RepositoryBaseRoot<Produto> {
 
-	@Query("select p from Produto p where p.tipoProduto = :tipo and p.status in :status")
+	@Query("select p from Produto p where p.tipoProduto = :tipo and p.status in :status and  p.excluido = 0")
 	List<Produto> findAllByTipoAndStatus(@Param("tipo") ProdutoTipo tipo, @Param("status") List<ProdutoStatus> status);
 	
-	/*
-	@Query("SELECT p FROM Produto p JOIN p.grupo g WHERE g = :grupo")
-	List<Produto> findByGrupo(@Param("grupo") Grupo grupo);
-	*/
+	@Query("select p from Produto p where p.excluido = 0")
+	List<Produto> getAll();
+	
 }
 

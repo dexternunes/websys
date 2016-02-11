@@ -11,13 +11,16 @@ import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.ProdutoTipo;
-import br.com.system.websys.repository.GrupoRepository;
 import br.com.system.websys.repository.ProdutoRepository;
 
 @Service  
 @Transactional(propagation=Propagation.REQUIRED)
 class ProdutoBusinessImpl extends BusinessBaseRootImpl<Produto, ProdutoRepository> implements ProdutoBusiness {
     
+	@Autowired
+	private GrupoBusiness grupoBusiness;
+	
+	
 	@Autowired
 	protected ProdutoBusinessImpl(ProdutoRepository repository) {
 		super(repository, Produto.class);
@@ -30,18 +33,26 @@ class ProdutoBusinessImpl extends BusinessBaseRootImpl<Produto, ProdutoRepositor
 
 	@Override
 	public List<Produto> getAll() {
-		return ((ProdutoRepository)repository).findAll();
+		return ((ProdutoRepository)repository).getAll();
 	}
 	
 	@Override
 	public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus>status) {
 		return ((ProdutoRepository)repository).findAllByTipoAndStatus(tipo, status);
 	}
-    /*
+
 	@Override
-	public List<Produto> findAllByGrupo(Grupo grupo) {
-		List<Produto> produtos = ((ProdutoRepository)repository).findByGrupo(grupo);
-		return produtos;
+	public void deleteProduto(Produto produto) throws Exception{
+		
+		List<Grupo> grupo = grupoBusiness.findAllByProduto(produto);
+		
+		if(grupo != null && grupo.size() > 0)
+			throw new Exception("Existe um grupo cadastrado para este produto. É necessário primeiro excluir o grupo.");
+		
+		produto.setExcluido(true);
+		this.salvar(produto);
+		
+		
 	}
-	*/
+	
 }

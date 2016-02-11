@@ -158,6 +158,24 @@ public class UserController{
 		return "cadastro/user/formulario_user";
 	}
 	
+	@RequestMapping(value = "/cadastro/excluir/{id}", method = RequestMethod.GET)
+	public String excluirUser(@PathVariable Long id, Model model)
+			throws Exception {
+		
+		User usuario = null;
+		
+		try {
+			usuario = userBusiness.get(id);
+			userBusiness.excluirUser(usuario);
+		}catch(Exception e){
+			addAtributes(model, usuario);
+			model.addAttribute("message", e.getMessage());
+			return "cadastro/user/formulario_user";
+		}
+		
+		return "redirect:/usuarios/";
+	}
+	
 	//Quando clicar em um usuario listado na tabela
 	@RequestMapping(value = "/alterarSenha/{id}", method = RequestMethod.GET)
 	@Transactional(readOnly = true)
