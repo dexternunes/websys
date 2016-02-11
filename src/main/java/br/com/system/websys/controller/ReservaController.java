@@ -345,6 +345,7 @@ public class ReservaController {
 
 		try {
 			reservaBusiness.salvar(reserva);
+			reservaBusiness.sendEmailCancelamento(reserva);
 		} catch (Exception e) {
 			logger.info("Erro: " + e.toString());
 		}
