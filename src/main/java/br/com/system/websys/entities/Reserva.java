@@ -44,7 +44,7 @@ public class Reserva extends EntityBaseRoot {
 	private Boolean ativo = true;
 
 	private Boolean excluido = false;
-
+	
 	private ReservaEvento eventoInicio;
 
 	private ReservaEvento eventoFim;

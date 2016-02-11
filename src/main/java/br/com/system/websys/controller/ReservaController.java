@@ -243,15 +243,14 @@ public class ReservaController {
 		User user = userBusiness.getCurrent();
 		List<Grupo> grupos;
 
-		if (idTerceiro != 0) {
-			grupos = grupoBusiness.findAllByTerceito(terceiroBusiness.get(idTerceiro));
-
-		} else {
 			if (user.getRole().equals(Role.ROLE_COTISTA))
 				grupos = reservaBusiness.getGrupoPermiteReserva(user.getTerceiro());
-			else
-				grupos = grupoBusiness.findAllAtivos();
-		}
+			else{
+				if(idTerceiro != 0)
+					grupos = reservaBusiness.getGrupoPermiteReserva(terceiroBusiness.get(idTerceiro));
+				else
+					grupos = grupoBusiness.findAllAtivos();
+			}
 
 		return grupos;
 	}
@@ -263,10 +262,13 @@ public class ReservaController {
 		List<TerceiroDTO> terceirosDTO = new ArrayList<TerceiroDTO>();
 
 		for (Terceiro terceiro : terceiroBusiness.getAllByRole(Role.ROLE_COTISTA)) {
-			TerceiroDTO terceiroDTO = new TerceiroDTO();
-			terceiroDTO.setId(terceiro.getId());
-			terceiroDTO.setNome(terceiro.getNome());
-			terceirosDTO.add(terceiroDTO);
+			List<Grupo> grupos = reservaBusiness.getGrupoPermiteReserva(terceiro);
+			if(grupos.size() > 0){
+				TerceiroDTO terceiroDTO = new TerceiroDTO();
+				terceiroDTO.setId(terceiro.getId());
+				terceiroDTO.setNome(terceiro.getNome());
+				terceirosDTO.add(terceiroDTO);
+			}
 		}
 
 		return terceirosDTO;
