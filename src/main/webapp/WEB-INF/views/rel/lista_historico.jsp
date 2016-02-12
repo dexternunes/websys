@@ -71,7 +71,7 @@
 							<tbody>
 								<c:forEach items="${reservaList}" var="reservas"
 									varStatus="status">
-									<tr class="even pointer">
+									<tr class="even pointer showInfo">
 										<td class="a-center " oName="id" oValue="${reservas.id}">
 											
 										</td>
@@ -91,7 +91,41 @@
 				</div>
 			</div>
 		</form:form>
+		
+		<!-- Cropping modal -->
+		<div class="modal fade" id="my-modal" aria-hidden="true"
+			aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<!--  <form class="avatar-form" action="" enctype="multipart/form-data" method="post"> -->
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal" type="button">&times;</button>
+						<h4 class="modal-title" id="avatar-modal-label">Detalhamento de reserva.</h4>
+					</div>
+					<div class="modal-body">
+						<div class="avatar-body">
+							<div class="">
+								<div class="x_panel">
+									<div class="">
+										Usuário: XXXX<br>
+										Data: XXXX<br>
+										Hora do motor no início: XXXX<br>
+										Hora do motor no fim: XXXX<br>
+										
+									</div>
+								</div>
+							</div>
 
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal" type="button">Cancelar</button>
+					</div>
+					<!--  </form> -->
+				</div>
+			</div>
+		</div>
+		<!-- /.modal -->
 	</div>
 
 	<script
@@ -105,6 +139,27 @@
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 });
+                
+
+				$(".showInfo")
+						.click(
+								function() {
+									alert("asd");
+									$.ajax({
+										url: "${pageContext.request.contextPath}/faturamento/api/detalhar/2",
+										dataType:"json",
+										contentType:"application/json; charset=utf-8",
+										type:"GET",
+										async:false,
+										success:function(data){
+											alert("1");
+											gruposJSON = data;
+										},
+										error:function(request, status, error){
+											alert('2:' + error);
+										}
+									});
+								});
             });
 
             var asInitVals = new Array();
