@@ -35,7 +35,7 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	
 	public Reserva getReservaByEventoFim(ReservaEvento eventoFim);
 	
-	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception;
+	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento, String server) throws Exception;
 
 	public List<Reserva> getReservasParaExibicao(User user);
 	

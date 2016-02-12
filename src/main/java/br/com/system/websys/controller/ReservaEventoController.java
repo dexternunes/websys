@@ -95,14 +95,20 @@ public class ReservaEventoController{
 	
 	@RequestMapping(value = "/salvar", method = RequestMethod.POST)
 	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
-			BindingResult result, Model model) throws Exception {
+			BindingResult result, Model model, HttpServletRequest request) throws Exception {
+		
+		String server;
+		if (request.getServerPort() == 80)
+			server = "http://" + request.getServerName();
+		else
+			server = "http://" + request.getServerName() + ":" + request.getServerPort();
 
 		if (result.hasErrors()) {
 			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}
 	
 		try {
-			reservaBusiness.adicionaReservaEvento(reservaEvento);
+			reservaBusiness.adicionaReservaEvento(reservaEvento, server);
 		} catch (Exception e) {
 			return "redirect:/reservaEvento/"+reservaEvento.getId();
 		}

@@ -248,7 +248,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	@Override
-	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento) throws Exception {
+	public Reserva adicionaReservaEvento(ReservaEvento reservaEvento, String server) throws Exception {
 
 		Reserva reserva = this.getByEvento(reservaEvento);
 
@@ -263,7 +263,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.setStatus(ReservaStatus.ENCERRADA);
 			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
-			sendEmailFinalizacao(reserva);
+			sendEmailFinalizacao(reserva, server);
 		}
 
 		return this.salvar(reserva);
@@ -725,9 +725,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	}
 	
-	public Boolean  sendEmailFinalizacao(Reserva reserva) throws MessagingException {
+	public Boolean  sendEmailFinalizacao(Reserva reserva, String server) throws MessagingException {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
+		
+		String link = server + "/websys/reserva/visualizaImagensReserva/"+reserva.getId();
 		
 		for (Terceiro t : terceiroList) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { t.getEmails() },
@@ -742,7 +744,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />"
-							+ " Para visualizar as imagens clique <a href='${pageContext.request.contextPath}/websys/reserva/visualizaImagensReserva/"+reserva.getId()+ "'>aqui</a>"
+							+ " Para visualizar as imagens clique <a href='"+link+ "'>aqui</a>"
 							+ "<br /><br /><br />Att,<br /> " 
 							+ "	</font>"
 							+ "	<div>"
@@ -769,7 +771,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-								+ Formatters.formatDate(reserva.getFimReserva())
+								+ Formatters.formatDate(reserva.getFimReserva()) + "<br /> <br />"
+								+ " Para visualizar as imagens clique <a href='"+link+ "'>aqui</a>"
 								+ "<br /><br /><br />Att,<br /> " 
 								+ "	</font>"
 								+ "	<div>"
