@@ -80,6 +80,12 @@
 	}
 </script>
 
+<style >
+a:link {
+    color: white;
+}
+</style>
+
 </head>
 <body>
 	<div class="row">
