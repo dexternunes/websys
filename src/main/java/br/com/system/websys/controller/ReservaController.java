@@ -350,4 +350,13 @@ public class ReservaController {
 			logger.info("Erro: " + e.toString());
 		}
 	}
+	
+	@RequestMapping(value = "/visualizaImagensReserva/{idReserva}", method = RequestMethod.GET)
+	public String visualizaImagensReserva(@PathVariable Long idReserva, Model model) throws Exception {
+
+		Reserva reserva = reservaBusiness.get(idReserva);
+		model.addAttribute("reserva", reserva);
+
+		return "reserva/visualizaImagensReserva";
+	}
 }

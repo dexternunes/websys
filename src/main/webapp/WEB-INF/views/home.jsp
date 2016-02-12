@@ -606,7 +606,7 @@
 					var reservaDTO = {
 							id : null,
 							title : null,
-							terceiro : {nome : null},
+							terceiro : {id : null},
 							start : null,
 							end : null,
 							utilizaMarinheiro : null,
@@ -620,7 +620,7 @@
 					if (calEvent) {
 						reservaDTO.id = calEvent.id;
 						reservaDTO.title = calEvent.title;
-						reservaDTO.terceiro.nome = calEvent.terceiro.nome;
+						reservaDTO.terceiro.id = calEvent.terceiro.id;
 						reservaDTO.start = calEvent.start;
 						reservaDTO.end = calEvent.end;
 						reservaDTO.utilizaMarinheiro = $('#utilizaMarinheiro').prop('checked');
