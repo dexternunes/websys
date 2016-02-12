@@ -718,7 +718,7 @@
 						$('#errors span').text('Ocorreu um erro!');
 						$('#messageModal').modal('show');
 					}
-				});				
+				});
 		}
 	</script>
 </body>
