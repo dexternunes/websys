@@ -1,7 +1,9 @@
 package br.com.system.websys.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
@@ -41,7 +43,10 @@ public class ReservaDTO implements Serializable {
 	private GrupoDTO grupo;
 	
 	private String tipoEvento;
-
+	
+	private List<String> imagensUrl = new ArrayList<String>();
+	
+	
 	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean utilizaMarinheiro,
 			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo, String tipoEvento) {
 		this.id = id;
@@ -174,6 +179,14 @@ public class ReservaDTO implements Serializable {
 
 	public void setTipoEvento(String tipoEvento) {
 		this.tipoEvento = tipoEvento;
+	}
+
+	public List<String> getImagensUrl() {
+		return imagensUrl;
+	}
+
+	public void setImagensUrl(List<String> imagensUrl) {
+		this.imagensUrl = imagensUrl;
 	}
 
 }

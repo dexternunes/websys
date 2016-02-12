@@ -27,10 +27,12 @@ import br.com.system.websys.entities.FaturamentoRateio;
 import br.com.system.websys.entities.FaturamentoRateioDTO;
 import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
+import br.com.system.websys.entities.HistoricoReservaDTO;
 import br.com.system.websys.entities.Manutencao;
 import br.com.system.websys.entities.ManutencaoStatus;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.Reserva;
+import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.Terceiro;
 
 @Controller
@@ -232,6 +234,18 @@ public class FaturamentoController{
 		return "Faturado com sucesso.";
 	}
 
-	
+
+	@ResponseBody
+	@RequestMapping(value = "/api/detalhar/{idReserva}", method = RequestMethod.GET)
+	public ReservaDTO detalhar(@PathVariable Long idReserva) throws Exception {
+
+		Reserva reserva = ReservaBusiness.get(idReserva);
+
+		ReservaDTO reservaDTO = new ReservaDTO();
+		
+		return reservaDTO;
+			
+	}
+		
 	
 }
