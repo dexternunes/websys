@@ -150,6 +150,8 @@
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.loadmask.min.js"
 	type="text/javascript"></script>
+	
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jcarousellite.js"></script>
 
 <!-- select2 -->
 <link href="${pageContext.request.contextPath}/resources/css/select/select2.min.css" rel="stylesheet">
@@ -157,6 +159,10 @@
         <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
     
 <style>
+
+#carosel{background:#a45; width:556px; height: 400px !important;}
+#carosel img{width:150px; padding:5px; border:1px solid #ccc; margin:0 5px;}
+
 
 ${css}
 .ranges{

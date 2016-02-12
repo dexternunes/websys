@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.GrupoDTO;
+import br.com.system.websys.entities.Imagem;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.ReservaEvento;
@@ -118,7 +119,15 @@ public class ParseDTO{
 	}
 	
 	public ReservaEventoDTO parseReservaEnvento2ReservaEnventoDTO(ReservaEvento reservaEvento){
-		return new ReservaEventoDTO(reservaEvento.getId());
+		
+		List<String> imagens = new ArrayList<String>();
+		
+		if(reservaEvento.getImagens() != null)
+			for(Imagem imagem : reservaEvento.getImagens()){
+				imagens.add(imagem.getUrl());
+			}
+		
+		return new ReservaEventoDTO(reservaEvento.getId(), reservaEvento.getHora(), imagens);
 	}
 	
 	public List<GrupoDTO> parseReservaEnvento2GrupoDTO(List<Grupo> grupos){

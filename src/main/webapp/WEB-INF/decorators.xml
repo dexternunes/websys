@@ -10,5 +10,6 @@
 	    <pattern>/reserva/validar</pattern>
 	    <pattern>/reserva/validar/</pattern>
 	    <pattern>/reserva/validar/*</pattern>
+	    <pattern>/reserva/visualizaImagensReserva/*</pattern>
 	</excludes>
 </decorators>

@@ -9,7 +9,8 @@
 	<http pattern="/resources/**" security="none" />
 	<http pattern="/usuarios/recuperarsenha" security="none" />	
 	<http pattern="/usuarios/recuperarsenha/" security="none" />	
-	<http pattern="/usuarios/recuperarsenha/**" security="none" />	
+	<http pattern="/usuarios/recuperarsenha/**" security="none" />
+	<http pattern="/reserva/visualizaImagensReserva/**" security="none" />	
 
 	<global-method-security secured-annotations="enabled" />
 	

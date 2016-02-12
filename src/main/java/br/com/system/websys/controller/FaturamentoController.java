@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.system.websys.business.FaturamentoBusiness;
 import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ManutencaoBusiness;
+import br.com.system.websys.business.ParseDTO;
 import br.com.system.websys.business.ProdutoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.entities.Faturamento;
@@ -27,7 +28,6 @@ import br.com.system.websys.entities.FaturamentoRateio;
 import br.com.system.websys.entities.FaturamentoRateioDTO;
 import br.com.system.websys.entities.FaturamentoStatus;
 import br.com.system.websys.entities.Grupo;
-import br.com.system.websys.entities.HistoricoReservaDTO;
 import br.com.system.websys.entities.Manutencao;
 import br.com.system.websys.entities.ManutencaoStatus;
 import br.com.system.websys.entities.Produto;
@@ -38,10 +38,6 @@ import br.com.system.websys.entities.Terceiro;
 @Controller
 @RequestMapping("/faturamento")
 public class FaturamentoController{
-	
-	
-	@Autowired
-	private ProdutoBusiness ProdutoBusiness;
 	
 	@Autowired
 	private ManutencaoBusiness ManutencaoBusiness;
@@ -54,6 +50,9 @@ public class FaturamentoController{
 	
 	@Autowired
 	private ReservaBusiness ReservaBusiness;
+	
+	@Autowired
+	private ParseDTO parser;
 
 	//Quando clicado no menu.
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -241,7 +240,7 @@ public class FaturamentoController{
 
 		Reserva reserva = ReservaBusiness.get(idReserva);
 
-		ReservaDTO reservaDTO = new ReservaDTO();
+		ReservaDTO reservaDTO = parser.parseReserva2ReservaDTO(reserva);
 		
 		return reservaDTO;
 			
