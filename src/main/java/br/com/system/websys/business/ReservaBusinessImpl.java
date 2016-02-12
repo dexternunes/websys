@@ -110,9 +110,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /> <br />" + "	Clique <a href='"
-							+ link + validacao.getUid()
-							+ "'>aqui</a> para validar/questionar a reserva <br /><br /><br />Att,<br /> " + "	</font>"
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /> <br />" 
+							/*+ "	Clique <a href='" + link + validacao.getUid() + "'>aqui</a> para validar/questionar a reserva <br /><br />"*/
+							+ "<br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "

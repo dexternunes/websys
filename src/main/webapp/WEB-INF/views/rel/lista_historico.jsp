@@ -53,7 +53,7 @@
                         </table>
                     </div>
                     <div class="x_title">
-						<h2>Horas Motor</h2>
+						<h2>Horas Motor</h2><br />
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
@@ -71,7 +71,7 @@
 							<tbody>
 								<c:forEach items="${reservaList}" var="reservas"
 									varStatus="status">
-									<tr class="even pointer showInfo">
+									<tr class="even pointer" onclick="javascript:detalhar(${reservas.id});">
 										<td class="a-center " oName="id" oValue="${reservas.id}">
 											
 										</td>
@@ -84,6 +84,7 @@
 
 						</table>
 					</div>
+					
 					<div class="control-group">
 						<a type="button" class="btn btn-primary"
 							href="${pageContext.request.contextPath}/faturamento/historico/">Voltar</a>
@@ -93,30 +94,32 @@
 		</form:form>
 		
 		<!-- Cropping modal -->
-		<div class="modal fade" id="my-modal" aria-hidden="true"
-			aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+		<div class="modal fade" id="modalDetalhe" 
+			aria-labelledby="avatar-modal-label" role="dialog">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<!--  <form class="avatar-form" action="" enctype="multipart/form-data" method="post"> -->
 					<div class="modal-header">
 						<button class="close" data-dismiss="modal" type="button">&times;</button>
-						<h4 class="modal-title" id="avatar-modal-label">Detalhamento de reserva.</h4>
+						<h4 class="modal-title" id="avatar-modal-label">Detalhamento da reserva</h4>
 					</div>
 					<div class="modal-body">
 						<div class="avatar-body">
 							<div class="">
 								<div class="x_panel">
 									<div class="">
-										Usuário: XXXX<br>
-										Data: XXXX<br>
-										Hora do motor no início: XXXX<br>
-										Hora do motor no fim: XXXX<br>
-										
+										Usuário: <label id="usuario"></label><br>
+										Data/hora de inicio da reserva: <label id="dataInicio"></label><br>
+										Data/hora de fim da reserva: <label id="dataFim"></label><br>
+										Hora do motor no início da utilização: <label id="horaInicio"></label><br>
+										Hora do motor no fim da utilização: <label id="horaFim"></label><br>
 									</div>
+									<q id="imagensIncio"></q>
 								</div>
 							</div>
 
 						</div>
+						
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-default" data-dismiss="modal" type="button">Cancelar</button>
@@ -132,7 +135,57 @@
 		src="${pageContext.request.contextPath}/resources/js/datatables/js/jquery.dataTables.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/tools/js/dataTables.tableTools.js"></script>
+		
+		
 	<script type="text/javascript">
+	
+			function detalhar(idReserva){
+				$.ajax({
+					url: "${pageContext.request.contextPath}/faturamento/api/detalhar/" + idReserva,
+					dataType:"json",
+					contentType:"application/json; charset=utf-8",
+					type:"GET",
+					async:false,
+					success:function(data){
+						$('#usuario').text(data.terceiro.nome);
+						$('#dataInicio').text(data.startStr);
+						$('#dataFim').text(data.endStr);
+						$('#horaInicio').text(data.eventoInicio.hora);
+						$('#horaFim').text(data.eventoFim.hora);
+						
+						
+						$('#modalDetalhe').modal('show');
+						
+						
+						var str = '<div id="carosel">';
+							str = str + '<div class="carosel" style="">';
+							str = str + '<button class="prevC">Anterior</button>';
+							str = str + '<lu>';
+						for(x = 0 ; x < data.eventoInicio.imagens.length ; x++){
+							str = str + '<li><img src="' + data.eventoInicio.imagens[x] + '" alt= /></li>';
+						}
+						str = str + '</lu>';
+						str = str + '<button class="nextC">Proximo</button>';
+						str = str + '</div>';
+						str = str + '</div>'
+						
+						$('#imagensIncio').append(str);
+						
+						
+						
+						
+						$(".carosel").jCarouselLite({
+						    	btnNext: ".nextC",
+						    	btnprev: ".prevC",
+						    	visible:1
+						   });
+						
+					},
+					error:function(request, status, error){
+						alert(error);
+					}
+				});
+			};
 	
 			$(document).ready(function () {
                 $('input.tableflat').iCheck({
