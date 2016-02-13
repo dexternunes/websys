@@ -110,7 +110,9 @@ public class ReservaEventoController{
 		try {
 			reservaBusiness.adicionaReservaEvento(reservaEvento, server);
 		} catch (Exception e) {
-			return "redirect:/reservaEvento/"+reservaEvento.getId();
+			model.addAttribute("reservaEvento", reservaEvento);
+			model.addAttribute("message", e.getMessage());
+			return "reservaEvento";
 		}
 
 		return "redirect:/home";

@@ -265,6 +265,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 			sendEmailFinalizacao(reserva, server);
 		}
+		if(reserva.getEventoFim().getHora() <= reserva.getEventoInicio().getHora()){
+			 throw new Exception("Hora final deve ser maior que a hora inicial.");
+			
+		}
 
 		return this.salvar(reserva);
 	}
