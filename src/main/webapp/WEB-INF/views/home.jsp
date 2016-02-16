@@ -506,20 +506,55 @@
 					$('.cancela_reserva').click(
 							function() {
 								$.ajax({
-									url : "${pageContext.request.contextPath}/reserva/api/cancela",
-									type : "POST",
+									url : "${pageContext.request.contextPath}/reserva/api/validaCancela/"+ reservaJSON.id,
+									dataType : "json",
 									contentType : "application/json; charset=utf-8",
-									data : JSON.stringify(calEvent._id),
+									type : 'GET',
 									async : false,
-									cache : false,
-									processData : false,
-									success : function() {
-										document.location.reload();
+									success : function(data) {
+										if(data == 'true'){
+											$.ajax({
+												url : "${pageContext.request.contextPath}/reserva/api/cancela",
+												type : "POST",
+												contentType : "application/json; charset=utf-8",
+												data : JSON.stringify(calEvent._id),
+												async : false,
+												cache : false,
+												processData : false,
+												success : function() {
+													document.location.reload();
+												},
+												error : function(error) {
+													alert('erro:' + error);
+												}
+											});												
+										}
+										else{
+											$('#cancela_exclui').text('Cancelar');
+											$('#confirm').modal('show');
+											$('#cancela_exclui').click(function(){
+												$.ajax({
+													url : "${pageContext.request.contextPath}/reserva/api/cancela",
+													type : "POST",
+													contentType : "application/json; charset=utf-8",
+													data : JSON.stringify(calEvent._id),
+													async : false,
+													cache : false,
+													processData : false,
+													success : function() {
+														document.location.reload();
+													},
+													error : function(error) {
+														alert('erro:' + error);
+													}
+												});			
+											});
+										}											
 									},
-									error : function(error) {
-										alert('erro:' + error);
+									error : function(request, status, error) {
+										alert("error" + error);
 									}
-								});												
+						});										
 					});
 				}
 

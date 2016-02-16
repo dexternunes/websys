@@ -327,6 +327,7 @@ public class ReservaController {
 
 		try {
 			reservaBusiness.salvar(reserva);
+			reservaBusiness.sendEmailExclusaoSolicitacao(reserva);
 		} catch (Exception e) {
 			logger.info("Erro: " + e.toString());
 		}
