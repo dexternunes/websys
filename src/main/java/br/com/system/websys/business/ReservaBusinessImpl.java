@@ -253,10 +253,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		Reserva reserva = this.getByEvento(reservaEvento);
 
 		if (reserva.getEventoInicio().equals(reservaEvento)) {
+			if(reserva.getEventoInicio() == null)
+				throw new Exception("Informe as horas do motor.");
 			reserva.getEventoInicio().setHora(reservaEvento.getHora());
 			reserva.setStatus(ReservaStatus.EM_USO);
 		}
 		if (reserva.getEventoFim().equals(reservaEvento)) {
+			if(reserva.getEventoFim() == null)
+				throw new Exception("Informe as horas do motor.");
 			if(reservaEvento.getHora() <= reserva.getEventoInicio().getHora()){
 				 throw new Exception("Hora final deve ser maior que a hora inicial.");
 			}
@@ -297,7 +301,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			 */
 			try {
 				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatusByDateCreated(grupo,
-						ReservaStatus.AGUARDANDO_APROVACAO, date.getTime());
+						ReservaStatus.AGUARDANDO_APROVACAO, new Date(0, 1, 1));
 				if (reservas == null)
 					continue;
 
@@ -446,10 +450,15 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Reserva> reservasUnicas = validaReservasConcomitantes(reservas);
 
 		for (Reserva reserva : reservasUnicas) {
-
+			
+			Calendar date = Calendar.getInstance();
+			date.add(Calendar.HOUR, -24);
+			if (reserva.getCreated().getTime() >= date.getTime().getTime()) {
+				continue;
+			}
+			
 			if (!isReservaDiaUnico(reserva)) {
-				Calendar date = Calendar.getInstance();
-				date.add(Calendar.HOUR, -48);
+				date.add(Calendar.HOUR, -24);
 				if (reserva.getCreated().getTime() >= date.getTime().getTime()) {
 					continue;
 				}
