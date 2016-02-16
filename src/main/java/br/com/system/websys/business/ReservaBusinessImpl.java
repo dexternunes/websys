@@ -301,7 +301,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			 */
 			try {
 				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatusByDateCreated(grupo,
-						ReservaStatus.AGUARDANDO_APROVACAO, new Date(0, 1, 1));
+						ReservaStatus.AGUARDANDO_APROVACAO, new Date(150, 1, 1));
 				if (reservas == null)
 					continue;
 

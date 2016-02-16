@@ -8,7 +8,7 @@ public enum ReservaStatus{
 	EM_USO("EM_USO","Em uso"),
 	ENCERRADA("ENCERRADA","Encerrada"),
 	CANCELADA("CANCELADA", "Cancelada"),
-	CANCELADA_MENOS_DUAS("CANCELADA_2H", "Cancelada com menos de duas horas para o início");
+	CANCELADA_MENOS_DUAS("CANCELADA_2H", "Cancelada com menos de duas horas para o inÃ­cio");
 	
 	private String descricao;
 	private String code;
