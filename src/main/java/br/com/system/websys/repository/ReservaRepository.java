@@ -36,9 +36,6 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	@Query("SELECT  r FROM Reserva r WHERE r.grupo IN (:grupos) AND r.status in (:status) AND r.excluido = 0 AND r.ativo = 1")
 	List<Reserva> getByGruposByStatus(@Param("grupos") List<Grupo> grupos, @Param("status") List<ReservaStatus> status);
 
-	@Query("SELECT  r FROM Reserva r WHERE r.grupo = :grupo AND r.status = :status AND r.excluido = 0 AND r.ativo = 1 and r.created <= :data")
-	List<Reserva> getByGruposByStatusByDateCreated(@Param("grupo") Grupo grupo, @Param("status") ReservaStatus status, @Param("data") Date data);
-
 	@Query("SELECT r FROM Reserva r WHERE r.inicioReserva = :inicioReserva AND r.excluido = 0 AND r.ativo = 1 AND r.grupo = :grupo AND r.status IN :status")
 	Reserva getReservaByDate(@Param("inicioReserva") Date inicioReserva, @Param("grupo")Grupo grupo, @Param("status") List<ReservaStatus> status);
 

@@ -287,6 +287,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		for (Grupo grupo : grupos) {
 
+			List<Grupo> grs = new ArrayList<Grupo>();
+			grs.add(grupo);
+			
+			List<ReservaStatus> statusList = new ArrayList<ReservaStatus>();
+			statusList.add(ReservaStatus.AGUARDANDO_APROVACAO);
+			statusList.add(ReservaStatus.CANCELADA_MENOS_DUAS);
+			
 			Calendar date = Calendar.getInstance();
 			date.add(Calendar.DATE, -1);
 
@@ -300,8 +307,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			 * criteria.add(Restrictions.le("r.grupo", grupo));
 			 */
 			try {
-				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatusByDateCreated(grupo,
-						ReservaStatus.AGUARDANDO_APROVACAO, new Date(150, 1, 1));
+				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatus(grs, statusList);
 				if (reservas == null)
 					continue;
 
