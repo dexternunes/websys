@@ -30,6 +30,8 @@
 		<intercept-url pattern="/faturamento/historico/" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
 		<intercept-url pattern="/faturamento/historico/**" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
 
+		<intercept-url pattern="/faturamento/api/detalhar/**" access="hasAnyRole('ROLE_COTISTA')"/>
+
 		<intercept-url pattern="/faturamento" access="hasAnyRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/faturamento/" access="hasAnyRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/faturamento/**" access="hasAnyRole('ROLE_ADMIN')"/>

@@ -210,7 +210,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return reserva;
 	}
 
-	public List<Reserva> getByGrupoByStatus(Grupo grupo, FaturamentoStatus faturamentoStatus) {
+	public List<Reserva> getByGrupoByStatus(Grupo grupo, List<FaturamentoStatus> faturamentoStatus) {
 		List<Reserva> reservas = ((ReservaRepository) repository).findByReservaByGrupoByStatus(grupo,
 				faturamentoStatus);
 		return reservas;
@@ -254,21 +254,19 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		if (reserva.getEventoInicio().equals(reservaEvento)) {
 			reserva.getEventoInicio().setHora(reservaEvento.getHora());
-			reserva.getEventoInicio().setImagens(reservaEvento.getImagens());
 			reserva.setStatus(ReservaStatus.EM_USO);
 		}
 		if (reserva.getEventoFim().equals(reservaEvento)) {
+			if(reservaEvento.getHora() <= reserva.getEventoInicio().getHora()){
+				 throw new Exception("Hora final deve ser maior que a hora inicial.");
+			}
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
-			reserva.getEventoFim().setImagens(reservaEvento.getImagens());
 			reserva.setStatus(ReservaStatus.ENCERRADA);
 			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 			sendEmailFinalizacao(reserva, server);
 		}
-		if(reserva.getEventoFim().getHora() <= reserva.getEventoInicio().getHora()){
-			 throw new Exception("Hora final deve ser maior que a hora inicial.");
-			
-		}
+		
 
 		return this.salvar(reserva);
 	}

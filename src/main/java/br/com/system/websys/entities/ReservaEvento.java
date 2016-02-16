@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="reserva_evento")
@@ -36,7 +37,8 @@ public class ReservaEvento extends EntityBaseRoot {
 	public void setImagens(List<Imagem> imagens) {
 		this.imagens = imagens;
 	}
-
+	
+	@NotNull(message="Campo obrigatório!")
 	public Long getHora() {
 		return hora;
 	}

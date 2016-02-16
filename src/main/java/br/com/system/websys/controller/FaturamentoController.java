@@ -20,7 +20,6 @@ import br.com.system.websys.business.FaturamentoBusiness;
 import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ManutencaoBusiness;
 import br.com.system.websys.business.ParseDTO;
-import br.com.system.websys.business.ProdutoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.entities.Faturamento;
 import br.com.system.websys.entities.FaturamentoDTO;
@@ -72,21 +71,19 @@ public class FaturamentoController{
 	public String cadastroBase(@PathVariable Long id, Model model)
 			throws Exception {
 
-		
 		Grupo grupo = grupoBusiness.get(id);
-		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, FaturamentoStatus.PENDENTE);
+		List<FaturamentoStatus> status = new ArrayList<FaturamentoStatus>();
+		status.add(FaturamentoStatus.PENDENTE);
+		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, status);
 		
 		Produto produto =  grupo.getProdutos().get(0);
 
 		List<Terceiro> terceiroList = grupo.getTerceiros();
 		List<Manutencao> manutencaoList =  ManutencaoBusiness.findByProdutoByStatus(produto, ManutencaoStatus.PENDENTE);
 		
-
 		model.addAttribute("terceiroList", terceiroList);
 		model.addAttribute("manutencaoList", manutencaoList);
 		model.addAttribute("reservaList", reservaList);
-
-
 		
 		return "faturamento/lista_faturamento";
 	}
@@ -124,7 +121,10 @@ public class FaturamentoController{
 		Produto produto =  grupo.getProdutos().get(0);
 
 
-		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, FaturamentoStatus.PAGA);
+		List<FaturamentoStatus> status = new ArrayList<FaturamentoStatus>();
+		status.add(FaturamentoStatus.PAGA);
+		status.add(FaturamentoStatus.PENDENTE);
+		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, status);
 		List<Manutencao> manutencaoList =  ManutencaoBusiness.findByProdutoByStatus(produto, ManutencaoStatus.PAGA);
 		
 		

@@ -23,6 +23,12 @@
 				</div>
 			    <div class="x_content">
 			    
+			    	<c:if test="${message != '' && message != null}">
+						<div>
+							<div class="alert alert-error">${message}</div>
+						</div>
+					</c:if>
+			    
 			    	<form:form cssClass="form-horizontal"
 						action="${pageContext.request.contextPath}/reservaEvento/salvar?submit=true"
 						commandName="reservaEvento" method="post">
@@ -32,7 +38,8 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">Tempo do motor<span class="required">*</span></label>
 							<form:hidden path="id"/>
 							<div class="col-md-2 col-sm-2">
-								<form:input path="hora" cssClass="form-control col-md-2"/>horas
+								<form:input path="hora" cssClass="form-control col-md-2"/>
+								<form:errors cssClass="native-error" path="hora"></form:errors>
 							</div>
 						</div>
 						
@@ -44,10 +51,6 @@
 					</form>	
 				
 					<p><div style="color:red" class="jquery_error"></div></p>
-						
-					<c:if test="${error != null}">
-						<p><div style="color:red" class="controller_error">Error: ${error}</div></p>
-					</c:if>
 					
 					</br> 
 					<button id="btn-upload" class="btn btn-primary">Escolher Fotos</button> ou (Arraste as fotos)

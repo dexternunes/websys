@@ -65,6 +65,7 @@
 									<th>Data</th>
 									<th>Usuário</th>
 									<th>Horas Motor</th>
+									<th>Status Faturamento</th>
 								</tr>
 							</thead>
 
@@ -78,6 +79,7 @@
 										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${reservas.solicitante.nome}</td>
 										<td class=" ">${reservas.horaMotorTotal}Horas</td>
+										<td class=" ">${reservas.faturamentoStatus.descricao}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -93,7 +95,6 @@
 			</div>
 		</form:form>
 		
-		<!-- Cropping modal -->
 		<div class="modal fade" id="modalDetalhe" 
 			aria-labelledby="avatar-modal-label" role="dialog">
 			<div class="modal-dialog modal-lg">
@@ -113,22 +114,15 @@
 										Data/hora de fim da reserva: <label id="dataFim"></label><br>
 										Hora do motor no início da utilização: <label id="horaInicio"></label><br>
 										Hora do motor no fim da utilização: <label id="horaFim"></label><br>
+										<label id="imagens"></label><br>
 									</div>
-									<q id="imagensIncio"></q>
 								</div>
 							</div>
-
 						</div>
-						
 					</div>
-					<div class="modal-footer">
-						<button class="btn btn-default" data-dismiss="modal" type="button">Cancelar</button>
-					</div>
-					<!--  </form> -->
 				</div>
 			</div>
 		</div>
-		<!-- /.modal -->
 	</div>
 
 	<script
@@ -152,34 +146,11 @@
 						$('#dataFim').text(data.endStr);
 						$('#horaInicio').text(data.eventoInicio.hora);
 						$('#horaFim').text(data.eventoFim.hora);
+						var link = "${pageContext.request.contextPath}/reserva/visualizaImagensReserva/"+idReserva;
 						
+						$('#imagens').html("Clique <a href='"+link+ "' target='_blank'>aqui</a> para visuzliar as imagens");
 						
 						$('#modalDetalhe').modal('show');
-						
-						
-						var str = '<div id="carosel">';
-							str = str + '<div class="carosel" style="">';
-							str = str + '<button class="prevC">Anterior</button>';
-							str = str + '<lu>';
-						for(x = 0 ; x < data.eventoInicio.imagens.length ; x++){
-							str = str + '<li><img src="' + data.eventoInicio.imagens[x] + '" alt= /></li>';
-						}
-						str = str + '</lu>';
-						str = str + '<button class="nextC">Proximo</button>';
-						str = str + '</div>';
-						str = str + '</div>'
-						
-						$('#imagensIncio').append(str);
-						
-						
-						
-						
-						$(".carosel").jCarouselLite({
-						    	btnNext: ".nextC",
-						    	btnprev: ".prevC",
-						    	visible:1
-						   });
-						
 					},
 					error:function(request, status, error){
 						alert(error);

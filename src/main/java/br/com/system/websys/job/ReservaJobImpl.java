@@ -13,12 +13,7 @@ class ReservaJobImpl implements ReservaJob {
 	
 	@Override
 	public void validaReservas() {
-
-		
 		reservaBusiness.validaAPoraToda();		
-		
-		System.out.println("SCHEDULE RODANDO RODANDO RODANDO....");
-		
 	}
 
 	

@@ -97,17 +97,23 @@ public class ReservaEventoController{
 	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
 			BindingResult result, Model model, HttpServletRequest request) throws Exception {
 		
-		String server;
-		if (request.getServerPort() == 80)
-			server = "http://" + request.getServerName();
-		else
-			server = "http://" + request.getServerName() + ":" + request.getServerPort();
-
+		ReservaEvento reventoBD = reservaEventoBusiness.get(reservaEvento.getId());
+		reservaEvento.setImagens(reventoBD.getImagens());
+		
 		if (result.hasErrors()) {
-			return "redirect:/reservaEvento/"+reservaEvento.getId();
+			
+			model.addAttribute("reservaEvento", reservaEvento);
+			return "reservaEvento";
 		}
 	
 		try {
+			
+			String server;
+			if (request.getServerPort() == 80)
+				server = "http://" + request.getServerName();
+			else
+				server = "http://" + request.getServerName() + ":" + request.getServerPort();
+			
 			reservaBusiness.adicionaReservaEvento(reservaEvento, server);
 		} catch (Exception e) {
 			model.addAttribute("reservaEvento", reservaEvento);
