@@ -96,7 +96,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@Override
 	public Boolean sendEmailValidacao(Reserva reserva, String server) throws MessagingException {
 
-		String link = server + "/websys/reserva/validar/";
+		//String link = server + "/websys/reserva/validar/";
 
 		for (ReservaValidacao validacao : reserva.getValidacoes()) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { validacao.getTerceiro().getEmails() },

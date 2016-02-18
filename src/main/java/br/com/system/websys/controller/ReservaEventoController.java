@@ -108,11 +108,13 @@ public class ReservaEventoController{
 	
 		try {
 			
-			String server;
+			 String server = request.getRequestURL().toString().substring(0, request.getRequestURL().toString().indexOf(request.getRequestURI()));
+			/*
 			if (request.getServerPort() == 80)
 				server = "http://" + request.getServerName();
 			else
 				server = "http://" + request.getServerName() + ":" + request.getServerPort();
+			*/
 			
 			reservaBusiness.adicionaReservaEvento(reservaEvento, server);
 		} catch (Exception e) {
