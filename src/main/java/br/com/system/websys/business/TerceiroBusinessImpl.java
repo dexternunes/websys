@@ -78,7 +78,7 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 
 	private Boolean terceiroHasGrupo(Terceiro terceiro){
 		
-		if(grupoBusiness.findAtivosByTerceito(terceiro) != null)
+		if(grupoBusiness.findAtivosByTerceito(terceiro).size() > 0)
 			return true;
 
 		return false;

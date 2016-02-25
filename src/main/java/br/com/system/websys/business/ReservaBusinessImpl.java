@@ -43,15 +43,15 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Autowired
 	public MailBusiness mailBusiness;
-	
+
 	@Autowired
 	protected ReservaBusinessImpl(ReservaRepository repository) {
 		super(repository, Reserva.class);
 	}
-	
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
-	public Reserva salvar(Reserva reserva) throws Exception{
+	public Reserva salvar(Reserva reserva) throws Exception {
 		return super.salvar(reserva);
 	}
 
@@ -96,7 +96,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@Override
 	public Boolean sendEmailValidacao(Reserva reserva, String server) throws MessagingException {
 
-		//String link = server + "/websys/reserva/validar/";
+		// String link = server + "/websys/reserva/validar/";
 
 		for (ReservaValidacao validacao : reserva.getValidacoes()) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { validacao.getTerceiro().getEmails() },
@@ -104,15 +104,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 							+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-							+ "</div>"
-							+ "</br></br><font color='white'>"
+							+ "</div>" + "</br></br><font color='white'>"
 							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) 
-							+ "<br /><br />Att,<br /> " 
-							+ "	</font>"
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -120,32 +117,27 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		}
 		return false;
 	}
-	
-	
-	
+
 	public Boolean sendEmailInterno(Reserva reserva) throws MessagingException {
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
 		roles.add(Role.ROLE_MARINHEIRO);
-		
+
 		List<User> users = userBusiness.getByRoles(roles);
-		
+
 		for (User user : users) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
 					"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 							+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-							+ "</div>"
-							+ "</br></br><font color='white'>"
+							+ "</div>" + "</br></br><font color='white'>"
 							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) 
-							+ "<br /><br />Att,<br /> " 
-							+ "	</font>"
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -175,7 +167,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Grupo> grupo = grupoBusiness.getByTerceiro(terceiro);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
-			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA) && !r.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)
+			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA)
+					&& !r.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)
 					&& !r.getStatus().equals(ReservaStatus.ENCERRADA))) {
 				grupo.remove(r.getGrupo());
 			}
@@ -194,8 +187,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		else
 			return "true";
 	}
-	
-	public String validaCancela(Reserva reserva){
+
+	public String validaCancela(Reserva reserva) {
 		Date horaInicioReserva = reserva.getInicioReserva();
 		Calendar horaInicioReservaCal = Calendar.getInstance();
 		horaInicioReservaCal.setTime(horaInicioReserva);
@@ -203,7 +196,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		if ((horaInicioReservaCal.getTimeInMillis() - System.currentTimeMillis()) / (60 * 60 * 1000) < 2)
 			return "false";
 		else
-			return "true";		
+			return "true";
 	}
 
 	@Override
@@ -232,16 +225,20 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		else
 			grupos = grupoBusiness.findAllAtivos();
 
-		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+		if (grupos.size() > 0) {
 
-		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
-		status.add(ReservaStatus.APROVADA);
-		status.add(ReservaStatus.EM_USO);
-		status.add(ReservaStatus.CANCELADA);
-		status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
-		status.add(ReservaStatus.ENCERRADA);
+			List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 
-		return this.getByGruposByStatus(grupos, status);
+			status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+			status.add(ReservaStatus.APROVADA);
+			status.add(ReservaStatus.EM_USO);
+			status.add(ReservaStatus.CANCELADA);
+			status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
+			status.add(ReservaStatus.ENCERRADA);
+
+			return this.getByGruposByStatus(grupos, status);
+		} else
+			return null;
 	}
 
 	public Reserva getByEvento(ReservaEvento evento) {
@@ -255,16 +252,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		Reserva reserva = this.getByEvento(reservaEvento);
 
 		if (reserva.getEventoInicio().equals(reservaEvento)) {
-			if(reserva.getEventoInicio() == null)
+			if (reserva.getEventoInicio() == null)
 				throw new Exception("Informe as horas do motor.");
 			reserva.getEventoInicio().setHora(reservaEvento.getHora());
 			reserva.setStatus(ReservaStatus.EM_USO);
 		}
 		if (reserva.getEventoFim().equals(reservaEvento)) {
-			if(reserva.getEventoFim() == null)
+			if (reserva.getEventoFim() == null)
 				throw new Exception("Informe as horas do motor.");
-			if(reservaEvento.getHora() <= reserva.getEventoInicio().getHora()){
-				 throw new Exception("Hora final deve ser maior que a hora inicial.");
+			if (reservaEvento.getHora() <= reserva.getEventoInicio().getHora()) {
+				throw new Exception("Hora final deve ser maior que a hora inicial.");
 			}
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
 			reserva.setStatus(ReservaStatus.ENCERRADA);
@@ -272,7 +269,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 			sendEmailFinalizacao(reserva, server);
 		}
-		
 
 		return this.salvar(reserva);
 	}
@@ -291,11 +287,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 			List<Grupo> grs = new ArrayList<Grupo>();
 			grs.add(grupo);
-			
+
 			List<ReservaStatus> statusList = new ArrayList<ReservaStatus>();
 			statusList.add(ReservaStatus.AGUARDANDO_APROVACAO);
 			statusList.add(ReservaStatus.CANCELADA_MENOS_DUAS);
-			
+
 			Calendar date = Calendar.getInstance();
 			date.add(Calendar.DATE, -1);
 
@@ -330,12 +326,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			if (reserva.getStatus().equals(ReservaStatus.EM_USO)) {
 				tipoEvento = "[E] ";
 			}
-			
-			if(reserva.getStatus().equals(ReservaStatus.CANCELADA) || reserva.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)){
+
+			if (reserva.getStatus().equals(ReservaStatus.CANCELADA)
+					|| reserva.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)) {
 				tipoEvento = "[C] ";
 			}
-			
-			if(reserva.getStatus().equals(ReservaStatus.ENCERRADA)){
+
+			if (reserva.getStatus().equals(ReservaStatus.ENCERRADA)) {
 				tipoEvento = "[F] ";
 			}
 
@@ -380,8 +377,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			horaInicioReservaCal.set(Calendar.HOUR_OF_DAY, 6);
 			horaInicioReservaCal.set(Calendar.MINUTE, 0);
 		}
-		
-		if(horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) < 6){
+
+		if (horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) < 6) {
 			horaInicioReservaCal.set(Calendar.HOUR_OF_DAY, 6);
 			horaInicioReservaCal.set(Calendar.MINUTE, 0);
 		}
@@ -392,28 +389,28 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException {
 
 		if (reserva.getId() == null) {
-			
-			if(existeReserva(reserva) != null){
+
+			if (existeReserva(reserva) != null) {
 				return ReservaValidacaoStatus.OK_DUPLICADO;
 			}
-			
-			if(isReservaMesmoDia(reserva)){
+
+			if (isReservaMesmoDia(reserva)) {
 				return validaReservaMesmoDia(reserva);
 			}
 
 			if (isReservaDiaUnico(reserva)) {
 				return validaReservaDiaUnico(reserva);
-			}			
-			
+			}
+
 			return validaReservaDiasConsecutivos(reserva);
-		}		
+		}
 		return ReservaValidacaoStatus.OK;
 	}
-	
+
 	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) {
 		Date dataAtual = new Date();
-		
-		if(getReservaByDate(reserva) == null){
+
+		if (getReservaByDate(reserva) == null) {
 			if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 2) {
 				return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
 			}
@@ -421,12 +418,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		}
 		return ReservaValidacaoStatus.EXISTE_RESERVA;
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	private Boolean isReservaMesmoDia(Reserva reserva){
+	private Boolean isReservaMesmoDia(Reserva reserva) {
 		Date dataAtual = new Date();
-		
-		if(dataAtual.getDate() == reserva.getFimReserva().getDate() && reserva.getFimReserva().getHours() <= 20){
+
+		if (dataAtual.getDate() == reserva.getFimReserva().getDate() && reserva.getFimReserva().getHours() <= 20) {
 			return true;
 		}
 		return false;
@@ -449,13 +446,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Reserva> reservasUnicas = validaReservasConcomitantes(reservas);
 
 		for (Reserva reserva : reservasUnicas) {
-			
+
 			Calendar date = Calendar.getInstance();
 			date.add(Calendar.HOUR, -24);
 			if (reserva.getCreated().getTime() >= date.getTime().getTime()) {
 				continue;
 			}
-			
+
 			if (!isReservaDiaUnico(reserva)) {
 				date.add(Calendar.HOUR, -24);
 				if (reserva.getCreated().getTime() >= date.getTime().getTime()) {
@@ -476,14 +473,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		Date dataAtual = new Date();
 
-			if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) <= 24) {
-				if(existeReserva(reserva) != null){
-					return ReservaValidacaoStatus.OK;
-				}
-				else
-					return ReservaValidacaoStatus.OK_RESERVA;
-			}
-			return ReservaValidacaoStatus.OK;
+		if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) <= 24) {
+			if (existeReserva(reserva) != null) {
+				return ReservaValidacaoStatus.OK;
+			} else
+				return ReservaValidacaoStatus.OK_RESERVA;
+		}
+		return ReservaValidacaoStatus.OK;
 	}
 
 	private List<Reserva> validaReservasConcomitantes(List<Reserva> reservas) throws Exception {
@@ -556,7 +552,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Terceiro> terceiros = new ArrayList<Terceiro>();
 		terceiros.add(reserva1.getSolicitante());
 		terceiros.add(reserva2.getSolicitante());
-		
+
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 		status.add(ReservaStatus.ENCERRADA);
 		status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
@@ -666,189 +662,174 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 
-		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), reserva.getGrupo(), status);
+		return ((ReservaRepository) repository).getReservaByDate(reserva.getInicioReserva(), reserva.getGrupo(),
+				status);
 	}
-	
-	public Reserva existeReserva(Reserva reserva){
+
+	public Reserva existeReserva(Reserva reserva) {
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
-		
-		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getSolicitante(), reserva.getGrupo(), status);
+
+		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(),
+				reserva.getSolicitante(), reserva.getGrupo(), status);
 	}
-	
-	public Boolean  sendEmailCancelamento(Reserva reserva) throws MessagingException {
+
+	public Boolean sendEmailCancelamento(Reserva reserva) throws MessagingException {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
-		
+
 		for (Terceiro t : terceiroList) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { t.getEmails() },
 					"Prime Share Club - Reserva Cancelada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 							+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-							+ "</div>"
-							+ "</br></br><font color='white'>"
+							+ "</div>" + "</br></br><font color='white'>"
 							+ "	<h3>Uma reserva foi cancelada </h3><br /><br />	Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) 
-							+ "<br /><br />Att,<br /> " 
-							+ "	</font>"
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
 		}
-		
+
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
 		roles.add(Role.ROLE_MARINHEIRO);
-		
+
 		List<User> users = userBusiness.getByRoles(roles);
 		for (User user : users) {
-			if(user.getAtivo()){
+			if (user.getAtivo()) {
 				mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
 						"Prime Share Club - Reserva Cancelada",
 						"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 								+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 								+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-								+ "</div>"
-								+ "</br></br><font color='white'>"
+								+ "</div>" + "</br></br><font color='white'>"
 								+ "	<h3>Uma reserva foi cancelada </h3><br /><br />	Embarcação: "
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
-								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-								+ Formatters.formatDate(reserva.getFimReserva()) 
-								+ "<br /><br />Att,<br /> " 
-								+ "	</font>"
-								+ "	<div>"
+								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
+								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
+								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
 			}
 		}
-		
+
 		return false;
 
 	}
-	
-	public Boolean  sendEmailFinalizacao(Reserva reserva, String server) throws MessagingException {
+
+	public Boolean sendEmailFinalizacao(Reserva reserva, String server) throws MessagingException {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
-		
-		String link = server + "/websys/reserva/visualizaImagensReserva/"+reserva.getId();
-		
+
+		String link = server + "/websys/reserva/visualizaImagensReserva/" + reserva.getId();
+
 		for (Terceiro t : terceiroList) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { t.getEmails() },
 					"Prime Share Club - Reserva Finalizada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 							+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-							+ "</div>"
-							+ "</br></br><font color='white'>"
+							+ "</div>" + "</br></br><font color='white'>"
 							+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /> <br />"
-							+ " Para visualizar as imagens clique <a href='"+link+ "' style='color:white;'>aqui</a>"
-							+ "<br /><br />Att,<br /> " 
-							+ "	</font>"
-							+ "	<div>"
+							+ " Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>"
+							+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
 		}
-		
+
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
 		roles.add(Role.ROLE_MARINHEIRO);
-		
+
 		List<User> users = userBusiness.getByRoles(roles);
 		for (User user : users) {
-			if(user.getAtivo()){
+			if (user.getAtivo()) {
 				mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
 						"Prime Share Club - Reserva Finalizada",
 						"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 								+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 								+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-								+ "</div>"
-								+ "</br></br><font color='white'>"
+								+ "</div>" + "</br></br><font color='white'>"
 								+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
-								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-								+ Formatters.formatDate(reserva.getFimReserva()) + "<br /> <br />"
-								+ " Para visualizar as imagens clique <a href='"+link+ "' style='color:white;'>aqui</a>"
-								+ "<br /><br />Att,<br /> " 
-								+ "	</font>"
+								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
+								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
+								+ "<br /> <br />" + " Para visualizar as imagens clique <a href='" + link
+								+ "' style='color:white;'>aqui</a>" + "<br /><br />Att,<br /> " + "	</font>"
 								+ "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
 			}
 		}
-		
+
 		return false;
 
 	}
-	
-	public Boolean  sendEmailExclusaoSolicitacao(Reserva reserva) throws MessagingException {
+
+	public Boolean sendEmailExclusaoSolicitacao(Reserva reserva) throws MessagingException {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
-		
+
 		for (Terceiro t : terceiroList) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { t.getEmails() },
 					"Prime Share Club - Solicitação de reserva excluída.",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 							+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-							+ "</div>"
-							+ "</br></br><font color='white'>"
+							+ "</div>" + "</br></br><font color='white'>"
 							+ "	<h3>Uma solicitação de reserva foi excluída </h3><br /><br />Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
-							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da solicitação: "
-							+ Formatters.formatDate(reserva.getFimReserva()) 
-							+ "<br /><br />Att,<br /> " 
-							+ "	</font>"
-							+ "	<div>"
+							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
+							+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva())
+							+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
 		}
-		
+
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
 		roles.add(Role.ROLE_MARINHEIRO);
-		
+
 		List<User> users = userBusiness.getByRoles(roles);
 		for (User user : users) {
-			if(user.getAtivo()){
+			if (user.getAtivo()) {
 				mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
 						"Prime Share Club - Solicitação de reserva excluída.",
 						"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 								+ "<div align='center' style='background-color:rgb(28,60,106)'>"
 								+ "	<img width='98' height='130' alt='Logo' src='http://52.34.131.78/files-upload/primeshare.png'  />"
-								+ "</div>"
-								+ "</br></br><font color='white'>"
+								+ "</div>" + "</br></br><font color='white'>"
 								+ "	<h3>Uma solicitação de reserva foi excluída </h3><br /><br />Embarcação: "
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
-								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da solicitação: "
-								+ Formatters.formatDate(reserva.getFimReserva()) 
-								+ "<br /><br />Att,<br /> " 
-								+ "	</font>"
-								+ "	<div>"
+								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
+								+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva())
+								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
 			}
 		}
-		
+
 		return false;
 
 	}

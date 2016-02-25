@@ -271,7 +271,7 @@
 			reservasJSON = data.reservas;
 		},
 		error : function(request, status, error) {
-			alert(error);
+			//alert(error);
 		}
 	});
 		
