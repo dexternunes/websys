@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,7 +19,7 @@ import br.com.system.websys.repository.ImagemRepository;
 @Transactional(propagation=Propagation.REQUIRED)
 class ImagemBusinessImpl extends BusinessBaseRootImpl<Imagem, ImagemRepository> implements ImagemBusiness {
     
-	
+	protected static final Logger logger = LogManager.getLogger(ImagemBusinessImpl.class);
 	
 	@Autowired
 	protected ImagemBusinessImpl(ImagemRepository repository) {
@@ -43,7 +45,10 @@ class ImagemBusinessImpl extends BusinessBaseRootImpl<Imagem, ImagemRepository> 
 		
 		 if (!fileupload.isEmpty()) {
 			 try {
-				String realPathtoUploads = "/mnt/files/";
+				
+				String realPathtoUploads = "/home/primesha/public_html/upload/";
+
+				//String realPathtoUploads = "/mnt/files/";
 				if(! new File(realPathtoUploads).exists())
 				{
 				    new File(realPathtoUploads).mkdir();
@@ -66,7 +71,10 @@ class ImagemBusinessImpl extends BusinessBaseRootImpl<Imagem, ImagemRepository> 
                 return salvar(imagem);
 
             } catch (Exception e) {
-                return null;
+            	
+            	logger.error("ERRO NO UPLOAD DE IMAGEM: " + e.getMessage());
+            	
+                throw new Exception("Erro no upload e imagem: (" + e.getLocalizedMessage() + ") (" + e.getStackTrace() + ")");
             }
            
         }
@@ -77,7 +85,8 @@ class ImagemBusinessImpl extends BusinessBaseRootImpl<Imagem, ImagemRepository> 
 	public Boolean delete(Imagem imagem){
 		
 		 try {
-				String filePath = "/mnt/files/" + imagem.getName();
+			  	String filePath = "/home/primesha/public_html/upload/";
+				//String filePath = "/mnt/files/" + imagem.getName();
 				File file = new File(filePath);
 				if(file.exists())
 				{
