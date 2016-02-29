@@ -320,11 +320,11 @@
 
 	var seleciona;	
 
-	if ($('#admin').val() == 1) {
+	if ($('#admin').val() == '1') {
 			seleciona = true;
 		}
 	else{
-		if ($('#permiteReserva').val() != 1) {
+		if ($('#permiteReserva').val() != '1') {
 			seleciona = false;
 			$('#possuiReserva').show();
 		} else {

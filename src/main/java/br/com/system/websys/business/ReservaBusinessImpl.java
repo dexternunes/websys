@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -96,10 +97,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@Override
 	public Boolean sendEmailValidacao(Reserva reserva, String server) throws MessagingException {
 
-		// String link = server + "/websys/reserva/validar/";
+		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
-		for (ReservaValidacao validacao : reserva.getValidacoes()) {
-			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { validacao.getTerceiro().getEmails() },
+		for (Terceiro terceiro : terceiroList) {
+			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { terceiro.getEmails() },
 					"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -536,11 +537,15 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) {
 		Date dataAtual = new Date();
+		GregorianCalendar atual = new GregorianCalendar();
+		GregorianCalendar dataReserva = new GregorianCalendar();
+		
+		atual.setTime(dataAtual);
+		dataReserva.setTime(reserva.getInicioReserva());
 
-		if ((reserva.getInicioReserva().getDate() - dataAtual.getDate()) < 7) {
+		if ((dataReserva.get(GregorianCalendar.DAY_OF_YEAR) - atual.get(GregorianCalendar.DAY_OF_YEAR)) < 7) {
 			return ReservaValidacaoStatus.DIAS_CONSECUTIVOS;
 		}
 

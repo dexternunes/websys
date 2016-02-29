@@ -136,12 +136,14 @@ public class ReservaController {
 				if (reservaDTO.getId() == null) {
 					reserva = reservaBusiness.salvar(reserva);
 					reservaBusiness.sendEmailValidacao(reserva, server);
+					reservaBusiness.sendEmailInterno(reserva);
 				} else
 					reserva = reservaBusiness.salvar(reserva);
 			}
 			if (statusReserva.equals(ReservaValidacaoStatus.OK_RESERVA)) {
 				reserva.setStatus(ReservaStatus.APROVADA);
 				reserva = reservaBusiness.salvar(reserva);
+				reservaBusiness.sendEmailValidacao(reserva, server);
 				reservaBusiness.sendEmailInterno(reserva);
 			}
 		} catch (Exception e) {
