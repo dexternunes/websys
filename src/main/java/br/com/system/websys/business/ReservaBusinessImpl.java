@@ -101,6 +101,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		for (Terceiro terceiro : terceiroList) {
 			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { terceiro.getEmails() },
+
 					"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -128,7 +129,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<User> users = userBusiness.getByRoles(roles);
 
 		for (User user : users) {
-			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
+			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
 					"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -609,7 +610,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ "<br />Equipe Prime Share Club";
 
 		try {
-			mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+			mailBusiness.sendMail("websys@primeshareclub.com.br", destinatario, title, texto);
 		} catch (Exception e) {
 			System.out.println("ERRO AO ENVIAR EMAIL!");
 		}
@@ -630,7 +631,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br /><br />Att"
 				+ "<br />Equipe Prime Share Club";
 		try {
-			mailBusiness.sendMail("e2a.system@gmail.com", destinatario, title, texto);
+			mailBusiness.sendMail("websys@primeshareclub.com.br", destinatario, title, texto);
 		} catch (Exception e) {
 			System.out.println("ERRO AO ENVIAR EMAIL!");
 		}
@@ -686,7 +687,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
 		for (Terceiro t : terceiroList) {
-			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { t.getEmails() },
+			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { t.getEmails() },
 					"Prime Share Club - Reserva Cancelada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -710,7 +711,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<User> users = userBusiness.getByRoles(roles);
 		for (User user : users) {
 			if (user.getAtivo()) {
-				mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
+				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
 						"Prime Share Club - Reserva Cancelada",
 						"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 								+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -739,7 +740,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		String link = server + "/websys/reserva/visualizaImagensReserva/" + reserva.getId();
 
 		for (Terceiro t : terceiroList) {
-			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { t.getEmails() },
+			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { t.getEmails() },
 					"Prime Share Club - Reserva Finalizada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -764,7 +765,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<User> users = userBusiness.getByRoles(roles);
 		for (User user : users) {
 			if (user.getAtivo()) {
-				mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
+				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
 						"Prime Share Club - Reserva Finalizada",
 						"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 								+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -793,7 +794,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
 		for (Terceiro t : terceiroList) {
-			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { t.getEmails() },
+			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { t.getEmails() },
 					"Prime Share Club - Solicitação de reserva excluída.",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -817,7 +818,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<User> users = userBusiness.getByRoles(roles);
 		for (User user : users) {
 			if (user.getAtivo()) {
-				mailBusiness.sendMail("e2a.system@gmail.com", new String[] { user.getTerceiro().getEmails() },
+				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
 						"Prime Share Club - Solicitação de reserva excluída.",
 						"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 								+ "<div align='center' style='background-color:rgb(28,60,106)'>"

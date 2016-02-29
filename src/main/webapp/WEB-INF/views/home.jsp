@@ -314,7 +314,6 @@
 	});
 	
 	$(window).load(function() {
-		
 		$('#confirm').modal('hide');
 		$('#cancela_exclui').click('');
 

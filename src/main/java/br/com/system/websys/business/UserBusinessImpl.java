@@ -119,7 +119,7 @@ class UserBusinessImpl implements UserBusiness {
 			
 			String link = server + "/websys/usuarios/recuperarsenha/" + uid; 
 			 
-			mailBusiness.sendMail("e2a.system@gmail.com", new String[]{user.getTerceiro().getEmails()}, 
+			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[]{user.getTerceiro().getEmails()}, 
 					"Prime Share Club - Recuperação de Senha", "Você solicitou a recuperação do acesso ao Prime Share System "
 							+ "<br><br> "
 							+ "Clique <a href='" + link + "'>aqui</a> para cadastrar uma nova senha."
