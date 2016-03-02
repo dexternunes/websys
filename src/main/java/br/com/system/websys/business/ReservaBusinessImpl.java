@@ -100,7 +100,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
 		for (Terceiro terceiro : terceiroList) {
-			mailBusiness.sendMail("e2a.system@gmail.com", new String[] { terceiro.getEmails() },
+			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { terceiro.getEmails() },
 
 					"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
@@ -164,6 +164,22 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return reservas;
 	}
+	
+	@Override 
+	public Boolean contemReservaAtiva(Terceiro terceiro, Grupo grupo) {
+
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+		List<Terceiro> terceiros = new ArrayList<Terceiro>();
+		terceiros.add(terceiro);
+
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+		status.add(ReservaStatus.EM_USO);
+		
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros, grupo, status);
+
+		return reservas != null && reservas.size() > 0;
+	}
 
 	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro) {
 		List<Grupo> grupo = grupoBusiness.getByTerceiro(terceiro);
@@ -177,6 +193,18 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		}
 
 		return grupo;
+	}
+	
+	@Override 
+	public List<Terceiro> getTerceiroPermiteReservaGrupo(Grupo grupo) {
+		List<Terceiro> terceirosPermiteReserva = new ArrayList<Terceiro>(); 
+
+		for(Terceiro terceiro : grupo.getTerceiros()){
+			if(!contemReservaAtiva(terceiro, grupo))
+				terceirosPermiteReserva.add(terceiro);
+		}
+		
+		return terceirosPermiteReserva;
 	}
 
 	public String validaExclusao(Reserva reserva) {

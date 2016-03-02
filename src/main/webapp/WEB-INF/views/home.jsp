@@ -97,21 +97,40 @@
 					<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
 					<input type="hidden" value="${admin}" id="admin" />
 					<input type="hidden" value="${marinheiro}" id="marinheiro" />
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Solicitante</label>
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									<select id="title" name="title" class="select2 form-control">
-									</select>
+							<c:if test="${admin == 1}">
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Grupo</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select id="grupo" name="grupo" class="select2 form-control">
+										</select>
+									</div>
 								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">Grupo</label>
-								<div class="col-md-6 col-sm-6 col-xs-12">
-									<select id="grupo" name="grupo" class="select2 form-control">
-									</select>
+								<div class="clearfix"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Solicitante</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select id="title" name="title" class="select2 form-control">
+										</select>
+									</div>
 								</div>
-							</div>
+							</c:if>
+							<c:if test="${admin == 0}">
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Solicitante</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select id="title" name="title" class="select2 form-control">
+										</select>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Grupo</label>
+									<div class="col-md-6 col-sm-6 col-xs-12">
+										<select id="grupo" name="grupo" class="select2 form-control">
+										</select>
+									</div>
+								</div>
+							</c:if>
 							<div class="clearfix"></div>
 							<div class="form-group" id="divinicioReserva">
 								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
@@ -362,7 +381,36 @@
 		});
 	});
 	
+	$('#grupo').on('change', function(){
+		if ($('#admin').val() == '1')
+		$.ajax({
+			url: "${pageContext.request.contextPath}/reserva/api/getSolicitantesGrupo/"+$('#grupo option:selected').val(),
+			dataType:"json",
+			contentType:"application/json; charset=utf-8",
+			type:"GET",
+			async:false,
+			success:function(data){
+				solicitantesJSON = data;
+				
+				$('#title').html('');
+					var html_solicitante = '';
+				
+					for (var i = 0; i < solicitantesJSON.length; i++) {
+						html_solicitante += '<option id="' + solicitantesJSON[i].id + '">' + solicitantesJSON[i].nome + '</option>';
+					}
+				
+					$('#title').html(html_solicitante);	
+
+			},
+			error:function(request, status, error){
+				alert(error);
+			}
+			});
+		});
+
+	
 	$('#title').on('change', function(){
+		if ($('#admin').val() != '1')
 		$.ajax({
 			url: "${pageContext.request.contextPath}/reserva/api/getGruposSolicitante/"+$('#title option:selected').attr('id'),
 			dataType:"json",

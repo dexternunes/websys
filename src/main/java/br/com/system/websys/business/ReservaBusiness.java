@@ -54,4 +54,8 @@ public interface ReservaBusiness extends BusinessBaseRoot<Reserva, ReservaReposi
 	public Boolean sendEmailCancelamento(Reserva reserva) throws MessagingException;
 	
 	public Boolean sendEmailExclusaoSolicitacao(Reserva reserva) throws MessagingException;
+
+	public List<Terceiro> getTerceiroPermiteReservaGrupo(Grupo grupo);
+
+	public Boolean contemReservaAtiva(Terceiro terceiro, Grupo grupo);
 }

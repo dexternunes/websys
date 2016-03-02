@@ -256,6 +256,25 @@ public class ReservaController {
 
 		return grupos;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/getSolicitantesGrupo/{idGrupo}", method = RequestMethod.GET)
+	public List<TerceiroDTO> getSolicitantesGrupo(@PathVariable Long idGrupo) throws Exception {
+
+		User user = userBusiness.getCurrent();
+		List<Terceiro> terceiros = new ArrayList<Terceiro>();
+
+			if (user.getRole().equals(Role.ROLE_COTISTA))
+				terceiros.add(user.getTerceiro());
+			else{
+				if(idGrupo != 0)
+					terceiros = reservaBusiness.getTerceiroPermiteReservaGrupo(grupoBusiness.get(idGrupo));
+				else
+					return new ArrayList<TerceiroDTO>();
+			}
+
+		return parseReserva.parseTerceiro2TerceiroDTO(terceiros);
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/api/getSolicitanteGrupo", method = RequestMethod.GET)
