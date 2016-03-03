@@ -95,7 +95,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	@Override
-	public Boolean sendEmailValidacao(Reserva reserva, String server) throws MessagingException {
+	public Boolean sendEmailValidacao(Reserva reserva, String server) throws Exception {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
@@ -120,7 +120,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return false;
 	}
 
-	public Boolean sendEmailInterno(Reserva reserva) throws MessagingException {
+	public Boolean sendEmailInterno(Reserva reserva) throws Exception {
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
@@ -710,7 +710,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				reserva.getSolicitante(), reserva.getGrupo(), status);
 	}
 
-	public Boolean sendEmailCancelamento(Reserva reserva) throws MessagingException {
+	public Boolean sendEmailCancelamento(Reserva reserva) throws Exception {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
@@ -761,7 +761,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	}
 
-	public Boolean sendEmailFinalizacao(Reserva reserva, String server) throws MessagingException {
+	public Boolean sendEmailFinalizacao(Reserva reserva, String server) throws Exception {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
@@ -817,7 +817,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	}
 
-	public Boolean sendEmailExclusaoSolicitacao(Reserva reserva) throws MessagingException {
+	public Boolean sendEmailExclusaoSolicitacao(Reserva reserva) throws Exception {
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 

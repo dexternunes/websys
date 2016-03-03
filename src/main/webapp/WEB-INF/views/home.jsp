@@ -60,7 +60,7 @@
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="display:none !important">
-						Não é possível solicitar uma reserva.<br> Você possui reservas em aberto, ou a embarcação está em manutenção.
+						Não é possível solicitar uma reserva.<br> Nenhuma embarcação disponível associada ao seu usuário foi encontrada.
 					</div>
 					<div class="clearfix"></div>
 					<br>
@@ -270,6 +270,8 @@
 
 	<script>
 	
+	var permiteClick = true; 
+	
 	$(document).ajaxStart(function () {
         $('#loading').modal('show');
     });
@@ -290,7 +292,7 @@
 			reservasJSON = data.reservas;
 		},
 		error : function(request, status, error) {
-			//alert(error);
+			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 		}
 	});
 		
@@ -306,7 +308,7 @@
 			gruposJSON = data;
 		},
 		error:function(request, status, error){
-			alert('1:' + error);
+			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 		}
 	});
 	
@@ -322,7 +324,7 @@
 			solicitantesGrupoJSON = data;
 		},
 		error:function(request, status, error){
-			alert(error);
+			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 		}
 	});
 	
@@ -403,7 +405,7 @@
 
 			},
 			error:function(request, status, error){
-				alert(error);
+				alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 			}
 			});
 		});
@@ -431,7 +433,7 @@
 
 			},
 			error:function(request, status, error){
-				alert(error);
+				alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 			}
 			});
 		});
@@ -481,7 +483,7 @@
 					reservaJSON = data;
 				},
 				error : function(request, status, error) {
-					alert(error);
+					alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 				}
 			});
 			
@@ -530,6 +532,11 @@
 						$(".antosubmit").show();
 						$('.exclui_reserva').click(
 								function() {
+									
+									if(!permiteClick)
+										return;
+									
+									permiteClick = false;
 									$.ajax({
 										url : "${pageContext.request.contextPath}/reserva/api/remove",
 										type : "POST",
@@ -542,7 +549,7 @@
 											document.location.reload();
 										},
 										error : function(error) {
-											alert('erro:' + error);
+											alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 										}
 									});
 						});
@@ -560,6 +567,12 @@
 									async : false,
 									success : function(data) {
 										if(data == 'true'){
+											
+											if(!permiteClick)
+												return;
+											
+											permiteClick = false;
+											
 											$.ajax({
 												url : "${pageContext.request.contextPath}/reserva/api/cancela",
 												type : "POST",
@@ -572,7 +585,7 @@
 													document.location.reload();
 												},
 												error : function(error) {
-													alert('erro:' + error);
+													alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 												}
 											});												
 										}
@@ -580,6 +593,12 @@
 											$('#cancela_exclui').text('Cancelar');
 											$('#confirm').modal('show');
 											$('#cancela_exclui').click(function(){
+												
+												if(!permiteClick)
+													return;
+												
+												permiteClick = false;
+												
 												$.ajax({
 													url : "${pageContext.request.contextPath}/reserva/api/cancela",
 													type : "POST",
@@ -592,14 +611,14 @@
 														document.location.reload();
 													},
 													error : function(error) {
-														alert('erro:' + error);
+														alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 													}
 												});			
 											});
 										}											
 									},
 									error : function(request, status, error) {
-										alert("error" + error);
+										alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
 									}
 						});										
 					});
@@ -757,6 +776,12 @@
 		}
 		
 		function SalvarReserva(reservaDTO){
+				
+				if(!permiteClick)
+					return;
+				
+				permiteClick = false;
+			
 				$.ajax({
 					async : false,
 					url : '${pageContext.request.contextPath}/reserva/api/salvar',
@@ -791,6 +816,9 @@
 							$('#messageModal').find("#fechaModal").show();
 							$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
 						}
+						
+						permiteClick = true;
+						
 					},
 					error : function(request, status, error) {
 						$("#my-modal").modal('hide');
