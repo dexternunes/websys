@@ -114,7 +114,7 @@
 								<div class="form-actions">
 									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
 									<c:if test="${produto.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
-										<button type="button" class="btn btn-primary" id="excluirProduto">Excluir</button>
+										<button type="button" class="btn btn-danger" id="excluirProduto">Excluir</button>
 									</c:if>
 								</div>
 

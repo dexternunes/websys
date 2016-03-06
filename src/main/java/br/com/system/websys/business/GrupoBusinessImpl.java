@@ -18,7 +18,9 @@ import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaStatus;
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.User;
 import br.com.system.websys.repository.GrupoRepository;
 
 @Service  
@@ -54,6 +56,7 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 			grupoBD.setDescricao(grupo.getDescricao());
 			grupoBD.setAtivo(grupo.getAtivo());
 			grupoBD.setTerceiros(grupo.getTerceiros());
+			grupoBD.setMarinheiros(grupo.getMarinheiros());
 			if(grupoBD.getColor() == null || grupoBD.getColor().isEmpty()){
 				StringBuffer sb = new StringBuffer();
 				Random randCol = new Random();  
@@ -90,6 +93,19 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	@Override
 	public List<Grupo> getAll() {
 		return ((GrupoRepository)repository).getAll();
+	}
+	
+	@Override
+	public List<Grupo> getAllByUser(User user) {
+		
+		if(user.getRole().equals(Role.ROLE_MARINHEIRO))
+			return ((GrupoRepository)repository).getAllByMarinheiro(user.getTerceiro());
+		if(user.getRole().equals(Role.ROLE_COTISTA))
+			return ((GrupoRepository)repository).getAllByCotista(user.getTerceiro());
+		if(user.getRole().equals(Role.ROLE_ADMIN) || user.getRole().equals(Role.ROLE_ROOT))
+			return ((GrupoRepository)repository).getAll();
+				
+		return new ArrayList<Grupo>();
 	}
 
 	@Override

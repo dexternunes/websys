@@ -195,9 +195,9 @@
 					</div>
 					<div class="modal-footer">
 						<div class="form-actions">
-							<button type="button" class="btn btn-default exclui_reserva"
+							<button type="button" class="btn  btn-danger exclui_reserva"
 								data-dismiss="modal" style="display: none !important">Excluir</button>
-							<button type="button" class="btn btn-default cancela_reserva"
+							<button type="button" class="btn  btn-danger cancela_reserva"
 								data-dismiss="modal" style="display: none !important">Cancelar</button>
 							<button type="button" class="btn btn-default finaliza_reserva"
 								data-dismiss="modal" style="display: none !important">Finalizar</button>

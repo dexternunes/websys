@@ -29,6 +29,8 @@ public class Grupo extends EntityBaseRoot {
 	
 	private List<Reserva> reservas = new ArrayList<Reserva>();
 	
+	private List<Terceiro> marinheiros = new ArrayList<Terceiro>();
+	
 	private Boolean ativo = true;
 	
 	private Boolean excluido = false;
@@ -86,6 +88,20 @@ public class Grupo extends EntityBaseRoot {
 
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
+	}
+	
+	@NotEmpty(message = "Selecione um marinheiro")
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@JoinTable(name="grupo_has_marinheiros", 
+		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
+		inverseJoinColumns = {@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")}
+	)
+	public List<Terceiro> getMarinheiros() {
+		return marinheiros;
+	}
+
+	public void setMarinheiros(List<Terceiro> marinheiros) {
+		this.marinheiros = marinheiros;
 	}
 
 	public Boolean getExcluido() {

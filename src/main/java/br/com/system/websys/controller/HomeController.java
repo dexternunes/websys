@@ -54,7 +54,7 @@ public class HomeController {
 		}
 		else
 		{
-			grupos = grupoBusiness.findAtivosByTerceito(user.getTerceiro());
+			grupos = grupoBusiness.getAllByUser(user);
 		}
 		
 		model.addAttribute("listaReservaGrupos", grupos);

@@ -85,6 +85,18 @@
 							</div>
 						</div>
 						
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="first-name">Marinheiros <span class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<%-- <c:if test="${!readonly}"> --%>
+									<form:select path="marinheiros" multiple="true" cssClass="select2_multiple form-control">
+										<form:options items="${listMarinherios}" itemValue="id" itemLabel="nome"></form:options>
+									</form:select>
+									<form:errors cssClass="native-error" path="marinheiros"></form:errors>
+							</div>
+						</div>						
 														
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -100,7 +112,7 @@
 						<div class="form-actions">
 							<button type="submit" class="btn btn-primary">Confirmar</button>
 							<c:if test="${grupo.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
-								<button type="button" class="btn btn-primary" id="excluirGrupo">Excluir</button>
+								<button type="button" class="btn btn-danger" id="excluirGrupo">Excluir</button>
 							</c:if>
 						</div>
 

@@ -38,6 +38,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Autowired
 	public UserBusiness userBusiness;
+	
+	@Autowired
+	public TerceiroBusiness terceiroBusiness;
 
 	@Autowired
 	public GrupoBusiness grupoBusiness;
@@ -122,14 +125,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	public Boolean sendEmailInterno(Reserva reserva) throws Exception {
 
-		List<Role> roles = new ArrayList<Role>();
-		roles.add(Role.ROLE_ADMIN);
-		roles.add(Role.ROLE_MARINHEIRO);
-
-		List<User> users = userBusiness.getByRoles(roles);
-
-		for (User user : users) {
-			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
+		List<Terceiro> terceiros = terceiroBusiness.getAllByRole(Role.ROLE_ADMIN);
+		
+		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() > 0)
+			terceiros.addAll(reserva.getGrupo().getMarinheiros());
+		
+		for (Terceiro terceiro : terceiros) {
+			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { terceiro.getEmails() },
 					"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
@@ -182,7 +184,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro) {
-		List<Grupo> grupo = grupoBusiness.getByTerceiro(terceiro);
+		
+		User user = userBusiness.getCurrent();
+		
+		List<Grupo> grupo = grupoBusiness.getAllByUser(user);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
 			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA)
@@ -249,12 +254,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	@Override
 	public List<Reserva> getReservasParaExibicao(User user) {
 
-		List<Grupo> grupos;
-		if (user.getRole().equals(Role.ROLE_COTISTA))
-			grupos = grupoBusiness.findAtivosByTerceito(user.getTerceiro());
-		else
-			grupos = grupoBusiness.findAllAtivos();
-
+		List<Grupo> grupos = grupoBusiness.getAllByUser(user);
+		
 		if (grupos.size() > 0) {
 
 			List<ReservaStatus> status = new ArrayList<ReservaStatus>();
@@ -285,6 +286,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			if (reserva.getEventoInicio() == null)
 				throw new Exception("Informe as horas do motor.");
 			reserva.getEventoInicio().setHora(reservaEvento.getHora());
+			reserva.getEventoInicio().setHoraRegistro(reservaEvento.getHoraRegistro());
 			reserva.setStatus(ReservaStatus.EM_USO);
 		}
 		if (reserva.getEventoFim().equals(reservaEvento)) {
@@ -294,6 +296,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				throw new Exception("Hora final deve ser maior que a hora inicial.");
 			}
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
+			reserva.getEventoFim().setHoraRegistro(reservaEvento.getHoraRegistro());
 			reserva.setStatus(ReservaStatus.ENCERRADA);
 			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());

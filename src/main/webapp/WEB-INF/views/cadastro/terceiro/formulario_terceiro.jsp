@@ -247,7 +247,7 @@
 						<div class="form-actions">
 							<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
 							<c:if test="${terceiro.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
-								<button type="button" class="btn btn-primary" id="excluirTerceiro">Excluir</button>
+								<button type="button" class="btn btn-danger" id="excluirTerceiro">Excluir</button>
 							</c:if>
 						</div>
 						

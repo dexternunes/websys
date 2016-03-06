@@ -50,12 +50,12 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 
 		List<Terceiro> terceiros = ((TerceiroRepository)repository).findAllByTipo(tipo);
 
-		if(terceiros == null || terceiros.size() == 0)
+		/*if(terceiros == null || terceiros.size() == 0)
 			return ((TerceiroRepository)repository).getAll();
-		else
-			return terceiros; 
+		else*/
+		return terceiros; 
 	}
-
+	
 	public TerceiroExclusaoStatus validaExclusao(Terceiro terceiro){
 
 		if(terceiroHasUser(terceiro)){

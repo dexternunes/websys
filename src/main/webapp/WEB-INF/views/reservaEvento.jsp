@@ -43,6 +43,22 @@
 							</div>
 						</div>
 						
+						<div class="clearfix"></div>
+						<div class="form-group" id="divinicioReserva">
+							<label class="col-sm-3 control-label">Data/Hora do Registro</label>
+							<div class="col-md-6 xdisplay_inputx form-group has-feedback">
+								<form:input path="horaRegistro"
+									class="form-control has-feedback-left data_reserva input-hora"
+									style="z-index: 9999 !important;" type="text"
+									data-inputmask="'mask' : '99/99/9999 99:99'"
+									aria-describedby="inputSuccess2Status4"
+									placeholder="Data/Hora" readonly="true"></form:input>
+								<span class="fa fa-calendar-o form-control-feedback left"
+									aria-hidden="true"></span> <span id="inputSuccess2Status4"
+									class="sr-only"></span>
+							</div>
+						</div>
+						
 						
 					</form:form>
 			    
@@ -153,6 +169,32 @@
 
 		$(document).ready(function () {
 			prepareUpload();			
+			
+			var locale = {
+					applyLabel : 'Ok',
+					cancelLabel : 'Cancelar',
+					daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+							'Qui', 'Sex', 'Sab' ],
+					monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+							'Abril', 'Maio', 'Junho', 'Julho',
+							'Agosto', 'Setembro', 'Outubro',
+							'Novembro', 'Dezembro' ]
+				};
+			
+			$('#horaRegistro').daterangepicker(
+					{
+						timePicker : true,
+						timePickerIncrement : 5,
+						timePicker12Hour : false,
+						format : 'DD/MM/YYYY HH:mm',
+						timezone : 'local',
+						calender_style : "picker_4",
+						singleDatePicker : true,
+						startDate : new Date(),
+						minDate: null,
+						locale : locale
+					});
+		
 		});
 		
 		$('#hora').inputmask('99999',{placeholder:'0', numericInput:true});

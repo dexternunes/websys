@@ -18,9 +18,6 @@ import br.com.system.websys.repository.FaturamentoRepository;
 @Service  
 @Transactional(propagation=Propagation.REQUIRED)
 class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, FaturamentoRepository> implements FaturamentoBusiness {
-    
-	@Autowired
-	private GrupoBusiness GrupoBusiness;
 	
 	@Autowired
 	protected FaturamentoBusinessImpl(FaturamentoRepository repository) {
@@ -36,12 +33,6 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 	public List<Faturamento> getAll() {
 		return ((FaturamentoRepository)repository).findAll();
 	}
-	
-	//@Override
-	//public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus>status) {
-	//	return ((ProdutoRepository)repository).findAllByTipoAndStatus(tipo, status);
-	//}
-	
 	
 	@Override
 	public Faturamento calcularFaturamento(List<Manutencao> listaManutencao, List<Reserva> listaReserva){

@@ -251,7 +251,7 @@ public class ReservaController {
 				if(idTerceiro != 0)
 					grupos = reservaBusiness.getGrupoPermiteReserva(terceiroBusiness.get(idTerceiro));
 				else
-					grupos = grupoBusiness.findAllAtivos();
+					grupos = grupoBusiness.getAllByUser(user);
 			}
 
 		return grupos;

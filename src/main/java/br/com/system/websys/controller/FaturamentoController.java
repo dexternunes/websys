@@ -21,6 +21,7 @@ import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ManutencaoBusiness;
 import br.com.system.websys.business.ParseDTO;
 import br.com.system.websys.business.ReservaBusiness;
+import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Faturamento;
 import br.com.system.websys.entities.FaturamentoDTO;
 import br.com.system.websys.entities.FaturamentoRateio;
@@ -33,6 +34,7 @@ import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.User;
 
 @Controller
 @RequestMapping("/faturamento")
@@ -52,12 +54,17 @@ public class FaturamentoController{
 	
 	@Autowired
 	private ParseDTO parser;
+	
+	@Autowired
+	private UserBusiness userBusiness;
 
 	//Quando clicado no menu.
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
-		List<Grupo> gruposList = new ArrayList<Grupo>(); 
-		gruposList = grupoBusiness.getAll();
+		
+		User user = userBusiness.getCurrent();
+		
+		List<Grupo> gruposList = grupoBusiness.getAllByUser(user);
 		model.addAttribute("listaGrupos", gruposList);
 		
 		
@@ -98,8 +105,10 @@ public class FaturamentoController{
 	public String historicoBase(Model model)
 			throws Exception {
 
+		User user = userBusiness.getCurrent();
+		
 		List<Grupo> gruposList = new ArrayList<Grupo>(); 
-		gruposList = grupoBusiness.getAll();
+		gruposList = grupoBusiness.getAllByUser(user);
 		model.addAttribute("listaGrupos", gruposList);
 		
 

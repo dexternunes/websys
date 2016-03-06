@@ -5,6 +5,7 @@ import java.util.List;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.User;
 import br.com.system.websys.repository.GrupoRepository;
 
 public interface GrupoBusiness extends BusinessBaseRoot<Grupo, GrupoRepository> {
@@ -24,4 +25,6 @@ public interface GrupoBusiness extends BusinessBaseRoot<Grupo, GrupoRepository> 
 	public Grupo delete(Grupo grupo) throws Exception;
 
 	public List<Grupo> findAllByProduto(Produto produto);
+
+	public List<Grupo> getAllByUser(User user);
 }

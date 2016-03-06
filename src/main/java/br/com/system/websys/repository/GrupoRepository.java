@@ -19,6 +19,12 @@ public interface GrupoRepository extends RepositoryBaseRoot<Grupo> {
 	
 	@Query("SELECT g FROM Grupo g JOIN g.terceiros t WHERE t = :terceiro and g.ativo = 1 AND g.excluido = 0")
 	List<Grupo> findByTerceiro(@Param("terceiro") Terceiro terceiro);
+	
+	@Query("SELECT g FROM Grupo g JOIN g.marinheiros m WHERE m = :marinheiro and g.ativo = 1 AND g.excluido = 0")
+	List<Grupo> getAllByMarinheiro(@Param("marinheiro") Terceiro marinheiro);
+	
+	@Query("SELECT g FROM Grupo g JOIN g.terceiros t WHERE t = :cotista and g.ativo = 1 AND g.excluido = 0")
+	List<Grupo> getAllByCotista(@Param("cotista") Terceiro cotista);
 
 	@Query("SELECT g FROM Grupo g JOIN g.produtos p WHERE p = :produto and g.ativo = 1 AND g.excluido = 0")
 	List<Grupo> findByProduto(@Param("produto") Produto produto);

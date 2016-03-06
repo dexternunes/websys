@@ -66,6 +66,8 @@
 									<th>Usuário</th>
 									<th>Horas Motor</th>
 									<th>Status Faturamento</th>
+									<th>Evento Inicio</th>
+									<th>Evento Fim</th>
 								</tr>
 							</thead>
 
@@ -78,8 +80,10 @@
 										</td>
 										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${reservas.solicitante.nome}</td>
-										<td class=" ">${reservas.horaMotorTotal}Horas</td>
+										<td class=" ">${reservas.horaMotorTotal} Horas</td>
 										<td class=" ">${reservas.faturamentoStatus.descricao}</td>
+										<td class=" "><fmt:formatDate value="${reservas.eventoInicio.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
+										<td class=" "><fmt:formatDate value="${reservas.eventoFim.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>

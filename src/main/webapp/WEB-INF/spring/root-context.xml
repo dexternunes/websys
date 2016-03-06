@@ -46,7 +46,7 @@
 
  	<beans:bean class="br.com.system.websys.job.ReservaJobImpl" id="reservaJobImpl" />
  	<task:scheduled-tasks>
- 	    <task:scheduled ref="reservaJobImpl" method="loadAndSendMail"  cron="*/30 * * * * *"  ></task:scheduled>
+ 	    <task:scheduled ref="reservaJobImpl" method="loadAndSendMail"  cron="* */5 * * * *"  ></task:scheduled>
  	</task:scheduled-tasks>
  	<task:scheduled-tasks>
  	    <task:scheduled ref="reservaJobImpl" method="validaReservas"  cron="* */5 * * * *"  ></task:scheduled>
