@@ -60,7 +60,10 @@
 				<div class="x_content">
 					<div class="alert alert-warning alert-dismissible fade in"
 						role="alert" id="possuiReserva" style="display:none !important">
-						Não é possível solicitar uma reserva.<br> Nenhuma embarcação disponível associada ao seu usuário foi encontrada.
+						<!-- Não é possível solicitar uma reserva.<br> Nenhuma embarcação disponível associada ao seu usuário foi encontrada. -->
+						Você possui uma solicitação de reserva em aberto, ou nenhuma embarcação vinculada ao seu usuário.<br />
+						Não é permitido que o usuário tenha duas solicitações de reserva em aberto para a mesma embarcação, para fazer outra reserva cancele a existente<br />
+						Qualquer dúvida entre em contato com o administrador.
 					</div>
 					<div class="clearfix"></div>
 					<br>
@@ -279,6 +282,11 @@
 	$(document).ajaxStop(function(){
 		$('#loading').modal('hide');
 	});	
+	
+	function reload(){
+		document.location.reload();
+	}
+	setTimeout(reload, 300000);
 	
 	var reservasJSON = [];
 
