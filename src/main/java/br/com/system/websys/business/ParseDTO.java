@@ -15,6 +15,7 @@ import br.com.system.websys.entities.ReservaEvento;
 import br.com.system.websys.entities.ReservaEventoDTO;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroDTO;
+import br.com.system.websys.formatter.Formatters;
 
 @Component
 public class ParseDTO{
@@ -127,7 +128,11 @@ public class ParseDTO{
 				imagens.add(imagem.getUrl());
 			}
 		
-		return new ReservaEventoDTO(reservaEvento.getId(), reservaEvento.getHora(), imagens);
+		String dataRegistro = "";
+		if(reservaEvento.getHoraRegistro() != null)
+			dataRegistro = Formatters.formatDate(reservaEvento.getHoraRegistro());
+		
+		return new ReservaEventoDTO(reservaEvento.getId(), reservaEvento.getHora(), imagens, dataRegistro);
 	}
 	
 	public List<GrupoDTO> parseReservaEnvento2GrupoDTO(List<Grupo> grupos){

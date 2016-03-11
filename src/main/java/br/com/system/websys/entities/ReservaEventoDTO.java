@@ -15,6 +15,8 @@ public class ReservaEventoDTO implements Serializable {
 	private Long hora;
 	
 	private List<String> imagens;
+	
+	private String dataRegistro;
 
 	public ReservaEventoDTO(){
 		
@@ -24,10 +26,11 @@ public class ReservaEventoDTO implements Serializable {
 		this.id = id;
 	}
 	
-	public ReservaEventoDTO(Long id, Long hora, List<String> imagens){
+	public ReservaEventoDTO(Long id, Long hora, List<String> imagens, String dataRegistro){
 		this.id = id;
 		this.hora = hora;
 		this.imagens = imagens;
+		this.dataRegistro = dataRegistro;
 	}
 	
 	public Long getId() {
@@ -53,6 +56,13 @@ public class ReservaEventoDTO implements Serializable {
 	public void setImagens(List<String> imagens) {
 		this.imagens = imagens;
 	}
-	
 
+	public String getDataRegistro() {
+		return dataRegistro;
+	}
+
+	public void setDataRegistro(String dataRegistro) {
+		this.dataRegistro = dataRegistro;
+	}
+	
 }

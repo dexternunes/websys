@@ -794,8 +794,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
-							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /> <br />"
+							+ Formatters.formatDate(reserva.getInicioReserva()) 
+							+ "<br />" 
+							+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
+							+ "<br />" 
+							+ "	Hora de registro do início da utilização: " + Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro())
+							+ "<br />" 
+							+ "	Hora de registro do fim da utilização: " + Formatters.formatDate(reserva.getEventoFim().getHoraRegistro())
+							+ "<br /> <br />"
 							+ " Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>"
 							+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
@@ -821,6 +827,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
 								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
+								+ "<br />" 
+								+ "	Hora de registro do início da utilização: " + Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro())
+								+ "<br />" 
+								+ "	Hora de registro do fim da utilização: " + Formatters.formatDate(reserva.getEventoFim().getHoraRegistro())
 								+ "<br /> <br />" + " Para visualizar as imagens clique <a href='" + link
 								+ "' style='color:white;'>aqui</a>" + "<br /><br />Att,<br /> " + "	</font>"
 								+ "	<div>"

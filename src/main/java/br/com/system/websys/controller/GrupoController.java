@@ -21,7 +21,6 @@ import br.com.system.websys.business.TerceiroBusiness;
 import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.ProdutoTipo;
-import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.TerceiroTipo;
 
 @Controller
@@ -58,7 +57,7 @@ public class GrupoController {
 		
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-		model.addAttribute("listMarinherios", terceiroBusiness.getAllByRole(Role.ROLE_MARINHEIRO));
+		model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
 		model.addAttribute("listProdutos", produtoBusiness.getProdutosSemGrupo(status));
 		
 		return "cadastro/grupo/form";
@@ -76,7 +75,7 @@ public class GrupoController {
 		
 		model.addAttribute("readonly", true);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-		model.addAttribute("listMarinherios", terceiroBusiness.getAllByRole(Role.ROLE_MARINHEIRO));
+		model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
 		model.addAttribute("grupo", grupo);
 		
 		return "cadastro/grupo/form";
@@ -95,7 +94,7 @@ public class GrupoController {
 				model.addAttribute("readonly", true);
 			
 			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-			model.addAttribute("listMarinherios", terceiroBusiness.getAllByRole(Role.ROLE_MARINHEIRO));
+			model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
 			model.addAttribute("listProdutos", produtoBusiness.getProdutosSemGrupo(status));
 			model.addAttribute("grupo", grupo);
 			
@@ -113,7 +112,7 @@ public class GrupoController {
 				model.addAttribute("readonly", true);
 			
 			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-			model.addAttribute("listMarinherios", terceiroBusiness.getAllByRole(Role.ROLE_MARINHEIRO));
+			model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
 			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 			model.addAttribute("grupo", grupo);
 			model.addAttribute("message", e.getMessage());
@@ -137,7 +136,7 @@ public class GrupoController {
 			status.add(ProdutoStatus.DISPONIVEL);
 			
 			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-			model.addAttribute("listMarinherios", terceiroBusiness.getAllByRole(Role.ROLE_MARINHEIRO));
+			model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
 			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 			model.addAttribute("grupo", grupo);
 			model.addAttribute("message", e.getMessage());

@@ -118,6 +118,8 @@
 										Data/hora de fim da reserva: <label id="dataFim"></label><br>
 										Hora do motor no início da utilização: <label id="horaInicio"></label><br>
 										Hora do motor no fim da utilização: <label id="horaFim"></label><br>
+										Hora de registro do início da utilização: <label id="horaInicioRegistro"></label><br>
+										Hora de registro do fim da utilização: <label id="horaFimRegistro"></label><br>
 										<label id="imagens"></label><br>
 									</div>
 								</div>
@@ -150,6 +152,8 @@
 						$('#dataFim').text(data.endStr);
 						$('#horaInicio').text(data.eventoInicio.hora);
 						$('#horaFim').text(data.eventoFim.hora);
+						$('#horaInicioRegistro').text(data.eventoInicio.dataRegistro);
+						$('#horaFimRegistro').text(data.eventoFim.dataRegistro);
 						var link = "${pageContext.request.contextPath}/reserva/visualizaImagensReserva/"+idReserva;
 						
 						$('#imagens').html("Clique <a href='"+link+ "' target='_blank'>aqui</a> para visuzliar as imagens");
