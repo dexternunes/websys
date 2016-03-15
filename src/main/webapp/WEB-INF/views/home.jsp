@@ -632,9 +632,9 @@
 					});
 				}
 
-				var dataAtual = new Date();
+				//var dataAtual = new Date();
 				
-				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ' && getDateFromString(reservaJSON.startStr).getDate() >= dataAtual.getDate()) {
+				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ') {
 					
 						$('#btnEventoInicio').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoInicio.id;
@@ -642,7 +642,7 @@
 						$('#btnEventoInicio').show();
 				}
 				
-				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] ' && getDateFromString(reservaJSON.endStr).getDate() == dataAtual.getDate()){
+				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] '){
 
 						$('#btnEventoFim').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoFim.id;
