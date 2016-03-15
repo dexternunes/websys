@@ -300,7 +300,7 @@
 			reservasJSON = data.reservas;
 		},
 		error : function(request, status, error) {
-			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:731');
 		}
 	});
 		
@@ -316,7 +316,7 @@
 			gruposJSON = data;
 		},
 		error:function(request, status, error){
-			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:732');
 		}
 	});
 	
@@ -332,7 +332,7 @@
 			solicitantesGrupoJSON = data;
 		},
 		error:function(request, status, error){
-			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:733');
 		}
 	});
 	
@@ -413,7 +413,7 @@
 
 			},
 			error:function(request, status, error){
-				alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+				alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:734');
 			}
 			});
 		});
@@ -441,7 +441,7 @@
 
 			},
 			error:function(request, status, error){
-				alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+				alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:735');
 			}
 			});
 		});
@@ -491,7 +491,7 @@
 					reservaJSON = data;
 				},
 				error : function(request, status, error) {
-					alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+					alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:736');
 				}
 			});
 			
@@ -557,7 +557,7 @@
 											document.location.reload();
 										},
 										error : function(error) {
-											alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+											alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:737');
 										}
 									});
 						});
@@ -593,7 +593,7 @@
 													document.location.reload();
 												},
 												error : function(error) {
-													alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+													alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:738');
 												}
 											});												
 										}
@@ -619,14 +619,14 @@
 														document.location.reload();
 													},
 													error : function(error) {
-														alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+														alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:739');
 													}
 												});			
 											});
 										}											
 									},
 									error : function(request, status, error) {
-										alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento.');
+										alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:740');
 									}
 						});										
 					});
@@ -634,7 +634,7 @@
 
 				var dataAtual = new Date();
 				
-				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ' && getDateFromString(reservaJSON.startStr).getDate() == dataAtual.getDate()) {
+				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ' && getDateFromString(reservaJSON.startStr).getDate() >= dataAtual.getDate()) {
 					
 						$('#btnEventoInicio').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoInicio.id;
