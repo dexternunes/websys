@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -287,7 +289,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				throw new Exception("Informe as horas do motor.");
 			reserva.getEventoInicio().setHora(reservaEvento.getHora());
 			reserva.getEventoInicio().setHoraRegistro(reservaEvento.getHoraRegistro());
-			reserva.setStatus(ReservaStatus.EM_USO);
 		}
 		if (reserva.getEventoFim().equals(reservaEvento)) {
 			if (reserva.getEventoFim() == null)
@@ -297,8 +298,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			}
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
 			reserva.getEventoFim().setHoraRegistro(reservaEvento.getHoraRegistro());
-			reserva.setStatus(ReservaStatus.ENCERRADA);
-			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 			sendEmailFinalizacao(reserva, server);
 		}
@@ -893,5 +892,37 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return false;
 
+	}
+	
+	@Override
+	public void alterarStatusReserva() throws Exception{
+		
+		Calendar data = Calendar.getInstance();
+		
+		Criteria criteriaEmUso = this.createCriteria("r");
+		criteriaEmUso.add(Restrictions.le("r.inicioReserva", data.getTime()))
+			.add(Restrictions.eq("r.status", ReservaStatus.APROVADA));
+		
+		List<Reserva> reservasEmUso = criteriaEmUso.list();
+		
+		if(reservasEmUso != null){
+			for(Reserva reserva : reservasEmUso){
+				reserva.setStatus(ReservaStatus.EM_USO);
+				this.salvar(reserva);
+			}
+		}
+		
+		Criteria criteriaEncerreda = this.createCriteria("r");
+		criteriaEncerreda.add(Restrictions.le("r.fimReserva", data.getTime()))
+			.add(Restrictions.eq("r.status", ReservaStatus.EM_USO));
+		
+		List<Reserva> reservasEncerradas = criteriaEncerreda.list();
+		
+		if(reservasEncerradas != null){
+			for(Reserva reserva : reservasEncerradas){
+				reserva.setStatus(ReservaStatus.ENCERRADA);
+				this.salvar(reserva);
+			}
+		}
 	}
 }

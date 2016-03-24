@@ -4,6 +4,8 @@ public interface ReservaJob {
 
 	public void validaReservas();
 
-	void loadAndSendMail() throws Exception;
+	public void loadAndSendMail() throws Exception;
+
+	public void alterarStatusReserva() throws Exception;
 
 }

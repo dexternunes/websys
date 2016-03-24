@@ -1,13 +1,18 @@
 package br.com.system.websys.job;
 
+import java.util.Calendar;
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.system.websys.business.MailBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.entities.Mail;
+import br.com.system.websys.entities.Reserva;
+import br.com.system.websys.entities.ReservaStatus;
 
 @Component
 class ReservaJobImpl implements ReservaJob {
@@ -35,6 +40,11 @@ class ReservaJobImpl implements ReservaJob {
 			mailBusiness.sendMail(mail.getMailFrom(), to, mail.getSubject(), mail.getMsg(), true);
 		}
 		mailBusiness.removeLocal(mails);
+	}
+	
+	@Override
+	public void alterarStatusReserva() throws Exception{
+		reservaBusiness.alterarStatusReserva();
 	}
 	
 }
