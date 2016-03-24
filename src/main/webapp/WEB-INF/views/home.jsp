@@ -373,10 +373,15 @@
 		timezone : 'local',
 		lang : 'pt-br',
 		select : function(start, end, allDay) {
-			if (moment().diff(start, 'days') > 0) {
-				$('#calendar').fullCalendar('unselect');
-				return false;
-			} else {
+			if (!$('#admin').val() == '1'){
+				if (moment().diff(start, 'days') > 0) {
+					$('#calendar').fullCalendar('unselect');
+					return false;
+				}else {
+					ReservaEvento(start, end);
+				}
+			} 
+			else {
 				ReservaEvento(start, end);
 			}
 		},
@@ -533,7 +538,7 @@
 				$('.exclui_reserva').hide();
 				$(".antosubmit").hide();
 
-				if((reservaJSON.terceiro.id == $('#idTerceiro').val() || $('#admin').val() == 1) && reservaJSON.tipoEvento == '[S] '){
+				if((reservaJSON.terceiro.id == $('#idTerceiro').val() && reservaJSON.tipoEvento == '[S] ') || ($('#admin').val() == 1)){
 						$('#utilizaMarinheiro').attr("disabled", false);
 						$('#obs').attr("disabled", false);
 						$('.exclui_reserva').show();
@@ -563,7 +568,7 @@
 						});
 				}
 				
-				if((reservaJSON.terceiro.id == $('#idTerceiro').val() || $('#admin').val() == 1) && reservaJSON.tipoEvento == '[R] '){
+				if((reservaJSON.terceiro.id == $('#idTerceiro').val() && reservaJSON.tipoEvento == '[R] ') || ($('#admin').val() == 1)){
 					$('.cancela_reserva').show();
 					$('.cancela_reserva').click(
 							function() {
@@ -598,7 +603,7 @@
 											});												
 										}
 										else{
-											$('#cancela_exclui').text('Cancelar');
+											//$('#cancela_exclui').text('Cancelar');
 											$('#confirm').modal('show');
 											$('#cancela_exclui').click(function(){
 												
@@ -634,7 +639,7 @@
 
 				//var dataAtual = new Date();
 				
-				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[R] ') {
+				if (($('#admin').val() == 1 || $('#marinheiro').val() == 1)) {
 					
 						$('#btnEventoInicio').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoInicio.id;
@@ -642,7 +647,7 @@
 						$('#btnEventoInicio').show();
 				}
 				
-				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) && reservaJSON.tipoEvento == '[E] '){
+				if(($('#admin').val() == 1 || $('#marinheiro').val() == 1) ){
 
 						$('#btnEventoFim').click(function() {
 							document.location.href = $('#caminhoEvento').val() + reservaJSON.eventoFim.id;

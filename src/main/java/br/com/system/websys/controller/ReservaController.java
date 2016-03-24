@@ -181,8 +181,7 @@ public class ReservaController {
 					tipoEvento = "[E] ";
 				}
 
-				if (reserva.getStatus().equals(ReservaStatus.CANCELADA)
-						|| reserva.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)) {
+				if (reserva.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)) {
 					tipoEvento = "[C] ";
 				}
 

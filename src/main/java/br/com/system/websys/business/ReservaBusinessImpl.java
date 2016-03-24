@@ -263,7 +263,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 			status.add(ReservaStatus.APROVADA);
 			status.add(ReservaStatus.EM_USO);
-			status.add(ReservaStatus.CANCELADA);
+			//status.add(ReservaStatus.CANCELADA);
 			status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
 			status.add(ReservaStatus.ENCERRADA);
 
