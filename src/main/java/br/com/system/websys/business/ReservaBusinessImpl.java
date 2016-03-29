@@ -400,9 +400,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		int calculoDifHoraInicio = (horaInicioReservaCal.get(Calendar.MINUTE) % 15);
 
 		if (calculoDifHoraInicio == 0)
-			horaInicioReservaCal.add(Calendar.MINUTE, 120);
+			horaInicioReservaCal.add(Calendar.MINUTE, 60);
 		else
-			horaInicioReservaCal.add(Calendar.MINUTE, (15 - calculoDifHoraInicio) + 120);
+			horaInicioReservaCal.add(Calendar.MINUTE, (15 - calculoDifHoraInicio) + 60);
 
 		if (horaInicioReservaCal.get(Calendar.HOUR_OF_DAY) > 18) {
 			horaInicioReservaCal.add(Calendar.DAY_OF_MONTH, 1);
@@ -443,7 +443,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		Date dataAtual = new Date();
 
 		if (getReservaByDate(reserva) == null) {
-			if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 2) {
+			if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 1) {
 				return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
 			}
 			return ReservaValidacaoStatus.OK_RESERVA;
