@@ -46,9 +46,9 @@ class ImagemBusinessImpl extends BusinessBaseRootImpl<Imagem, ImagemRepository> 
 		 if (!fileupload.isEmpty()) {
 			 try {
 				
-				String realPathtoUploads = "/home/primesha/public_html/upload/";
+				//String realPathtoUploads = "/home/primesha/public_html/upload/";
+				String realPathtoUploads = "/mnt/files/";
 
-				//String realPathtoUploads = "/mnt/files/";
 				if(! new File(realPathtoUploads).exists())
 				{
 				    new File(realPathtoUploads).mkdir();
@@ -85,8 +85,8 @@ class ImagemBusinessImpl extends BusinessBaseRootImpl<Imagem, ImagemRepository> 
 	public Boolean delete(Imagem imagem){
 		
 		 try {
-			  	String filePath = "/home/primesha/public_html/upload/";
-				//String filePath = "/mnt/files/" + imagem.getName();
+			  	//String filePath = "/home/primesha/public_html/upload/";
+				String filePath = "/mnt/files/" + imagem.getName();
 				File file = new File(filePath);
 				if(file.exists())
 				{

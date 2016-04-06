@@ -112,7 +112,7 @@ class UserBusinessImpl implements UserBusiness {
 
 		String texto = "<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 				+ "<div align='center' style='background-color:rgb(28,60,106)'>"
-				+ "	<img width='98' height='130' alt='Logo' src='http://primeshareclub.com.br/files-upload/primeshare.png'  />"
+				+ "	<img width='98' height='130' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/primeshare.png'  />"
 				+ "</div>" + "</br></br><font color='white'>"
 				+ "	<h3>Foi criado um usuário para acesso ao Prime Share System </h3>" 
 				+ "<br> " 
@@ -146,7 +146,7 @@ class UserBusinessImpl implements UserBusiness {
 			
 			String texto = "<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 					+ "<div align='center' style='background-color:rgb(28,60,106)'>"
-					+ "	<img width='98' height='130' alt='Logo' src='http://primeshareclub.com.br/files-upload/primeshare.png'  />"
+					+ "	<img width='98' height='130' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/primeshare.png'  />"
 					+ "</div>" + "</br></br><font color='white'>"
 					+ "	<h3>Você solicitou a recuperação do acesso ao Prime Share System </h3>" 
 					+ "<br><br> " + "Clique <a href='"
