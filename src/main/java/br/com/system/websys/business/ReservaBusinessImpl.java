@@ -115,8 +115,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
-							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
+							+ Formatters.formatDate(reserva.getInicioReserva()) 
+							+ "<br />" 
+							+ "	Data fim da reserva: "
+							+ Formatters.formatDate(reserva.getFimReserva()) 
+							+ "<br />" 
+							+ "	Utiliza Marinheiro: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+							+ "<br />" 
+							+ "	Observação: "
+							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -143,7 +151,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
+							+ Formatters.formatDate(reserva.getFimReserva())
+							+ "<br />" 
+							+ "	Utiliza Marinheiro: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+							+ "<br />" 
+							+ "	Observação: "
+							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -640,7 +654,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-				+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
+				+ Formatters.formatDate(reserva.getFimReserva())
+				+ "<br />" 
+				+ "	Utiliza Marinheiro: "
+				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+				+ "<br />" 
+				+ "	Observação: "
+				+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 				+ "	<div>"
 				+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 				+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -669,7 +689,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-				+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
+				+ Formatters.formatDate(reserva.getFimReserva())
+				+ "<br />" 
+				+ "	Utiliza Marinheiro: "
+				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+				+ "<br />" 
+				+ "	Observação: "
+				+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 				+ "	<div>"
 				+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 				+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -741,7 +767,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) + "<br /><br />Att,<br /> " + "	</font>"
+							+ Formatters.formatDate(reserva.getFimReserva())
+							+ "<br />" 
+							+ "	Utiliza Marinheiro: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+							+ "<br />" 
+							+ "	Observação: "
+							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -766,6 +798,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
 								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
+								+ "<br />" 
+								+ "	Utiliza Marinheiro: "
+								+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+								+ "<br />" 
+								+ "	Observação: "
+								+ reserva.getObs() 
 								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -859,6 +897,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
 							+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva())
+							+ "<br />" 
+							+ "	Utiliza Marinheiro: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+							+ "<br />" 
+							+ "	Observação: "
+							+ reserva.getObs() 
 							+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
@@ -883,6 +927,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
 								+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva())
+								+ "<br />" 
+								+ "	Utiliza Marinheiro: "
+								+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
+								+ "<br />" 
+								+ "	Observação: "
+								+ reserva.getObs() 
 								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "

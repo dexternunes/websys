@@ -267,7 +267,10 @@ public class ReservaController {
 				terceiros.add(user.getTerceiro());
 			else{
 				if(idGrupo != 0)
-					terceiros = reservaBusiness.getTerceiroPermiteReservaGrupo(grupoBusiness.get(idGrupo));
+					if(user.getRole().equals(Role.ROLE_ADMIN))
+						terceiros = grupoBusiness.get(idGrupo).getTerceiros();
+					else
+						terceiros = reservaBusiness.getTerceiroPermiteReservaGrupo(grupoBusiness.get(idGrupo));
 				else
 					return new ArrayList<TerceiroDTO>();
 			}
