@@ -304,6 +304,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.getEventoInicio().setHora(reservaEvento.getHora());
 			reserva.getEventoInicio().setHoraRegistro(reservaEvento.getHoraRegistro());
 		}
+		
+		if (reserva.getEventoInicio().getHora() == null) {
+			throw new Exception("Informe primeiro a hora motor do evento inicial.");
+		}
+		
+		
 		if (reserva.getEventoFim().equals(reservaEvento)) {
 			if (reserva.getEventoFim() == null)
 				throw new Exception("Informe as horas do motor.");
@@ -313,6 +319,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.getEventoFim().setHora(reservaEvento.getHora());
 			reserva.getEventoFim().setHoraRegistro(reservaEvento.getHoraRegistro());
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
+			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			sendEmailFinalizacao(reserva, server);
 		}
 

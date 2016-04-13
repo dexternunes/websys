@@ -95,7 +95,7 @@ public class ReservaEventoController{
 	
 	@RequestMapping(value = "/salvar", method = RequestMethod.POST)
 	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
-			BindingResult result, Model model, HttpServletRequest request) throws Exception {
+			BindingResult result, @RequestParam("submit") Boolean submit, Model model, HttpServletRequest request) throws Exception {
 		
 		ReservaEvento reventoBD = reservaEventoBusiness.get(reservaEvento.getId());
 		reservaEvento.setImagens(reventoBD.getImagens());
@@ -122,8 +122,14 @@ public class ReservaEventoController{
 			model.addAttribute("message", e.getMessage());
 			return "reservaEvento";
 		}
-
-		return "redirect:/home";
+		
+		if(submit)
+			return "redirect:/home";
+		
+		else{
+			model.addAttribute("reservaEvento", reservaEvento);
+			return "reservaEvento";
+		}
 	}
 		
 }
