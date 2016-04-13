@@ -198,7 +198,7 @@
 					</div>
 					<div class="modal-footer">
 						<div class="form-actions">
-							<button type="button" class="hide btn  btn-danger exclui_reserva"
+							<button type="button" class="hide btn  btn-danger "
 								data-dismiss="modal" style="display: none !important">Excluir</button>
 							<button type="button" class="btn  btn-danger exclui_reserva"
 								data-dismiss="modal" style="display: none !important">Excluir</button>
@@ -250,7 +250,7 @@
 				<div class="clearfix"></div>
 				<div class="modal-footer">
 					<button type="button" data-dismiss="modal" class="hide btn btn-primary"
-						id="cancela_exclui">Sim</button>
+						id="cancela_exclui2">Sim</button>
 					<button type="button" data-dismiss="modal" class="btn btn-primary"
 						id="cancela_exclui">Sim</button>
 					<button type="button" data-dismiss="modal" class="btn btn-primary">Não</button>
