@@ -443,7 +443,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		if (reserva.getId() == null) {
 
-			if (existeReserva(reserva) != null) {
+			if (existeReservaIgual(reserva) != null) {
 				return ReservaValidacaoStatus.OK_DUPLICADO;
 			}
 
@@ -528,7 +528,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		if (((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000)) <= 24) {
 			if (existeReserva(reserva) != null) {
-				return ReservaValidacaoStatus.OK;
+				return ReservaValidacaoStatus.EXISTE_RESERVA;
 			} else
 				return ReservaValidacaoStatus.OK_RESERVA;
 		}
@@ -755,7 +755,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 
-		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(),
+		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getGrupo(), status);
+	}
+	
+	public Reserva existeReservaIgual(Reserva reserva) {
+		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
+
+		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
+		status.add(ReservaStatus.APROVADA);
+
+		return ((ReservaRepository) repository).existeReservaIgual(reserva.getInicioReserva(), reserva.getFimReserva(),
 				reserva.getSolicitante(), reserva.getGrupo(), status);
 	}
 
