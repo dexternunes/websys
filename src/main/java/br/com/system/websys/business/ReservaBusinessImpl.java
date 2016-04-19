@@ -463,7 +463,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) {
 		Date dataAtual = new Date();
 
-		if (getReservaByDate(reserva) == null) {
+		if (existeReserva(reserva) == null) {
 			if ((reserva.getInicioReserva().getTime() - dataAtual.getTime()) / (60 * 60 * 1000) < 1) {
 				return ReservaValidacaoStatus.DIA_UNICO_RESERVA;
 			}
