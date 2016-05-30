@@ -17,6 +17,6 @@ public interface ProdutoRepository extends RepositoryBaseRoot<Produto> {
 	@Query("select p from Produto p where p.excluido = 0")
 	List<Produto> getAll();
 	
-	@Query("SELECT p FROM Produto p WHERE p NOT IN (SELECT p FROM Grupo g JOIN g.produtos p)  AND p.excluido = 0 AND p.status IN (:status)")
+	@Query("SELECT p FROM Produto p WHERE p NOT IN (SELECT p FROM Grupo g JOIN g.produtos p where p.excluido = 0)  AND p.excluido = 0 AND p.status IN (:status)")
 	List<Produto> getProdutosSemGrupo(@Param("status")List<ProdutoStatus> status);
 }

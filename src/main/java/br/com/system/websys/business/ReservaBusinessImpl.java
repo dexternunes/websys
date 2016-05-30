@@ -590,6 +590,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) {
+		
+		User user = userBusiness.getCurrent();
+		
 		Date dataAtual = new Date();
 		GregorianCalendar atual = new GregorianCalendar();
 		GregorianCalendar dataReserva = new GregorianCalendar();
@@ -597,7 +600,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		atual.setTime(dataAtual);
 		dataReserva.setTime(reserva.getInicioReserva());
 
-		if ((dataReserva.get(GregorianCalendar.DAY_OF_YEAR) - atual.get(GregorianCalendar.DAY_OF_YEAR)) < 7) {
+		if (!user.getRole().equals(Role.ROLE_ADMIN) && (dataReserva.get(GregorianCalendar.DAY_OF_YEAR) - atual.get(GregorianCalendar.DAY_OF_YEAR)) < 7) {
 			return ReservaValidacaoStatus.DIAS_CONSECUTIVOS;
 		}
 
