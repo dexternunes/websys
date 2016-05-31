@@ -96,7 +96,7 @@
 						<%-- <a type="button" class="btn btn-primary"
 							href="${pageContext.request.contextPath}/faturamento/">Voltar</a> --%>
 						<div id="fc_edit" data-toggle="modal">
-							<a type="button" id="faturar" class="btn btn-primary">Faturar</a>
+							<a type="button" id="faturar" class="btn btn-primary">Calcular</a>
 						</div>
 					</div>
 
@@ -147,8 +147,10 @@
 							<div class="row avatar-btns">
 								<div class="col-md-9"></div>
 								<div class="col-md-3">
-									<button id="faturarModal"
-										class="btn btn-primary btn-block avatar-save" type="submit">Faturar</button>
+									<c:if test="${user.role == 'ROLE_ADMIN'}">
+										<button id="faturarModal"
+											class="btn btn-primary btn-block avatar-save" type="submit">Faturar</button>
+									</c:if>
 								</div>
 							</div>
 						</div>
