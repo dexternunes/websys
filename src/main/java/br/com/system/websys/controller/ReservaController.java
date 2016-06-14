@@ -114,9 +114,14 @@ public class ReservaController {
 	public ReservaValidacaoStatusDTO salvar(HttpServletRequest request, @RequestBody ReservaDTO reservaDTO)
 			throws Exception {
 
+		User user = userBusiness.getCurrent();
+		
 		Reserva reserva = parseReserva.parseReservaDTO2Reserva(reservaDTO);
 
 		ReservaValidacaoStatus statusReserva = reservaBusiness.validaReserva(reserva);
+		
+		if(user.getRole().equals(Role.ROLE_ADMIN))
+			statusReserva = ReservaValidacaoStatus.OK;
 
 		ReservaValidacaoStatusDTO statusReservaDTO = new ReservaValidacaoStatusDTO();
 		statusReservaDTO.setId(statusReserva.getCode());

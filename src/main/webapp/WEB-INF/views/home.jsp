@@ -683,6 +683,12 @@
 				$('#grupo').html(html_grupo);				
 				
 				if ($('#permiteReserva').val() == 1 || $('#admin').val()) {
+					
+					var minDate = getDateFromString(reservaJSON.startStr);
+					
+					if($('#admin').val())
+						minDate = null;
+					
 					$('#data_inicio_reserva').daterangepicker(
 							{
 								timePicker : true,
@@ -693,7 +699,7 @@
 								calender_style : "picker_4",
 								parentEl : '#CalenderModal',
 								startDate : getDateFromString(reservaJSON.startStr),
-								minDate: getDateFromString(reservaJSON.startStr),
+								minDate: minDate,
 								singleDatePicker : true,
 								locale : locale
 							});
