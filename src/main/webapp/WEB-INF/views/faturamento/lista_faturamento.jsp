@@ -24,11 +24,11 @@
 					</div>
 					<div class="x_content">
 						<!-- id="example" para ordenar e filtrar -->
-						<table id="example2"
+						<table id="maintancesTable"
 							class="table table-striped responsive-utilities jambo_table ">
 							<thead>
 								<tr class="headings">
-									<th></th>
+									<th><input type="checkbox" name="selectAllMain" id="selectAllMain" /></th>
 									<th>Data</th>
 									<th>Descrição</th>
 									<th>Valor</th>
@@ -41,7 +41,7 @@
 									<tr class="even pointer">
 										<td class="a-center " oName="id" oValue="${manutencoes.id}">
 											<input type="checkbox" name="mCheckBox"
-											value="${manutencoes.id}" class="tableflat">
+											value="${manutencoes.id}" >
 										</td>
 										<td class=" "><fmt:formatDate value="${manutencoes.inicioManutencao}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${manutencoes.obs}</td>
@@ -57,11 +57,11 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<table id="example"
+						<table id="hoursTable"
 							class="table table-striped responsive-utilities jambo_table ">
 							<thead>
 								<tr class="headings">
-									<th></th>
+									<th><input type="checkbox"id="selectAllhours" /></th>
 									<th>Data</th>
 									<th>Usuário</th>
 									<th>Horas Motor</th>
@@ -75,7 +75,7 @@
 									varStatus="status">
 									<tr class="even pointer">
 										<td class="a-center " oName="id" oValue="${reservas.id}">
-											<input type="checkbox" name="hCheckBox" class="tableflat"
+											<input type="checkbox" name="hCheckBox" 
 											value="${reservas.id}">
 										</td>
 										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
@@ -204,6 +204,38 @@
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/tools/js/dataTables.tableTools.js"></script>
 	<script type="text/javascript">
+	$( document ).ready(function() {
+
+		$('#selectAllMain').click(function(e){
+		    var table= $('#maintancesTable');
+		    $('td input:checkbox',table).prop('checked',this.checked);
+		    checkAll('m', this.checked);
+		});
+		$('#selectAllhours').click(function(e){
+		    var table= $('#hoursTable');
+		    $('td input:checkbox',table).prop('checked',this.checked);
+		    checkAll('h', this.checked);
+		});
+		function checkAll(table, checked){
+			if(checked)
+				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().addClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().addClass( "selected" );
+			else 
+				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().removeClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().removeClass( "selected" );
+				
+					
+		}
+		
+	});
+	
+	$( "input[name$='hCheckBox']" ).click(function(e){
+		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
+	});	
+	
+
+	$( "input[name$='mCheckBox']" ).click(function(e){
+		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
+	});	
+	
 	
 	(function ($) {
 	      $.each(['show', 'hide'], function (i, ev) {
@@ -393,6 +425,7 @@
 
 		var asInitVals = new Array();
 		$(document).ready(
+
 				function() {
 					var oTable = $('#example').dataTable({
 						"oLanguage" : {
@@ -443,6 +476,8 @@
 										this.checked);
 							});
 				});
+		
+		
 	</script>
 </body>
 </html>
