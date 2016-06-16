@@ -57,13 +57,13 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
-						<table id="hoursTable"
+						<table id="example"
 							class="table table-striped responsive-utilities jambo_table ">
 							<thead>
 								<tr class="headings">
-									<th><input type="checkbox"id="selectAllhours" /></th>
-									<th>Data</th>
+									<th><input type="checkbox" id="selectAllhours" /></th>
 									<th>Usuário</th>
+									<th>Data</th>
 									<th>Horas Motor</th>
 									<th>Evento Inicio</th>
 									<th>Evento Fim</th>
@@ -78,9 +78,9 @@
 											<input type="checkbox" name="hCheckBox" 
 											value="${reservas.id}">
 										</td>
-										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${reservas.solicitante.nome}</td>
-										<td class=" ">${reservas.horaMotorTotal}Horas</td>
+										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
+										<td class=" ">${reservas.horaMotorTotal} Horas</td>
 										<td class=" "><fmt:formatDate value="${reservas.eventoInicio.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
 										<td class=" "><fmt:formatDate value="${reservas.eventoFim.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
 									</tr>
@@ -206,37 +206,35 @@
 	<script type="text/javascript">
 	$( document ).ready(function() {
 
-		$('#selectAllMain').click(function(e){
-		    var table= $('#maintancesTable');
-		    $('td input:checkbox',table).prop('checked',this.checked);
-		    checkAll('m', this.checked);
-		});
-		$('#selectAllhours').click(function(e){
-		    var table= $('#hoursTable');
-		    $('td input:checkbox',table).prop('checked',this.checked);
-		    checkAll('h', this.checked);
-		});
-		function checkAll(table, checked){
-			if(checked)
-				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().addClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().addClass( "selected" );
-			else 
-				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().removeClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().removeClass( "selected" );
-				
-					
-		}
-		
-	});
-	
-	$( "input[name$='hCheckBox']" ).click(function(e){
-		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
-	});	
-	
+	 	$( "input[name$='hCheckBox']" ).click(function(e){
+	 		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
+	 	});	
+	 	
+	 
+	 	$( "input[name$='mCheckBox']" ).click(function(e){
+	 		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
+	 	});
+	 
 
-	$( "input[name$='mCheckBox']" ).click(function(e){
-		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
-	});	
-	
-	
+			$('#selectAllMain').click(function(e){
+	 		    var table= $('#maintancesTable');
+	 		    $('td input:checkbox',table).prop('checked',this.checked);
+	 		    checkAll('m', this.checked);
+			});
+			$('#selectAllhours').click(function(e){
+	 		    var table= $('#example');
+	 		    $('td input:checkbox',table).prop('checked',this.checked);
+	 		    checkAll('h', this.checked);
+	 		});
+	 		function checkAll(table, checked){
+	 			if(checked)
+	 				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().addClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().addClass( "selected" );
+	 			else 
+	 				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().removeClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().removeClass( "selected" );
+	 				
+	 					
+	 		}
+	});
 	(function ($) {
 	      $.each(['show', 'hide'], function (i, ev) {
 	        var el = $.fn[ev];
@@ -425,7 +423,6 @@
 
 		var asInitVals = new Array();
 		$(document).ready(
-
 				function() {
 					var oTable = $('#example').dataTable({
 						"oLanguage" : {
@@ -433,10 +430,10 @@
 						},
 						"aoColumnDefs" : [ {
 							'bSortable' : false,
-							'aTargets' : [ 0 ]
+							'aTargets' : [ 0,2,3,4,5 ]
 						} //disables sorting for column one
 						],
-						'iDisplayLength' : 12,
+						'iDisplayLength' : 10000,
 						"sPaginationType" : "full_numbers"
 					});
 					$("tfoot input").keyup(
@@ -475,9 +472,13 @@
 								$('input:checkbox').not(this).prop('checked',
 										this.checked);
 							});
+					
+					$("#example_paginate").hide();
+					$("#example_length").hide();
+					$("#example_info").hide();
+					
+
 				});
-		
-		
 	</script>
 </body>
 </html>
