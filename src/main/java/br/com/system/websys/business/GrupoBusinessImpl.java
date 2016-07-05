@@ -141,6 +141,7 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	public Grupo delete(Grupo grupo) throws Exception {
 		validaExclusao(grupo);
 		
+		grupo.setAtivo(false);
 		grupo.setExcluido(true);
 		
 		return super.salvar(grupo);

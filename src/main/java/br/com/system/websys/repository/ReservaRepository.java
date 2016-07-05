@@ -30,7 +30,7 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	@Query("SELECT r FROM Reserva r WHERE r.eventoFim = :evento OR r.eventoInicio = :evento")
 	Reserva getByEvento(@Param("evento") ReservaEvento evento);
 
-	@Query("SELECT r FROM Reserva r  WHERE r.grupo = :grupo and r.excluido = 0 and r.faturamentoStatus in :faturamentoStatus")
+	@Query("SELECT r FROM Reserva r  WHERE r.grupo = :grupo and r.excluido = 0 and r.faturamentoStatus in :faturamentoStatus order by r.inicioReserva desc")
 	List<Reserva> findByReservaByGrupoByStatus(@Param("grupo") Grupo grupo, @Param("faturamentoStatus") List<FaturamentoStatus> faturamentoStatus);
 
 	@Query("SELECT  r FROM Reserva r WHERE r.grupo IN (:grupos) AND r.status in (:status) AND r.excluido = 0 AND r.ativo = 1")
@@ -40,6 +40,10 @@ public interface ReservaRepository extends RepositoryBaseRoot<Reserva> {
 	Reserva getReservaByDate(@Param("inicioReserva") Date inicioReserva, @Param("grupo")Grupo grupo, @Param("status") List<ReservaStatus> status);
 
 	@Query("SELECT r FROM Reserva r WHERE r.inicioReserva = :inicioReserva AND fimReserva = :fimReserva AND r.solicitante = :terceiro AND r.grupo = :grupo AND r.excluido = 0 AND r.ativo = 1 AND r.status in :status")
-	Reserva existeReserva(@Param("inicioReserva") Date inicioReserva, @Param("fimReserva") Date fimReserva, @Param("terceiro") Terceiro terceiro, @Param("grupo") Grupo grupo,
+	Reserva existeReservaIgual(@Param("inicioReserva") Date inicioReserva, @Param("fimReserva") Date fimReserva, @Param("terceiro") Terceiro terceiro, @Param("grupo") Grupo grupo,
+			@Param("status") List<ReservaStatus> status);
+	
+	@Query("SELECT r FROM Reserva r WHERE (r.inicioReserva between :inicioReserva and :fimReserva or r.fimReserva between :inicioReserva and :fimReserva) AND r.grupo = :grupo AND r.excluido = 0 AND r.ativo = 1 AND r.status in :status")
+	Reserva existeReserva(@Param("inicioReserva") Date inicioReserva, @Param("fimReserva") Date fimReserva, @Param("grupo") Grupo grupo,
 			@Param("status") List<ReservaStatus> status);
 }

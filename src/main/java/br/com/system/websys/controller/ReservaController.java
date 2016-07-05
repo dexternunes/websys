@@ -114,9 +114,14 @@ public class ReservaController {
 	public ReservaValidacaoStatusDTO salvar(HttpServletRequest request, @RequestBody ReservaDTO reservaDTO)
 			throws Exception {
 
+		User user = userBusiness.getCurrent();
+		
 		Reserva reserva = parseReserva.parseReservaDTO2Reserva(reservaDTO);
 
 		ReservaValidacaoStatus statusReserva = reservaBusiness.validaReserva(reserva);
+		
+		if(user.getRole().equals(Role.ROLE_ADMIN))
+			statusReserva = ReservaValidacaoStatus.OK;
 
 		ReservaValidacaoStatusDTO statusReservaDTO = new ReservaValidacaoStatusDTO();
 		statusReservaDTO.setId(statusReserva.getCode());
@@ -267,7 +272,10 @@ public class ReservaController {
 				terceiros.add(user.getTerceiro());
 			else{
 				if(idGrupo != 0)
-					terceiros = reservaBusiness.getTerceiroPermiteReservaGrupo(grupoBusiness.get(idGrupo));
+					if(user.getRole().equals(Role.ROLE_ADMIN))
+						terceiros = grupoBusiness.get(idGrupo).getTerceiros();
+					else
+						terceiros = reservaBusiness.getTerceiroPermiteReservaGrupo(grupoBusiness.get(idGrupo));
 				else
 					return new ArrayList<TerceiroDTO>();
 			}

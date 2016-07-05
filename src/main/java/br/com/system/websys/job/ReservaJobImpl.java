@@ -36,6 +36,10 @@ class ReservaJobImpl implements ReservaJob {
 			return;
 		
 		for(Mail mail : mails){
+			if(mail.getMailTo() == null || mail.getMailTo().size() == 0 
+					|| mail.getMailTo().get(0).equals("") || !mail.getMailTo().get(0).contains("@"))
+				continue;
+			
 			String[] to = new String[]{mail.getMailTo().get(0)}; 
 			mailBusiness.sendMail(mail.getMailFrom(), to, mail.getSubject(), mail.getMsg(), true);
 		}

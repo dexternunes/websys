@@ -30,7 +30,7 @@
 					</c:if>
 			    
 			    	<form:form cssClass="form-horizontal"
-						action="${pageContext.request.contextPath}/reservaEvento/salvar?submit=true"
+						action="${pageContext.request.contextPath}/reservaEvento/salvar?submit="
 						commandName="reservaEvento" method="post">
 						
 						
@@ -97,7 +97,7 @@
 				    <div style="clear: both"></div>
 					<br />
 					<div class="form-actions">
-						<button type="button" onclick="javascript:submit()" class="btn btn-primary">Salvar</button>
+						<button type="button" onclick="javascript:submit(true)" class="btn btn-primary">Salvar</button>
 					</div>
 				</div>
 			</div>
@@ -105,8 +105,9 @@
 	</div>
 	<script type="text/javascript">
 	
-		function submit(){
-			$("#reservaEvento").submit();
+		function submit(isSubmit){
+			$("#reservaEvento")[0].action = $("#reservaEvento")[0].action + isSubmit;
+			$("#reservaEvento")[0].submit();
 		}
 	
 		$(document).bind('drop dragover', function(e) {
@@ -122,7 +123,7 @@
 			
 			$.get(url,function(data) {
 			}).done(function() {
-				window.location = "${pageContext.request.contextPath}/reservaEvento/${reservaEvento.id}";
+				submit(false);
 			  })
 			  .fail(function() {
 			    alert( "Erro ao remover a imagem" );
@@ -146,7 +147,7 @@
 				acceptFileTypes : /(\.|\/)(gif|jpg|jpeg|png)$/i ,
 				done : function(e, data) {
 					$("div.active:not(.progress)").html(data.result);
-					window.location = "${pageContext.request.contextPath}/reservaEvento/${reservaEvento.id}";
+					submit(false);
 				},
 				change : function(e, data) {
 

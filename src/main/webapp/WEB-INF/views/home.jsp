@@ -198,7 +198,7 @@
 					</div>
 					<div class="modal-footer">
 						<div class="form-actions">
-							<button type="button" class="hide btn  btn-danger exclui_reserva"
+							<button type="button" class="hide btn  btn-danger "
 								data-dismiss="modal" style="display: none !important">Excluir</button>
 							<button type="button" class="btn  btn-danger exclui_reserva"
 								data-dismiss="modal" style="display: none !important">Excluir</button>
@@ -250,7 +250,7 @@
 				<div class="clearfix"></div>
 				<div class="modal-footer">
 					<button type="button" data-dismiss="modal" class="hide btn btn-primary"
-						id="cancela_exclui">Sim</button>
+						id="cancela_exclui2">Sim</button>
 					<button type="button" data-dismiss="modal" class="btn btn-primary"
 						id="cancela_exclui">Sim</button>
 					<button type="button" data-dismiss="modal" class="btn btn-primary">Não</button>
@@ -377,7 +377,7 @@
 		timezone : 'local',
 		lang : 'pt-br',
 		select : function(start, end, allDay) {
-			if (!$('#admin').val() == '1'){
+			if ($('#admin').val() != '1'){
 				if (moment().diff(start, 'days') > 0) {
 					$('#calendar').fullCalendar('unselect');
 					return false;
@@ -507,7 +507,7 @@
 			if($('#admin').val() == 1){
 
 				$('#title').html('');
-				var html_title = '<option value=0>  </option>';
+				var html_title = '<option value=0>Selecione</option>';
 
 				for (var i = 0; i < solicitantesGrupoJSON.length; i++) {
 					html_title += '<option id="' + solicitantesGrupoJSON[i].id + '">' + solicitantesGrupoJSON[i].nome + '</option>';
@@ -567,6 +567,7 @@
 										},
 										error : function(error) {
 											alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:737');
+											permiteClick = true;
 										}
 									});
 						});
@@ -603,6 +604,7 @@
 												},
 												error : function(error) {
 													alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:738');
+													permiteClick = true;
 												}
 											});												
 										}
@@ -629,6 +631,7 @@
 													},
 													error : function(error) {
 														alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:739');
+														permiteClick = true;
 													}
 												});			
 											});
@@ -671,8 +674,8 @@
 				$('#obs').attr("disabled", false);
 				$('#grupo').attr("disabled", false);
 				$('#grupo').html('');
-				var html_grupo = '';
-
+				
+				var html_grupo = '<option value=0>Selecione</option>';
 				for (var i = 0; i < gruposJSON.length; i++) {
 					html_grupo += '<option value="' + gruposJSON[i].id + '">' + gruposJSON[i].descricao + '</option>';
 				}
@@ -680,6 +683,12 @@
 				$('#grupo').html(html_grupo);				
 				
 				if ($('#permiteReserva').val() == 1 || $('#admin').val()) {
+					
+					var minDate = getDateFromString(reservaJSON.startStr);
+					
+					if($('#admin').val())
+						minDate = null;
+					
 					$('#data_inicio_reserva').daterangepicker(
 							{
 								timePicker : true,
@@ -690,7 +699,7 @@
 								calender_style : "picker_4",
 								parentEl : '#CalenderModal',
 								startDate : getDateFromString(reservaJSON.startStr),
-								minDate: getDateFromString(reservaJSON.startStr),
+								minDate: minDate,
 								singleDatePicker : true,
 								locale : locale
 							});
@@ -844,6 +853,7 @@
 						$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
 						$('#errors span').text('Ocorreu um erro!');
 						$('#messageModal').modal('show');
+						permiteClick = true;
 					}
 				});
 		}
