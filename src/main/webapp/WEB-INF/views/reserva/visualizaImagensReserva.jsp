@@ -11,6 +11,95 @@
 <html lang="en">
 
 <head>
+
+<style>
+#myImg {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)}
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+</style>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,62 +112,11 @@
 <link
 	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css"
 	rel="stylesheet">
-
-<link
-	href="${pageContext.request.contextPath}/resources/fonts/css/font-awesome.min.css"
-	rel="stylesheet">
-<link
-	href="${pageContext.request.contextPath}/resources/css/animate.min.css"
-	rel="stylesheet">
-
-<!-- Custom styling plus plugins -->
-<link href="${pageContext.request.contextPath}/resources/css/custom.css"
-	rel="stylesheet">
-<link
-	href="${pageContext.request.contextPath}/resources/css/icheck/flat/green.css"
-	rel="stylesheet">
-
-
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
 
 <script
 	src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
-
-<script>
-	function ExibeGaleriaSaida() {
-		var htmlDiv = '';
-
-		$('#imagensSaida img').each(function() {
-			if(htmlDiv == ''){
-				htmlDiv = '<div class="item active"> <img src="'+$(this)[0].src+'"></div>';
-			}
-			else
-				htmlDiv += '<div class="item"> <img src="'+$(this)[0].src+'"></div>'; 
-		});
-		
-		$('#itens').html(htmlDiv);
-
-		$('#imagemModal').modal('show');
-	}
-
-	function ExibeGaleriaChegada() {
-
-		var htmlDiv = '';
-
-		$('#imagensChegada img').each(function() {
-			if(htmlDiv == ''){
-				htmlDiv = '<div class="item active"> <img src="'+$(this)[0].src+'"></div>';
-			}
-			else
-				htmlDiv += '<div class="item"> <img src="'+$(this)[0].src+'"></div>'; 
-		});
-		
-		$('#itens').html(htmlDiv);
-
-		$('#imagemModal').modal('show');
-	}
-</script>
 
 <style >
 a:link {
@@ -95,44 +133,33 @@ a:link {
 					<h3>Imagens da saída.</h3>
 					<div class="clearfix"></div>
 				</div>
-				<div class="x_content">
-					<div class="attachment" id="imagensSaida">
-						<c:forEach items="${reserva.eventoInicio.imagens}" var="imagem">
-							<div class="col-md-55">
-								<div class="thumbnail">
-									<div class="view view-first">
-										<img src="${imagem.url}" style="width: 100%; display: block;"
-											onclick="ExibeGaleriaSaida()" />
-									</div>
-								</div>
-							</div>
-						</c:forEach>
-					</div>
+				
+				<c:forEach items="${reserva.eventoInicio.imagens}" var="imagem"  varStatus="status">
+					<img id="myImgSaida${status.index}" src="${imagem.url}" width="300" height="200" onclick="exibe(${status.index}, 1)">
+				</c:forEach>
+				<!-- The Modal -->
+				<div id="myModal" class="modal">
+				
+				  <!-- The Close Button -->
+				  <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+				
+				  <!-- Modal Content (The Image) -->
+				  <img class="modal-content" id="img01">
 				</div>
+				
 				<div class="clearfix"></div>
 				<div class="x_title">
 					<h3>Imagens da Chegada.</h3>
 					<div class="clearfix"></div>
 				</div>
-				<div class="x_content">
-					<div class="attachment" id="imagensChegada">
-						<c:forEach items="${reserva.eventoFim.imagens}" var="imagem">
-							<div class="col-md-55">
-								<div class="thumbnail">
-									<div class="view view-first">
-										<img src="${imagem.url}" style="width: 100%; display: block;"
-											class="imagem" onclick="ExibeGaleriaChegada()" />
-									</div>
-								</div>
-							</div>
-						</c:forEach>
-					</div>
-				</div>
+				<c:forEach items="${reserva.eventoFim.imagens}" var="imagem"  varStatus="status">
+					<img id="myImgChegada${status.index}" src="${imagem.url}" width="300" height="200" onclick="exibe(${status.index}, 0)">
+				</c:forEach>
 			</div>
 		</div>
 	</div>
 	<div class="modal fade" id="imagemModal">
-		<div class="modal-dialog" style="width: 75% !important;">
+		<div class="modal-dialog" style="">
 			<div id="exibeImagem">
 				<button type="button" class="close" data-dismiss="modal"
 					id="fechaModal" aria-hidden="true">x</button>
@@ -156,5 +183,34 @@ a:link {
 			</div>
 		</div>
 	</div>
+	
+	<script>
+		
+		function exibe(idx, saida){
+			
+			var img = "";
+			
+			if(saida)
+				img = document.getElementById('myImgSaida'+idx);
+			else
+				img = document.getElementById('myImgChegada'+idx);
+			
+			modal.style.display = "block";
+		    modalImg.src = img.src;
+		    modalImg.alt = img.alt;
+		    captionText.innerHTML = img.alt;
+		}
+		
+		var modal = document.getElementById('myModal');
+		
+		var modalImg = document.getElementById("img01");
+		var captionText = document.getElementById("caption");
+		
+		var span = document.getElementsByClassName("close")[0];
+		
+		span.onclick = function() {
+		    modal.style.display = "none";
+		}
+	</script>
 </body>
 </html>

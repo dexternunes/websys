@@ -23,6 +23,8 @@ public class Mail extends EntityBaseRoot {
 	private String subject;
 
 	private String msg;
+	
+	private Boolean ending = false;
 
 	@Id
 	@GeneratedValue
@@ -67,4 +69,12 @@ public class Mail extends EntityBaseRoot {
 		this.msg = msg;
 	}
 
+	public Boolean getEnding() {
+		return ending;
+	}
+
+	public void setEnding(Boolean ending) {
+		this.ending = ending;
+	}
+	
 }

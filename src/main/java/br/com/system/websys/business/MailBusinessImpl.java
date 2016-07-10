@@ -53,6 +53,16 @@ public class MailBusinessImpl extends BusinessBaseRootImpl<Mail, MailRepository>
 	}
 	
 	@Override
+	public void setEnding(List<Mail> mails){
+
+		for(Mail mail : mails)
+			mail.setEnding(true);
+		
+		((MailRepository) repository).save(mails);
+		
+	}
+	
+	@Override
 	public List<Mail> findAll(){
 		return ((MailRepository) repository).findAll();
 	}
