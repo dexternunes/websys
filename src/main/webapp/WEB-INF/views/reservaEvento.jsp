@@ -38,7 +38,7 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">Tempo do motor<span class="required">*</span></label>
 							<form:hidden path="id"/>
 							<div class="col-md-2 col-sm-2">
-								<form:input path="hora" cssClass="form-control col-md-2"/>
+								<form:input path="hora" cssClass="form-control col-md-2"/>&nbsp;<span id="errmsg"></span>
 								<form:errors cssClass="native-error" path="hora"></form:errors>
 							</div>
 						</div>
@@ -70,7 +70,7 @@
 					
 					</br> 
 					<button id="btn-upload" class="btn btn-primary">Escolher Fotos</button> ou (Arraste as fotos)
-					<div id="dropbox" class="upload">
+					<div id="dropbox" class="upload hidden-tablet hidden-phone">
 						<p>Arraste e solte aqui.</p>
 						<div style="display: none;" class="progress progress-striped active">
 							<div class="bar" style="width: 100%;"></div>
@@ -198,9 +198,15 @@
 		
 		});
 		
-		$('#hora').inputmask('99999',{placeholder:'0', numericInput:true});
-		$('#minuto').inputmask('99',{placeholder:'0', numericInput:true});
-		$('#segundo').inputmask('99',{placeholder:'0', numericInput:true});
+		
+	  $("#hora").keypress(function (e) {
+	     //if the letter is not digit then display error and don't type anything
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        //display error message
+	        $("#errmsg").html("Digits Only").show().fadeOut("slow");
+	               return false;
+	    }
+	   });
 		
 	</script>					
 </body>
