@@ -228,20 +228,6 @@ progress:after {
 </script>
  -->
 <style type="text/css">
-.loading_visivel {
-    font-family: Arial;
-    font-size: 10pt;
-    text-align: center;
-    /*color:black;*/
-    /*opacity: inherit;*/
-    width: 200px;
-    height: 100px;
-    /*display: none;*/
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
 
 .circulo {
     background-color: rgba(0,0,0,0);

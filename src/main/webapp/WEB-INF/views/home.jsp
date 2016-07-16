@@ -261,12 +261,6 @@
 		</div>
 	</div>
 
-	<div class="modal" id="loading" style="display: none;">
-	    <div class="loading_visivel">
-	        <div class="circulo"></div>
-	    </div>
-    </div>
-
 	<script
 		src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
 	<script type="text/javascript"
@@ -280,15 +274,7 @@
 	<script>
 	
 	var permiteClick = true; 
-	/*
-	$(document).ajaxStart(function () {
-        $('#loading').modal('show');
-    });
-	
-	$(document).ajaxStop(function(){
-		$('#loading').modal('hide');
-	});	
-	*/
+
 	function reload(){
 		document.location.reload();
 	}
