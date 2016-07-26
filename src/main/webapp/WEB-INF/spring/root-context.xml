@@ -22,10 +22,10 @@
 	</context:component-scan>
 	
 	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <beans:property name="host" value="mail.primeshareclub.com.br"/>
+        <beans:property name="host" value="mail.primeshare.com.br"/>
         <beans:property name="port" value="587"/>
-        <beans:property name="username" value="websys@primeshareclub.com.br"/>
-        <beans:property name="password" value="qaz741"/>
+        <beans:property name="username" value="websys@primeshare.com.br"/>
+        <beans:property name="password" value="d25m07"/>
         <beans:property name="javaMailProperties">
             <beans:props>
                 <beans:prop key="mail.smtp.auth">true</beans:prop>

@@ -27,20 +27,30 @@ class ReservaJobImpl implements ReservaJob {
 	public void loadAndSendMail() throws Exception{
 		List<Mail> mails = mailBusiness.findAll();
 		
-		mailBusiness.setEnding(mails);
-		
-		if(mails == null)
+		if(mails == null || mails.size() == 0)
 			return;
 		
 		for(Mail mail : mails){
-			if(mail.getMailTo() == null || mail.getMailTo().size() == 0 
+			
+			if(mail.getEnding() || mail.getMailTo() == null || mail.getMailTo().size() == 0 
 					|| mail.getMailTo().get(0).equals("") || !mail.getMailTo().get(0).contains("@"))
 				continue;
 			
-			String[] to = new String[]{mail.getMailTo().get(0)}; 
-			mailBusiness.sendMail(mail.getMailFrom(), to, mail.getSubject(), mail.getMsg(), true);
+			mail.setEnding(true);
+			mailBusiness.salvar(mail);
+			
+			try{
+				String[] to = new String[]{mail.getMailTo().get(0)}; 
+				mailBusiness.sendMail(mail.getMailFrom(), to, mail.getSubject(), mail.getMsg(), true);
+				mailBusiness.removeLocal(mail);
+			}
+			catch(Exception e){
+				mail.setEnding(false);
+				mailBusiness.salvar(mail);
+			}
+			
 		}
-		mailBusiness.removeLocal(mails);
+		
 	}
 	
 	@Override
