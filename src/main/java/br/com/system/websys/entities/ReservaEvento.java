@@ -28,6 +28,8 @@ public class ReservaEvento extends EntityBaseRoot {
 	
 	private Long hora;
 	
+	private String obs;
+	
 	@DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date horaRegistro;
 	
@@ -64,6 +66,14 @@ public class ReservaEvento extends EntityBaseRoot {
 	@JsonDeserialize( using=JsonDateTimeDeserializer.class)
 	public void setHoraRegistro(Date horaRegistro) {
 		this.horaRegistro = horaRegistro;
+	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
 	}
 	
 }

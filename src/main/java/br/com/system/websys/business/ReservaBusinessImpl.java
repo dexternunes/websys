@@ -127,7 +127,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+							+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
 		}
 		return false;
@@ -160,7 +160,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+							+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
 		}
 		return false;
@@ -320,7 +320,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.getEventoFim().setHoraRegistro(reservaEvento.getHoraRegistro());
 			reserva.setHoraMotorTotal(reserva.getEventoFim().getHora() - reserva.getEventoInicio().getHora());
 			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
+			reserva.getEventoFim().setObs(reservaEvento.getObs());
 			sendEmailFinalizacao(reserva, server);
+			
 		}
 
 		return this.salvar(reserva);
@@ -673,7 +675,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 				+ "	<div>"
 				+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-				+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+				+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 				+ "</br></br></div>";
 
 		try {
@@ -708,7 +710,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 				+ "	<div>"
 				+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-				+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+				+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 				+ "</br></br></div>";
 		try {
 			mailBusiness.sendMail("websys@primeshareclub.com.br", destinatario, title, texto);
@@ -795,7 +797,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+							+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
 		}
 
@@ -825,7 +827,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getObs() 
 								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+								+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
 			}
 		}
@@ -841,28 +843,33 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		String link = server + "/websys/reserva/visualizaImagensReserva/" + reserva.getId();
 
 		for (Terceiro t : terceiroList) {
+			String html ="<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
+					+ "<div align='center' style='background-color:rgb(28,60,106)'>"
+					+ "	<img width='98' height='130' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/primeshare.png'  />"
+					+ "</div>" + "</br></br><font color='white'>"
+					+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
+					+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
+					+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
+					+ Formatters.formatDate(reserva.getInicioReserva()) 
+					+ "<br />" 
+					+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
+					+ "<br />" 
+					+ "	Hora de registro do início da utilização: " + Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro())
+					+ "<br />" 
+					+ "	Hora de registro do fim da utilização: " + Formatters.formatDate(reserva.getEventoFim().getHoraRegistro())
+					+ "<br /> <br />";
+			
+					if(t== reserva.getSolicitante()){
+						html = html.concat(" Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>");
+					}
+					html = html.concat( " Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>"
+					+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
+					+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
+					+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
+					+ "</br></br></div>");
+			
 			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { t.getEmails() },
-					"Prime Share Club - Reserva Finalizada",
-					"<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
-							+ "<div align='center' style='background-color:rgb(28,60,106)'>"
-							+ "	<img width='98' height='130' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/primeshare.png'  />"
-							+ "</div>" + "</br></br><font color='white'>"
-							+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
-							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
-							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
-							+ Formatters.formatDate(reserva.getInicioReserva()) 
-							+ "<br />" 
-							+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
-							+ "<br />" 
-							+ "	Hora de registro do início da utilização: " + Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro())
-							+ "<br />" 
-							+ "	Hora de registro do fim da utilização: " + Formatters.formatDate(reserva.getEventoFim().getHoraRegistro())
-							+ "<br /> <br />"
-							+ " Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>"
-							+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
-							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
-							+ "</br></br></div>");
+					"Prime Share Club - Reserva Finalizada",html);
 		}
 
 		List<Role> roles = new ArrayList<Role>();
@@ -891,7 +898,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ "' style='color:white;'>aqui</a>" + "<br /><br />Att,<br /> " + "	</font>"
 								+ "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+								+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
 			}
 		}
@@ -924,7 +931,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getObs() 
 							+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-							+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+							+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
 		}
 
@@ -954,7 +961,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getObs() 
 								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 								+ "		<h2><font color='white'> <i style='font-size: 26px;'></i> EQUIPE PRIME SHARE CLUB </font></h2>"
-								+ "		<p><font color='white'>©2015 All Rights Reserved.</font></p>" + "	</div> "
+								+ "		<p><font color='white'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
 			}
 		}

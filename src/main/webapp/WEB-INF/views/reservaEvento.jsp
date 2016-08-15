@@ -59,7 +59,13 @@
 							</div>
 						</div>
 						
-						
+						<div class="clearfix"></div>
+						<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações</label>
+								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
+									<form:textarea rows="5" path="obs" id="obs" />
+								</div>
+							</div>
 					</form:form>
 			    
 		        	<form name="form-product-id" id="main-form">
