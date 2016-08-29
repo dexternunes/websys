@@ -838,7 +838,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
-		String link = server + "/websys/reserva/visualizaImagensReserva/" + reserva.getId();
+		String link = server + "/reserva/visualizaImagensReserva/" + reserva.getId();
 
 		for (Terceiro t : terceiroList) {
 			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { t.getEmails() },

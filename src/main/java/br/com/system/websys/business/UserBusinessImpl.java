@@ -142,7 +142,7 @@ class UserBusinessImpl implements UserBusiness {
 			user.setUidRecurerarSenha(uid);
 			this.salvar(user);
 
-			String link = server + "/websys/usuarios/recuperarsenha/" + uid;
+			String link = server + "/usuarios/recuperarsenha/" + uid;
 			
 			String texto = "<div align='center' style='background-color:rgb(28,60,106)'></br></br>"
 					+ "<div align='center' style='background-color:rgb(28,60,106)'>"
