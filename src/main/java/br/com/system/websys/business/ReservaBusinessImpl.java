@@ -840,7 +840,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Terceiro> terceiroList = reserva.getGrupo().getTerceiros();
 
-		String link = server + "/websys/reserva/visualizaImagensReserva/" + reserva.getId();
+		String link = server + "/reserva/visualizaImagensReserva/" + reserva.getId();
 
 		for (Terceiro t : terceiroList) {
 			String html ="<div align='center' style='background-color:rgb(28,60,106)'></br></br>"

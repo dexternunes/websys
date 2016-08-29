@@ -86,133 +86,135 @@
 						aria-hidden="true">x</button>
 					<h4 class="modal-title" id="myModalLabel">Nova reserva</h4>
 				</div>
-				<form:form id="antoform2" class="form-horizontal calender"
-					role="form" commandName="reserva"
-					action="${pageContext.request.contextPath}/reserva/salvar">
-
-					
-					<div class="modal-body">
-
-					<form:hidden path="id" id="id" />
-					<form:hidden path="allDay" id="allDay" />
-					<input type="hidden" value="${user.nome}" id="nome_terceiro" />
-					<input type="hidden" value="${user.idTerceiro}" id="idTerceiro" />
-					<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
-					<input type="hidden" value="${admin}" id="admin" />
-					<input type="hidden" value="${marinheiro}" id="marinheiro" />
-							<c:if test="${admin == 1}">
-								<div class="form-group">
-									<label class="col-sm-3 control-label">Grupo</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<select id="grupo" name="grupo" class="select2 form-control">
-										</select>
+				<div id="formReserva" >
+					<form:form id="antoform2" class="form-horizontal calender"
+						role="form" commandName="reserva"
+						action="${pageContext.request.contextPath}/reserva/salvar">
+	
+						
+						<div class="modal-body">
+	
+						<form:hidden path="id" id="id" />
+						<form:hidden path="allDay" id="allDay" />
+						<input type="hidden" value="${user.nome}" id="nome_terceiro" />
+						<input type="hidden" value="${user.idTerceiro}" id="idTerceiro" />
+						<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
+						<input type="hidden" value="${admin}" id="admin" />
+						<input type="hidden" value="${marinheiro}" id="marinheiro" />
+								<c:if test="${admin == 1}">
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Grupo</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<select id="grupo" name="grupo" class="select2 form-control">
+											</select>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Solicitante</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<select id="title" name="title" class="select2 form-control">
+											</select>
+										</div>
+									</div>
+								</c:if>
+								<c:if test="${admin == 0}">
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Solicitante</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<select id="title" name="title" class="select2 form-control">
+											</select>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">Grupo</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<select id="grupo" name="grupo" class="select2 form-control">
+											</select>
+										</div>
+									</div>
+								</c:if>
+								<div class="clearfix"></div>
+								<div class="form-group" id="divinicioReserva">
+									<label class="col-sm-3 control-label">Início(Data/Hora)</label>
+									<div class="col-md-6 xdisplay_inputx form-group has-feedback">
+										<form:input id="data_inicio_reserva" path="inicioReserva"
+											class="form-control has-feedback-left data_reserva input-hora"
+											style="z-index: 9999 !important;" type="text"
+											data-inputmask="'mask' : '99/99/9999 99:99'"
+											aria-describedby="inputSuccess2Status4"
+											placeholder="Data/Hora" readonly="true"></form:input>
+										<span class="fa fa-calendar-o form-control-feedback left"
+											aria-hidden="true"></span> <span id="inputSuccess2Status4"
+											class="sr-only"></span>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+								<div class="form-group" id="divfimReserva">
+									<label class="col-sm-3 control-label">Fim(Data/Hora)</label>
+									<div class="col-md-6 xdisplay_inputx form-group has-feedback">
+										<form:input id="data_fim_reserva" path="fimReserva"
+											class="form-control has-feedback-left data_reserva input-hora"
+											style="z-index: 9999 !important;" type="text"
+											data-inputmask="'mask' : '99/99/9999 99:99'"
+											aria-describedby="inputSuccess2Status4"
+											placeholder="Data/Hora" readonly="true"></form:input>
+										<span class="fa fa-calendar-o form-control-feedback left"
+											aria-hidden="true"></span> <span id="inputSuccess2Status4"
+											class="sr-only"></span>
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label">Solicitante</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<select id="title" name="title" class="select2 form-control">
-										</select>
-									</div>
+									<label class="control-label col-md-3 col-sm-3 col-xs-12">Utiliza
+										Marinheiro </label>
+									<form:checkbox style="margin-left:10px; margin-top:10px;"
+										id="utilizaMarinheiro" path="utilizaMarinheiro" />
 								</div>
-							</c:if>
-							<c:if test="${admin == 0}">
-								<div class="form-group">
-									<label class="col-sm-3 control-label">Solicitante</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<select id="title" name="title" class="select2 form-control">
-										</select>
-									</div>
+								<div class="clearfix"></div>
+								<div class="form-group" id="div_status" style="display: none !important;">
+									<label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+									<form:select path="status" multiple="false" id="status" cssClass="select2_multiple" >
+										<form:options items="${listaReservaStatus}" itemValue="code" itemLabel="descricao"></form:options>
+									</form:select>
 								</div>
 								<div class="clearfix"></div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label">Grupo</label>
-									<div class="col-md-6 col-sm-6 col-xs-12">
-										<select id="grupo" name="grupo" class="select2 form-control">
-										</select>
-									</div>
+									<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
+									</label>
+									<form:textarea rows="5" path="obs" id="obs" />
 								</div>
-							</c:if>
-							<div class="clearfix"></div>
-							<div class="form-group" id="divinicioReserva">
-								<label class="col-sm-3 control-label">Início(Data/Hora)</label>
-								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
-									<form:input id="data_inicio_reserva" path="inicioReserva"
-										class="form-control has-feedback-left data_reserva input-hora"
-										style="z-index: 9999 !important;" type="text"
-										data-inputmask="'mask' : '99/99/9999 99:99'"
-										aria-describedby="inputSuccess2Status4"
-										placeholder="Data/Hora" readonly="true"></form:input>
-									<span class="fa fa-calendar-o form-control-feedback left"
-										aria-hidden="true"></span> <span id="inputSuccess2Status4"
-										class="sr-only"></span>
+								<div class="clearfix"></div>
+								<div class="form-group">
+								<input type="hidden" value="${pageContext.request.contextPath}/reservaEvento/" id="caminhoEvento"/>
+									<button type="button" class="btn" id="btnEventoInicio"
+										data-dismiss="modal" style="display: none !important">Evento
+										Início</button>
+									<button type="button" class="btn" id="btnEventoFim"
+										data-dismiss="modal" style="display: none !important">Evento
+										Fim</button>
 								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="form-group" id="divfimReserva">
-								<label class="col-sm-3 control-label">Fim(Data/Hora)</label>
-								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
-									<form:input id="data_fim_reserva" path="fimReserva"
-										class="form-control has-feedback-left data_reserva input-hora"
-										style="z-index: 9999 !important;" type="text"
-										data-inputmask="'mask' : '99/99/9999 99:99'"
-										aria-describedby="inputSuccess2Status4"
-										placeholder="Data/Hora" readonly="true"></form:input>
-									<span class="fa fa-calendar-o form-control-feedback left"
-										aria-hidden="true"></span> <span id="inputSuccess2Status4"
-										class="sr-only"></span>
-								</div>
-							</div>
-							<div class="clearfix"></div>
-							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">Utiliza
-									Marinheiro </label>
-								<form:checkbox style="margin-left:10px; margin-top:10px;"
-									id="utilizaMarinheiro" path="utilizaMarinheiro" />
-							</div>
-							<div class="clearfix"></div>
-							<div class="form-group" id="div_status" style="display: none !important;">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
-								<form:select path="status" multiple="false" id="status" cssClass="select2_multiple" >
-									<form:options items="${listaReservaStatus}" itemValue="code" itemLabel="descricao"></form:options>
-								</form:select>
-							</div>
-							<div class="clearfix"></div>
-							<div class="form-group">
-								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações
-								</label>
-								<form:textarea rows="5" path="obs" id="obs" />
-							</div>
-							<div class="clearfix"></div>
-							<div class="form-group">
-							<input type="hidden" value="${pageContext.request.contextPath}/reservaEvento/" id="caminhoEvento"/>
-								<button type="button" class="btn" id="btnEventoInicio"
-									data-dismiss="modal" style="display: none !important">Evento
-									Início</button>
-								<button type="button" class="btn" id="btnEventoFim"
-									data-dismiss="modal" style="display: none !important">Evento
-									Fim</button>
-							</div>
-							<div class="clearfix"></div>
-					</div>
-					<div class="modal-footer">
-						<div class="form-actions">
-							<button type="button" class="hide btn  btn-danger "
-								data-dismiss="modal" style="display: none !important">Excluir</button>
-							<button type="button" class="btn  btn-danger exclui_reserva"
-								data-dismiss="modal" style="display: none !important">Excluir</button>
-							<button type="button" class="btn  btn-danger cancela_reserva"
-								data-dismiss="modal" style="display: none !important">Cancelar</button>
-							<button type="button" class="btn btn-default finaliza_reserva"
-								data-dismiss="modal" style="display: none !important">Finalizar</button>
-							<button type="button" class="btn btn-default antoclose"
-								data-dismiss="modal">Fechar</button>
-							<button type="button" class="btn btn-primary antosubmit">Confirmar
-							</button>
+								<div class="clearfix"></div>
 						</div>
-					</div>
-				</form:form>
+						<div class="modal-footer">
+							<div class="form-actions">
+								<button type="button" class="hide btn  btn-danger "
+									data-dismiss="modal" style="display: none !important">Excluir</button>
+								<button type="button" class="btn  btn-danger exclui_reserva"
+									data-dismiss="modal" style="display: none !important">Excluir</button>
+								<button type="button" class="btn  btn-danger cancela_reserva"
+									data-dismiss="modal" style="display: none !important">Cancelar</button>
+								<button type="button" class="btn btn-default finaliza_reserva"
+									data-dismiss="modal" style="display: none !important">Finalizar</button>
+								<button type="button" class="btn btn-default antoclose"
+									data-dismiss="modal">Fechar</button>
+								<button type="button" class="btn btn-primary antosubmit">Confirmar
+								</button>
+							</div>
+						</div>
+					</form:form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -259,12 +261,6 @@
 		</div>
 	</div>
 
-	<div class="modal" id="loading" style="display: none;">
-	    <div class="loading_visivel">
-	        <div class="circulo"></div>
-	    </div>
-    </div>
-
 	<script
 		src="${pageContext.request.contextPath}/resources/js/calendar/fullcalendar.min.js"></script>
 	<script type="text/javascript"
@@ -278,15 +274,7 @@
 	<script>
 	
 	var permiteClick = true; 
-	
-	$(document).ajaxStart(function () {
-        $('#loading').modal('show');
-    });
-	
-	$(document).ajaxStop(function(){
-		$('#loading').modal('hide');
-	});	
-	
+
 	function reload(){
 		document.location.reload();
 	}
@@ -697,7 +685,7 @@
 								format : 'DD/MM/YYYY HH:mm',
 								timezone : 'local',
 								calender_style : "picker_4",
-								parentEl : '#CalenderModal',
+								parentEl : '#formReserva',
 								startDate : getDateFromString(reservaJSON.startStr),
 								minDate: minDate,
 								singleDatePicker : true,
@@ -713,7 +701,7 @@
 							format : 'DD/MM/YYYY HH:mm',
 							timezone : 'local',
 							calender_style : "picker_4",
-							parentEl : '#CalenderModal',
+							parentEl : '#formReserva',
 							startDate : getDateFromString($('#data_inicio_reserva').val()).addHours(1),
 							minDate: getDateFromString($('#data_inicio_reserva').val()).addHours(1),
 							locale : locale

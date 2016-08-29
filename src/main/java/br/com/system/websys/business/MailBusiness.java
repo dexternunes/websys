@@ -15,4 +15,6 @@ public interface MailBusiness  extends BusinessBaseRoot<Mail, MailRepository> {
 
 	List<Mail> findAll();
 
+	void setEnding(List<Mail> mails);
+
 }

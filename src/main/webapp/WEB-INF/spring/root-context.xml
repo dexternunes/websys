@@ -22,10 +22,10 @@
 	</context:component-scan>
 	
 	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <beans:property name="host" value="mail.primeshareclub.com.br"/>
+        <beans:property name="host" value="mail.primeshare.com.br"/>
         <beans:property name="port" value="587"/>
-        <beans:property name="username" value="websys@primeshareclub.com.br"/>
-        <beans:property name="password" value="qaz741"/>
+        <beans:property name="username" value="websys@primeshare.com.br"/>
+        <beans:property name="password" value="d25m07"/>
         <beans:property name="javaMailProperties">
             <beans:props>
                 <beans:prop key="mail.smtp.auth">true</beans:prop>
@@ -47,15 +47,15 @@
  	<beans:bean class="br.com.system.websys.job.ReservaJobImpl" id="reservaJobImpl" />
  	
  	<task:scheduled-tasks>
- 	    <task:scheduled ref="reservaJobImpl" method="loadAndSendMail"  cron="* */3 * * * *"  ></task:scheduled>
+ 	    <task:scheduled ref="reservaJobImpl" method="loadAndSendMail"  cron="* */5 * * * *"  ></task:scheduled>
  	</task:scheduled-tasks>
  	
  	<task:scheduled-tasks>
- 	    <task:scheduled ref="reservaJobImpl" method="validaReservas"  cron="* */2 * * * *"  ></task:scheduled>
+ 	    <task:scheduled ref="reservaJobImpl" method="validaReservas"  cron="* */5 * * * *"  ></task:scheduled>
  	</task:scheduled-tasks>
  	
  	<task:scheduled-tasks>
- 	    <task:scheduled ref="reservaJobImpl" method="alterarStatusReserva"  cron="* */1 * * * *"  ></task:scheduled>
+ 	    <task:scheduled ref="reservaJobImpl" method="alterarStatusReserva"  cron="* */5 * * * *"  ></task:scheduled>
  	</task:scheduled-tasks>
 	
 </beans:beans>
