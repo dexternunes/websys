@@ -58,6 +58,24 @@ public class ParseDTO{
 		
 	}
 	
+	public ReservaDTO parseReserva2ReservaDTOUserLogado(Reserva reserva, Boolean mostrarDetalhes){
+		
+		return new ReservaDTO(
+				reserva.getId(), 
+				reserva.getSolicitante().getNome(), 
+				parseTerceiro2TerceiroDTO(reserva.getSolicitante()),
+				reserva.getInicioReserva(),
+				reserva.getFimReserva(), 
+				reserva.getUtilizaMarinheiro(), 
+				reserva.getObs(), 
+				reserva.getStatus(),
+				parseReservaEnvento2ReservaEnventoDTO(reserva.getEventoInicio()), 
+				parseReservaEnvento2ReservaEnventoDTO(reserva.getEventoFim()), 
+				new GrupoDTO(reserva.getGrupo().getId(), reserva.getGrupo().getDescricao(), reserva.getGrupo().getColor()),
+				null, mostrarDetalhes);
+		
+	}
+	
 	public Reserva parseReservaDTO2Reserva(ReservaDTO reservaDTO) throws Exception{
 		
 		Reserva reserva = null; 		
@@ -132,7 +150,7 @@ public class ParseDTO{
 		if(reservaEvento.getHoraRegistro() != null)
 			dataRegistro = Formatters.formatDate(reservaEvento.getHoraRegistro());
 		
-		return new ReservaEventoDTO(reservaEvento.getId(), reservaEvento.getHora(), imagens, dataRegistro);
+		return new ReservaEventoDTO(reservaEvento.getId(), reservaEvento.getHora(), imagens, dataRegistro, reservaEvento.getObs());
 	}
 	
 	public List<GrupoDTO> parseReservaEnvento2GrupoDTO(List<Grupo> grupos){

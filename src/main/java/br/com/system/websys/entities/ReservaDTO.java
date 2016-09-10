@@ -47,6 +47,7 @@ public class ReservaDTO implements Serializable {
 	private List<String> imagensUrl = new ArrayList<String>();
 	
 	private String urlImagens;
+	private Boolean mostrarDetalhes = false;
 	
 	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean utilizaMarinheiro,
 			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo, String tipoEvento) {
@@ -63,6 +64,23 @@ public class ReservaDTO implements Serializable {
 		this.grupo = grupo;
 		this.tipoEvento = tipoEvento;
 	}
+	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean utilizaMarinheiro,
+			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo, String tipoEvento, Boolean mostrarDetalhes) {
+		this.id = id;
+		this.title = title;
+		this.terceiro = terceiro;
+		setStart(start);
+		setEnd(end);
+		this.utilizaMarinheiro = utilizaMarinheiro;
+		this.obs = obs;
+		this.status = status;
+		this.eventoInicio = eventoInicio;
+		this.eventoFim = eventoFim;
+		this.grupo = grupo;
+		this.tipoEvento = tipoEvento;
+		this.mostrarDetalhes = mostrarDetalhes;
+	}
+	
 	
 	public ReservaDTO(){
 		
@@ -196,6 +214,12 @@ public class ReservaDTO implements Serializable {
 
 	public void setUrlImagens(String urlImagens) {
 		this.urlImagens = urlImagens;
+	}
+	public Boolean getMostrarDetalhes() {
+		return mostrarDetalhes;
+	}
+	public void setMostrarDetalhes(Boolean mostrarDetalhes) {
+		this.mostrarDetalhes = mostrarDetalhes;
 	}
 	
 }

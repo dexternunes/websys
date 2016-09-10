@@ -17,6 +17,9 @@ public class ReservaEventoDTO implements Serializable {
 	private List<String> imagens;
 	
 	private String dataRegistro;
+	
+	private String obsFim;
+
 
 	public ReservaEventoDTO(){
 		
@@ -26,11 +29,12 @@ public class ReservaEventoDTO implements Serializable {
 		this.id = id;
 	}
 	
-	public ReservaEventoDTO(Long id, Long hora, List<String> imagens, String dataRegistro){
+	public ReservaEventoDTO(Long id, Long hora, List<String> imagens, String dataRegistro, String obsFim){
 		this.id = id;
 		this.hora = hora;
 		this.imagens = imagens;
 		this.dataRegistro = dataRegistro;
+		this.obsFim = obsFim == null ? "": obsFim;
 	}
 	
 	public Long getId() {
@@ -63,6 +67,14 @@ public class ReservaEventoDTO implements Serializable {
 
 	public void setDataRegistro(String dataRegistro) {
 		this.dataRegistro = dataRegistro;
+	}
+
+	public String getObsFim() {
+		return obsFim;
+	}
+
+	public void setObsFim(String obsFim) {
+		this.obsFim = obsFim;
 	}
 	
 }

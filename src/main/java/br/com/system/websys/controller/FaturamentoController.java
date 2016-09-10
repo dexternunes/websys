@@ -33,6 +33,7 @@ import br.com.system.websys.entities.ManutencaoStatus;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaDTO;
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.User;
 
@@ -249,7 +250,14 @@ public class FaturamentoController{
 
 		Reserva reserva = ReservaBusiness.get(idReserva);
 
-		ReservaDTO reservaDTO = parser.parseReserva2ReservaDTO(reserva);
+		ReservaDTO reservaDTO;
+		if(reserva.getSolicitante() == userBusiness.getCurrent().getTerceiro() || userBusiness.getCurrent().getRole().equals(Role.ROLE_ADMIN)){
+			reservaDTO = parser.parseReserva2ReservaDTOUserLogado(reserva, true);
+		}
+		else{
+			reservaDTO = parser.parseReserva2ReservaDTOUserLogado(reserva, false);
+		}
+		
 		
 		return reservaDTO;
 			
