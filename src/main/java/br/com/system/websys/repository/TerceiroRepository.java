@@ -20,4 +20,7 @@ public interface TerceiroRepository  extends RepositoryBaseRoot<Terceiro> {
 	@Query("SELECT t FROM Terceiro t WHERE t.excluido = 0")
 	List<Terceiro> getAll();
 	
+	@Query("SELECT t FROM Terceiro t WHERE t.excluido = 0 order by t.nome asc")
+	List<Terceiro> getAllOrderByNomeAsc();
+	
 }

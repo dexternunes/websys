@@ -12,6 +12,8 @@ public interface TerceiroBusiness extends BusinessBaseRoot<Terceiro, TerceiroRep
 	
 	public List<Terceiro> getAll();
 
+	public List<Terceiro> getAllOrderByNomeAsc();
+
 	public List<Terceiro> getAllByTipo(TerceiroTipo tipo);
 	
 	public TerceiroExclusaoStatus validaExclusao(Terceiro terceiro);

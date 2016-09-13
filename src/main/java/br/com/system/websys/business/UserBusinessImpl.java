@@ -108,6 +108,11 @@ class UserBusinessImpl implements UserBusiness {
 		return ((UserRepository) userRepository).getAll();
 	}
 
+	@Override
+	public List<User> getAllOrderByLoginAsc(List<Role> roles) {
+		return ((UserRepository) userRepository).getAllOrderByLoginAsc(roles);
+	}
+
 	public Boolean enviarEmailNovoUsuario(User user) throws Exception {
 
 		String texto = "<div align='center' style='background-color:rgb(28,60,106)'></br></br>"

@@ -40,7 +40,7 @@ public class GrupoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String grupoList(Model model) {
 
-		model.addAttribute("grupos", grupoBusiness.getAll());
+		model.addAttribute("grupos", grupoBusiness.getAllOrderByDescricaoAsc());
 
 		return "cadastro/grupo/list";
 	}

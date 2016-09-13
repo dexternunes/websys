@@ -19,6 +19,7 @@ import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
+import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
 
 @Controller
@@ -88,6 +89,7 @@ public class ReservaEventoController{
 	public String get(@PathVariable("reservaEventoId") Long reservaEventoId, Model model, HttpServletRequest request) throws Exception {
 		
 		ReservaEvento reservaEvento = reservaEventoBusiness.get(reservaEventoId);
+		
 		model.addAttribute("reservaEvento", reservaEvento);
 		
 		return "reservaEvento";

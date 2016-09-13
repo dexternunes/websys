@@ -36,6 +36,11 @@ class ProdutoBusinessImpl extends BusinessBaseRootImpl<Produto, ProdutoRepositor
 	public List<Produto> getAll() {
 		return ((ProdutoRepository)repository).getAll();
 	}
+
+	@Override
+	public List<Produto> getAllOrderByDescricaoAsc() {
+		return ((ProdutoRepository)repository).getAllOrderByDescricaoAsc();
+	}
 	
 	@Override
 	public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus>status) {

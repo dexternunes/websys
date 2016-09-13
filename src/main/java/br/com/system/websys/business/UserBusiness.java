@@ -23,6 +23,8 @@ public interface UserBusiness {
 	public User getByLogin(String login);
 	
 	public List<User> getAll();
+	
+	public List<User> getAllOrderByLoginAsc(List<Role> roles);
 
 	public Boolean enviarEmailRecuperarSenha(RecuperarSenhaDTO recuperarSenha, String server) throws MessagingException, Exception;
 

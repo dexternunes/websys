@@ -50,7 +50,7 @@ public class TerceiroController {
 			return "redirect:/home";
 		}
 		
-		model.addAttribute("terceiros", terceiroBusiness.getAll());
+		model.addAttribute("terceiros", terceiroBusiness.getAllOrderByNomeAsc());
 		return "cadastro/terceiro/terceiros";
 	}
 	

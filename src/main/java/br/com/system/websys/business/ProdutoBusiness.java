@@ -10,6 +10,8 @@ import br.com.system.websys.repository.ProdutoRepository;
 public interface ProdutoBusiness extends BusinessBaseRoot<Produto, ProdutoRepository> {
 	
 	public List<Produto> getAll();
+	
+	public List<Produto> getAllOrderByDescricaoAsc();
 
 	public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus> status);
 

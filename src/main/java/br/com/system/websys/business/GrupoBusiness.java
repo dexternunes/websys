@@ -11,6 +11,8 @@ import br.com.system.websys.repository.GrupoRepository;
 public interface GrupoBusiness extends BusinessBaseRoot<Grupo, GrupoRepository> {
 	
 	public List<Grupo> getAll();
+	
+	public List<Grupo> getAllOrderByDescricaoAsc();
 
 	public void grupoNovo(Grupo grupo);
 	

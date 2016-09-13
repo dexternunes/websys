@@ -120,8 +120,8 @@
 										Hora do motor no fim da utilização: <label id="horaFim"></label><br>
 										Hora de registro do início da utilização: <label id="horaInicioRegistro"></label><br>
 										Hora de registro do fim da utilização: <label id="horaFimRegistro"></label><br>
-										<label id="obs"></label><br>
-										<label id="imagens"></label><br>
+										<span id="obs"></span><br>
+										<span id="imagens"></span><br>
 									</div>
 								</div>
 							</div>
@@ -157,9 +157,9 @@
 						$('#horaFimRegistro').text(data.eventoFim.dataRegistro);
 						
 						if(data.mostrarDetalhes){
-							$('#obs').text("Obs: "+	data.eventoFim.obsFim);
+							$('#obs').html("Obs início: <label>"+	data.eventoFim.obsFim + "</label> <br> Obs fim:<label"+data.eventoInicio.obsFim+"</label>");
 							var link = "${pageContext.request.contextPath}/reserva/visualizaImagensReserva/"+idReserva;
-							$('#imagens').html("Clique <a href='"+link+ "' target='_blank'>aqui</a> para visuzliar as imagens");
+							$('#imagens').html("Clique <label><a href='"+link+ "' target='_blank'>aqui</a> </label> para visuzliar as imagens");
 						}
 						else{
 							$('#obs').html("");;

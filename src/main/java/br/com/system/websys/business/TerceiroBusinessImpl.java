@@ -46,6 +46,11 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 	}
 
 	@Override
+	public List<Terceiro> getAllOrderByNomeAsc() {
+		return ((TerceiroRepository)repository).getAllOrderByNomeAsc();
+	}
+
+	@Override
 	public List<Terceiro> getAllByTipo(TerceiroTipo tipo) {
 
 		List<Terceiro> terceiros = ((TerceiroRepository)repository).findAllByTipo(tipo);

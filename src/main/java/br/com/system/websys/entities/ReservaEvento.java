@@ -24,6 +24,8 @@ import br.com.system.websys.serializer.JsonDateTimeSerializer;
 @Table(name="reserva_evento")
 public class ReservaEvento extends EntityBaseRoot {
 
+	private Boolean isEventoFim = false;
+
 	private List<Imagem> imagens = new ArrayList<Imagem>();
 	
 	private Long hora;
@@ -74,6 +76,14 @@ public class ReservaEvento extends EntityBaseRoot {
 
 	public void setObs(String obs) {
 		this.obs = obs;
+	}
+
+	public Boolean getIsEventoFim() {
+		return isEventoFim;
+	}
+
+	public void setIsEventoFim(Boolean isEventoFim) {
+		this.isEventoFim = isEventoFim;
 	}
 	
 }

@@ -28,7 +28,7 @@ public class ProdutoController{
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
 
-		model.addAttribute("produtoList", ProdutoBusiness.getAll());
+		model.addAttribute("produtoList", ProdutoBusiness.getAllOrderByDescricaoAsc());
 		return "cadastro/produto/produto";
 	}
 

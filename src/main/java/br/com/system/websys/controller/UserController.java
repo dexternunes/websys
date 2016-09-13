@@ -61,7 +61,7 @@ public class UserController{
 		roles.add(Role.ROLE_COTISTA);
 		roles.add(Role.ROLE_MARINHEIRO);
 		
-		model.addAttribute("usersList", userBusiness.getByRoles(roles));
+		model.addAttribute("usersList", userBusiness.getAllOrderByLoginAsc(roles));
 		return "cadastro/user/user";
 	}
 

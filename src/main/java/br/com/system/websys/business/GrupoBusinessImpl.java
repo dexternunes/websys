@@ -94,6 +94,11 @@ class GrupoBusinessImpl extends BusinessBaseRootImpl<Grupo, GrupoRepository> imp
 	public List<Grupo> getAll() {
 		return ((GrupoRepository)repository).getAll();
 	}
+
+	@Override
+	public List<Grupo> getAllOrderByDescricaoAsc() {
+		return ((GrupoRepository)repository).getAllOrderByDescricaoAsc();
+	}
 	
 	@Override
 	public List<Grupo> getAllByUser(User user) {

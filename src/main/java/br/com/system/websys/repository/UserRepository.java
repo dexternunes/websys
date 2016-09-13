@@ -29,6 +29,9 @@ public interface UserRepository extends RepositoryBaseRoot<User> {
 	@Query("select u from User u where u.excluido = 0")
 	List<User> getAll();
 	
+	@Query("select u from User u where u.role in :roles AND u.excluido = 0 order by u.login asc")
+	List<User> getAllOrderByLoginAsc(@Param("roles") List<Role> roles);
+	
 	
 }
 

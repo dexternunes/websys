@@ -14,6 +14,9 @@ public interface GrupoRepository extends RepositoryBaseRoot<Grupo> {
 	@Query("SELECT g FROM Grupo g WHERE g.excluido = 0")
 	List<Grupo> getAll();
 
+	@Query("SELECT g FROM Grupo g WHERE g.excluido = 0 order by g.descricao asc")
+	List<Grupo> getAllOrderByDescricaoAsc();
+
 	@Query("SELECT g FROM Grupo g WHERE g.ativo = 1 AND g.excluido = 0")
 	List<Grupo> findAllAtivos();
 	
