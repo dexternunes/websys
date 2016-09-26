@@ -15,6 +15,7 @@ import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Grupo;
+import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaStatus;
 import br.com.system.websys.entities.Role;
@@ -46,7 +47,14 @@ public class HomeController {
 		if(user.getRole().equals(Role.ROLE_COTISTA)){
 			grupos = reservaBusiness.getGrupoPermiteReserva(user.getTerceiro());
 
+			for (Grupo g : grupos) {
+				if(g.getProdutos().get(0).getStatus().equals(ProdutoStatus.EM_MANUTENCAO)){
+					model.addAttribute("emManutencao", 1);
+				}
+			}
+			
 			if(grupos.size() > 0)
+
 				model.addAttribute("permiteReserva", 1);
 			else{
 				model.addAttribute("permiteReserva", 0);

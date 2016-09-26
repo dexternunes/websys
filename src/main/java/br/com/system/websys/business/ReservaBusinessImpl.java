@@ -211,13 +211,18 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Grupo> grupo = grupoBusiness.getAllByUser(user);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
-			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA)
-					&& !r.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)
-					&& !r.getStatus().equals(ReservaStatus.ENCERRADA))) {
+			if (
+					grupo.contains(r.getGrupo()) 
+					&& (
+							!r.getStatus().equals(ReservaStatus.CANCELADA)
+							&& !r.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)
+							&& !r.getStatus().equals(ReservaStatus.ENCERRADA)
+					)
+				) {
 				grupo.remove(r.getGrupo());
 			}
 		}
-
+		
 		return grupo;
 	}
 	

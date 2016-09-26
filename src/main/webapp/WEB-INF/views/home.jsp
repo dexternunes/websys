@@ -65,6 +65,11 @@
 						Não é permitido que o usuário tenha duas solicitações de reserva em aberto para a mesma embarcação, para fazer outra reserva cancele a existente<br />
 						Qualquer dúvida entre em contato com o administrador.
 					</div>
+					
+					<div class="alert alert-warning alert-dismissible fade in"
+						role="alert" id="possuiManutencao" style="display:none !important">
+						Embarcação em manutenção.
+					</div>
 					<div class="clearfix"></div>
 					<br>
 					<div id='calendar'></div>
@@ -99,6 +104,7 @@
 						<input type="hidden" value="${user.nome}" id="nome_terceiro" />
 						<input type="hidden" value="${user.idTerceiro}" id="idTerceiro" />
 						<input type="hidden" value="${permiteReserva}" id="permiteReserva" />
+						<input type="hidden" value="${emManutencao}" id="emManutencao" />
 						<input type="hidden" value="${admin}" id="admin" />
 						<input type="hidden" value="${marinheiro}" id="marinheiro" />
 								<c:if test="${admin == 1}">
@@ -344,12 +350,16 @@
 			seleciona = true;
 		}
 	else{
-		if ($('#permiteReserva').val() != '1') {
+		if ($('#permiteReserva').val() != '1' ) {
 			seleciona = false;
 			$('#possuiReserva').show();
+		}else if ( $('#emManutencao').val() == '1'){
+			seleciona = false;
+			$('#possuiManutencao').show();
 		} else {
 			seleciona = true;
 			$('#possuiReserva').hide();
+			$('#possuiManutencao').hide();
 		}
 	}
 
