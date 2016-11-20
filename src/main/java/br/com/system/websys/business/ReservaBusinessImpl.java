@@ -814,9 +814,17 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
-		roles.add(Role.ROLE_MARINHEIRO);
+		//roles.add(Role.ROLE_MARINHEIRO);
 
 		List<User> users = userBusiness.getByRoles(roles);
+		
+		
+		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() >0){
+			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()){
+				users.add(userBusiness.getUserByTerceiro(terceiro));
+			}
+		}
+		
 		for (User user : users) {
 			if (user.getAtivo()) {
 				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
@@ -885,9 +893,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
-		roles.add(Role.ROLE_MARINHEIRO);
+		//roles.add(Role.ROLE_MARINHEIRO);
 
 		List<User> users = userBusiness.getByRoles(roles);
+		
+		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() >0){
+			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()){
+				users.add(userBusiness.getUserByTerceiro(terceiro));
+			}
+		}
+		
 		for (User user : users) {
 			if (user.getAtivo()) {
 				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
@@ -948,9 +963,15 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
-		roles.add(Role.ROLE_MARINHEIRO);
-
+		//roles.add(Role.ROLE_MARINHEIRO);
 		List<User> users = userBusiness.getByRoles(roles);
+		
+		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() >0){
+			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()){
+				users.add(userBusiness.getUserByTerceiro(terceiro));
+			}
+		}
+		
 		for (User user : users) {
 			if (user.getAtivo()) {
 				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
