@@ -28,6 +28,12 @@
 				</div>
 				<div class="wizar_content">
 					<br />
+					
+					<c:if test="${message != '' && message != null}">
+						<div>
+							<div class="alert alert-error">${message}</div>
+						</div>
+					</c:if>
 
 					<form:form cssClass="form-horizontal"
 						action="${pageContext.request.contextPath}/grupo/cadastro/salvar"
@@ -76,18 +82,21 @@
 										<form:options items="${listTerceiros}" itemValue="id" itemLabel="nome"></form:options>
 									</form:select>
 									<form:errors cssClass="native-error" path="terceiros"></form:errors>
-								<%-- </c:if>
-								<c:if test="${readonly}">
-									<lu>
-										<c:forEach items="${grupo.terceiros}" var="terceiro" varStatus="statusTerc">
-											<form:hidden path="terceiros[${statusTerc.index}].id"/>
-											<li>${terceiro.nome}</li>
-										</c:forEach>
-									</lu>
-								</c:if> --%>
 							</div>
 						</div>
 						
+						<div class="form-group">
+							<label class="control-label col-md-3 col-sm-3 col-xs-12"
+								for="first-name">Marinheiros <span class="required">*</span>
+							</label>
+							<div class="col-md-6 col-sm-6 col-xs-12">
+								<%-- <c:if test="${!readonly}"> --%>
+									<form:select path="marinheiros" multiple="true" cssClass="select2_multiple form-control">
+										<form:options items="${listMarinherios}" itemValue="id" itemLabel="nome"></form:options>
+									</form:select>
+									<form:errors cssClass="native-error" path="marinheiros"></form:errors>
+							</div>
+						</div>						
 														
 						<div class="form-group">
 							<label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -102,6 +111,9 @@
 						<br />
 						<div class="form-actions">
 							<button type="submit" class="btn btn-primary">Confirmar</button>
+							<c:if test="${grupo.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+								<button type="button" class="btn btn-danger" id="excluirGrupo">Excluir</button>
+							</c:if>
 						</div>
 
 					</form:form>
@@ -109,6 +121,12 @@
 			</div>
 		</div>
 	</div>
+
+<script type="text/javascript">
+	$('#excluirGrupo').click(function(){
+		window.location = "${pageContext.request.contextPath}/grupo/cadastro/excluir/${grupo.id}";				
+	});
+</script>
 
 </body>
 </html>

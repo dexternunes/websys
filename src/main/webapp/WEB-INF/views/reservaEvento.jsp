@@ -23,8 +23,14 @@
 				</div>
 			    <div class="x_content">
 			    
+			    	<c:if test="${message != '' && message != null}">
+						<div>
+							<div class="alert alert-error">${message}</div>
+						</div>
+					</c:if>
+			    
 			    	<form:form cssClass="form-horizontal"
-						action="${pageContext.request.contextPath}/reservaEvento/salvar"
+						action="${pageContext.request.contextPath}/reservaEvento/salvar?submit="
 						commandName="reservaEvento" method="post">
 						
 						
@@ -32,11 +38,34 @@
 							<label class="control-label col-md-3 col-sm-3 col-xs-12">Tempo do motor<span class="required">*</span></label>
 							<form:hidden path="id"/>
 							<div class="col-md-2 col-sm-2">
-								<form:input path="hora" cssClass="form-control col-md-2"/>horas
+								<form:input path="hora" cssClass="form-control col-md-2"/>&nbsp;<span id="errmsg"></span>
+								<form:errors cssClass="native-error" path="hora"></form:errors>
 							</div>
 						</div>
 						
+						<div class="clearfix"></div>
+						<div class="form-group" id="divinicioReserva">
+							<label class="col-sm-3 control-label">Data/Hora do Registro</label>
+							<div class="col-md-6 xdisplay_inputx form-group has-feedback">
+								<form:input path="horaRegistro"
+									class="form-control has-feedback-left data_reserva input-hora"
+									style="z-index: 9999 !important;" type="text"
+									data-inputmask="'mask' : '99/99/9999 99:99'"
+									aria-describedby="inputSuccess2Status4"
+									placeholder="Data/Hora" readonly="true"></form:input>
+								<span class="fa fa-calendar-o form-control-feedback left"
+									aria-hidden="true"></span> <span id="inputSuccess2Status4"
+									class="sr-only"></span>
+							</div>
+						</div>
 						
+						<div class="clearfix"></div>
+						<div class="form-group">
+								<label class="control-label col-md-3 col-sm-3 col-xs-12">Observações</label>
+								<div class="col-md-6 xdisplay_inputx form-group has-feedback">
+									<form:textarea rows="5" path="obs" id="obs" />
+								</div>
+							</div>
 					</form:form>
 			    
 		        	<form name="form-product-id" id="main-form">
@@ -44,14 +73,10 @@
 					</form>	
 				
 					<p><div style="color:red" class="jquery_error"></div></p>
-						
-					<c:if test="${error != null}">
-						<p><div style="color:red" class="controller_error">Error: ${error}</div></p>
-					</c:if>
 					
 					</br> 
 					<button id="btn-upload" class="btn btn-primary">Escolher Fotos</button> ou (Arraste as fotos)
-					<div id="dropbox" class="upload">
+					<div id="dropbox" class="upload hidden-tablet hidden-phone">
 						<p>Arraste e solte aqui.</p>
 						<div style="display: none;" class="progress progress-striped active">
 							<div class="bar" style="width: 100%;"></div>
@@ -66,7 +91,7 @@
 										<img src="${photo.url}" style="width: 100%; display: block;"/>
 										<div class="mask">
                                             <div class="tools tools-bottom">
-                                                <a onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}" />')"><i class="fa fa-times"></i></a>
+                                                <a onclick="deleteImage('<c:url value="/reservaEvento/imagem/delete/${photo.id}?reservaEventoId=${reservaEvento.id}" />')"><i class="fa fa-times"></i></a>
                                             </div>
                                         </div>
 									</div>
@@ -78,7 +103,7 @@
 				    <div style="clear: both"></div>
 					<br />
 					<div class="form-actions">
-						<button type="button" onclick="javascript:submit()" class="btn btn-primary">Salvar</button>
+						<button type="button" onclick="javascript:submit(true)" class="btn btn-primary">Salvar</button>
 					</div>
 				</div>
 			</div>
@@ -86,8 +111,9 @@
 	</div>
 	<script type="text/javascript">
 	
-		function submit(){
-			$("#reservaEvento").submit();
+		function submit(isSubmit){
+			$("#reservaEvento")[0].action = $("#reservaEvento")[0].action + isSubmit;
+			$("#reservaEvento")[0].submit();
 		}
 	
 		$(document).bind('drop dragover', function(e) {
@@ -103,7 +129,7 @@
 			
 			$.get(url,function(data) {
 			}).done(function() {
-				$("#reservaEvento").submit();
+				submit(false);
 			  })
 			  .fail(function() {
 			    alert( "Erro ao remover a imagem" );
@@ -127,7 +153,7 @@
 				acceptFileTypes : /(\.|\/)(gif|jpg|jpeg|png)$/i ,
 				done : function(e, data) {
 					$("div.active:not(.progress)").html(data.result);
-					window.location = "${pageContext.request.contextPath}/reservaEvento/${reservaEvento.id}";
+					submit(false);
 				},
 				change : function(e, data) {
 
@@ -150,11 +176,43 @@
 
 		$(document).ready(function () {
 			prepareUpload();			
+			
+			var locale = {
+					applyLabel : 'Ok',
+					cancelLabel : 'Cancelar',
+					daysOfWeek : [ 'Dom', 'Seg', 'Ter', 'Qua',
+							'Qui', 'Sex', 'Sab' ],
+					monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+							'Abril', 'Maio', 'Junho', 'Julho',
+							'Agosto', 'Setembro', 'Outubro',
+							'Novembro', 'Dezembro' ]
+				};
+			
+			$('#horaRegistro').daterangepicker(
+					{
+						timePicker : true,
+						timePickerIncrement : 5,
+						timePicker12Hour : false,
+						format : 'DD/MM/YYYY HH:mm',
+						timezone : 'local',
+						calender_style : "picker_4",
+						singleDatePicker : true,
+						startDate : new Date(),
+						minDate: null,
+						locale : locale
+					});
+		
 		});
 		
-		$('#hora').inputmask('99999',{placeholder:'0', numericInput:true});
-		$('#minuto').inputmask('99',{placeholder:'0', numericInput:true});
-		$('#segundo').inputmask('99',{placeholder:'0', numericInput:true});
+		
+	  $("#hora").keypress(function (e) {
+	     //if the letter is not digit then display error and don't type anything
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        //display error message
+	        $("#errmsg").html("Digits Only").show().fadeOut("slow");
+	               return false;
+	    }
+	   });
 		
 	</script>					
 </body>

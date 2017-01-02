@@ -1,63 +1,89 @@
 package br.com.system.websys.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class ReservaDTO  implements Serializable {
+import br.com.system.websys.formatter.Formatters;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ReservaDTO implements Serializable {
 
 	private static final long serialVersionUID = 8631801890193962830L;
-	
+
 	private Long id;
-	
+
 	private String title;
-	
-	private Long idTerceiro;
-	
+
+	private TerceiroDTO terceiro;
+
 	private Date start;
 	
-	private Date end;
+	@SuppressWarnings("unused")
+	private String startStr;
 	
-	private Boolean allDay;
-	
-	private String url;
-	
-	private Boolean utilizaMarinheiro = false;
-	
-	private String obs;
-	
-	private ReservaStatus status;
-	
-	private ReservaEvento eventoInicio;
-	
-	private ReservaEvento eventoFim;
+	@SuppressWarnings("unused")
+	private String endStr;
 
-	private String color;
+	private Date end;
+
+	private Boolean utilizaMarinheiro = false;
+
+	private String obs;
+
+	private ReservaStatus status;
+
+	private ReservaEventoDTO eventoInicio;
+
+	private ReservaEventoDTO eventoFim;
+
+	private GrupoDTO grupo;
 	
-	private Grupo grupo;
+	private String tipoEvento;
 	
-	public ReservaDTO(){
-		
-	}
+	private List<String> imagensUrl = new ArrayList<String>();
 	
-	public ReservaDTO(Long id, String title, Long idTerceiro, Date start, Date end, Boolean allDay, String url, Boolean utilizaMarinheiro, String obs,
-			ReservaStatus status, ReservaEvento eventoInicio, ReservaEvento eventoFim, String color, Grupo grupo){
+	private String urlImagens;
+	private Boolean mostrarDetalhes = false;
+	
+	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean utilizaMarinheiro,
+			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo, String tipoEvento) {
 		this.id = id;
 		this.title = title;
-		this.idTerceiro = idTerceiro;
-		this.start = start;
-		this.end = end;
-		this.allDay = allDay;
-		this.url = url;
+		this.terceiro = terceiro;
+		setStart(start);
+		setEnd(end);
 		this.utilizaMarinheiro = utilizaMarinheiro;
 		this.obs = obs;
 		this.status = status;
 		this.eventoInicio = eventoInicio;
 		this.eventoFim = eventoFim;
-		this.color = color;
 		this.grupo = grupo;
+		this.tipoEvento = tipoEvento;
+	}
+	public ReservaDTO(Long id, String title, TerceiroDTO terceiro, Date start, Date end, Boolean utilizaMarinheiro,
+			String obs, ReservaStatus status, ReservaEventoDTO eventoInicio, ReservaEventoDTO eventoFim, GrupoDTO grupo, String tipoEvento, Boolean mostrarDetalhes) {
+		this.id = id;
+		this.title = title;
+		this.terceiro = terceiro;
+		setStart(start);
+		setEnd(end);
+		this.utilizaMarinheiro = utilizaMarinheiro;
+		this.obs = obs;
+		this.status = status;
+		this.eventoInicio = eventoInicio;
+		this.eventoFim = eventoFim;
+		this.grupo = grupo;
+		this.tipoEvento = tipoEvento;
+		this.mostrarDetalhes = mostrarDetalhes;
+	}
+	
+	
+	public ReservaDTO(){
+		
 	}
 
 	public Long getId() {
@@ -82,6 +108,7 @@ public class ReservaDTO  implements Serializable {
 
 	public void setStart(Date start) {
 		this.start = start;
+		this.startStr = Formatters.formatDate(start);				
 	}
 
 	public Date getEnd() {
@@ -90,22 +117,7 @@ public class ReservaDTO  implements Serializable {
 
 	public void setEnd(Date end) {
 		this.end = end;
-	}
-
-	public Boolean getAllDay() {
-		return allDay;
-	}
-
-	public void setAllDay(Boolean allDay) {
-		this.allDay = allDay;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
+		this.endStr = Formatters.formatDate(end);
 	}
 
 	public Boolean getUtilizaMarinheiro() {
@@ -123,7 +135,7 @@ public class ReservaDTO  implements Serializable {
 	public void setObs(String obs) {
 		this.obs = obs;
 	}
-	
+
 	public ReservaStatus getStatus() {
 		return status;
 	}
@@ -132,44 +144,82 @@ public class ReservaDTO  implements Serializable {
 		this.status = status;
 	}
 
-	public ReservaEvento getEventoInicio() {
+	public ReservaEventoDTO getEventoInicio() {
 		return eventoInicio;
 	}
 
-	public void setEventoInicio(ReservaEvento eventoInicio) {
+	public void setEventoInicio(ReservaEventoDTO eventoInicio) {
 		this.eventoInicio = eventoInicio;
 	}
 
-	public ReservaEvento getEventoFim() {
+	public ReservaEventoDTO getEventoFim() {
 		return eventoFim;
 	}
 
-	public void setEventoFim(ReservaEvento eventoFim) {
+	public void setEventoFim(ReservaEventoDTO eventoFim) {
 		this.eventoFim = eventoFim;
 	}
 
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	public Grupo getGrupo() {
+	public GrupoDTO getGrupo() {
 		return grupo;
 	}
 
-	public void setGrupo(Grupo grupo) {
+	public void setGrupo(GrupoDTO grupo) {
 		this.grupo = grupo;
 	}
 
-	public Long getIdTerceiro() {
-		return idTerceiro;
+	public TerceiroDTO getTerceiro() {
+		return terceiro;
 	}
 
-	public void setIdTerceiro(Long idTerceiro) {
-		this.idTerceiro = idTerceiro;
+	public void setTerceiro(TerceiroDTO terceiro) {
+		this.terceiro = terceiro;
 	}
 
+	public String getStartStr() {
+		return Formatters.formatDate(start);
+	}
+
+	public void setStartStr(String startStr) {
+		this.startStr = startStr;
+	}
+
+	public String getEndStr() {
+		return Formatters.formatDate(end);
+	}
+
+	public void setEndStr(String endStr) {
+		this.endStr = endStr;
+	}
+
+	public String getTipoEvento() {
+		return tipoEvento;
+	}
+
+	public void setTipoEvento(String tipoEvento) {
+		this.tipoEvento = tipoEvento;
+	}
+
+	public List<String> getImagensUrl() {
+		return imagensUrl;
+	}
+
+	public void setImagensUrl(List<String> imagensUrl) {
+		this.imagensUrl = imagensUrl;
+	}
+
+	public String getUrlImagens() {
+		return urlImagens;
+	}
+
+	public void setUrlImagens(String urlImagens) {
+		this.urlImagens = urlImagens;
+	}
+	public Boolean getMostrarDetalhes() {
+		return mostrarDetalhes;
+	}
+	public void setMostrarDetalhes(Boolean mostrarDetalhes) {
+		this.mostrarDetalhes = mostrarDetalhes;
+	}
+	
 }

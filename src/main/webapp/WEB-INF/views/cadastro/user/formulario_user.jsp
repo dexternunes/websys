@@ -28,8 +28,7 @@
 							</div>
 							<div class="x_content">
 								<br />
-	
-		
+
 								<c:if test="${message != '' && message != null}">
 									<div>
 										<div class="alert alert-error">${message}</div>
@@ -131,7 +130,11 @@
 								<br />
 								<div class="form-actions">
 									<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
+									<c:if test="${usuario.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+										<button type="button" class="btn btn-danger" id="excluirUser">Excluir</button>
+									</c:if>
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -140,19 +143,16 @@
 		</div>
 	</div>
 	<script type='text/javascript'>
-
-	function submitFormulario() {
-		$("#terceiro").attr("disabled", false);
-		$("#role").attr("disabled", false);
-		$("#ativo").attr("disabled", false);
-		$("#usuario").submit();
-	}
-	
-	
-
-	$(document).ready(function () {		
-	});
-	
+		$('#excluirUser').click(function(){
+			window.location = "${pageContext.request.contextPath}/usuarios/cadastro/excluir/${usuario.id}";				
+		});
+		
+		function submitFormulario() {
+			$("#terceiro").attr("disabled", false);
+			$("#role").attr("disabled", false);
+			$("#ativo").attr("disabled", false);
+			$("#usuario").submit();
+		}
 	</script>
 </body>
 </html>

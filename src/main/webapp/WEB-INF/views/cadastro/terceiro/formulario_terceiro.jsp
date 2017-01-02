@@ -246,13 +246,85 @@
 						<br /> <br />
 						<div class="form-actions">
 							<button type="button" onclick="javascript:submitFormulario();" class="btn btn-primary">Confirmar</button>
+							<c:if test="${terceiro.id != null && user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+								<button type="button" class="btn btn-danger" id="excluirTerceiro">Excluir</button>
+							</c:if>
 						</div>
+						
+								
+						<%-- <div class="control-group">
+							<a type="button" class="btn btn-primary"
+								href="${pageContext.request.contextPath}/terceiro/">Voltar</a>
+						</div> --%>
 					</div>
 				</div>
 			</div>
 		</form:form>
 	</div>
+	<div class="modal fade" id="messageModal">
+		<div class="modal-dialog">
+			<div id="exibeMensagem">
+				<button type="button" class="close" data-dismiss="modal" id="fechaModal"
+					aria-hidden="true">x</button>
+				<div class="clearfix"></div>
+				<div class="modal-body">
+					<!-- The messages container -->
+					<div id="errors">
+						<span></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script type='text/javascript'>
+	
+	$('#excluirTerceiro').click(function(){
+		var retorno = '';
+			$.ajax({
+				async : false,
+				url : '${pageContext.request.contextPath}/terceiro/api/validaExclusao',
+				dataType : "json",
+				contentType : "application/json; charset=utf-8",
+				type : 'POST',
+				data : JSON.stringify($('#id').val()),
+				success : function(data) {
+					retorno = data;
+
+					$("#my-modal").modal('hide');
+					$('#exibeMensagem').removeClass();
+					$('#errors span').text(retorno.mensagem);
+					$('#messageModal').modal('show');
+					
+					if(retorno.id == 0){							
+						$('#exibeMensagem').addClass('alert alert-success alert-dismissible fade in');
+						$('#messageModal').find("#fechaModal").hide();
+						
+						function reload(){
+							document.location.reload();
+						}
+						setTimeout(reload, 2000);
+					}
+					
+					if(retorno.id == 1){
+						$('#messageModal').find("#fechaModal").show();
+						$('#exibeMensagem').addClass('alert alert-warning alert-dismissible fade in');
+					}
+					
+					if(retorno.id == 2){
+						$('#messageModal').find("#fechaModal").show();
+						$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
+					}
+				},
+				error : function(request, status, error) {
+					$("#my-modal").modal('hide');
+					$('#messageModal').find("#fechaModal").show();
+					$('#exibeMensagem').removeClass();
+					$('#exibeMensagem').addClass('alert alert-danger alert-dismissible fade in');
+					$('#errors span').text('Ocorreu um erro!');
+					$('#messageModal').modal('show');
+				}
+			});				
+	});
 		function AddEndereco() {
 			var cont = parseInt($('#nEnderecos').val());
 

@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
 import br.com.system.websys.entities.TerceiroContato;
 import br.com.system.websys.entities.TerceiroEndereco;
+import br.com.system.websys.entities.TerceiroExclusaoStatus;
 import br.com.system.websys.entities.TerceiroTipo;
 import br.com.system.websys.repository.TerceiroRepository;
 
@@ -21,6 +23,12 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 	protected TerceiroBusinessImpl(TerceiroRepository repository) {
 		super(repository, Terceiro.class);
 	}
+	
+	@Autowired
+	private UserBusiness userBusiness;
+	
+	@Autowired
+	private GrupoBusiness grupoBusiness;
 
 	@Override
 	protected void validateBeforeSave(Terceiro entity) throws Exception {
@@ -34,18 +42,55 @@ class TerceiroBusinessImpl extends BusinessBaseRootImpl<Terceiro, TerceiroReposi
 
 	@Override
 	public List<Terceiro> getAll() {
-		return ((TerceiroRepository)repository).findAll();
-	}
-	
-	@Override
-	public List<Terceiro> getAllByTipo(TerceiroTipo tipo) {
-		
-		List<Terceiro> terceiros = ((TerceiroRepository)repository).findAllByTipo(tipo);
-		
-		if(terceiros == null || terceiros.size() == 0)
-			return ((TerceiroRepository)repository).findAll();
-		else
-			return terceiros; 
+		return ((TerceiroRepository)repository).getAll();
 	}
 
+	@Override
+	public List<Terceiro> getAllOrderByNomeAsc() {
+		return ((TerceiroRepository)repository).getAllOrderByNomeAsc();
+	}
+
+	@Override
+	public List<Terceiro> getAllByTipo(TerceiroTipo tipo) {
+
+		List<Terceiro> terceiros = ((TerceiroRepository)repository).findAllByTipo(tipo);
+
+		/*if(terceiros == null || terceiros.size() == 0)
+			return ((TerceiroRepository)repository).getAll();
+		else*/
+		return terceiros; 
+	}
+	
+	public TerceiroExclusaoStatus validaExclusao(Terceiro terceiro){
+
+		if(terceiroHasUser(terceiro)){
+			return TerceiroExclusaoStatus.TERCEIRO_USUARIO;
+		}
+
+		if(terceiroHasGrupo(terceiro)){
+			return TerceiroExclusaoStatus.TERCEIRO_GRUPO;
+		}
+		return TerceiroExclusaoStatus.OK;
+	}
+
+	private Boolean terceiroHasUser(Terceiro terceiro){
+
+		if(userBusiness.getUserByTerceiro(terceiro) != null)
+			return true;
+
+		return false;
+	}
+
+	private Boolean terceiroHasGrupo(Terceiro terceiro){
+		
+		if(grupoBusiness.findAtivosByTerceito(terceiro).size() > 0)
+			return true;
+
+		return false;
+	}
+
+	@Override
+	public List<Terceiro> getAllByRole(Role role) {
+		return ((TerceiroRepository)repository).getAllByRole(role);
+	}
 }

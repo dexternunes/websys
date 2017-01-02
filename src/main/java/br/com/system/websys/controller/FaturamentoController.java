@@ -19,8 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import br.com.system.websys.business.FaturamentoBusiness;
 import br.com.system.websys.business.GrupoBusiness;
 import br.com.system.websys.business.ManutencaoBusiness;
-import br.com.system.websys.business.ProdutoBusiness;
+import br.com.system.websys.business.ParseDTO;
 import br.com.system.websys.business.ReservaBusiness;
+import br.com.system.websys.business.UserBusiness;
 import br.com.system.websys.entities.Faturamento;
 import br.com.system.websys.entities.FaturamentoDTO;
 import br.com.system.websys.entities.FaturamentoRateio;
@@ -31,15 +32,14 @@ import br.com.system.websys.entities.Manutencao;
 import br.com.system.websys.entities.ManutencaoStatus;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.Reserva;
+import br.com.system.websys.entities.ReservaDTO;
+import br.com.system.websys.entities.Role;
 import br.com.system.websys.entities.Terceiro;
+import br.com.system.websys.entities.User;
 
 @Controller
 @RequestMapping("/faturamento")
 public class FaturamentoController{
-	
-	
-	@Autowired
-	private ProdutoBusiness ProdutoBusiness;
 	
 	@Autowired
 	private ManutencaoBusiness ManutencaoBusiness;
@@ -52,12 +52,20 @@ public class FaturamentoController{
 	
 	@Autowired
 	private ReservaBusiness ReservaBusiness;
+	
+	@Autowired
+	private ParseDTO parser;
+	
+	@Autowired
+	private UserBusiness userBusiness;
 
 	//Quando clicado no menu.
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
-		List<Grupo> gruposList = new ArrayList<Grupo>(); 
-		gruposList = grupoBusiness.getAll();
+		
+		User user = userBusiness.getCurrent();
+		
+		List<Grupo> gruposList = grupoBusiness.getAllByUser(user);
 		model.addAttribute("listaGrupos", gruposList);
 		
 		
@@ -71,21 +79,19 @@ public class FaturamentoController{
 	public String cadastroBase(@PathVariable Long id, Model model)
 			throws Exception {
 
-		
 		Grupo grupo = grupoBusiness.get(id);
-		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, FaturamentoStatus.PENDENTE);
+		List<FaturamentoStatus> status = new ArrayList<FaturamentoStatus>();
+		status.add(FaturamentoStatus.PENDENTE);
+		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, status);
 		
 		Produto produto =  grupo.getProdutos().get(0);
 
 		List<Terceiro> terceiroList = grupo.getTerceiros();
 		List<Manutencao> manutencaoList =  ManutencaoBusiness.findByProdutoByStatus(produto, ManutencaoStatus.PENDENTE);
 		
-
 		model.addAttribute("terceiroList", terceiroList);
 		model.addAttribute("manutencaoList", manutencaoList);
 		model.addAttribute("reservaList", reservaList);
-
-
 		
 		return "faturamento/lista_faturamento";
 	}
@@ -100,8 +106,10 @@ public class FaturamentoController{
 	public String historicoBase(Model model)
 			throws Exception {
 
+		User user = userBusiness.getCurrent();
+		
 		List<Grupo> gruposList = new ArrayList<Grupo>(); 
-		gruposList = grupoBusiness.getAll();
+		gruposList = grupoBusiness.getAllByUser(user);
 		model.addAttribute("listaGrupos", gruposList);
 		
 
@@ -123,7 +131,10 @@ public class FaturamentoController{
 		Produto produto =  grupo.getProdutos().get(0);
 
 
-		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, FaturamentoStatus.PAGA);
+		List<FaturamentoStatus> status = new ArrayList<FaturamentoStatus>();
+		status.add(FaturamentoStatus.PAGA);
+		status.add(FaturamentoStatus.PENDENTE);
+		List<Reserva> reservaList = ReservaBusiness.getByGrupoByStatus(grupo, status);
 		List<Manutencao> manutencaoList =  ManutencaoBusiness.findByProdutoByStatus(produto, ManutencaoStatus.PAGA);
 		
 		
@@ -232,6 +243,25 @@ public class FaturamentoController{
 		return "Faturado com sucesso.";
 	}
 
-	
+
+	@ResponseBody
+	@RequestMapping(value = "/api/detalhar/{idReserva}", method = RequestMethod.GET)
+	public ReservaDTO detalhar(@PathVariable Long idReserva) throws Exception {
+
+		Reserva reserva = ReservaBusiness.get(idReserva);
+
+		ReservaDTO reservaDTO;
+		if(reserva.getSolicitante() == userBusiness.getCurrent().getTerceiro() || userBusiness.getCurrent().getRole().equals(Role.ROLE_ADMIN)){
+			reservaDTO = parser.parseReserva2ReservaDTOUserLogado(reserva, true);
+		}
+		else{
+			reservaDTO = parser.parseReserva2ReservaDTOUserLogado(reserva, false);
+		}
+		
+		
+		return reservaDTO;
+			
+	}
+		
 	
 }

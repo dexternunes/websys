@@ -150,6 +150,8 @@
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.loadmask.min.js"
 	type="text/javascript"></script>
+	
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jcarousellite.js"></script>
 
 <!-- select2 -->
 <link href="${pageContext.request.contextPath}/resources/css/select/select2.min.css" rel="stylesheet">
@@ -157,6 +159,12 @@
         <script src="${pageContext.request.contextPath}/resources/js/select/select2.full.js"></script>
     
 <style>
+
+#carosel{background:#a45; width:556px; height: 400px !important;}
+#carosel img{width:150px; padding:5px; border:1px solid #ccc; margin:0 5px;}
+
+
+${css}
 .ranges{
     width: initial !important;
     float: initial !important;
@@ -220,79 +228,84 @@ progress:after {
 </script>
  -->
 <style type="text/css">
-/*
-.speech-bubble {
-	margin-left: 10px;
-	background-color: #FF6F6F;
-	border: 1px solid #FF6F6F;
-	border-radius: 10px;
-	width: 35% !important;
-	height: 38px !important;
-	text-align: center;
-	padding: 8px;
-	position: absolute;
-	left: 100%;
+
+.circulo {
+    background-color: rgba(0,0,0,0);
+    border: 5px solid rgba(0,183,229,0.9);
+    opacity: .9;
+    border-top: 5px solid rgba(0,0,0,0);
+    border-left: 5px solid rgba(0,0,0,0);
+    border-radius: 50px;
+    box-shadow: 0 0 35px #2187e7;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    -moz-animation: spin .5s infinite linear;
+    -webkit-animation: spin .5s infinite linear;
+    animation: spin .5s infinite linear;
 }
 
-.speech-bubble .arrow {
-	border-top: 8px solid transparent;
-	border-bottom: 8px solid transparent;
-	border-right: 8px solid #FF6F6F;
-	border-style: solid;
-	position: absolute;
-	text-align:center;
+/*circulo*/
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.bottom {
-	border-color: #FF6F6F transparent transparent transparent;
-	border-width: 8px 8px 8px 8px;
-	bottom: 30%;
-	right: 100%;
-	text-align:center;
+@keyframes spinoff {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
 }
 
-.bottom:after {
-	border-color: #FF6F6F transparent transparent transparent;
-	border-style: solid;
-	border-width: 7px 7px 0px 7px;
-	position: absolute;
-	text-align:center;
-}
-*/
-/*.daterangepicker {
-	position: absolute !important;
-	z-index: 9998 !important;
-}*/
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
 
-/*.timepicker {
-	position: absolute !important;
-	z-index: 9998 !important;
-}*/
-/*
-.hourselect {
-	z-index: 9999 !important;
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
 }
 
-.ui-timepicker-container {
-	position: absolute;
-	overflow: hidden;
+@-webkit-keyframes spinoff {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(-360deg);
+    }
 }
 
-.ui-timepicker {
-	display: block;
-	height: 200px;
-	text-align: center;
-	overflow: auto;
-	overflow-x: hidden;
-	margin: 0;
-	padding: 0 0 0 1px;
-	position: absolute !important;
-	z-index: 9999 !important;
-	color: white !important;
-	border-color: white !important;
-	background-color:white !important;
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(360deg);
+    }
 }
-*/
+
+@-moz-keyframes spinoff {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(-360deg);
+    }
+}
+/*--*/
 
 .calendar-time{
 	float:left !important;
@@ -377,9 +390,12 @@ $(document).ready(function() {
 					<!-- menu prile quick info -->
 					<div class="profile">
 						<div class="profile_pic">
-							<img
-								src="${user.imagemURL}"
-								alt="..." class="img-circle profile_img">
+							<c:if test="${user.imagemURL == null || user.imagemURL == ''}"> 
+								<img src="${pageContext.request.contextPath}/resources/images/user.png" alt="..." class="img-circle profile_img">
+							</c:if>
+							<c:if test="${user.imagemURL != null && user.imagemURL != ''}"> 
+								<img src="${user.imagemURL}" alt="..." class="img-circle profile_img">
+							</c:if>
 						</div>
 						<div class="profile_info">
 							<span>Bem vindo,</span>
@@ -399,26 +415,27 @@ $(document).ready(function() {
 											<li><a href="<c:url value="/home" />">Calendário</a></li>
 										</ul></li>
 								</sec:authorize>
-								<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu" style="display: none">
-										<sec:authorize url="/terceiro/cadastro">
-											<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
-										</sec:authorize>
-										<sec:authorize url="/usuarios/cadastro">
-											<li><a href="<c:url value="/usuarios/" />">Usuários</a></li>
-										</sec:authorize>	
-										<sec:authorize url="/produtos">
-											<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>
-										</sec:authorize>
-										<sec:authorize url="/grupo">
-											<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
-										</sec:authorize>
-										<sec:authorize url="/manutencao">
-											<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
-										</sec:authorize>
-									</ul>
-								</li>
-
+								<c:if test="${user.role != 'ROLE_COTISTA' && user.role != 'ROLE_MARINHEIRO'}">
+									<li><a><i class="fa fa-edit"></i>Cadastros<span class="fa fa-chevron-down"></span></a>
+										<ul class="nav child_menu" style="display: none">
+											<sec:authorize url="/terceiro/cadastro">
+												<li><a href="<c:url value="/terceiro/" />">Cadastros</a></li>
+											</sec:authorize>
+											<sec:authorize url="/usuarios/cadastro">
+												<li><a href="<c:url value="/usuarios/" />">Usuários</a></li>
+											</sec:authorize>	
+											<sec:authorize url="/produtos">
+												<li><a href="<c:url value="/produtos/" />">Embarcações</a></li>
+											</sec:authorize>
+											<sec:authorize url="/grupo">
+												<li><a href="<c:url value="/grupo/" />">Grupo</a></li>
+											</sec:authorize>
+											<sec:authorize url="/manutencao">
+												<li><a href="<c:url value="/manutencao/" />">Manutenção</a></li>
+											</sec:authorize>
+										</ul>
+									</li>
+								</c:if>
 								<!-- Relatorios -->
 								<sec:authorize url="/relatorios/">
 									<li><a><i class="fa fa-bar-chart-o"></i>Relatorios<span
@@ -439,17 +456,6 @@ $(document).ready(function() {
 							</ul>
 						</div>
 					</div>
-					<div class="sidebar-footer hidden-small">
-						<a data-toggle="tooltip" data-placement="top" title="Settings">
-							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-						</a> <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-							<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-						</a> <a data-toggle="tooltip" data-placement="top" title="Lock"> <span
-							class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-						</a> <a data-toggle="tooltip" data-placement="top" title="Logout">
-							<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-						</a>
-					</div>
 				</div>
 			</div>
 			<div class="top_nav">
@@ -459,18 +465,21 @@ $(document).ready(function() {
 							<a id="menu_toggle"><i class="fa fa-bars"></i></a>
 						</div>
 						<ul class="nav navbar-nav navbar-right">
-							<li class=""><a href="javascript:;"
-								class="user-profile dropdown-toggle" data-toggle="dropdown"
-								aria-expanded="false"> <img
-									src="${user.imagemURL}"
-									alt="">${user.nome} <span class=" fa fa-angle-down"></span>
-							</a>
-								<ul
-									class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+							<li class="">
+								<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									<c:if test="${user.imagemURL == null || user.imagemURL == ''}"> 
+										<img src="${pageContext.request.contextPath}/resources/images/user.png" alt=""/>${user.nome} <span class=" fa fa-angle-down"></span>
+									</c:if>
+									<c:if test="${user.imagemURL != null && user.imagemURL != ''}"> 
+										<img src="${user.imagemURL}" alt=""/>${user.nome} <span class=" fa fa-angle-down"></span>
+									</c:if>
+								</a>
+								<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
 									<li><a href="<c:url value="/usuarios/alterarSenha/${user.idUser}" />">Perfil</a></li>
 									<li><a href="<c:url value="/terceiro/perfil/${user.idTerceiro}" />">Cadastro</a></li>
 									<li><a href="<c:url value="/auth/logout" />"><i class="fa fa-sign-out pull-right"></i>Sair</a></li>
-								</ul></li>
+								</ul>
+							</li>
 						</ul>
 					</nav>
 				</div>

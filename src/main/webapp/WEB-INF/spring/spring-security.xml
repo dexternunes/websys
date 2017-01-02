@@ -9,16 +9,15 @@
 	<http pattern="/resources/**" security="none" />
 	<http pattern="/usuarios/recuperarsenha" security="none" />	
 	<http pattern="/usuarios/recuperarsenha/" security="none" />	
-	<http pattern="/usuarios/recuperarsenha/**" security="none" />	
+	<http pattern="/usuarios/recuperarsenha/**" security="none" />
+	<http pattern="/reserva/visualizaImagensReserva/**" security="none" />	
 
 	<global-method-security secured-annotations="enabled" />
 	
 	<http auto-config="true" use-expressions="true"  access-decision-manager-ref="accessDecisionManager">
 	
 		<intercept-url pattern="/callback.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-	
 		
-	
 		<intercept-url pattern="/" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>		
 		<intercept-url pattern="/home" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>
 		<intercept-url pattern="/home/**" access="hasAnyRole('ROLE_MARINHEIRO', 'ROLE_COTISTA')"/>
@@ -26,10 +25,16 @@
 		<intercept-url pattern="/manutencao" access="hasAnyRole('ROLE_MARINHEIRO')"/>
 		<intercept-url pattern="/manutencao/" access="hasAnyRole('ROLE_MARINHEIRO')"/>
 		<intercept-url pattern="/manutencao/**" access="hasAnyRole('ROLE_MARINHEIRO')"/>
+		
+		<intercept-url pattern="/faturamento/historico" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/faturamento/historico/" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/faturamento/historico/**" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
 
-		<intercept-url pattern="/faturamento" access="hasAnyRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/faturamento/" access="hasAnyRole('ROLE_ADMIN')"/>
-		<intercept-url pattern="/faturamento/**" access="hasAnyRole('ROLE_ADMIN')"/>
+		<intercept-url pattern="/faturamento/api/detalhar/**" access="hasAnyRole('ROLE_COTISTA')"/>
+
+		<intercept-url pattern="/faturamento" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/faturamento/" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
+		<intercept-url pattern="/faturamento/**" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
 		
 		<intercept-url pattern="/reserva" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>
 		<intercept-url pattern="/reserva/" access="hasAnyRole('ROLE_COTISTA', 'ROLE_MARINHEIRO')"/>

@@ -30,23 +30,22 @@ public class Produto extends EntityBaseRoot {
 	private String modelo;
 	
 
-	@NotNull(message="Campo obrigatório!")
 	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double comprimento;
 
-	@NotNull(message="Campo obrigatório!")
 	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double largura;
 
-
-	@NotNull(message="Campo obrigatório!")
 	@Column(columnDefinition="Decimal(10,2) default '0.00'")
 	private Double altura;
 	
-
 	private ProdutoTipo tipoProduto;
 	
 	private ProdutoStatus status;
+	
+	private Boolean ativo = true;
+	
+	private Boolean excluido = false;
 	
 	@Id
 	@GeneratedValue
@@ -123,5 +122,22 @@ public class Produto extends EntityBaseRoot {
 	public void setStatus(ProdutoStatus status) {
 		this.status = status;
 	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public Boolean getExcluido() {
+		return excluido;
+	}
+
+	public void setExcluido(Boolean excluido) {
+		this.excluido = excluido;
+	}
+	
 				
 }

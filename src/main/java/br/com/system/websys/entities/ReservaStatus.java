@@ -4,8 +4,11 @@ public enum ReservaStatus{
 
 	AGUARDANDO_APROVACAO("AGUARDANDO_APROVACAO","Aguardando aprovação"),
 	APROVADA("APROVADA","Aprovada"),
+	REPROVADA("REPROVADA","Reprovada"),
 	EM_USO("EM_USO","Em uso"),
-	ENCERRADA("ENCERRADA","Encerrada");
+	ENCERRADA("ENCERRADA","Encerrada"),
+	CANCELADA("CANCELADA", "Cancelada"),
+	CANCELADA_MENOS_DUAS("CANCELADA_2H", "Cancelada com menos de duas horas para o início");
 	
 	private String descricao;
 	private String code;

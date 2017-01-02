@@ -40,7 +40,7 @@ public class GrupoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String grupoList(Model model) {
 
-		model.addAttribute("grupos", grupoBusiness.getAll());
+		model.addAttribute("grupos", grupoBusiness.getAllOrderByDescricaoAsc());
 
 		return "cadastro/grupo/list";
 	}
@@ -53,11 +53,12 @@ public class GrupoController {
 		Grupo grupo = new Grupo();
 		
 		List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-		status.add(ProdutoStatus.A_VENDA);
+		status.add(ProdutoStatus.DISPONIVEL);
 		
 		model.addAttribute("grupo", grupo);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-		model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
+		model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
+		model.addAttribute("listProdutos", produtoBusiness.getProdutosSemGrupo(status));
 		
 		return "cadastro/grupo/form";
 	}
@@ -70,10 +71,11 @@ public class GrupoController {
 		Grupo grupo = grupoBusiness.get(id);
 		
 		List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-		status.add(ProdutoStatus.A_VENDA);
+		status.add(ProdutoStatus.DISPONIVEL);
 		
 		model.addAttribute("readonly", true);
 		model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
+		model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
 		model.addAttribute("grupo", grupo);
 		
 		return "cadastro/grupo/form";
@@ -86,10 +88,14 @@ public class GrupoController {
 		if (result.hasErrors()) {
 
 			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-			status.add(ProdutoStatus.A_VENDA);
+			status.add(ProdutoStatus.DISPONIVEL);
+			
+			if(grupo.getId() != null)
+				model.addAttribute("readonly", true);
 			
 			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
-			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
+			model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
+			model.addAttribute("listProdutos", produtoBusiness.getProdutosSemGrupo(status));
 			model.addAttribute("grupo", grupo);
 			
 			return "cadastro/grupo/form";
@@ -100,9 +106,37 @@ public class GrupoController {
 		} catch (Exception e) {
 
 			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
-			status.add(ProdutoStatus.A_VENDA);
+			status.add(ProdutoStatus.DISPONIVEL);
+			
+			if(grupo.getId() != null)
+				model.addAttribute("readonly", true);
 			
 			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
+			model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
+			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
+			model.addAttribute("grupo", grupo);
+			model.addAttribute("message", e.getMessage());
+			
+			return "cadastro/grupo/form";
+		}
+
+		return "redirect:/grupo/";
+	}
+	
+	@RequestMapping(value = "/cadastro/excluir/{id}", method = RequestMethod.GET)
+	public String grupoexcluir(@PathVariable Long id, Model model) throws Exception {
+
+		Grupo grupo = grupoBusiness.get(id);
+		
+		try {
+			grupoBusiness.delete(grupo);
+		} catch (Exception e) {
+
+			List<ProdutoStatus> status = new ArrayList<ProdutoStatus>();
+			status.add(ProdutoStatus.DISPONIVEL);
+			
+			model.addAttribute("listTerceiros", terceiroBusiness.getAllByTipo(TerceiroTipo.CLIENTE));
+			model.addAttribute("listMarinherios", terceiroBusiness.getAllByTipo(TerceiroTipo.FUNCIONARIO));
 			model.addAttribute("listProdutos", produtoBusiness.getAllByTipoAndStatus(ProdutoTipo.EMBARCACAO, status));
 			model.addAttribute("grupo", grupo);
 			model.addAttribute("message", e.getMessage());

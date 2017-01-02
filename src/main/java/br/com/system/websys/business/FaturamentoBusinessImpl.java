@@ -1,5 +1,6 @@
 package br.com.system.websys.business;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,9 +19,6 @@ import br.com.system.websys.repository.FaturamentoRepository;
 @Service  
 @Transactional(propagation=Propagation.REQUIRED)
 class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, FaturamentoRepository> implements FaturamentoBusiness {
-    
-	@Autowired
-	private GrupoBusiness GrupoBusiness;
 	
 	@Autowired
 	protected FaturamentoBusinessImpl(FaturamentoRepository repository) {
@@ -36,12 +34,6 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 	public List<Faturamento> getAll() {
 		return ((FaturamentoRepository)repository).findAll();
 	}
-	
-	//@Override
-	//public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus>status) {
-	//	return ((ProdutoRepository)repository).findAllByTipoAndStatus(tipo, status);
-	//}
-	
 	
 	@Override
 	public Faturamento calcularFaturamento(List<Manutencao> listaManutencao, List<Reserva> listaReserva){
@@ -67,12 +59,15 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 			//50% do valor Total de manutenca é dividido entre os cotistas
 			Double valorRateio= new Double(0); 
 			
-			
 			//Determina o valor para cada cotista, sendo 50% + (os outro 50% proporcionais as horas utilizadas)
 	
 	
 			Long totalHorasPorTerceiro;
 			Long totalHorasMotor = (long) 0;
+			
+			for (Reserva r:listaReserva){
+					totalHorasMotor = totalHorasMotor + r.getHoraMotorTotal();
+			}
 			
 			for (Terceiro t:faturamento.getGrupo().getTerceiros()){
 				
@@ -81,13 +76,13 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 					if(r.getSolicitante().equals(t)){
 						totalHorasPorTerceiro = totalHorasPorTerceiro + r.getHoraMotorTotal();
 					}
-					totalHorasMotor = totalHorasMotor + r.getHoraMotorTotal();
 				}
 				
 				
 				//%Y = (100 x HY)/TOTALHOras -->Porcentagem de horas que o terceiro usou
 				Long percentHoras;
-				percentHoras = (100 * totalHorasPorTerceiro)/totalHorasMotor;
+				
+				percentHoras = totalHorasMotor > 0 ? ((100 * totalHorasPorTerceiro)/totalHorasMotor) :0;
 				
 				//x = (V50% X %Y)/100 --> valor em reais pela porcentagem de horas que o terceiro usou
 				
@@ -102,8 +97,10 @@ class FaturamentoBusinessImpl extends BusinessBaseRootImpl<Faturamento, Faturame
 				
 				if(listaManutencao.size() > 0){
 	
-					valorRateio = (valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valorTotal/2)*percentHoras)/100);
-					
+					//valorRateio = (valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valorTotal/2)*percentHoras)/100);
+					valorRateio = (valorTotal/2)/faturamento.getGrupo().getTerceiros().size() + (((valorTotal/2)/totalHorasMotor)*totalHorasPorTerceiro);
+					BigDecimal result = new BigDecimal(valorRateio).setScale(2, BigDecimal.ROUND_HALF_UP);
+					valorRateio = result.doubleValue();
 				}
 				
 				

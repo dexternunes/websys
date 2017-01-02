@@ -2,11 +2,8 @@ package br.com.system.websys.entities;
 
 public enum ProdutoStatus{
 
-	A_VENDA("A_VENDA", "A Venda"),
 	DISPONIVEL("DISPONIVEL", "Disponível"),
-	EM_USO("EM_USO", "Em uso"),
-	EM_MANUTENCAO("EM_MANUTENCAO", "Em manutenção"),
-	INATIVO("INATIVO", "Inativo");
+	EM_MANUTENCAO("EM_MANUTENCAO", "Em manutenção");
 
 	
 	private String descricao;

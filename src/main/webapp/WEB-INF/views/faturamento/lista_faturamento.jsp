@@ -24,11 +24,11 @@
 					</div>
 					<div class="x_content">
 						<!-- id="example" para ordenar e filtrar -->
-						<table id="example2"
+						<table id="maintancesTable"
 							class="table table-striped responsive-utilities jambo_table ">
 							<thead>
 								<tr class="headings">
-									<th></th>
+									<th><input type="checkbox" name="selectAllMain" id="selectAllMain" /></th>
 									<th>Data</th>
 									<th>Descrição</th>
 									<th>Valor</th>
@@ -41,7 +41,7 @@
 									<tr class="even pointer">
 										<td class="a-center " oName="id" oValue="${manutencoes.id}">
 											<input type="checkbox" name="mCheckBox"
-											value="${manutencoes.id}" class="tableflat">
+											value="${manutencoes.id}" >
 										</td>
 										<td class=" "><fmt:formatDate value="${manutencoes.inicioManutencao}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${manutencoes.obs}</td>
@@ -61,10 +61,12 @@
 							class="table table-striped responsive-utilities jambo_table ">
 							<thead>
 								<tr class="headings">
-									<th></th>
-									<th>Data</th>
+									<th><input type="checkbox" id="selectAllhours" /></th>
 									<th>Usuário</th>
+									<th>Data</th>
 									<th>Horas Motor</th>
+									<th>Evento Inicio</th>
+									<th>Evento Fim</th>
 								</tr>
 							</thead>
 
@@ -73,12 +75,14 @@
 									varStatus="status">
 									<tr class="even pointer">
 										<td class="a-center " oName="id" oValue="${reservas.id}">
-											<input type="checkbox" name="hCheckBox" class="tableflat"
+											<input type="checkbox" name="hCheckBox" 
 											value="${reservas.id}">
 										</td>
-										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${reservas.solicitante.nome}</td>
-										<td class=" ">${reservas.horaMotorTotal}Horas</td>
+										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
+										<td class=" ">${reservas.horaMotorTotal} Horas</td>
+										<td class=" "><fmt:formatDate value="${reservas.eventoInicio.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
+										<td class=" "><fmt:formatDate value="${reservas.eventoFim.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -89,10 +93,10 @@
 
 					<div class="control-group">
 
-						<a type="button" class="btn btn-primary"
-							href="${pageContext.request.contextPath}/faturamento/">Voltar</a>
+						<%-- <a type="button" class="btn btn-primary"
+							href="${pageContext.request.contextPath}/faturamento/">Voltar</a> --%>
 						<div id="fc_edit" data-toggle="modal">
-							<a type="button" id="faturar" class="btn btn-primary">Faturar</a>
+							<a type="button" id="faturar" class="btn btn-primary">Calcular</a>
 						</div>
 					</div>
 
@@ -143,8 +147,10 @@
 							<div class="row avatar-btns">
 								<div class="col-md-9"></div>
 								<div class="col-md-3">
-									<button id="faturarModal"
-										class="btn btn-primary btn-block avatar-save" type="submit">Faturar</button>
+									<c:if test="${user.role == 'ROLE_ADMIN'}">
+										<button id="faturarModal"
+											class="btn btn-primary btn-block avatar-save" type="submit">Faturar</button>
+									</c:if>
 								</div>
 							</div>
 						</div>
@@ -198,7 +204,37 @@
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/tools/js/dataTables.tableTools.js"></script>
 	<script type="text/javascript">
-	
+	$( document ).ready(function() {
+
+	 	$( "input[name$='hCheckBox']" ).click(function(e){
+	 		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
+	 	});	
+	 	
+	 
+	 	$( "input[name$='mCheckBox']" ).click(function(e){
+	 		$(this).is(":checked") ? $(this).parent().parent().addClass( "selected" ) : $(this).parent().parent().removeClass( "selected" );
+	 	});
+	 
+
+			$('#selectAllMain').click(function(e){
+	 		    var table= $('#maintancesTable');
+	 		    $('td input:checkbox',table).prop('checked',this.checked);
+	 		    checkAll('m', this.checked);
+			});
+			$('#selectAllhours').click(function(e){
+	 		    var table= $('#example');
+	 		    $('td input:checkbox',table).prop('checked',this.checked);
+	 		    checkAll('h', this.checked);
+	 		});
+	 		function checkAll(table, checked){
+	 			if(checked)
+	 				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().addClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().addClass( "selected" );
+	 			else 
+	 				table == 'm'? $( "input[name$='mCheckBox']" ).parent().parent().removeClass( "selected" )  :$( "input[name$='hCheckBox']" ).parent().parent().removeClass( "selected" );
+	 				
+	 					
+	 		}
+	});
 	(function ($) {
 	      $.each(['show', 'hide'], function (i, ev) {
 	        var el = $.fn[ev];
@@ -394,10 +430,10 @@
 						},
 						"aoColumnDefs" : [ {
 							'bSortable' : false,
-							'aTargets' : [ 0 ]
+							'aTargets' : [ 0,2,3,4,5 ]
 						} //disables sorting for column one
 						],
-						'iDisplayLength' : 12,
+						'iDisplayLength' : 10000,
 						"sPaginationType" : "full_numbers"
 					});
 					$("tfoot input").keyup(
@@ -436,6 +472,12 @@
 								$('input:checkbox').not(this).prop('checked',
 										this.checked);
 							});
+					
+					$("#example_paginate").hide();
+					$("#example_length").hide();
+					$("#example_info").hide();
+					
+
 				});
 	</script>
 </body>

@@ -53,7 +53,7 @@
                         </table>
                     </div>
                     <div class="x_title">
-						<h2>Horas Motor</h2>
+						<h2>Horas Motor</h2><br />
 						<div class="clearfix"></div>
 					</div>
 					<div class="x_content">
@@ -65,25 +65,32 @@
 									<th>Data</th>
 									<th>Usuário</th>
 									<th>Horas Motor</th>
+									<th>Status Faturamento</th>
+									<th>Evento Inicio</th>
+									<th>Evento Fim</th>
 								</tr>
 							</thead>
 
 							<tbody>
 								<c:forEach items="${reservaList}" var="reservas"
 									varStatus="status">
-									<tr class="even pointer">
+									<tr class="even pointer" onclick="javascript:detalhar(${reservas.id});">
 										<td class="a-center " oName="id" oValue="${reservas.id}">
 											
 										</td>
 										<td class=" "><fmt:formatDate value="${reservas.inicioReserva}"  pattern="dd/MM/yyyy"/></td>
 										<td class=" ">${reservas.solicitante.nome}</td>
-										<td class=" ">${reservas.horaMotorTotal}Horas</td>
+										<td class=" ">${reservas.horaMotorTotal} Horas</td>
+										<td class=" ">${reservas.faturamentoStatus.descricao}</td>
+										<td class=" "><fmt:formatDate value="${reservas.eventoInicio.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
+										<td class=" "><fmt:formatDate value="${reservas.eventoFim.horaRegistro}"  pattern="dd/MM/yyyy HH:mm"/></td>
 									</tr>
 								</c:forEach>
 							</tbody>
 
 						</table>
 					</div>
+					
 					<div class="control-group">
 						<a type="button" class="btn btn-primary"
 							href="${pageContext.request.contextPath}/faturamento/historico/">Voltar</a>
@@ -91,20 +98,108 @@
 				</div>
 			</div>
 		</form:form>
-
+		
+		<div class="modal fade" id="modalDetalhe" 
+			aria-labelledby="avatar-modal-label" role="dialog">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<!--  <form class="avatar-form" action="" enctype="multipart/form-data" method="post"> -->
+					<div class="modal-header">
+						<button class="close" data-dismiss="modal" type="button">&times;</button>
+						<h4 class="modal-title" id="avatar-modal-label">Detalhamento da reserva</h4>
+					</div>
+					<div class="modal-body">
+						<div class="avatar-body">
+							<div class="">
+								<div class="x_panel">
+									<div class="">
+										Usuário: <label id="usuario"></label><br>
+										Data/hora de inicio da reserva: <label id="dataInicio"></label><br>
+										Data/hora de fim da reserva: <label id="dataFim"></label><br>
+										Hora do motor no início da utilização: <label id="horaInicio"></label><br>
+										Hora do motor no fim da utilização: <label id="horaFim"></label><br>
+										Hora de registro do início da utilização: <label id="horaInicioRegistro"></label><br>
+										Hora de registro do fim da utilização: <label id="horaFimRegistro"></label><br>
+										<span id="obs"></span><br>
+										<span id="imagens"></span><br>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/js/jquery.dataTables.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/datatables/tools/js/dataTables.tableTools.js"></script>
+		
+		
 	<script type="text/javascript">
+	
+			function detalhar(idReserva){
+				$.ajax({
+					url: "${pageContext.request.contextPath}/faturamento/api/detalhar/" + idReserva,
+					dataType:"json",
+					contentType:"application/json; charset=utf-8",
+					type:"GET",
+					async:false,
+					success:function(data){
+						$('#usuario').text(data.terceiro.nome);
+						$('#dataInicio').text(data.startStr);
+						$('#dataFim').text(data.endStr);
+						$('#horaInicio').text(data.eventoInicio.hora);
+						$('#horaFim').text(data.eventoFim.hora);
+						$('#horaInicioRegistro').text(data.eventoInicio.dataRegistro);
+						$('#horaFimRegistro').text(data.eventoFim.dataRegistro);
+						
+						if(data.mostrarDetalhes){
+							$('#obs').html("Obs início: <label>"+	data.eventoFim.obsFim + "</label> <br> Obs fim:<label"+data.eventoInicio.obsFim+"</label>");
+							var link = "${pageContext.request.contextPath}/reserva/visualizaImagensReserva/"+idReserva;
+							$('#imagens').html("Clique <label><a href='"+link+ "' target='_blank'>aqui</a> </label> para visuzliar as imagens");
+						}
+						else{
+							$('#obs').html("");;
+							$('#imagens').html("");
+							
+						}
+						$('#modalDetalhe').modal('show');
+					},
+					error:function(request, status, error){
+						alert(error);
+					}
+				});
+			};
 	
 			$(document).ready(function () {
                 $('input.tableflat').iCheck({
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
                 });
+                
+
+				$(".showInfo")
+						.click(
+								function() {
+									alert("asd");
+									$.ajax({
+										url: "${pageContext.request.contextPath}/faturamento/api/detalhar/2",
+										dataType:"json",
+										contentType:"application/json; charset=utf-8",
+										type:"GET",
+										async:false,
+										success:function(data){
+											alert("1");
+											gruposJSON = data;
+										},
+										error:function(request, status, error){
+											alert('2:' + error);
+										}
+									});
+								});
             });
 
             var asInitVals = new Array();

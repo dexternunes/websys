@@ -37,8 +37,12 @@ function ValidaCPF(doc) {
 		vlr--;
 	}
 
+	
 	soma1 = (((soma1 * 10) % 11) == 10 ? 0 : ((soma1 * 10) % 11));
-	soma2 = (((soma2 + (2 * soma1)) * 10) % 11);
+	
+
+	soma2 += soma1 * 2;
+	soma2 = (((soma2 * 10) % 11) == 10 ? 0 : ((soma2 * 10) % 11));
 
 	var digitoGerado = (soma1 * 10) + soma2;
 

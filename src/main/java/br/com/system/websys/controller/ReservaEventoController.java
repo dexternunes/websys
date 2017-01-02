@@ -19,6 +19,7 @@ import br.com.system.websys.business.ImagemBusiness;
 import br.com.system.websys.business.ReservaBusiness;
 import br.com.system.websys.business.ReservaEventoBusiness;
 import br.com.system.websys.entities.Imagem;
+import br.com.system.websys.entities.Reserva;
 import br.com.system.websys.entities.ReservaEvento;
 
 @Controller
@@ -88,6 +89,7 @@ public class ReservaEventoController{
 	public String get(@PathVariable("reservaEventoId") Long reservaEventoId, Model model, HttpServletRequest request) throws Exception {
 		
 		ReservaEvento reservaEvento = reservaEventoBusiness.get(reservaEventoId);
+		
 		model.addAttribute("reservaEvento", reservaEvento);
 		
 		return "reservaEvento";
@@ -95,19 +97,41 @@ public class ReservaEventoController{
 	
 	@RequestMapping(value = "/salvar", method = RequestMethod.POST)
 	public String salvarBase(@Valid @ModelAttribute("reservaEvento") ReservaEvento reservaEvento,
-			BindingResult result, Model model) throws Exception {
-
+			BindingResult result, @RequestParam("submit") Boolean submit, Model model, HttpServletRequest request) throws Exception {
+		
+		ReservaEvento reventoBD = reservaEventoBusiness.get(reservaEvento.getId());
+		reservaEvento.setImagens(reventoBD.getImagens());
+		
 		if (result.hasErrors()) {
-			return "redirect:/reservaEvento/"+reservaEvento.getId();
+			
+			model.addAttribute("reservaEvento", reservaEvento);
+			return "reservaEvento";
 		}
 	
 		try {
-			reservaBusiness.adicionaReservaEvento(reservaEvento);
+			
+			 String server = request.getRequestURL().toString().substring(0, request.getRequestURL().toString().indexOf(request.getRequestURI()));
+			/*
+			if (request.getServerPort() == 80)
+				server = "http://" + request.getServerName();
+			else
+				server = "http://" + request.getServerName() + ":" + request.getServerPort();
+			*/
+			
+			reservaBusiness.adicionaReservaEvento(reservaEvento, server);
 		} catch (Exception e) {
-			return "redirect:/reservaEvento/"+reservaEvento.getId();
+			model.addAttribute("reservaEvento", reservaEvento);
+			model.addAttribute("message", e.getMessage());
+			return "reservaEvento";
 		}
-
-		return "redirect:/home";
+		
+		if(submit)
+			return "redirect:/home";
+		
+		else{
+			model.addAttribute("reservaEvento", reservaEvento);
+			return "reservaEvento";
+		}
 	}
 		
 }

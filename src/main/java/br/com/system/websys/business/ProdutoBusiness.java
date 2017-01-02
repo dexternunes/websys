@@ -2,7 +2,6 @@ package br.com.system.websys.business;
 
 import java.util.List;
 
-import br.com.system.websys.entities.Grupo;
 import br.com.system.websys.entities.Produto;
 import br.com.system.websys.entities.ProdutoStatus;
 import br.com.system.websys.entities.ProdutoTipo;
@@ -11,8 +10,13 @@ import br.com.system.websys.repository.ProdutoRepository;
 public interface ProdutoBusiness extends BusinessBaseRoot<Produto, ProdutoRepository> {
 	
 	public List<Produto> getAll();
+	
+	public List<Produto> getAllOrderByDescricaoAsc();
 
 	public List<Produto> getAllByTipoAndStatus(ProdutoTipo tipo, List<ProdutoStatus> status);
+
+	void deleteProduto(Produto produto) throws Exception;
 	
-	//public List<Produto> findAllByGrupo(Grupo grupo);
+	public List<Produto> getProdutosSemGrupo(List<ProdutoStatus> status);
+	
 }

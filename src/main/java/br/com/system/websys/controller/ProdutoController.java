@@ -28,7 +28,7 @@ public class ProdutoController{
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String configBases(Model model) {
 
-		model.addAttribute("produtoList", ProdutoBusiness.getAll());
+		model.addAttribute("produtoList", ProdutoBusiness.getAllOrderByDescricaoAsc());
 		return "cadastro/produto/produto";
 	}
 
@@ -66,13 +66,16 @@ public class ProdutoController{
 	public String salvarBase(@Valid @ModelAttribute("produto") Produto produto,
 			BindingResult result, Model model) throws Exception {
 
+		produto.setAltura(0D);
+		produto.setComprimento(0D);
+		produto.setLargura(0D);
 		if (result.hasErrors()) {
 
 			model.addAttribute("produto", produto);
 			
 			return "cadastro/produto/formulario_produto";
 		}
-
+		
 		try {
 			ProdutoBusiness.salvar(produto);
 		} catch (Exception e) {
@@ -86,5 +89,22 @@ public class ProdutoController{
 		return "redirect:/produtos/";
 	}
 
+	@RequestMapping(value = "/cadastro/excluir/{id}", method = RequestMethod.GET)
+	public String excluirProduto(@PathVariable Long id, Model model)
+			throws Exception {
+
+		Produto produto = ProdutoBusiness.get(id);
+		
+		try{
+			ProdutoBusiness.deleteProduto(produto);
+		}
+		catch(Exception e){
+			model.addAttribute("produto", produto);
+			model.addAttribute("message", e.getMessage());
+			return "cadastro/produto/formulario_produto";
+		}
+
+		return "redirect:/produtos/";
+	}
 	
 }
