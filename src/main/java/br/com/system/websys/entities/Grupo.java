@@ -61,7 +61,7 @@ public class Grupo extends EntityBaseRoot {
 		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
 		inverseJoinColumns = {@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")}
 	)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<Terceiro> getTerceiros() {
 		return terceiros;
 	}
@@ -101,7 +101,7 @@ public class Grupo extends EntityBaseRoot {
 		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
 		inverseJoinColumns = {@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")}
 	)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<Terceiro> getMarinheiros() {
 		return marinheiros;
 	}

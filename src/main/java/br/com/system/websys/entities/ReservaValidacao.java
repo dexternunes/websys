@@ -38,7 +38,7 @@ public class ReservaValidacao extends EntityBaseRoot {
 
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REFRESH })
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva")
 	public Reserva getReserva() {
 		return reserva;
@@ -50,7 +50,7 @@ public class ReservaValidacao extends EntityBaseRoot {
 
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REFRESH })
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	@JoinColumn(name = "id_terceiro", referencedColumnName = "id_terceiro")
 	public Terceiro getTerceiro() {
 		return terceiro;

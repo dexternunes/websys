@@ -33,6 +33,7 @@ import br.com.system.websys.entities.TerceiroDTO;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
+import br.com.system.websys.repository.UserRepository;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
@@ -49,6 +50,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	@Autowired
 	public MailBusiness mailBusiness;
+
+	@Autowired
+	private ReservaRepository reservaRepository;
 
 	@Autowired
 	protected ReservaBusinessImpl(ReservaRepository repository) {
@@ -525,6 +529,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			}
 			
 			reserva.setStatus(ReservaStatus.APROVADA);
+			reservaRepository.save(reserva);
 			System.out.println("Reserva aprovada: " + reserva.getId());
 			dispararEmailAprovacaoReserva(reserva);
 		

@@ -45,7 +45,7 @@ public class TerceiroEndereco extends EntityBaseRoot {
 
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public Terceiro getTerceiro() {
 		return terceiro;
 	}

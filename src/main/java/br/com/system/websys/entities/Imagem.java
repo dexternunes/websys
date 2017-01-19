@@ -61,7 +61,7 @@ public class Imagem extends EntityBaseRoot {
 
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name="id_reserva_evento", referencedColumnName="id_reserva_evento")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public ReservaEvento getReservaEvento() {
 		return reservaEvento;
 	}

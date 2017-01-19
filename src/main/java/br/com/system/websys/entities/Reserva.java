@@ -100,7 +100,7 @@ public class Reserva extends EntityBaseRoot {
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "id_terceiro", referencedColumnName = "id_terceiro")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public Terceiro getSolicitante() {
 		return solicitante;
 	}
@@ -111,7 +111,7 @@ public class Reserva extends EntityBaseRoot {
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
 	@JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public Grupo getGrupo() {
 		return grupo;
 	}
@@ -184,7 +184,7 @@ public class Reserva extends EntityBaseRoot {
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REFRESH })
 	@JoinColumn(name = "id_reserva_evento_inicio", referencedColumnName = "id_reserva_evento")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public ReservaEvento getEventoInicio() {
 		return eventoInicio;
 	}
@@ -196,7 +196,7 @@ public class Reserva extends EntityBaseRoot {
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REFRESH })
 	@JoinColumn(name = "id_reserva_evento_fim", referencedColumnName = "id_reserva_evento")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public ReservaEvento getEventoFim() {
 		return eventoFim;
 	}
@@ -210,7 +210,7 @@ public class Reserva extends EntityBaseRoot {
 	@JoinTable(name = "reserva_has_reserva_validacao", joinColumns = {
 			@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva") }, inverseJoinColumns = {
 					@JoinColumn(name = "id_reserva_validacao", referencedColumnName = "id_reserva_validacao") })
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<ReservaValidacao> getValidacoes() {
 		return validacoes;
 	}

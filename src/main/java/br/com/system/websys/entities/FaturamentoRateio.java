@@ -29,7 +29,7 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name="id_faturamento", referencedColumnName="id_faturamento")
 	@JsonManagedReference
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public Faturamento getFaturamento() {
 		return faturamento;
 	}
@@ -46,7 +46,7 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 		return id;
 	}
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
 	public Terceiro getTerceiro() {
 		return terceiro;

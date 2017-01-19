@@ -46,7 +46,7 @@ public class ReservaEvento extends EntityBaseRoot {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="reservaEvento")
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<Imagem> getImagens() {
 		return imagens;
 	}

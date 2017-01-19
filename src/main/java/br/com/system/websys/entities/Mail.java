@@ -47,7 +47,7 @@ public class Mail extends EntityBaseRoot {
 
 	@ElementCollection(targetClass = String.class)
 	@CollectionTable(name = "email_to", joinColumns = @JoinColumn(name = "id_mail") )
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<String> getMailTo() {
 		return mailTo;
 	}
