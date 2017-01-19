@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name="faturamento_rateio")
@@ -24,9 +26,10 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 	private Long horas;
 	
 	
-	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name="id_faturamento", referencedColumnName="id_faturamento")
 	@JsonManagedReference
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Faturamento getFaturamento() {
 		return faturamento;
 	}
@@ -42,7 +45,8 @@ public class FaturamentoRateio extends EntityBaseRoot  {
 	public Long getId() {
 		return id;
 	}
-	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
 	public Terceiro getTerceiro() {
 		return terceiro;

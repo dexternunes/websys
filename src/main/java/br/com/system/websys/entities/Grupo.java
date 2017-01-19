@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -54,11 +56,12 @@ public class Grupo extends EntityBaseRoot {
 	}
 
 	@NotEmpty(message = "Selecione um cotista")
-	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name="grupo_has_terceiros", 
 		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
 		inverseJoinColumns = {@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")}
 	)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Terceiro> getTerceiros() {
 		return terceiros;
 	}
@@ -68,11 +71,12 @@ public class Grupo extends EntityBaseRoot {
 	}
 
 	@NotEmpty(message = "Selecione um produto")
-	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name="grupo_has_produtos", 
 		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
 		inverseJoinColumns = {@JoinColumn(name="id_produto", referencedColumnName="id_produto")}
 	)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Produto> getProdutos() {
 		return produtos;
 	}
@@ -81,7 +85,8 @@ public class Grupo extends EntityBaseRoot {
 		this.produtos = produtos;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="grupo")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="grupo")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Reserva> getReservas() {
 		return reservas;
 	}
@@ -91,11 +96,12 @@ public class Grupo extends EntityBaseRoot {
 	}
 	
 	@NotEmpty(message = "Selecione um marinheiro")
-	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinTable(name="grupo_has_marinheiros", 
 		joinColumns = {@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")},
 		inverseJoinColumns = {@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")}
 	)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Terceiro> getMarinheiros() {
 		return marinheiros;
 	}

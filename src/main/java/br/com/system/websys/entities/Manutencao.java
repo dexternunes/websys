@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -103,8 +105,9 @@ public class Manutencao extends EntityBaseRoot {
 		this.fimManutencao = fimManutencao;
 	}
 
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name="id_produto", referencedColumnName="id_produto")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Produto getProduto() {
 		return produto;
 	}

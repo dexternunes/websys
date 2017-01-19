@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 @Table(name = "mail")
 public class Mail extends EntityBaseRoot {
@@ -42,8 +45,9 @@ public class Mail extends EntityBaseRoot {
 		this.mailFrom = mailFrom;
 	}
 
-	@ElementCollection(targetClass = String.class, fetch=FetchType.EAGER)
+	@ElementCollection(targetClass = String.class)
 	@CollectionTable(name = "email_to", joinColumns = @JoinColumn(name = "id_mail") )
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<String> getMailTo() {
 		return mailTo;
 	}

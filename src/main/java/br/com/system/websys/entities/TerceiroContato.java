@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 @Table(name="terceiro_contato")
 public class TerceiroContato extends EntityBaseRoot {
@@ -32,7 +35,8 @@ public class TerceiroContato extends EntityBaseRoot {
 		return id;
 	}
 
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
 	public Terceiro getTerceiro() {
 		return terceiro;

@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 @Table(name="imagem")
 public class Imagem extends EntityBaseRoot {
@@ -56,8 +59,9 @@ public class Imagem extends EntityBaseRoot {
 		this.name = name;
 	}
 
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch=FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name="id_reserva_evento", referencedColumnName="id_reserva_evento")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public ReservaEvento getReservaEvento() {
 		return reservaEvento;
 	}

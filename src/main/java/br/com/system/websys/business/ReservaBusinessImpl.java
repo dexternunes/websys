@@ -37,7 +37,7 @@ import br.com.system.websys.repository.ReservaRepository;
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
 class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepository> implements ReservaBusiness {
-
+	
 	@Autowired
 	public UserBusiness userBusiness;
 	
@@ -499,13 +499,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Reserva> reservasReprovadas = new ArrayList<Reserva>();
 
-		for (Reserva reserva : reservas) {
-			if (!verificaValidacoesEmail(reserva)) {
-				reservasReprovadas.add(reserva);
-				reprovaReserva(reserva);
-			}
-		}
-
 		if (reservasReprovadas.size() > 0)
 			reservas.removeAll(reservasReprovadas);
 
@@ -526,10 +519,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				}
 			}
 
-			if (verificaValidacoesEmail(reserva)) {
-				reserva.setStatus(ReservaStatus.APROVADA);
-				dispararEmailAprovacaoReserva(reserva);
-			}
+
+			reserva.setStatus(ReservaStatus.APROVADA);
+			dispararEmailAprovacaoReserva(reserva);
+		
 
 		}
 		return true;
@@ -739,17 +732,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			return false;
 		if (reserva.getInicioReserva().getYear() != reserva.getFimReserva().getYear())
 			return false;
-
-		return true;
-	}
-
-	private Boolean verificaValidacoesEmail(Reserva reserva) {
-
-		for (ReservaValidacao validacao : reserva.getValidacoes()) {
-			if (validacao.getValidado() && !validacao.getAprovado()) {
-				return false;
-			}
-		}
 
 		return true;
 	}

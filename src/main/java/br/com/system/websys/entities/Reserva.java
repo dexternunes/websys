@@ -20,6 +20,8 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.com.system.websys.serializer.JsonDateTimeDeserializer;
@@ -96,8 +98,9 @@ public class Reserva extends EntityBaseRoot {
 		return id;
 	}
 
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "id_terceiro", referencedColumnName = "id_terceiro")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Terceiro getSolicitante() {
 		return solicitante;
 	}
@@ -106,8 +109,9 @@ public class Reserva extends EntityBaseRoot {
 		this.solicitante = solicitante;
 	}
 
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
 	@JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Grupo getGrupo() {
 		return grupo;
 	}
@@ -178,8 +182,9 @@ public class Reserva extends EntityBaseRoot {
 	}
 
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+			CascadeType.REFRESH })
 	@JoinColumn(name = "id_reserva_evento_inicio", referencedColumnName = "id_reserva_evento")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public ReservaEvento getEventoInicio() {
 		return eventoInicio;
 	}
@@ -189,8 +194,9 @@ public class Reserva extends EntityBaseRoot {
 	}
 
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH }, fetch = FetchType.EAGER)
+			CascadeType.REFRESH })
 	@JoinColumn(name = "id_reserva_evento_fim", referencedColumnName = "id_reserva_evento")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public ReservaEvento getEventoFim() {
 		return eventoFim;
 	}
@@ -200,10 +206,11 @@ public class Reserva extends EntityBaseRoot {
 	}
 
 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH }, fetch = FetchType.LAZY)
+			CascadeType.REFRESH })
 	@JoinTable(name = "reserva_has_reserva_validacao", joinColumns = {
 			@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva") }, inverseJoinColumns = {
 					@JoinColumn(name = "id_reserva_validacao", referencedColumnName = "id_reserva_validacao") })
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<ReservaValidacao> getValidacoes() {
 		return validacoes;
 	}

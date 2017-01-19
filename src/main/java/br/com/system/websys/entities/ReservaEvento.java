@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.com.system.websys.serializer.JsonDateTimeDeserializer;
@@ -43,7 +45,8 @@ public class ReservaEvento extends EntityBaseRoot {
 		return id;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="reservaEvento")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="reservaEvento")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Imagem> getImagens() {
 		return imagens;
 	}

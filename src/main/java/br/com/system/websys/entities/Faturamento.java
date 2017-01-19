@@ -16,6 +16,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 @Entity
 @Table(name="faturamento")
 public class Faturamento extends EntityBaseRoot {
@@ -42,10 +45,11 @@ public class Faturamento extends EntityBaseRoot {
 	}
 	
 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
- 			CascadeType.REFRESH }, fetch = FetchType.LAZY)
+ 			CascadeType.REFRESH })
  	@JoinTable(name = "faturamento_has_reserva", joinColumns = {
  			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
  					@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva") })
+	@LazyCollection(LazyCollectionOption.FALSE)
  	public List<Reserva> getReservas() {
 		return reservas;
 	}
@@ -55,11 +59,11 @@ public class Faturamento extends EntityBaseRoot {
 	}
 
 	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			 			CascadeType.REFRESH }, fetch = FetchType.LAZY)
+			 			CascadeType.REFRESH })
 			 	@JoinTable(name = "faturamento_has_manutencao", joinColumns = {
 			 			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
 			 					@JoinColumn(name = "id_manutencao", referencedColumnName = "id_manutencao") })
-			 	
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<Manutencao> getManutencoes() {
 		return manutencoes;
 	}
@@ -70,10 +74,11 @@ public class Faturamento extends EntityBaseRoot {
 
 
  	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
- 			CascadeType.REFRESH }, fetch = FetchType.LAZY)
+ 			CascadeType.REFRESH })
 	@JoinTable(name = "faturamento_has_faturamento_rateio", joinColumns = {
  			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
  					@JoinColumn(name = "id_faturamento_rateio", referencedColumnName = "id_faturamento_rateio") })
+ 	@LazyCollection(LazyCollectionOption.FALSE)
  	public List<FaturamentoRateio> getFaturamentoRateios() {
 		return faturamentoRateios;
 	}
@@ -82,8 +87,9 @@ public class Faturamento extends EntityBaseRoot {
 		this.faturamentoRateios = faturamentoRateios;
 	}
 
-	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
  	@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Grupo getGrupo() {
 		return grupo;
 	}

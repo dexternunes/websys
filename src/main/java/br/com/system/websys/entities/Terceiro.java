@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -74,7 +76,8 @@ public class Terceiro extends EntityBaseRoot {
 		this.documento = documento;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="terceiro")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="terceiro")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<TerceiroEndereco> getEnderecos() {
 		return enderecos;
 	}
@@ -83,7 +86,8 @@ public class Terceiro extends EntityBaseRoot {
 		this.enderecos = enderecos;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="terceiro")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="terceiro")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<TerceiroContato> getContatos() {
 		return contatos;
 	}
@@ -95,6 +99,7 @@ public class Terceiro extends EntityBaseRoot {
 	@ElementCollection(targetClass=TerceiroTipo.class)
 	@Enumerated(EnumType.STRING)
 	@CollectionTable(name = "terceiro_tipo", joinColumns = @JoinColumn(name = "id_terceiro"))
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<TerceiroTipo> getTipos() {
 		return tipos;
 	}

@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity 
@@ -78,8 +80,9 @@ public class User extends EntityBaseRoot {
 	}
 
 	@NotNull
-	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
+	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public Terceiro getTerceiro() {
 		return terceiro;
 	} 
