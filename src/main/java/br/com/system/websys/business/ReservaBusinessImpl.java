@@ -347,10 +347,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	private void vareSolicitacoesPorGrupo() {
 
+		System.out.println("Inicio");
 		List<Grupo> grupos = grupoBusiness.getAll();
 
 		for (Grupo grupo : grupos) {
-
+			System.out.println("Inicio grupo: " + grupo.getId());
 			List<Grupo> grs = new ArrayList<Grupo>();
 			grs.add(grupo);
 
@@ -368,9 +369,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 				validaSolicitacoesPorGrupo(reservas);
 			} catch (Exception e) {
+				System.out.println("deu pau na reserva do grupo " + grupo.getId());
+				System.out.println("Erro: " + e.getMessage());
 				return;
 			}
 		}
+
+		System.out.println("FIM");
 	}
 
 	public ReservaDTO getReservaDTOById(Long id, Terceiro terceiro, Date dataReserva) throws Exception {
@@ -452,7 +457,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return horaInicioReservaCal.getTime();
 	}
 
-	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException {
+	public ReservaValidacaoStatus validaReserva(Reserva reserva) throws ParseException, Exception {
 
 		if (reserva.getId() == null) {
 
@@ -473,7 +478,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return ReservaValidacaoStatus.OK;
 	}
 
-	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) {
+	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) throws Exception{
 		Date dataAtual = new Date();
 
 		if (existeReserva(reserva) == null) {
@@ -486,7 +491,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	@SuppressWarnings("deprecation")
-	private Boolean isReservaMesmoDia(Reserva reserva) {
+	private Boolean isReservaMesmoDia(Reserva reserva) throws Exception {
 		Date dataAtual = new Date();
 
 		if (dataAtual.getDate() == reserva.getFimReserva().getDate() && reserva.getFimReserva().getHours() <= 20) {
@@ -505,7 +510,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<Reserva> reservasUnicas = validaReservasConcomitantes(reservas);
 
 		for (Reserva reserva : reservasUnicas) {
-
+			System.out.println("validando reserva " + reserva.getId());
 			Calendar date = Calendar.getInstance();
 			date.add(Calendar.HOUR, -24);
 			if (reserva.getCreated().getTime() >= date.getTime().getTime()) {
@@ -518,9 +523,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					continue;
 				}
 			}
-
-
+			
 			reserva.setStatus(ReservaStatus.APROVADA);
+			System.out.println("Reserva aprovada: " + reserva.getId());
 			dispararEmailAprovacaoReserva(reserva);
 		
 
@@ -547,8 +552,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		Boolean continua = false;
 
+		System.out.println("Entrou");
 		do {
 
+			System.out.println("Do:");
 			if (reservasUnicas.size() > 0) {
 				reservas.clear();
 				reservas.addAll(reservasUnicas);
@@ -564,6 +571,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			for (Reserva reservaDaVez : reservas) {
 				for (Reserva reservaVerificacao : reservas) {
 
+					System.out.println("FOR FOR");
 					if (reservaDaVez.equals(reservaVerificacao))
 						continue;
 
@@ -579,23 +587,24 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					inicioR.setTime(reservaVerificacao.getInicioReserva());
 					fimR.setTime(reservaVerificacao.getFimReserva());
 
-					if ((inicioReserva.before(inicioR) && fimReserva.after(inicioR))
-							|| (inicioReserva.before(fimR) && fimReserva.after(fimR))) {
-						if (!reservasUnicas.contains(reservaDaVez) && !reservasUnicas.contains(reservaVerificacao))
+					if ((inicioReserva.before(inicioR) && fimReserva.after(inicioR))|| (inicioReserva.before(fimR) && fimReserva.after(fimR))) {
+						if (!reservasUnicas.contains(reservaDaVez) && !reservasUnicas.contains(reservaVerificacao)){
 							reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
-						continua = true;
+							continua = true;
+						}
 					} else
 						reservasUnicas.add(reservaDaVez);
 
 				}
 			}
+			System.out.println("continua " + continua);
 		} while (continua);
 
 		return reservasUnicas;
 
 	}
 
-	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) {
+	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) throws Exception{
 		
 		User user = userBusiness.getCurrent();
 		
@@ -725,7 +734,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	@SuppressWarnings("deprecation")
-	private Boolean isReservaDiaUnico(Reserva reserva) {
+	private Boolean isReservaDiaUnico(Reserva reserva) throws Exception{
 		if (reserva.getInicioReserva().getDay() != reserva.getFimReserva().getDay())
 			return false;
 		if (reserva.getInicioReserva().getMonth() != reserva.getFimReserva().getMonth())
@@ -756,7 +765,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getGrupo(), status);
 	}
 	
-	public Reserva existeReservaIgual(Reserva reserva) {
+	public Reserva existeReservaIgual(Reserva reserva) throws Exception{
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
