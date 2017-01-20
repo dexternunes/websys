@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -22,6 +21,7 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import br.com.system.websys.serializer.JsonDateTimeDeserializer;
@@ -29,6 +29,7 @@ import br.com.system.websys.serializer.JsonDateTimeSerializer;
 
 @Entity
 @Table(name = "reserva")
+@Where(clause = "excluido = 0")
 public class Reserva extends EntityBaseRoot {
 
 	private Terceiro solicitante;

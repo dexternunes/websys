@@ -6,7 +6,6 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -47,7 +46,7 @@ public class Mail extends EntityBaseRoot {
 
 	@ElementCollection(targetClass = String.class)
 	@CollectionTable(name = "email_to", joinColumns = @JoinColumn(name = "id_mail") )
-	@LazyCollection(LazyCollectionOption.TRUE)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	public List<String> getMailTo() {
 		return mailTo;
 	}

@@ -33,15 +33,14 @@ import br.com.system.websys.entities.TerceiroDTO;
 import br.com.system.websys.entities.User;
 import br.com.system.websys.formatter.Formatters;
 import br.com.system.websys.repository.ReservaRepository;
-import br.com.system.websys.repository.UserRepository;
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
-class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepository> implements ReservaBusiness {
-	
+class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepository>implements ReservaBusiness {
+
 	@Autowired
 	public UserBusiness userBusiness;
-	
+
 	@Autowired
 	public TerceiroBusiness terceiroBusiness;
 
@@ -116,7 +115,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		for (Terceiro terceiro : terceiroList) {
 			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { terceiro.getEmails() },
 
-					"Prime Share Club - Reserva Solicitada",
+			"Prime Share Club - Reserva Solicitada",
 					"<div align='center' style='background-color:rgb(255,255,255)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 							+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
@@ -124,17 +123,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
-							+ Formatters.formatDate(reserva.getInicioReserva()) 
-							+ "<br />" 
-							+ "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva()) 
-							+ "<br />" 
-							+ "	Utiliza Marinheiro: "
-							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-							+ "<br />" 
-							+ "	Observação: "
-							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
-							+ "	<div>"
+							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: "
+							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
@@ -145,10 +137,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public Boolean sendEmailInterno(Reserva reserva) throws Exception {
 
 		List<Terceiro> terceiros = terceiroBusiness.getAllByRole(Role.ROLE_ADMIN);
-		
-		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() > 0)
+
+		if (reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() > 0)
 			terceiros.addAll(reserva.getGrupo().getMarinheiros());
-		
+
 		for (Terceiro terceiro : terceiros) {
 			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { terceiro.getEmails() },
 					"Prime Share Club - Reserva Solicitada",
@@ -160,14 +152,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva())
-							+ "<br />" 
-							+ "	Utiliza Marinheiro: "
-							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-							+ "<br />" 
-							+ "	Observação: "
-							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
-							+ "	<div>"
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: "
+							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
@@ -191,8 +178,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		return reservas;
 	}
-	
-	@Override 
+
+	@Override
 	public Boolean contemReservaAtiva(Terceiro terceiro, Grupo grupo) {
 
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
@@ -202,43 +189,39 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 		status.add(ReservaStatus.EM_USO);
-		
-		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros, grupo, status);
+
+		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros, grupo,
+				status);
 
 		return reservas != null && reservas.size() > 0;
 	}
 
 	public List<Grupo> getGrupoPermiteReserva(Terceiro terceiro) {
-		
+
 		User user = userBusiness.getCurrent();
-		
+
 		List<Grupo> grupo = grupoBusiness.getAllByUser(user);
 
 		for (Reserva r : getReservaByTerceiro(terceiro)) {
-			if (
-					grupo.contains(r.getGrupo()) 
-					&& (
-							!r.getStatus().equals(ReservaStatus.CANCELADA)
-							&& !r.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)
-							&& !r.getStatus().equals(ReservaStatus.ENCERRADA)
-					)
-				) {
+			if (grupo.contains(r.getGrupo()) && (!r.getStatus().equals(ReservaStatus.CANCELADA)
+					&& !r.getStatus().equals(ReservaStatus.CANCELADA_MENOS_DUAS)
+					&& !r.getStatus().equals(ReservaStatus.ENCERRADA))) {
 				grupo.remove(r.getGrupo());
 			}
 		}
-		
+
 		return grupo;
 	}
-	
-	@Override 
-	public List<Terceiro> getTerceiroPermiteReservaGrupo(Grupo grupo) {
-		List<Terceiro> terceirosPermiteReserva = new ArrayList<Terceiro>(); 
 
-		for(Terceiro terceiro : grupo.getTerceiros()){
-			if(!contemReservaAtiva(terceiro, grupo))
+	@Override
+	public List<Terceiro> getTerceiroPermiteReservaGrupo(Grupo grupo) {
+		List<Terceiro> terceirosPermiteReserva = new ArrayList<Terceiro>();
+
+		for (Terceiro terceiro : grupo.getTerceiros()) {
+			if (!contemReservaAtiva(terceiro, grupo))
 				terceirosPermiteReserva.add(terceiro);
 		}
-		
+
 		return terceirosPermiteReserva;
 	}
 
@@ -285,7 +268,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	public List<Reserva> getReservasParaExibicao(User user) {
 
 		List<Grupo> grupos = grupoBusiness.getAllByUser(user);
-		
+
 		if (grupos.size() > 0) {
 
 			List<ReservaStatus> status = new ArrayList<ReservaStatus>();
@@ -293,7 +276,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 			status.add(ReservaStatus.APROVADA);
 			status.add(ReservaStatus.EM_USO);
-			//status.add(ReservaStatus.CANCELADA);
+			// status.add(ReservaStatus.CANCELADA);
 			status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
 			status.add(ReservaStatus.ENCERRADA);
 
@@ -319,12 +302,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.getEventoInicio().setHoraRegistro(reservaEvento.getHoraRegistro());
 			reserva.getEventoInicio().setObs(reservaEvento.getObs());
 		}
-		
+
 		if (reserva.getEventoInicio().getHora() == null) {
 			throw new Exception("Informe primeiro a hora motor do evento inicial.");
 		}
-		
-		
+
 		if (reserva.getEventoFim().equals(reservaEvento)) {
 			if (reserva.getEventoFim() == null)
 				throw new Exception("Informe as horas do motor.");
@@ -337,7 +319,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			reserva.setFaturamentoStatus(FaturamentoStatus.PENDENTE);
 			reserva.getEventoFim().setObs(reservaEvento.getObs());
 			sendEmailFinalizacao(reserva, server);
-			
+
 		}
 
 		return this.salvar(reserva);
@@ -361,14 +343,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 			List<ReservaStatus> statusList = new ArrayList<ReservaStatus>();
 			statusList.add(ReservaStatus.AGUARDANDO_APROVACAO);
-			statusList.add(ReservaStatus.CANCELADA_MENOS_DUAS);
-
-			Calendar date = Calendar.getInstance();
-			date.add(Calendar.DATE, -1);
 
 			try {
 				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatus(grs, statusList);
-				if (reservas == null)
+				if (reservas == null || reservas.size() == 0)
 					continue;
 
 				validaSolicitacoesPorGrupo(reservas);
@@ -482,7 +460,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return ReservaValidacaoStatus.OK;
 	}
 
-	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) throws Exception{
+	private ReservaValidacaoStatus validaReservaMesmoDia(Reserva reserva) throws Exception {
 		Date dataAtual = new Date();
 
 		if (existeReserva(reserva) == null) {
@@ -504,12 +482,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return false;
 	}
 
-	private Boolean validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception {
-
-		List<Reserva> reservasReprovadas = new ArrayList<Reserva>();
-
-		if (reservasReprovadas.size() > 0)
-			reservas.removeAll(reservasReprovadas);
+	private void validaSolicitacoesPorGrupo(List<Reserva> reservas) throws Exception {
 
 		List<Reserva> reservasUnicas = validaReservasConcomitantes(reservas);
 
@@ -527,15 +500,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					continue;
 				}
 			}
-			
+
 			reserva.setStatus(ReservaStatus.APROVADA);
 			reservaRepository.save(reserva);
 			System.out.println("Reserva aprovada: " + reserva.getId());
 			dispararEmailAprovacaoReserva(reserva);
-		
 
 		}
-		return true;
 	}
 
 	public ReservaValidacaoStatus validaReservaDiaUnico(Reserva reserva) throws ParseException {
@@ -553,21 +524,23 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 	private List<Reserva> validaReservasConcomitantes(List<Reserva> reservas) throws Exception {
 
-		List<Reserva> reservasUnicas = new ArrayList<Reserva>();
+		if (reservas.size() == 1)
+			return reservas;
 
-		Boolean continua = false;
+		List<Reserva> reservasUnicas = null;
 
 		do {
 
+			if (reservasUnicas != null)
+				if (reservasUnicas.size() == reservas.size()){
+					return reservasUnicas;
+				}
+				else{
+					reservas.clear();
+					reservas.addAll(reservasUnicas);
+				}
 
-			if (reservasUnicas.size() > 0) {
-				reservas.clear();
-				reservas.addAll(reservasUnicas);
-
-				reservasUnicas.clear();
-			}
-
-			continua = false;
+			reservasUnicas = new ArrayList<Reserva>();
 
 			if (reservas == null || reservas.size() == 1)
 				return reservas;
@@ -590,34 +563,37 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					inicioR.setTime(reservaVerificacao.getInicioReserva());
 					fimR.setTime(reservaVerificacao.getFimReserva());
 
-					if ((inicioReserva.before(inicioR) && fimReserva.after(inicioR))|| (inicioReserva.before(fimR) && fimReserva.after(fimR))) {
-						if (!reservasUnicas.contains(reservaDaVez) && !reservasUnicas.contains(reservaVerificacao)){
-							reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
-							continua = true;
+					if ((inicioReserva.before(inicioR) && fimReserva.after(inicioR))
+							|| (inicioReserva.before(fimR) && fimReserva.after(fimR))) {
+						reservasUnicas.remove(reservaDaVez);
+						reservasUnicas.remove(reservaVerificacao);
+						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
+
+					} else {
+						if (!reservasUnicas.contains(reservaDaVez)) {
+							reservasUnicas.add(reservaDaVez);
 						}
-					} else
-						reservasUnicas.add(reservaDaVez);
+					}
 
 				}
 			}
-		} while (continua);
-
-		return reservasUnicas;
+		} while (true);
 
 	}
 
-	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) throws Exception{
-		
+	public ReservaValidacaoStatus validaReservaDiasConsecutivos(Reserva reserva) throws Exception {
+
 		User user = userBusiness.getCurrent();
-		
+
 		Date dataAtual = new Date();
 		GregorianCalendar atual = new GregorianCalendar();
 		GregorianCalendar dataReserva = new GregorianCalendar();
-		
+
 		atual.setTime(dataAtual);
 		dataReserva.setTime(reserva.getInicioReserva());
 
-		if (!user.getRole().equals(Role.ROLE_ADMIN) && (dataReserva.get(GregorianCalendar.DAY_OF_YEAR) - atual.get(GregorianCalendar.DAY_OF_YEAR)) < 7) {
+		if (!user.getRole().equals(Role.ROLE_ADMIN)
+				&& (dataReserva.get(GregorianCalendar.DAY_OF_YEAR) - atual.get(GregorianCalendar.DAY_OF_YEAR)) < 7) {
 			return ReservaValidacaoStatus.DIAS_CONSECUTIVOS;
 		}
 
@@ -681,14 +657,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-				+ Formatters.formatDate(reserva.getFimReserva())
-				+ "<br />" 
-				+ "	Utiliza Marinheiro: "
-				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-				+ "<br />" 
-				+ "	Observação: "
-				+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
-				+ "	<div>"
+				+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
+				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: " + reserva.getObs()
+				+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 				+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 				+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 				+ "</br></br></div>";
@@ -716,14 +687,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-				+ Formatters.formatDate(reserva.getFimReserva())
-				+ "<br />" 
-				+ "	Utiliza Marinheiro: "
-				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-				+ "<br />" 
-				+ "	Observação: "
-				+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
-				+ "	<div>"
+				+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
+				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: " + reserva.getObs()
+				+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 				+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 				+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 				+ "</br></br></div>";
@@ -736,7 +702,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 	}
 
 	@SuppressWarnings("deprecation")
-	private Boolean isReservaDiaUnico(Reserva reserva) throws Exception{
+	private Boolean isReservaDiaUnico(Reserva reserva) throws Exception {
 		if (reserva.getInicioReserva().getDay() != reserva.getFimReserva().getDay())
 			return false;
 		if (reserva.getInicioReserva().getMonth() != reserva.getFimReserva().getMonth())
@@ -764,10 +730,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
 		status.add(ReservaStatus.APROVADA);
 
-		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(), reserva.getGrupo(), status);
+		return ((ReservaRepository) repository).existeReserva(reserva.getInicioReserva(), reserva.getFimReserva(),
+				reserva.getGrupo(), status);
 	}
-	
-	public Reserva existeReservaIgual(Reserva reserva) throws Exception{
+
+	public Reserva existeReservaIgual(Reserva reserva) throws Exception {
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 
 		status.add(ReservaStatus.AGUARDANDO_APROVACAO);
@@ -792,14 +759,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
-							+ Formatters.formatDate(reserva.getFimReserva())
-							+ "<br />" 
-							+ "	Utiliza Marinheiro: "
-							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-							+ "<br />" 
-							+ "	Observação: "
-							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
-							+ "	<div>"
+							+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: "
+							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
@@ -807,17 +769,16 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
-		//roles.add(Role.ROLE_MARINHEIRO);
+		// roles.add(Role.ROLE_MARINHEIRO);
 
 		List<User> users = userBusiness.getByRoles(roles);
-		
-		
-		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() >0){
-			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()){
+
+		if (reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() > 0) {
+			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()) {
 				users.add(userBusiness.getUserByTerceiro(terceiro));
 			}
 		}
-		
+
 		for (User user : users) {
 			if (user.getAtivo()) {
 				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
@@ -830,14 +791,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
-								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
-								+ "<br />" 
-								+ "	Utiliza Marinheiro: "
-								+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-								+ "<br />" 
-								+ "	Observação: "
-								+ reserva.getObs() 
-								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
+								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva()) + "<br />"
+								+ "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />"
+								+ "	Observação: " + reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
+								+ "	<div>"
 								+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
@@ -855,47 +812,46 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		String link = server + "/reserva/visualizaImagensReserva/" + reserva.getId();
 
 		for (Terceiro t : terceiroList) {
-			String html ="<div align='center' style='background-color:rgb(255,255,255)'></br></br>"
+			String html = "<div align='center' style='background-color:rgb(255,255,255)'></br></br>"
 					+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 					+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 					+ "</div>" + "</br></br><font color='#1C3C6A'>"
 					+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
 					+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 					+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
-					+ Formatters.formatDate(reserva.getInicioReserva()) 
-					+ "<br />" 
-					+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
-					+ "<br />" 
-					+ "	Hora de registro do início da utilização: " + Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro())
-					+ "<br />" 
-					+ "	Hora de registro do fim da utilização: " + Formatters.formatDate(reserva.getEventoFim().getHoraRegistro())
-					+ "<br /> <br />";
-			
-					if(t== reserva.getSolicitante()){
-						html = html.concat(" Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>");
-					}
-					html = html.concat( " Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>"
+					+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
+					+ Formatters.formatDate(reserva.getFimReserva()) + "<br />"
+					+ "	Hora de registro do início da utilização: "
+					+ Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro()) + "<br />"
+					+ "	Hora de registro do fim da utilização: "
+					+ Formatters.formatDate(reserva.getEventoFim().getHoraRegistro()) + "<br /> <br />";
+
+			if (t == reserva.getSolicitante()) {
+				html = html.concat(
+						" Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>");
+			}
+			html = html.concat(" Para visualizar as imagens clique <a href='" + link + "' style='color:white;'>aqui</a>"
 					+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 					+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 					+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 					+ "</br></br></div>");
-			
+
 			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { t.getEmails() },
-					"Prime Share Club - Reserva Finalizada",html);
+					"Prime Share Club - Reserva Finalizada", html);
 		}
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
-		//roles.add(Role.ROLE_MARINHEIRO);
+		// roles.add(Role.ROLE_MARINHEIRO);
 
 		List<User> users = userBusiness.getByRoles(roles);
-		
-		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() >0){
-			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()){
+
+		if (reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() > 0) {
+			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()) {
 				users.add(userBusiness.getUserByTerceiro(terceiro));
 			}
 		}
-		
+
 		for (User user : users) {
 			if (user.getAtivo()) {
 				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
@@ -908,12 +864,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
-								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva())
-								+ "<br />" 
-								+ "	Hora de registro do início da utilização: " + Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro())
-								+ "<br />" 
-								+ "	Hora de registro do fim da utilização: " + Formatters.formatDate(reserva.getEventoFim().getHoraRegistro())
-								+ "<br /> <br />" + " Para visualizar as imagens clique <a href='" + link
+								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva()) + "<br />"
+								+ "	Hora de registro do início da utilização: "
+								+ Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro()) + "<br />"
+								+ "	Hora de registro do fim da utilização: "
+								+ Formatters.formatDate(reserva.getEventoFim().getHoraRegistro()) + "<br /> <br />"
+								+ " Para visualizar as imagens clique <a href='" + link
 								+ "' style='color:white;'>aqui</a>" + "<br /><br />Att,<br /> " + "	</font>"
 								+ "	<div>"
 								+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
@@ -941,14 +897,10 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
-							+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva())
-							+ "<br />" 
-							+ "	Utiliza Marinheiro: "
-							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-							+ "<br />" 
-							+ "	Observação: "
-							+ reserva.getObs() 
-							+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
+							+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva()) + "<br />"
+							+ "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />"
+							+ "	Observação: " + reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
+							+ "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 							+ "</br></br></div>");
@@ -956,15 +908,15 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(Role.ROLE_ADMIN);
-		//roles.add(Role.ROLE_MARINHEIRO);
+		// roles.add(Role.ROLE_MARINHEIRO);
 		List<User> users = userBusiness.getByRoles(roles);
-		
-		if(reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() >0){
-			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()){
+
+		if (reserva.getGrupo().getMarinheiros() != null && reserva.getGrupo().getMarinheiros().size() > 0) {
+			for (Terceiro terceiro : reserva.getGrupo().getMarinheiros()) {
 				users.add(userBusiness.getUserByTerceiro(terceiro));
 			}
 		}
-		
+
 		for (User user : users) {
 			if (user.getAtivo()) {
 				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
@@ -978,13 +930,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
 								+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva())
-								+ "<br />" 
-								+ "	Utiliza Marinheiro: "
-								+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") 
-								+ "<br />" 
-								+ "	Observação: "
-								+ reserva.getObs() 
-								+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
+								+ "<br />" + "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "Não")
+								+ "<br />" + "	Observação: " + reserva.getObs() + "<br /><br />Att,<br /> "
+								+ "	</font>" + "	<div>"
 								+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='#1C3C6A'>©2016 All Rights Reserved.</font></p>" + "	</div> "
 								+ "</br></br></div>");
@@ -994,33 +942,33 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		return false;
 
 	}
-	
+
 	@Override
-	public void alterarStatusReserva() throws Exception{
-		
+	public void alterarStatusReserva() throws Exception {
+
 		Calendar data = Calendar.getInstance();
-		
+
 		Criteria criteriaEmUso = this.createCriteria("r");
 		criteriaEmUso.add(Restrictions.le("r.inicioReserva", data.getTime()))
-			.add(Restrictions.eq("r.status", ReservaStatus.APROVADA));
-		
+				.add(Restrictions.eq("r.status", ReservaStatus.APROVADA));
+
 		List<Reserva> reservasEmUso = criteriaEmUso.list();
-		
-		if(reservasEmUso != null){
-			for(Reserva reserva : reservasEmUso){
+
+		if (reservasEmUso != null) {
+			for (Reserva reserva : reservasEmUso) {
 				reserva.setStatus(ReservaStatus.EM_USO);
 				this.salvar(reserva);
 			}
 		}
-		
+
 		Criteria criteriaEncerreda = this.createCriteria("r");
 		criteriaEncerreda.add(Restrictions.le("r.fimReserva", data.getTime()))
-			.add(Restrictions.eq("r.status", ReservaStatus.EM_USO));
-		
+				.add(Restrictions.eq("r.status", ReservaStatus.EM_USO));
+
 		List<Reserva> reservasEncerradas = criteriaEncerreda.list();
-		
-		if(reservasEncerradas != null){
-			for(Reserva reserva : reservasEncerradas){
+
+		if (reservasEncerradas != null) {
+			for (Reserva reserva : reservasEncerradas) {
 				reserva.setStatus(ReservaStatus.ENCERRADA);
 				this.salvar(reserva);
 			}
