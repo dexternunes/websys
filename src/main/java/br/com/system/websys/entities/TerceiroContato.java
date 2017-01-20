@@ -36,7 +36,6 @@ public class TerceiroContato extends EntityBaseRoot {
 	}
 
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-	@LazyCollection(LazyCollectionOption.TRUE)
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
 	public Terceiro getTerceiro() {
 		return terceiro;

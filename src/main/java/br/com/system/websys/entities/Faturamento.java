@@ -49,7 +49,6 @@ public class Faturamento extends EntityBaseRoot {
  	@JoinTable(name = "faturamento_has_reserva", joinColumns = {
  			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
  					@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva") })
-	@LazyCollection(LazyCollectionOption.TRUE)
  	public List<Reserva> getReservas() {
 		return reservas;
 	}
@@ -63,7 +62,6 @@ public class Faturamento extends EntityBaseRoot {
 			 	@JoinTable(name = "faturamento_has_manutencao", joinColumns = {
 			 			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
 			 					@JoinColumn(name = "id_manutencao", referencedColumnName = "id_manutencao") })
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<Manutencao> getManutencoes() {
 		return manutencoes;
 	}
@@ -78,7 +76,6 @@ public class Faturamento extends EntityBaseRoot {
 	@JoinTable(name = "faturamento_has_faturamento_rateio", joinColumns = {
  			@JoinColumn(name = "id_faturamento", referencedColumnName = "id_faturamento") }, inverseJoinColumns = {
  					@JoinColumn(name = "id_faturamento_rateio", referencedColumnName = "id_faturamento_rateio") })
- 	@LazyCollection(LazyCollectionOption.TRUE)
  	public List<FaturamentoRateio> getFaturamentoRateios() {
 		return faturamentoRateios;
 	}
@@ -89,7 +86,6 @@ public class Faturamento extends EntityBaseRoot {
 
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
  	@JoinColumn(name="id_grupo", referencedColumnName="id_grupo")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public Grupo getGrupo() {
 		return grupo;
 	}

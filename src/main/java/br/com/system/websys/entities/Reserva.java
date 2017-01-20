@@ -36,10 +36,10 @@ public class Reserva extends EntityBaseRoot {
 
 	private Grupo grupo;
 
-	@DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date inicioReserva;
 
-	@DateTimeFormat(pattern="dd/MM/yyyy HH:mm")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date fimReserva;
 
 	private ReservaStatus status;
@@ -47,7 +47,7 @@ public class Reserva extends EntityBaseRoot {
 	private Boolean ativo = true;
 
 	private Boolean excluido = false;
-	
+
 	private ReservaEvento eventoInicio;
 
 	private ReservaEvento eventoFim;
@@ -101,7 +101,6 @@ public class Reserva extends EntityBaseRoot {
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "id_terceiro", referencedColumnName = "id_terceiro")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public Terceiro getSolicitante() {
 		return solicitante;
 	}
@@ -112,7 +111,6 @@ public class Reserva extends EntityBaseRoot {
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST })
 	@JoinColumn(name = "id_grupo", referencedColumnName = "id_grupo")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public Grupo getGrupo() {
 		return grupo;
 	}
@@ -121,22 +119,22 @@ public class Reserva extends EntityBaseRoot {
 		this.grupo = grupo;
 	}
 
-	@JsonSerialize( using=JsonDateTimeSerializer.class)
+	@JsonSerialize(using = JsonDateTimeSerializer.class)
 	public Date getInicioReserva() {
 		return inicioReserva;
 	}
 
-	@JsonDeserialize( using=JsonDateTimeDeserializer.class)
+	@JsonDeserialize(using = JsonDateTimeDeserializer.class)
 	public void setInicioReserva(Date inicioReserva) {
 		this.inicioReserva = inicioReserva;
 	}
 
-	@JsonSerialize( using=JsonDateTimeSerializer.class)
+	@JsonSerialize(using = JsonDateTimeSerializer.class)
 	public Date getFimReserva() {
 		return fimReserva;
 	}
 
-	@JsonDeserialize( using=JsonDateTimeDeserializer.class)
+	@JsonDeserialize(using = JsonDateTimeDeserializer.class)
 	public void setFimReserva(Date fimReserva) {
 		this.fimReserva = fimReserva;
 	}
@@ -182,10 +180,8 @@ public class Reserva extends EntityBaseRoot {
 		this.obs = obs;
 	}
 
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH })
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_reserva_evento_inicio", referencedColumnName = "id_reserva_evento")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public ReservaEvento getEventoInicio() {
 		return eventoInicio;
 	}
@@ -194,10 +190,8 @@ public class Reserva extends EntityBaseRoot {
 		this.eventoInicio = eventoInicio;
 	}
 
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH })
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinColumn(name = "id_reserva_evento_fim", referencedColumnName = "id_reserva_evento")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public ReservaEvento getEventoFim() {
 		return eventoFim;
 	}
@@ -206,12 +200,10 @@ public class Reserva extends EntityBaseRoot {
 		this.eventoFim = eventoFim;
 	}
 
-	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
-			CascadeType.REFRESH })
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	@JoinTable(name = "reserva_has_reserva_validacao", joinColumns = {
 			@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva") }, inverseJoinColumns = {
 					@JoinColumn(name = "id_reserva_validacao", referencedColumnName = "id_reserva_validacao") })
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<ReservaValidacao> getValidacoes() {
 		return validacoes;
 	}

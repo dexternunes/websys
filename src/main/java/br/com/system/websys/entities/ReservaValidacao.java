@@ -9,9 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 @Entity
 @Table(name = "reserva_validacao")
 public class ReservaValidacao extends EntityBaseRoot {
@@ -38,7 +35,6 @@ public class ReservaValidacao extends EntityBaseRoot {
 
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REFRESH })
-	@LazyCollection(LazyCollectionOption.TRUE)
 	@JoinColumn(name = "id_reserva", referencedColumnName = "id_reserva")
 	public Reserva getReserva() {
 		return reserva;
@@ -50,7 +46,6 @@ public class ReservaValidacao extends EntityBaseRoot {
 
 	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE,
 			CascadeType.REFRESH })
-	@LazyCollection(LazyCollectionOption.TRUE)
 	@JoinColumn(name = "id_terceiro", referencedColumnName = "id_terceiro")
 	public Terceiro getTerceiro() {
 		return terceiro;

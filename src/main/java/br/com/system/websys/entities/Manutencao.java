@@ -107,7 +107,6 @@ public class Manutencao extends EntityBaseRoot {
 
 	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name="id_produto", referencedColumnName="id_produto")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public Produto getProduto() {
 		return produto;
 	}

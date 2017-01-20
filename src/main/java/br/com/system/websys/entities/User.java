@@ -82,7 +82,6 @@ public class User extends EntityBaseRoot {
 	@NotNull
 	@OneToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name="id_terceiro", referencedColumnName="id_terceiro")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public Terceiro getTerceiro() {
 		return terceiro;
 	} 

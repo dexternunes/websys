@@ -77,7 +77,6 @@ public class Terceiro extends EntityBaseRoot {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="terceiro")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<TerceiroEndereco> getEnderecos() {
 		return enderecos;
 	}
@@ -87,7 +86,6 @@ public class Terceiro extends EntityBaseRoot {
 	}
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="terceiro")
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<TerceiroContato> getContatos() {
 		return contatos;
 	}
@@ -99,7 +97,6 @@ public class Terceiro extends EntityBaseRoot {
 	@ElementCollection(targetClass=TerceiroTipo.class)
 	@Enumerated(EnumType.STRING)
 	@CollectionTable(name = "terceiro_tipo", joinColumns = @JoinColumn(name = "id_terceiro"))
-	@LazyCollection(LazyCollectionOption.TRUE)
 	public List<TerceiroTipo> getTipos() {
 		return tipos;
 	}

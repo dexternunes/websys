@@ -563,8 +563,8 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					inicioR.setTime(reservaVerificacao.getInicioReserva());
 					fimR.setTime(reservaVerificacao.getFimReserva());
 
-					if ((inicioReserva.before(inicioR) && fimReserva.after(inicioR))
-							|| (inicioReserva.before(fimR) && fimReserva.after(fimR))) {
+					if ((inicioReserva.before(inicioR) && fimReserva.after(inicioR)) || (inicioReserva.before(fimR) && fimReserva.after(fimR))
+							|| (inicioR.before(inicioReserva) && fimR.after(inicioReserva)) || (inicioR.before(fimReserva) && fimR.after(fimReserva))) {
 						reservasUnicas.remove(reservaDaVez);
 						reservasUnicas.remove(reservaVerificacao);
 						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
