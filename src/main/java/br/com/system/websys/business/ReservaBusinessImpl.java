@@ -548,7 +548,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			for (Reserva reservaDaVez : reservas) {
 				for (Reserva reservaVerificacao : reservas) {
 
-					if (reservaDaVez.equals(reservaVerificacao))
+					if (reservaDaVez.equals(reservaVerificacao) || reservaDaVez.getStatus().equals(ReservaStatus.REPROVADA) || reservaVerificacao.getStatus().equals(ReservaStatus.REPROVADA))
 						continue;
 
 					Calendar inicioReserva = Calendar.getInstance();
