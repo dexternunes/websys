@@ -557,10 +557,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		Boolean continua = false;
 
-		System.out.println("Entrou");
 		do {
 
-			System.out.println("Do:");
+
 			if (reservasUnicas.size() > 0) {
 				reservas.clear();
 				reservas.addAll(reservasUnicas);
@@ -576,7 +575,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 			for (Reserva reservaDaVez : reservas) {
 				for (Reserva reservaVerificacao : reservas) {
 
-					System.out.println("FOR FOR");
 					if (reservaDaVez.equals(reservaVerificacao))
 						continue;
 
@@ -602,7 +600,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 				}
 			}
-			System.out.println("continua " + continua);
 		} while (continua);
 
 		return reservasUnicas;
