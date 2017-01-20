@@ -314,7 +314,7 @@
 			gruposJSON = data;
 		},
 		error:function(request, status, error){
-			alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:732');
+			console.log('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:732');
 		}
 	});
 	
