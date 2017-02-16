@@ -52,6 +52,8 @@ public class Manutencao extends EntityBaseRoot {
 
 	private Produto produto;
 	
+	private Boolean excluida = false;
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id_manutencao")	
@@ -113,6 +115,14 @@ public class Manutencao extends EntityBaseRoot {
 
 	public void setProduto(Produto produto) {
 		this.produto = produto;
+	}
+	
+	public Boolean getExcluida() {
+		return excluida;
+	}
+
+	public void setExcluida(Boolean excluida) {
+		this.excluida = excluida;
 	}
 			
 }
