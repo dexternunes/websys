@@ -157,7 +157,7 @@
 								action="${pageContext.request.contextPath}/manutencao/cadastro/salvar"
 								commandName="manutencao" method="post" id="form1">
 
-								<form:hidden path="id" />
+								<form:hidden path="id" id="idManutencao"/>
 
 
 								<div class="form-group">
@@ -185,9 +185,6 @@
 										<form:errors cssClass="native-error" path="obs"></form:errors>
 									</div>
 								</div>
-								
-
-								
 
 								<div class="form-group">
 									<label class="control-label col-md-3 col-sm-3 col-xs-12"
@@ -256,6 +253,7 @@
 								<br /> 
 								<div class="form-actions">
 									<button id="confirmar" type="submit" class="btn btn-primary">Confirmar</button>
+									<button id="btnExcluir" type="button" class="btn btn-danger">Excluir</button>
 								</div>
 								
 								<%-- <div class="control-group">
@@ -291,6 +289,25 @@
 				  $("#inputValor").val(valor); 
 				  $( "#target" ).submit();
 				});
+			
+			$('#btnExcluir').click(function(){
+				$.ajax({
+					url : "${pageContext.request.contextPath}/manutencao/remove",
+					type : "POST",
+					contentType : "application/json; charset=utf-8",
+					data : JSON.stringify($('#idManutencao').val()),
+					async : false,
+					cache : false,
+					processData : false,
+					success : function() {
+						document.location.reload();
+					},
+					error : function(error) {
+						alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:837');
+						permiteClick = true;
+					}
+				});
+			});
 			
 			
 			$('#data_fim_reserva').daterangepicker({

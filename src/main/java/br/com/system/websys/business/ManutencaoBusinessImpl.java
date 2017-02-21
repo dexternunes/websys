@@ -29,7 +29,7 @@ class ManutencaoBusinessImpl extends BusinessBaseRootImpl<Manutencao, Manutencao
 
 	@Override
 	public List<Manutencao> getAll() {
-		return ((ManutencaoRepository)repository).findAll();
+		return ((ManutencaoRepository)repository).getAll();
 	}
 
 	@Override
