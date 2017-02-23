@@ -343,7 +343,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 			List<ReservaStatus> statusList = new ArrayList<ReservaStatus>();
 			statusList.add(ReservaStatus.AGUARDANDO_APROVACAO);
-			statusList.add(ReservaStatus.APROVADA);
 
 			try {
 				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatus(grs, statusList);
@@ -502,12 +501,11 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				}
 			}
 
-			if(reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)){
-				reserva.setStatus(ReservaStatus.APROVADA);
-				reservaRepository.save(reserva);
-				System.out.println("Reserva aprovada: " + reserva.getId());
-				dispararEmailAprovacaoReserva(reserva);
-			}
+			reserva.setStatus(ReservaStatus.APROVADA);
+			reservaRepository.save(reserva);
+			System.out.println("Reserva aprovada: " + reserva.getId());
+			dispararEmailAprovacaoReserva(reserva);
+
 		}
 	}
 
@@ -552,13 +550,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 					if (reservaDaVez.equals(reservaVerificacao) || reservaDaVez.getStatus().equals(ReservaStatus.REPROVADA) || reservaVerificacao.getStatus().equals(ReservaStatus.REPROVADA))
 						continue;
-					
-					if(!reservaDaVez.equals(reservaVerificacao) && reservaDaVez.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO) && reservaVerificacao.getStatus().equals(ReservaStatus.APROVADA)){
-						reservasUnicas.remove(reservaDaVez);
-						reservasUnicas.remove(reservaVerificacao);
-						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
-						continue;
-					}
 
 					Calendar inicioReserva = Calendar.getInstance();
 					Calendar fimReserva = Calendar.getInstance();
@@ -583,6 +574,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							reservasUnicas.add(reservaDaVez);
 						}
 					}
+
 				}
 			}
 		} while (true);
@@ -617,20 +609,9 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 		status.add(ReservaStatus.ENCERRADA);
 		status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
-		status.add(ReservaStatus.APROVADA);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros,
 				reserva1.getGrupo(), status);
-		
-		if(reserva1.getStatus().equals(ReservaStatus.APROVADA)){
-			reprovaReserva(reserva2);
-			return reserva1;
-		}
-		
-		if(reserva2.getStatus().equals(ReservaStatus.APROVADA)){
-			reprovaReserva(reserva1);
-			return reserva2;
-		}
 
 		if (reservas == null || reservas.size() == 0) {
 			if (reserva1.getCreated().before(reserva2.getCreated())) {
