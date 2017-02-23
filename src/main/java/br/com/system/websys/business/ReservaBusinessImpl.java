@@ -120,12 +120,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 							+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 							+ "</div>" + "</br></br><font color='#1C3C6A'>"
-							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> EmbarcaÃ§Ã£o: "
+							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 							+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
-							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o") + "<br />" + "	ObservaÃ§Ã£o: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: "
 							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
@@ -148,12 +148,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 							+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 							+ "</div>" + "</br></br><font color='#1C3C6A'>"
-							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> EmbarcaÃ§Ã£o: "
+							+ "	<h3>Uma nova reserva foi solicitada </h3><br /><br /> Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 							+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
-							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o") + "<br />" + "	ObservaÃ§Ã£o: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: "
 							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
@@ -343,6 +343,7 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 			List<ReservaStatus> statusList = new ArrayList<ReservaStatus>();
 			statusList.add(ReservaStatus.AGUARDANDO_APROVACAO);
+			statusList.add(ReservaStatus.APROVADA);
 
 			try {
 				List<Reserva> reservas = ((ReservaRepository) repository).getByGruposByStatus(grs, statusList);
@@ -501,11 +502,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				}
 			}
 
-			reserva.setStatus(ReservaStatus.APROVADA);
-			reservaRepository.save(reserva);
-			System.out.println("Reserva aprovada: " + reserva.getId());
-			dispararEmailAprovacaoReserva(reserva);
-
+			if(reserva.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO)){
+				reserva.setStatus(ReservaStatus.APROVADA);
+				reservaRepository.save(reserva);
+				System.out.println("Reserva aprovada: " + reserva.getId());
+				dispararEmailAprovacaoReserva(reserva);
+			}
 		}
 	}
 
@@ -550,6 +552,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 					if (reservaDaVez.equals(reservaVerificacao) || reservaDaVez.getStatus().equals(ReservaStatus.REPROVADA) || reservaVerificacao.getStatus().equals(ReservaStatus.REPROVADA))
 						continue;
+					
+					if(!reservaDaVez.equals(reservaVerificacao) && reservaDaVez.getStatus().equals(ReservaStatus.AGUARDANDO_APROVACAO) && reservaVerificacao.getStatus().equals(ReservaStatus.APROVADA)){
+						reservasUnicas.remove(reservaDaVez);
+						reservasUnicas.remove(reservaVerificacao);
+						reservasUnicas.add(elegeReserva(reservaDaVez, reservaVerificacao));
+						continue;
+					}
 
 					Calendar inicioReserva = Calendar.getInstance();
 					Calendar fimReserva = Calendar.getInstance();
@@ -574,7 +583,6 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							reservasUnicas.add(reservaDaVez);
 						}
 					}
-
 				}
 			}
 		} while (true);
@@ -609,9 +617,20 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		List<ReservaStatus> status = new ArrayList<ReservaStatus>();
 		status.add(ReservaStatus.ENCERRADA);
 		status.add(ReservaStatus.CANCELADA_MENOS_DUAS);
+		status.add(ReservaStatus.APROVADA);
 
 		List<Reserva> reservas = ((ReservaRepository) repository).getReservaByTerceirosByGrupoByStatus(terceiros,
 				reserva1.getGrupo(), status);
+		
+		if(reserva1.getStatus().equals(ReservaStatus.APROVADA)){
+			reprovaReserva(reserva2);
+			return reserva1;
+		}
+		
+		if(reserva2.getStatus().equals(ReservaStatus.APROVADA)){
+			reprovaReserva(reserva1);
+			return reserva2;
+		}
 
 		if (reservas == null || reservas.size() == 0) {
 			if (reserva1.getCreated().before(reserva2.getCreated())) {
@@ -653,12 +672,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 				+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 				+ "</div>" + "</br></br><font color='#1C3C6A'>"
-				+ "	<h3>Sua solicitaÃ§Ã£o de reserva foi aprovada </h3><br /><br /> EmbarcaÃ§Ã£o: "
+				+ "	<h3>Sua solicitação de reserva foi aprovada </h3><br /><br /> Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 				+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
-				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o") + "<br />" + "	ObservaÃ§Ã£o: " + reserva.getObs()
+				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: " + reserva.getObs()
 				+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 				+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 				+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
@@ -683,12 +702,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 				+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 				+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 				+ "</div>" + "</br></br><font color='#1C3C6A'>"
-				+ "	<h3>Sua solicitaÃ§Ã£o de reserva foi reprovada </h3><br /><br /> EmbarcaÃ§Ã£o: "
+				+ "	<h3>Sua solicitação de reserva foi reprovada </h3><br /><br /> Embarcação: "
 				+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 				+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 				+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 				+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
-				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o") + "<br />" + "	ObservaÃ§Ã£o: " + reserva.getObs()
+				+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: " + reserva.getObs()
 				+ "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 				+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 				+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
@@ -755,12 +774,12 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 							+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 							+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 							+ "</div>" + "</br></br><font color='#1C3C6A'>"
-							+ "	<h3>Uma reserva foi cancelada </h3><br /><br />	EmbarcaÃ§Ã£o: "
+							+ "	<h3>Uma reserva foi cancelada </h3><br /><br />	Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 							+ Formatters.formatDate(reserva.getFimReserva()) + "<br />" + "	Utiliza Marinheiro: "
-							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o") + "<br />" + "	ObservaÃ§Ã£o: "
+							+ (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />" + "	Observação: "
 							+ reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>" + "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
@@ -787,13 +806,13 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 								+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 								+ "</div>" + "</br></br><font color='#1C3C6A'>"
-								+ "	<h3>Uma reserva foi cancelada </h3><br /><br />	EmbarcaÃ§Ã£o: "
+								+ "	<h3>Uma reserva foi cancelada </h3><br /><br />	Embarcação: "
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
 								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva()) + "<br />"
-								+ "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o") + "<br />"
-								+ "	ObservaÃ§Ã£o: " + reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
+								+ "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />"
+								+ "	Observação: " + reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 								+ "	<div>"
 								+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
@@ -816,14 +835,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 					+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 					+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 					+ "</div>" + "</br></br><font color='#1C3C6A'>"
-					+ "	<h3>Reserva finalizada: </h3><br /><br />EmbarcaÃ§Ã£o: "
+					+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
 					+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 					+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 					+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />" + "	Data fim da reserva: "
 					+ Formatters.formatDate(reserva.getFimReserva()) + "<br />"
-					+ "	Hora de registro do inÃ­cio da utilizaÃ§Ã£o: "
+					+ "	Hora de registro do início da utilização: "
 					+ Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro()) + "<br />"
-					+ "	Hora de registro do fim da utilizaÃ§Ã£o: "
+					+ "	Hora de registro do fim da utilização: "
 					+ Formatters.formatDate(reserva.getEventoFim().getHoraRegistro()) + "<br /> <br />";
 
 			if (t == reserva.getSolicitante()) {
@@ -860,14 +879,14 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 								+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 								+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 								+ "</div>" + "</br></br><font color='#1C3C6A'>"
-								+ "	<h3>Reserva finalizada: </h3><br /><br />EmbarcaÃ§Ã£o: "
+								+ "	<h3>Reserva finalizada: </h3><br /><br />Embarcação: "
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
 								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da reserva: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
 								+ "	Data fim da reserva: " + Formatters.formatDate(reserva.getFimReserva()) + "<br />"
-								+ "	Hora de registro do inÃ­cio da utilizaÃ§Ã£o: "
+								+ "	Hora de registro do início da utilização: "
 								+ Formatters.formatDate(reserva.getEventoInicio().getHoraRegistro()) + "<br />"
-								+ "	Hora de registro do fim da utilizaÃ§Ã£o: "
+								+ "	Hora de registro do fim da utilização: "
 								+ Formatters.formatDate(reserva.getEventoFim().getHoraRegistro()) + "<br /> <br />"
 								+ " Para visualizar as imagens clique <a href='" + link
 								+ "' style='color:white;'>aqui</a>" + "<br /><br />Att,<br /> " + "	</font>"
@@ -888,18 +907,18 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 
 		for (Terceiro t : terceiroList) {
 			mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { t.getEmails() },
-					"Prime Share Club - SolicitaÃ§Ã£o de reserva excluÃ­da.",
+					"Prime Share Club - Solicitação de reserva excluída.",
 					"<div align='center' style='background-color:rgb(255,255,255)'></br></br>"
 							+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 							+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 							+ "</div>" + "</br></br><font color='#1C3C6A'>"
-							+ "	<h3>Uma solicitaÃ§Ã£o de reserva foi excluÃ­da </h3><br /><br />EmbarcaÃ§Ã£o: "
+							+ "	<h3>Uma solicitação de reserva foi excluída </h3><br /><br />Embarcação: "
 							+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
-							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitaÃ§Ã£o: "
+							+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
 							+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
-							+ "	Data fim da solicitaÃ§Ã£o: " + Formatters.formatDate(reserva.getFimReserva()) + "<br />"
-							+ "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o") + "<br />"
-							+ "	ObservaÃ§Ã£o: " + reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
+							+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva()) + "<br />"
+							+ "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "Não") + "<br />"
+							+ "	Observação: " + reserva.getObs() + "<br /><br />Att,<br /> " + "	</font>"
 							+ "	<div>"
 							+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 							+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
@@ -920,18 +939,18 @@ class ReservaBusinessImpl extends BusinessBaseRootImpl<Reserva, ReservaRepositor
 		for (User user : users) {
 			if (user.getAtivo()) {
 				mailBusiness.sendMail("websys@primeshareclub.com.br", new String[] { user.getTerceiro().getEmails() },
-						"Prime Share Club - SolicitaÃ§Ã£o de reserva excluÃ­da.",
+						"Prime Share Club - Solicitação de reserva excluída.",
 						"<div align='center' style='background-color:rgb(255,255,255)'></br></br>"
 								+ "<div align='center' style='background-color:rgb(255,255,255)'>"
 								+ "	<img width='112' height='110' alt='Logo' src='http://ec2-54-233-141-81.sa-east-1.compute.amazonaws.com/files-upload/icon-embarcacoes.png'  />"
 								+ "</div>" + "</br></br><font color='#1C3C6A'>"
-								+ "	<h3>Uma solicitaÃ§Ã£o de reserva foi excluÃ­da </h3><br /><br />EmbarcaÃ§Ã£o: "
+								+ "	<h3>Uma solicitação de reserva foi excluída </h3><br /><br />Embarcação: "
 								+ reserva.getGrupo().getProdutos().get(0).getDescricao() + "<br />" + "	Solicitante: "
-								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitaÃ§Ã£o: "
+								+ reserva.getSolicitante().getNome() + "<br />" + "	Data inicio da solicitação: "
 								+ Formatters.formatDate(reserva.getInicioReserva()) + "<br />"
-								+ "	Data fim da solicitaÃ§Ã£o: " + Formatters.formatDate(reserva.getFimReserva())
-								+ "<br />" + "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "NÃ£o")
-								+ "<br />" + "	ObservaÃ§Ã£o: " + reserva.getObs() + "<br /><br />Att,<br /> "
+								+ "	Data fim da solicitação: " + Formatters.formatDate(reserva.getFimReserva())
+								+ "<br />" + "	Utiliza Marinheiro: " + (reserva.getUtilizaMarinheiro() ? "Sim" : "Não")
+								+ "<br />" + "	Observação: " + reserva.getObs() + "<br /><br />Att,<br /> "
 								+ "	</font>" + "	<div>"
 								+ "		<h2><font color='#1C3C6A' size=26px> EQUIPE PRIME SHARE CLUB </font></h2>"
 								+ "		<p><font color='#1C3C6A'>Â©2016 All Rights Reserved.</font></p>" + "	</div> "
