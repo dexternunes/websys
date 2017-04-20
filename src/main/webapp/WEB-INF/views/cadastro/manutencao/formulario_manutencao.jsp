@@ -300,7 +300,7 @@
 					cache : false,
 					processData : false,
 					success : function() {
-						document.location.reload();
+						document.location.href = "${pageContext.request.contextPath}/manutencao/";
 					},
 					error : function(error) {
 						alert('Algo errado ocorreu! Repita a operação. Se o problema persistir, entre em contato com a equipe de desenvolvimento. Cod:837');

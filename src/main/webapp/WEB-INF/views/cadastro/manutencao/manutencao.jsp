@@ -60,9 +60,7 @@
 											<td class="tdValor">${manutencoes.valor}</td>
 											<td>${manutencoes.status}</td>
 										</tr>
-
 									</c:forEach>
-
 								</tbody>
 							</table>
 						</div>

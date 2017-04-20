@@ -134,7 +134,7 @@ public class ManutencaoController {
 	
 	@RequestMapping(value = "/remove", method = RequestMethod.POST, headers = "Accept=application/json", produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public String excluiManutencao(@RequestBody Long idManutencao) throws Exception {
+	public void excluiManutencao(@RequestBody Long idManutencao) throws Exception {
 
 		Manutencao manutencao = ManutencaoBusiness.get(idManutencao);
 		manutencao.setExcluida(true);
@@ -145,6 +145,6 @@ public class ManutencaoController {
 			logger.info("Erro: " + e.toString());
 		}
 		
-		return "redirect:/manutencao/";
+		//return "cadastro/manutencao/manutencao";
 	}
 }
